@@ -70,89 +70,130 @@ function Index() {
   useReveal();
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#e85d3a] selection:text-black">
-      {/* NAV */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a0a0a]/70 border-b border-white/5">
-        <nav className="max-w-[1440px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-          <a href="#" className="font-semibold tracking-tight text-base">
-            R—M<span className="text-[#e85d3a]">.</span>
-          </a>
-          <ul className="hidden md:flex items-center gap-8 text-[13px] text-white/60">
-            {nav.map((n) => (
-              <li key={n}>
-                <a href="#" className="hover:text-white transition-colors">
-                  {n}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <a
-            href="#"
-            className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
-          >
-            Get Audit →
-          </a>
-        </nav>
-      </header>
+      {/* HERO with full-bleed gradient + pill nav */}
+      <section className="relative min-h-screen w-full overflow-hidden">
+        {/* Gradient background */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 50% 0%, #2a1208 0%, #160a06 35%, #0a0604 65%, #0a0a0a 100%), linear-gradient(180deg, #1a0d07 0%, #0a0a0a 70%, #0a0a0a 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-80"
+          style={{
+            background:
+              "radial-gradient(60% 50% at 50% 35%, rgba(232,93,58,0.35), transparent 70%), radial-gradient(40% 30% at 20% 80%, rgba(201,168,76,0.18), transparent 70%), radial-gradient(50% 40% at 85% 75%, rgba(74,107,138,0.18), transparent 70%)",
+          }}
+        />
+        {/* Grain */}
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-[0.06] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.6'/></svg>\")",
+          }}
+        />
 
-      {/* HERO */}
-      <section className="pt-32 md:pt-40 pb-24 md:pb-32 px-6 md:px-12 max-w-[1440px] mx-auto">
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          <div className="col-span-12 md:col-span-7 reveal">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-10">
-              [ R-M Studio — Est. Strategy & Growth ]
-            </p>
-            <h1 className="text-[44px] md:text-[88px] lg:text-[104px] leading-[0.95] tracking-[-0.03em] font-medium">
-              We build marketing
-              <br />
-              systems that
-              <br />
-              <span className="italic font-light text-white/70">survive</span>{" "}
-              beyond
-              <br />
-              trends.
-            </h1>
-          </div>
-          <div className="col-span-12 md:col-span-5 md:pl-8 flex flex-col justify-end reveal" data-delay="2">
-            <p className="text-[14px] text-white/60 leading-relaxed max-w-sm mb-10">
-              Strategy, positioning and execution under one team — built for
-              ambitious brands operating in competitive industries across the
-              EU and MENA.
-            </p>
-            <div className="flex flex-wrap gap-3">
+        {/* Pill NAV */}
+        <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
+          <nav className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-2 pr-2">
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
+                Trusted by ambitious brands EU → MENA
+              </span>
+            </div>
+            <a
+              href="#"
+              className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
+            >
+              R—M<span className="text-[#e85d3a]">.</span>
+            </a>
+            <div className="flex items-center gap-1">
+              <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
+                {nav.map((n) => (
+                  <li key={n}>
+                    <a href="#" className="hover:text-white transition-colors">
+                      {n}
+                    </a>
+                  </li>
+                ))}
+              </ul>
               <a
                 href="#"
-                className="text-[13px] px-5 py-3 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black hover:-translate-y-0.5"
+                className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
               >
-                Start Project →
-              </a>
-              <a
-                href="#"
-                className="text-[13px] px-5 py-3 rounded-full border border-white/15 text-white hover:border-white hover:-translate-y-0.5"
-              >
-                View Case Studies
+                Get Audit
               </a>
             </div>
+          </nav>
+        </header>
+
+        {/* Hero content */}
+        <div className="relative max-w-[1320px] mx-auto px-6 md:px-12 pt-40 md:pt-52 pb-24 flex flex-col items-center text-center">
+          <h1 className="reveal text-[52px] sm:text-[80px] md:text-[120px] lg:text-[148px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
+            Marketing systems
+            <br />
+            that <span className="italic font-light text-white/80">feel inevitable</span>
+          </h1>
+          <p className="reveal mt-10 max-w-[640px] text-[15px] md:text-[17px] leading-relaxed text-white/70" data-delay="2">
+            We turn ambitious brands into category leaders through strategy,
+            positioning and execution under one team. Trusted by 40+ founders
+            across the EU and MENA.
+          </p>
+
+          <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3" data-delay="3">
+            <a
+              href="#"
+              className="text-[13px] px-6 py-3 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black hover:-translate-y-0.5"
+            >
+              Start Project →
+            </a>
+            <a
+              href="#"
+              className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5"
+            >
+              View Case Studies
+            </a>
+          </div>
+
+          {/* Swipe indicator */}
+          <div className="reveal-fade mt-24 md:mt-32 text-[12px] uppercase tracking-[0.25em] text-white/50 flex items-center gap-2">
+            Scroll to explore
+            <span className="inline-block animate-bounce">↓</span>
           </div>
         </div>
 
-        {/* Hero image */}
-        <div className="mt-20 md:mt-28 relative aspect-[16/8] overflow-hidden rounded-sm reveal-scale hover-zoom">
-          <img
-            src={heroBloom}
-            alt="Abstract chromatic bloom artwork"
-            width={1280}
-            height={1280}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/40 via-transparent to-transparent" />
-          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-[11px] uppercase tracking-[0.2em] text-white/80">
-            <span>Vol. 01 — Ethereal Visions</span>
-            <span>2025 / Now</span>
+        {/* Trusted-by strip at bottom of hero */}
+        <div className="relative border-t border-white/10 bg-black/30 backdrop-blur-sm">
+          <div className="max-w-[1320px] mx-auto px-6 md:px-12 py-6 flex items-center gap-8 md:gap-14 overflow-x-auto">
+            <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 whitespace-nowrap">
+              Trusted by
+              <br />
+              visionaries
+            </span>
+            {["supercharge", "firmable", "ElitaGenetics", "andromeda", "veraty", "WORKYARD", "earlywork.", "advance vc"].map(
+              (b) => (
+                <span
+                  key={b}
+                  className="text-[15px] md:text-[17px] font-medium text-white/55 whitespace-nowrap tracking-tight hover:text-white transition-colors"
+                >
+                  {b}
+                </span>
+              ),
+            )}
           </div>
         </div>
+      </section>
 
-        {/* Facts row */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
+      {/* Facts row */}
+      <section className="px-6 md:px-12 max-w-[1440px] mx-auto pt-24 pb-12">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
           {facts.map(([k, v], i) => (
             <div
               key={v}
