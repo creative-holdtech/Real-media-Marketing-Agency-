@@ -358,7 +358,7 @@ function ArticlePage() {
           <ul className="flex items-center gap-6">
             <li><Link to="/" className="hover:text-white transition-colors rounded-md">Home</Link></li>
             <li><Link to="/blog" className="hover:text-white transition-colors rounded-md">Journal</Link></li>
-            <li><a href="#" className="hover:text-white transition-colors rounded-md">Privacy</a></li>
+            <li><span className="opacity-70">Privacy</span></li>
           </ul>
         </nav>
       </footer>
