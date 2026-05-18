@@ -239,14 +239,14 @@ function Index() {
 
           <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3" data-delay="3">
             <a
-              href="#"
-              className="text-[13px] px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-white/90 hover:-translate-y-0.5"
+              href="#contact"
+              className="text-[13px] px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-white/90 hover:-translate-y-0.5 transition-all"
             >
               Start Project →
             </a>
             <a
-              href="#"
-              className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5"
+              href="#cases"
+              className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all"
             >
               View Case Studies
             </a>
