@@ -150,7 +150,7 @@ function Index() {
           <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3" data-delay="3">
             <a
               href="#"
-              className="text-[13px] px-6 py-3 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black hover:-translate-y-0.5"
+              className="text-[13px] px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-white/90 hover:-translate-y-0.5"
             >
               Start Project →
             </a>
