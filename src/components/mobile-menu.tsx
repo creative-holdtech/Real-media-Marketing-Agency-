@@ -2,11 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 const items: { label: string; to?: string; href?: string }[] = [
-  { label: "Services", href: "#" },
-  { label: "Products", href: "#" },
-  { label: "Case Studies", href: "#" },
-  { label: "Insights", href: "#" },
-  { label: "About", href: "#" },
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
   { label: "Journal", to: "/blog" },
 ];
 
