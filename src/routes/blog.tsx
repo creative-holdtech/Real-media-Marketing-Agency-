@@ -26,7 +26,13 @@ export const Route = createFileRoute("/blog")({
   component: BlogPage,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav: { label: string; href: string }[] = [
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
+];
 const categories = ["All", "Strategy", "Positioning", "Performance", "Brand", "Field Notes"];
 
 function BlogPage() {
