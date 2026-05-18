@@ -455,7 +455,7 @@ function Index() {
             </h2>
           </div>
           <a
-            href="#"
+            href="#cases"
             className="hidden md:inline-block text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
           >
             View All Cases →
