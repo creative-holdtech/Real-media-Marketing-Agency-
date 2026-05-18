@@ -419,7 +419,7 @@ function BlogPage() {
           <span>© R-M 2026</span>
           <ul className="flex items-center gap-6">
             <li><Link to="/" className="hover:text-white transition-colors rounded-md">← Back home</Link></li>
-            <li><a href="#" className="hover:text-white transition-colors rounded-md">Privacy</a></li>
+            <li><span className="opacity-70">Privacy</span></li>
             <li><span aria-label="Locations">Kyiv / EU / MENA</span></li>
           </ul>
         </nav>
