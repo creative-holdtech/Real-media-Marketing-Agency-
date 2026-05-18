@@ -195,16 +195,22 @@ function Index() {
 
         {/* Pill NAV */}
         <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
-          <nav className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-2 pr-2">
+          <nav className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2">
             <div className="flex items-center gap-3">
               <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
                 Trusted by ambitious brands EU → MENA
               </span>
+              <Link
+                to="/"
+                className="sm:hidden font-semibold tracking-tight text-[15px] text-white"
+              >
+                R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+              </Link>
             </div>
             <a
               href="#"
-              className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
+              className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
             >
               R—M<span className="text-[#e85d3a]">.</span>
             </a>
@@ -220,10 +226,11 @@ function Index() {
               </ul>
               <a
                 href="#"
-                className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
+                className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
               >
                 Get Audit
               </a>
+              <MobileMenu />
             </div>
           </nav>
         </header>
