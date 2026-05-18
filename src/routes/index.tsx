@@ -285,7 +285,7 @@ function Index() {
       <StatsStrip />
 
       {/* METRICS + ABOUT */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="about" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-12">
           <div className="col-span-12 md:col-span-5 reveal">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
@@ -332,7 +332,7 @@ function Index() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-16">
           [ 03 — Voices ]
         </p>
@@ -357,7 +357,7 @@ function Index() {
       </section>
 
       {/* PRODUCTS */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="products" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-8 mb-16">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 04 — Products ]
@@ -443,7 +443,7 @@ function Index() {
       </section>
 
       {/* CASES */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="cases" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="flex items-end justify-between mb-16">
           <div>
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6">
@@ -508,7 +508,7 @@ function Index() {
       </section>
 
       {/* BLOG */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="insights" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-8 mb-12">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 06 — Insights ]
@@ -581,7 +581,7 @@ function Index() {
       </section>
 
       {/* CONTACT BANNER */}
-      <section ID_PLACEHOLDER className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="contact" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <h2 className="text-[44px] md:text-[88px] lg:text-[120px] leading-[0.95] tracking-[-0.03em] font-medium reveal">
           Let's build<br />
           something that<br />
