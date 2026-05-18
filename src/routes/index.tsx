@@ -358,11 +358,11 @@ function Index() {
 
       {/* PRODUCTS */}
       <section id="products" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8 mb-16">
-          <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
+        <div className="flex flex-col items-center text-center gap-6 mb-16">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 04 — Products ]
           </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium text-center">
+          <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
             Choose the level<br />
             of support you need<br />
             <span className="italic font-light text-white/60">right now.</span>
@@ -523,12 +523,15 @@ function Index() {
                   {c.desc}
                 </p>
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                  <span className="text-[11px] uppercase tracking-[0.18em] text-white/40">
+                  <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                     {c.sector}
                   </span>
-                  <span className="text-[12px] text-white/60 group-hover:text-[#e85d3a] transition-colors">
+                  <a
+                    href="#contact"
+                    className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
+                  >
                     Read Case →
-                  </span>
+                  </a>
                 </div>
               </div>
             </article>
@@ -538,11 +541,11 @@ function Index() {
 
       {/* BLOG */}
       <section id="insights" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8 mb-12">
-          <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
+        <div className="flex flex-col items-center text-center gap-6 mb-12">
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 06 — Insights ]
           </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium text-center">
+          <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
             From our<br />
             <span className="italic font-light text-white/60">insights.</span>
           </h2>
