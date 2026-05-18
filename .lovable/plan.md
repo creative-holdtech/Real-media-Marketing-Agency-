@@ -1,45 +1,45 @@
-# Swiss-style Stats Strip + Animation
+# Home page — 3 focused changes
 
-Redesign the 5-cell facts strip on `/` (line 204–221 of `src/routes/index.tsx`) into a proper Swiss / International Typographic Style block, and animate it on scroll.
+Reference: DreamLab screenshot you uploaded.
 
-## Visual direction (Swiss style)
+## 1. Stats section (replace current "Indicators" strip)
 
-- **Asymmetric 12-column grid** with hairline rules instead of the current 5 equal black tiles.
-- **Section header row** in Swiss tradition:
-  - Left: small index `§ 02 / Indicators` in uppercase mono, 0.25em tracking.
-  - Right: dateline `Updated · MMV·MMXXVI`.
-  - Full-width hairline `border-t border-white/15` under it.
-- **Numbered entries** — each stat gets a `01 → 05` index above the value, mono, white/40.
-- **Oversized numerals**: `clamp(56px, 7vw, 112px)` Neue-Haas-style, `font-medium`, `tracking-[-0.04em]`, baseline-aligned. For non-numeric values (`EU+MENA`, `Tier 1–3`, `1 team`) → split into two stacked lines so the visual rhythm holds.
-- **Label** sits directly under the rule that separates it from the number — `text-[11px] uppercase tracking-[0.22em] text-white/55`, max 2 lines.
-- **Optional caption** (small italic note) under one or two cells, e.g. *"since 2019"*, to break perfect symmetry — a Swiss-grid signature.
-- **Layout**: 5 cells laid as `col-span-3 / 2 / 3 / 2 / 2` on desktop (asymmetric), stack to 2-col on mobile. Vertical hairlines between cells (`divide-x divide-white/10`).
-- Colour: keep `#0a0a0a` bg, `#e8e6e1` text, single `#e85d3a` accent dot next to the section index.
+Currently `StatsStrip` renders 5 Swiss-style cells with hairlines, count-up, headers, captions. Replace with a clean two-up block matching the reference:
 
-```text
-─────────────────────────────────────────────────────────────
-§ 02 / INDICATORS •                       UPDATED · MMV·MMXXVI
-─────────────────────────────────────────────────────────────
-01            │ 02       │ 03            │ 04        │ 05
-              │          │               │           │
-40+           │ 04       │ EU            │ Tier      │ 1
-              │          │ +MENA         │ 1–3       │ team
-──────────────┼──────────┼───────────────┼───────────┼──────
-PROJECTS      │ CORE     │ ACTIVE        │ NICHE     │ STRATEGY
-DELIVERED     │ INDUSTR. │ MARKETS       │ EXPERIENCE│ + EXEC.
-─────────────────────────────────────────────────────────────
-```
+- Two oversized stats only: `40+` / *Projects delivered* and `$120M+` / *Capital secured by founder teams* (final copy to confirm in Q1).
+- Layout: 2 columns on mobile AND desktop (same proportions as the reference), generous vertical padding, no surrounding borders/hairlines, no `§ 02 / Indicators` header, no per-cell index numbers, no caption line.
+- Type scale: `clamp(56px, 11vw, 160px)` for the number, `text-[14px]/[15px] text-white/55` for the label underneath.
+- Keep the existing count-up animation on the numeric value and the `prefers-reduced-motion` fallback.
+- Place exactly where `StatsStrip` is today (after the hero, before the About/Metrics section). The 5-metric list inside the About section stays — that's a separate block.
 
-## Animation
+## 2. Mobile pill menu (matches DreamLab top bar)
 
-1. **Scroll-reveal entrance** — reuse existing `useReveal` + `.reveal` class already in the file. Each cell fades + lifts on first intersection, staggered `data-delay="1..5"`.
-2. **Hairline draw-in** — top and middle rules animate `scaleX 0 → 1` from left, 600ms ease-out, on intersection. Implemented as `<span>` with `origin-left transition-transform duration-700` + an `inView` state toggled by a small `useEffect(IntersectionObserver)` in the same component (no new hook file, kept local).
-3. **Count-up on the numeric cells** (`40+`, `04`) — small inline `useCountUp(target, durationMs)` helper inside `index.tsx`. Runs once when the strip enters view. Non-numeric values (`EU+MENA`, `Tier 1–3`, `1 team`) render statically.
-4. **Index numerals (01–05)** subtle vertical shift on hover: `group-hover:-translate-y-0.5 transition`.
-5. Respect `prefers-reduced-motion`: skip count-up and hairline draw, keep static final state.
+The fixed top pill nav currently hides the brand on mobile and shows only "Get Audit". Restyle the mobile state:
 
-## Files touched
+- Left: brand wordmark `R—M.` (always visible, not just centered on desktop).
+- Right: a `MENU` button (uppercase, 13px, tracking-wide) that toggles a fullscreen overlay.
+- Hide the desktop `<ul>` nav and the white "Trusted by…" chip on mobile (already hidden), and hide the right-side `Get Audit` pill on mobile so the bar reads `R—M.` / `MENU` exactly like the reference.
+- Desktop (`md:` and up) keeps current behavior unchanged.
+- Overlay panel: full-viewport `bg-black/95 backdrop-blur-xl`, large stacked links (`Services`, `Products`, `Case Studies`, `Insights`, `About`, `Journal`), a `Get Audit` CTA at the bottom, close button (`CLOSE`) in the same pill position. Locks body scroll while open, closes on link click and on `Esc`.
+- Apply the same treatment in `src/routes/blog.tsx` so the nav stays consistent across pages.
 
-- `src/routes/index.tsx` — only the stats section (lines 204–221) and a small local helper (`useCountUp`, `useInView`) added above `Index`. Data shape in `facts` extended to `[value, label, isNumeric, suffix?]` so animation knows what to count.
+## 3. Homepage Insights section → blog cards with images
 
-No new files, no new deps, no other sections altered.
+Replace the current text-list (`articles` array + `<ul>` with title rows) in the `[ 06 — Insights ]` section with real post cards sourced from `@/lib/posts`:
+
+- Import `posts` and take the first 3 (featured + 2 latest archive entries).
+- Reuse the visual treatment from `src/routes/blog.tsx` archive grid: rounded-3xl image card, category + read-time chips top corners, hover "Read →" pill, title + date underneath, full-card `<Link to="/blog/$slug">`.
+- Grid: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8`.
+- Keep the `[ 06 — Insights ]` header and "View All Articles →" link (point it to `/blog`).
+- Remove the now-unused local `articles` array.
+
+## Technical notes
+
+- Only files touched: `src/routes/index.tsx`, `src/routes/blog.tsx`.
+- New small component `MobileMenu` (local to each route file, or extracted to `src/components/mobile-menu.tsx` if cleaner — will extract).
+- No new deps. No backend changes.
+
+## Open question
+
+1. Stats copy: keep `40+ / Projects delivered` and add a second stat — which one? Options: `$120M+ / Capital secured`, `4× / Avg ROAS uplift`, or supply your own.
+
