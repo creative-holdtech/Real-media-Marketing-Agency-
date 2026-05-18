@@ -124,13 +124,13 @@ function ArticlePage() {
           <div className="flex items-center gap-1">
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
               {nav.map((n) => (
-                <li key={n}><a href="#" className="hover:text-white transition-colors">{n}</a></li>
+                <li key={n.label}><a href={n.href} className="hover:text-white transition-colors">{n.label}</a></li>
               ))}
               <li>
                 <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
               </li>
             </ul>
-            <a href="#" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="/#contact" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
               Get Audit
             </a>
           </div>
