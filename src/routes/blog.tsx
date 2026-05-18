@@ -216,13 +216,16 @@ function BlogPage() {
             </span>
           </div>
 
-          <article className="grid grid-cols-12 gap-6 md:gap-12 reveal">
+          <article className="group relative grid grid-cols-12 gap-6 md:gap-12 reveal rounded-3xl">
             <Link
               to="/blog/$slug"
               params={{ slug: featured.slug }}
-              aria-labelledby="featured-title"
-              className="col-span-12 md:col-span-7 group block focus-visible:outline-none rounded-3xl"
+              aria-label={`Read essay: ${featured.title}`}
+              className="absolute inset-0 z-20 rounded-3xl focus-visible:outline-none"
             >
+              <span className="sr-only">{featured.title}</span>
+            </Link>
+            <div className="col-span-12 md:col-span-7">
               <figure className="hover-zoom card-cover aspect-[5/4] relative overflow-hidden border border-white/10 bg-[#111] rounded-3xl">
                 <img src={featured.image} alt="" width={1280} height={1024} className="w-full h-full object-cover" />
                 <div
@@ -236,21 +239,19 @@ function BlogPage() {
                 <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white">
                   Featured · {featured.read}
                 </span>
-                <span aria-hidden className="absolute bottom-4 right-4 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 transition-all duration-500 text-[11px] uppercase tracking-[0.25em] px-3 py-2 rounded-full bg-[#e85d3a] text-black font-medium">
+                <span aria-hidden className="absolute bottom-4 right-4 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 transition-all duration-500 text-[11px] uppercase tracking-[0.25em] px-3 py-2 rounded-full bg-[#e85d3a] text-black font-medium">
                   Read essay →
                 </span>
               </figure>
-            </Link>
+            </div>
             <div className="col-span-12 md:col-span-5 flex flex-col justify-center">
               <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6">
                 <span className="text-[#e85d3a]">{featured.category}</span>
                 <span aria-hidden className="w-1 h-1 rounded-full bg-white/20" />
                 <time dateTime={featured.dateISO}>{featured.date}</time>
               </div>
-              <h3 id="featured-title" className="text-[32px] md:text-[48px] leading-[1.02] tracking-[-0.02em] font-medium text-white">
-                <Link to="/blog/$slug" params={{ slug: featured.slug }} className="hover:text-white/90 focus-visible:text-white/90 rounded-md">
-                  {featured.title}
-                </Link>
+              <h3 id="featured-title" className="text-[32px] md:text-[48px] leading-[1.02] tracking-[-0.02em] font-medium text-white group-hover:text-white/95 transition-colors">
+                {featured.title}
               </h3>
               <p className="mt-6 text-[15px] text-white/60 leading-relaxed max-w-md">
                 {featured.excerpt}
@@ -261,14 +262,9 @@ function BlogPage() {
                   <div className="text-white/80">{featured.author}</div>
                   <div>{featured.read}</div>
                 </div>
-                <Link
-                  to="/blog/$slug"
-                  params={{ slug: featured.slug }}
-                  className="ml-auto link-underline text-[13px] text-white/80 rounded-md"
-                  aria-label={`Read essay: ${featured.title}`}
-                >
+                <span aria-hidden className="ml-auto text-[13px] text-white/80 group-hover:text-[#e85d3a] transition-colors">
                   Read essay →
-                </Link>
+                </span>
               </div>
             </div>
           </article>
