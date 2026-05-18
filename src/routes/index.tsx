@@ -382,6 +382,8 @@ function Index() {
                 "Launch-ready delivery",
               ],
               time: "2–4 weeks",
+              gradient:
+                "radial-gradient(circle at 30% 20%, #e85d3a55, transparent 55%), radial-gradient(circle at 80% 80%, #4a6b8a44, transparent 60%)",
             },
             {
               name: "Marathon",
@@ -394,39 +396,50 @@ function Index() {
                 "Continuous performance improvements",
               ],
               time: "Ongoing partnership",
+              gradient:
+                "radial-gradient(circle at 75% 25%, #c9a84c55, transparent 55%), radial-gradient(circle at 20% 85%, #5a8a5c55, transparent 60%)",
             },
           ].map((p, i) => (
             <article
               key={p.name}
-              className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] p-8 md:p-10 hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
+              className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] p-8 md:p-10 overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
-              <div className="flex items-start justify-between gap-4 mb-8">
-                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white/10 text-white/70">
+              <div
+                aria-hidden
+                className="absolute inset-0 opacity-70 mix-blend-screen pointer-events-none transition-opacity duration-700 group-hover:opacity-90"
+                style={{ background: p.gradient }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/60"
+              />
+              <div className="relative flex items-start justify-between gap-4 mb-8">
+                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
                   {p.tag}
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/40 border border-white/10 text-white/60">
+                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/70">
                   {p.time}
                 </span>
               </div>
-              <h3 className="text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none mb-6 text-white">
+              <h3 className="relative text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none mb-6 text-white">
                 {p.name}
               </h3>
-              <p className="text-[14px] text-white/60 leading-relaxed max-w-md mb-8">
+              <p className="relative text-[14px] text-white/70 leading-relaxed max-w-md mb-8">
                 {p.desc}
               </p>
-              <ul className="space-y-3 mb-10">
+              <ul className="relative space-y-3 mb-10">
                 {p.items.map((it) => (
                   <li
                     key={it}
-                    className="text-[14px] text-white/80 flex gap-3 border-b border-white/5 pb-3"
+                    className="text-[14px] text-white/85 flex gap-3 border-b border-white/10 pb-3"
                   >
                     <span className="text-[#e85d3a]">—</span>
                     {it}
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/10">
+              <div className="relative mt-auto flex items-center justify-between pt-6 border-t border-white/10">
                 <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                   Learn more
                 </span>
