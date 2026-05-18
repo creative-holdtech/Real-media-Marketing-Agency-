@@ -49,7 +49,13 @@ export const Route = createFileRoute("/blog/$slug")({
   component: ArticlePage,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav: { label: string; href: string }[] = [
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
+];
 
 function ArticlePage() {
   useReveal();
