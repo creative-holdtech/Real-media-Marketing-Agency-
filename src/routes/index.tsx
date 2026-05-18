@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 
 import { useReveal } from "@/hooks/use-reveal";
 
@@ -8,13 +9,95 @@ export const Route = createFileRoute("/")({
 
 const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
 
-const facts = [
-  ["40+", "Projects delivered"],
-  ["4", "Core industries"],
-  ["EU+MENA", "Active markets"],
-  ["Tier 1–3", "Experience"],
-  ["1 team", "Strategy + execution"],
+type Fact = {
+  value: string;
+  label: string;
+  caption?: string;
+  count?: { to: number; suffix?: string };
+};
+
+const facts: Fact[] = [
+  { value: "40+", label: "Projects delivered", caption: "Since 2019", count: { to: 40, suffix: "+" } },
+  { value: "04", label: "Core industries", count: { to: 4, suffix: "" } },
+  { value: "EU+MENA", label: "Active markets" },
+  { value: "Tier 1–3", label: "Niche experience" },
+  { value: "1 team", label: "Strategy + execution", caption: "One studio, end-to-end" },
 ];
+
+function useInView<T extends Element>(options?: IntersectionObserverInit) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || inView) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setInView(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.25, ...options },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inView, options]);
+  return { ref, inView };
+}
+
+function useCountUp(target: number, start: boolean, duration = 1400) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setN(target);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(target * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, start, duration]);
+  return n;
+}
+
+function StatValue({ fact, start }: { fact: Fact; start: boolean }) {
+  const counted = useCountUp(fact.count?.to ?? 0, start && !!fact.count);
+  if (fact.count) {
+    return (
+      <>
+        {counted}
+        {fact.count.suffix ?? ""}
+      </>
+    );
+  }
+  // Non-numeric: stack two-word values onto two lines for Swiss rhythm
+  const parts = fact.value.split(/[\s+]/).filter(Boolean);
+  if (parts.length >= 2) {
+    return (
+      <span className="block leading-[0.92]">
+        <span className="block">{parts[0]}</span>
+        <span className="block text-white/55">
+          {fact.value.includes("+") ? "+" : ""}
+          {parts.slice(1).join(" ")}
+        </span>
+      </span>
+    );
+  }
+  return <>{fact.value}</>;
+}
 
 const metrics = [
   ["01", "40+", "Launched projects"],
@@ -200,25 +283,8 @@ function Index() {
         </div>
       </section>
 
-      {/* Facts row */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto pt-24 pb-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
-          {facts.map(([k, v], i) => (
-            <div
-              key={v}
-              className="bg-[#0a0a0a] p-6 reveal"
-              data-delay={String(Math.min(i + 1, 5))}
-            >
-              <div className="text-2xl md:text-3xl font-medium tracking-tight">
-                {k}
-              </div>
-              <div className="text-[11px] uppercase tracking-[0.15em] text-white/40 mt-2">
-                {v}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Facts — Swiss-style indicators */}
+      <StatsStrip />
 
       {/* METRICS + ABOUT */}
       <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
@@ -576,3 +642,94 @@ function Index() {
     </div>
   );
 }
+
+function StatsStrip() {
+  const { ref, inView } = useInView<HTMLElement>();
+
+  const colSpan = ["md:col-span-3", "md:col-span-2", "md:col-span-3", "md:col-span-2", "md:col-span-2"];
+
+  return (
+    <section
+      ref={ref}
+      aria-labelledby="indicators-heading"
+      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-24 pb-12"
+    >
+      {/* Header row */}
+      <div className="flex items-end justify-between text-[11px] uppercase tracking-[0.25em] text-white/55 font-mono">
+        <h2 id="indicators-heading" className="flex items-center gap-2">
+          <span aria-hidden>§ 02 / Indicators</span>
+          <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
+        </h2>
+        <span className="hidden sm:inline text-white/35">Updated · MMV·MMXXVI</span>
+      </div>
+
+      {/* Top hairline — draws in */}
+      <div className="relative mt-4 h-px bg-white/10 overflow-hidden">
+        <span
+          aria-hidden
+          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
+            inView ? "scale-x-100" : "scale-x-0"
+          }`}
+        />
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-12">
+        {facts.map((f, i) => (
+          <article
+            key={f.label}
+            className={`group relative ${colSpan[i]} px-5 md:px-6 pt-8 md:pt-10 pb-8 md:pb-10 border-white/10 ${
+              i > 0 ? "md:border-l" : ""
+            } ${i % 2 === 1 ? "border-l md:border-l" : ""} ${
+              i < facts.length - 1 ? "border-b md:border-b-0" : ""
+            } reveal`}
+            data-delay={String(Math.min(i + 1, 5))}
+          >
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-white/40 font-mono mb-6 md:mb-10">
+              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 inline-block">
+                0{i + 1}
+              </span>
+              <span aria-hidden className="w-6 h-px bg-white/20" />
+            </div>
+
+            <div
+              className="font-medium text-white tracking-[-0.04em] leading-[0.92]"
+              style={{ fontSize: "clamp(44px, 6.4vw, 96px)" }}
+            >
+              <StatValue fact={f} start={inView} />
+            </div>
+
+            <div className="relative mt-6 md:mt-8 h-px bg-white/10 overflow-hidden">
+              <span
+                aria-hidden
+                className={`absolute inset-0 bg-white/30 origin-left transition-transform duration-700 ease-out motion-reduce:transition-none ${
+                  inView ? "scale-x-100" : "scale-x-0"
+                }`}
+                style={{ transitionDelay: inView ? `${200 + i * 80}ms` : "0ms" }}
+              />
+            </div>
+
+            <p className="mt-4 text-[11px] uppercase tracking-[0.22em] text-white/60 leading-snug max-w-[22ch]">
+              {f.label}
+            </p>
+
+            {f.caption ? (
+              <p className="mt-2 text-[11px] italic text-white/35 leading-snug">{f.caption}</p>
+            ) : null}
+          </article>
+        ))}
+      </div>
+
+      <div className="relative h-px bg-white/10 overflow-hidden">
+        <span
+          aria-hidden
+          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
+            inView ? "scale-x-100" : "scale-x-0"
+          }`}
+          style={{ transitionDelay: inView ? "500ms" : "0ms" }}
+        />
+      </div>
+    </section>
+  );
+}
+
