@@ -352,9 +352,10 @@ function Index() {
           {cases.map((c, i) => (
             <article
               key={i}
-              className="col-span-12 md:col-span-6 group cursor-pointer"
+              className="col-span-12 md:col-span-6 group cursor-pointer reveal"
+              data-delay={String(i + 1)}
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 mb-8 relative overflow-hidden">
+              <div className="aspect-[4/3] bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 mb-8 relative overflow-hidden transition-transform duration-700 ease-out group-hover:scale-[1.01]">
                 <div
                   className="absolute inset-0 opacity-60 mix-blend-screen"
                   style={{
