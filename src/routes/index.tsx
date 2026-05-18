@@ -642,3 +642,94 @@ function Index() {
     </div>
   );
 }
+
+function StatsStrip() {
+  const { ref, inView } = useInView<HTMLElement>();
+
+  const colSpan = ["md:col-span-3", "md:col-span-2", "md:col-span-3", "md:col-span-2", "md:col-span-2"];
+
+  return (
+    <section
+      ref={ref}
+      aria-labelledby="indicators-heading"
+      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-24 pb-12"
+    >
+      {/* Header row */}
+      <div className="flex items-end justify-between text-[11px] uppercase tracking-[0.25em] text-white/55 font-mono">
+        <h2 id="indicators-heading" className="flex items-center gap-2">
+          <span aria-hidden>§ 02 / Indicators</span>
+          <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
+        </h2>
+        <span className="hidden sm:inline text-white/35">Updated · MMV·MMXXVI</span>
+      </div>
+
+      {/* Top hairline — draws in */}
+      <div className="relative mt-4 h-px bg-white/10 overflow-hidden">
+        <span
+          aria-hidden
+          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
+            inView ? "scale-x-100" : "scale-x-0"
+          }`}
+        />
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-12">
+        {facts.map((f, i) => (
+          <article
+            key={f.label}
+            className={`group relative ${colSpan[i]} px-5 md:px-6 pt-8 md:pt-10 pb-8 md:pb-10 border-white/10 ${
+              i > 0 ? "md:border-l" : ""
+            } ${i % 2 === 1 ? "border-l md:border-l" : ""} ${
+              i < facts.length - 1 ? "border-b md:border-b-0" : ""
+            } reveal`}
+            data-delay={String(Math.min(i + 1, 5))}
+          >
+            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-white/40 font-mono mb-6 md:mb-10">
+              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 inline-block">
+                0{i + 1}
+              </span>
+              <span aria-hidden className="w-6 h-px bg-white/20" />
+            </div>
+
+            <div
+              className="font-medium text-white tracking-[-0.04em] leading-[0.92]"
+              style={{ fontSize: "clamp(44px, 6.4vw, 96px)" }}
+            >
+              <StatValue fact={f} start={inView} />
+            </div>
+
+            <div className="relative mt-6 md:mt-8 h-px bg-white/10 overflow-hidden">
+              <span
+                aria-hidden
+                className={`absolute inset-0 bg-white/30 origin-left transition-transform duration-700 ease-out motion-reduce:transition-none ${
+                  inView ? "scale-x-100" : "scale-x-0"
+                }`}
+                style={{ transitionDelay: inView ? `${200 + i * 80}ms` : "0ms" }}
+              />
+            </div>
+
+            <p className="mt-4 text-[11px] uppercase tracking-[0.22em] text-white/60 leading-snug max-w-[22ch]">
+              {f.label}
+            </p>
+
+            {f.caption ? (
+              <p className="mt-2 text-[11px] italic text-white/35 leading-snug">{f.caption}</p>
+            ) : null}
+          </article>
+        ))}
+      </div>
+
+      <div className="relative h-px bg-white/10 overflow-hidden">
+        <span
+          aria-hidden
+          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
+            inView ? "scale-x-100" : "scale-x-0"
+          }`}
+          style={{ transitionDelay: inView ? "500ms" : "0ms" }}
+        />
+      </div>
+    </section>
+  );
+}
+
