@@ -362,7 +362,7 @@ function Index() {
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 04 — Products ]
           </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
+          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium text-center">
             Choose the level<br />
             of support you need<br />
             <span className="italic font-light text-white/60">right now.</span>
@@ -542,7 +542,7 @@ function Index() {
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 06 — Insights ]
           </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
+          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium text-center">
             From our<br />
             <span className="italic font-light text-white/60">insights.</span>
           </h2>
