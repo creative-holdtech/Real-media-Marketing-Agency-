@@ -615,9 +615,9 @@ function Index() {
               competitive industries.
             </p>
             <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
-              <a href="#" className="hover:text-white">LinkedIn</a>
-              <a href="#" className="hover:text-white">Behance</a>
-              <a href="#" className="hover:text-white">Instagram</a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Behance</a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
             </div>
           </div>
 
@@ -626,10 +626,10 @@ function Index() {
               Work
             </div>
             <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">Services</a></li>
-              <li><a href="#" className="hover:text-white">Products</a></li>
-              <li><a href="#" className="hover:text-white">Case Studies</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Services</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Products</a></li>
+              <li><a href="#cases" className="hover:text-white transition-colors">Case Studies</a></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
             </ul>
           </div>
 
@@ -638,9 +638,9 @@ function Index() {
               Studio
             </div>
             <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Contacts</a></li>
-              <li><a href="#" className="hover:text-white">Audit</a></li>
+              <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="#contact" className="hover:text-white transition-colors">Contacts</a></li>
+              <li><a href="mailto:hello@r-m.studio?subject=Free%20Audit%20request" className="hover:text-white transition-colors">Audit</a></li>
             </ul>
           </div>
 
