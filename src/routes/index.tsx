@@ -508,37 +508,64 @@ function Index() {
           </h2>
         </div>
 
-        <ul className="border-t border-white/15">
-          {articles.map(([cat, title], i) => (
-            <li key={i} className="reveal" data-delay={String(i + 1)}>
-              <a
-                href="#"
-                className="grid grid-cols-12 items-baseline gap-4 py-8 border-b border-white/15 group hover:bg-white/[0.02] -mx-4 px-4 transition-all duration-500 hover:px-6"
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {insightPosts.map((p, i) => (
+            <li key={p.slug} className="reveal" data-delay={String(i + 1)}>
+              <Link
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                aria-label={`Read article: ${p.title}`}
+                className="group h-full flex flex-col rounded-3xl focus-visible:outline-none"
               >
-                <span className="col-span-2 md:col-span-1 text-[11px] text-white/30 tracking-[0.2em]">
-                  0{i + 1}
-                </span>
-                <span className="col-span-10 md:col-span-3 text-[12px] uppercase tracking-[0.18em] text-white/50">
-                  {cat}
-                </span>
-                <span className="col-span-10 md:col-span-7 text-[20px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight group-hover:text-[#e85d3a] transition-colors">
-                  {title}
-                </span>
-                <span className="hidden md:block col-span-1 text-[12px] text-white/40 text-right group-hover:text-white">
-                  Read →
-                </span>
-              </a>
+                <article className="h-full flex flex-col">
+                  <figure className="aspect-[4/3] relative overflow-hidden border border-white/10 bg-[#111] mb-6 rounded-3xl">
+                    <img
+                      src={p.image}
+                      alt=""
+                      loading="lazy"
+                      width={1024}
+                      height={768}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
+                      {p.category}
+                    </span>
+                    <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/70">
+                      {p.read}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="absolute bottom-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 transition-all duration-500 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white text-black font-medium"
+                    >
+                      Read →
+                    </span>
+                  </figure>
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-white/40 mb-3">
+                      <span aria-hidden>{p.n}</span>
+                      <span aria-hidden className="w-1 h-1 rounded-full bg-white/20" />
+                      <time dateTime={p.dateISO}>{p.date}</time>
+                    </div>
+                    <h3 className="text-[20px] md:text-[22px] leading-[1.2] tracking-[-0.015em] font-medium text-white/90 group-hover:text-white transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="mt-3 text-[14px] text-white/55 leading-relaxed line-clamp-3">
+                      {p.excerpt}
+                    </p>
+                  </div>
+                </article>
+              </Link>
             </li>
           ))}
         </ul>
 
-        <div className="mt-10">
-          <a
-            href="#"
+        <div className="mt-12">
+          <Link
+            to="/blog"
             className="text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
           >
             View All Articles →
-          </a>
+          </Link>
         </div>
       </section>
 
