@@ -281,10 +281,11 @@ function Index() {
               ],
               time: "Ongoing partnership",
             },
-          ].map((p) => (
+          ].map((p, i) => (
             <article
               key={p.name}
-              className="col-span-12 md:col-span-6 bg-[#0a0a0a] p-8 md:p-12 flex flex-col"
+              className="col-span-12 md:col-span-6 bg-[#0a0a0a] p-8 md:p-12 flex flex-col reveal"
+              data-delay={String(i + 1)}
             >
               <div className="flex items-baseline justify-between mb-12">
                 <h3 className="text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none">
