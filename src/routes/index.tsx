@@ -95,7 +95,16 @@ function Index() {
       </header>
 
       {/* HERO */}
-      <section className="pt-32 md:pt-40 pb-24 md:pb-32 px-6 md:px-12 max-w-[1440px] mx-auto">
+      <section className="relative pt-32 md:pt-40 pb-24 md:pb-32 px-6 md:px-12 max-w-[1440px] mx-auto overflow-hidden">
+        {/* Gradient backdrop */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_15%_20%,rgba(232,93,58,0.28),transparent_60%),radial-gradient(50%_55%_at_85%_30%,rgba(120,80,220,0.22),transparent_65%),radial-gradient(70%_60%_at_50%_100%,rgba(40,120,200,0.18),transparent_70%)]" />
+          <div className="absolute -top-32 -left-24 w-[520px] h-[520px] rounded-full bg-[#e85d3a]/25 blur-[120px] animate-hero-float-a" />
+          <div className="absolute top-10 right-[-120px] w-[480px] h-[480px] rounded-full bg-[#7a5cff]/20 blur-[140px] animate-hero-float-b" />
+          <div className="absolute bottom-[-160px] left-1/3 w-[600px] h-[600px] rounded-full bg-[#2f7ad1]/20 blur-[160px] animate-hero-float-c" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,#0a0a0a_100%)]" />
+          <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
+        </div>
         <div className="grid grid-cols-12 gap-6 md:gap-8">
           <div className="col-span-12 md:col-span-7 reveal">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-10">
