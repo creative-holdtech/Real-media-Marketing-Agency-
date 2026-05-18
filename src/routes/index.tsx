@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
+import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
+import { posts } from "@/lib/posts";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -9,19 +11,16 @@ export const Route = createFileRoute("/")({
 
 const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
 
-type Fact = {
-  value: string;
+type BigStat = {
+  prefix?: string;
+  to: number;
+  suffix?: string;
   label: string;
-  caption?: string;
-  count?: { to: number; suffix?: string };
 };
 
-const facts: Fact[] = [
-  { value: "40+", label: "Projects delivered", caption: "Since 2019", count: { to: 40, suffix: "+" } },
-  { value: "04", label: "Core industries", count: { to: 4, suffix: "" } },
-  { value: "EU+MENA", label: "Active markets" },
-  { value: "Tier 1–3", label: "Niche experience" },
-  { value: "1 team", label: "Strategy + execution", caption: "One studio, end-to-end" },
+const bigStats: BigStat[] = [
+  { to: 40, suffix: "+", label: "Projects delivered" },
+  { prefix: "$", to: 120, suffix: "M+", label: "Capital secured by founder teams" },
 ];
 
 function useInView<T extends Element>(options?: IntersectionObserverInit) {
@@ -73,30 +72,15 @@ function useCountUp(target: number, start: boolean, duration = 1400) {
   return n;
 }
 
-function StatValue({ fact, start }: { fact: Fact; start: boolean }) {
-  const counted = useCountUp(fact.count?.to ?? 0, start && !!fact.count);
-  if (fact.count) {
-    return (
-      <>
-        {counted}
-        {fact.count.suffix ?? ""}
-      </>
-    );
-  }
-  // Non-numeric: stack two-word values onto two lines for Swiss rhythm
-  const parts = fact.value.split(/[\s+]/).filter(Boolean);
-  if (parts.length >= 2) {
-    return (
-      <span className="block leading-[0.92]">
-        <span className="block">{parts[0]}</span>
-        <span className="block text-white/55">
-          {fact.value.includes("+") ? "+" : ""}
-          {parts.slice(1).join(" ")}
-        </span>
-      </span>
-    );
-  }
-  return <>{fact.value}</>;
+function BigStatValue({ stat, start }: { stat: BigStat; start: boolean }) {
+  const n = useCountUp(stat.to, start);
+  return (
+    <>
+      {stat.prefix ?? ""}
+      {n}
+      {stat.suffix ?? ""}
+    </>
+  );
 }
 
 const metrics = [
@@ -143,11 +127,7 @@ const cases = [
   },
 ];
 
-const articles = [
-  ["Growth Strategy", "Why most scaling brands fail after rapid growth"],
-  ["Positioning", "The difference between visibility and market authority"],
-  ["Performance", "How structured systems outperform aggressive tactics"],
-];
+const insightPosts = posts.slice(0, 3);
 
 function Index() {
   useReveal();
@@ -193,16 +173,22 @@ function Index() {
 
         {/* Pill NAV */}
         <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
-          <nav className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-2 pr-2">
+          <nav className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2">
             <div className="flex items-center gap-3">
               <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
                 Trusted by ambitious brands EU → MENA
               </span>
+              <Link
+                to="/"
+                className="sm:hidden font-semibold tracking-tight text-[15px] text-white"
+              >
+                R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+              </Link>
             </div>
             <a
               href="#"
-              className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
+              className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
             >
               R—M<span className="text-[#e85d3a]">.</span>
             </a>
@@ -218,10 +204,11 @@ function Index() {
               </ul>
               <a
                 href="#"
-                className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
+                className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
               >
                 Get Audit
               </a>
+              <MobileMenu />
             </div>
           </nav>
         </header>
@@ -521,37 +508,64 @@ function Index() {
           </h2>
         </div>
 
-        <ul className="border-t border-white/15">
-          {articles.map(([cat, title], i) => (
-            <li key={i} className="reveal" data-delay={String(i + 1)}>
-              <a
-                href="#"
-                className="grid grid-cols-12 items-baseline gap-4 py-8 border-b border-white/15 group hover:bg-white/[0.02] -mx-4 px-4 transition-all duration-500 hover:px-6"
+        <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          {insightPosts.map((p, i) => (
+            <li key={p.slug} className="reveal" data-delay={String(i + 1)}>
+              <Link
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                aria-label={`Read article: ${p.title}`}
+                className="group h-full flex flex-col rounded-3xl focus-visible:outline-none"
               >
-                <span className="col-span-2 md:col-span-1 text-[11px] text-white/30 tracking-[0.2em]">
-                  0{i + 1}
-                </span>
-                <span className="col-span-10 md:col-span-3 text-[12px] uppercase tracking-[0.18em] text-white/50">
-                  {cat}
-                </span>
-                <span className="col-span-10 md:col-span-7 text-[20px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight group-hover:text-[#e85d3a] transition-colors">
-                  {title}
-                </span>
-                <span className="hidden md:block col-span-1 text-[12px] text-white/40 text-right group-hover:text-white">
-                  Read →
-                </span>
-              </a>
+                <article className="h-full flex flex-col">
+                  <figure className="aspect-[4/3] relative overflow-hidden border border-white/10 bg-[#111] mb-6 rounded-3xl">
+                    <img
+                      src={p.image}
+                      alt=""
+                      loading="lazy"
+                      width={1024}
+                      height={768}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
+                      {p.category}
+                    </span>
+                    <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/70">
+                      {p.read}
+                    </span>
+                    <span
+                      aria-hidden
+                      className="absolute bottom-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 transition-all duration-500 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white text-black font-medium"
+                    >
+                      Read →
+                    </span>
+                  </figure>
+                  <div className="flex-1 flex flex-col">
+                    <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-white/40 mb-3">
+                      <span aria-hidden>{p.n}</span>
+                      <span aria-hidden className="w-1 h-1 rounded-full bg-white/20" />
+                      <time dateTime={p.dateISO}>{p.date}</time>
+                    </div>
+                    <h3 className="text-[20px] md:text-[22px] leading-[1.2] tracking-[-0.015em] font-medium text-white/90 group-hover:text-white transition-colors">
+                      {p.title}
+                    </h3>
+                    <p className="mt-3 text-[14px] text-white/55 leading-relaxed line-clamp-3">
+                      {p.excerpt}
+                    </p>
+                  </div>
+                </article>
+              </Link>
             </li>
           ))}
         </ul>
 
-        <div className="mt-10">
-          <a
-            href="#"
+        <div className="mt-12">
+          <Link
+            to="/blog"
             className="text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
           >
             View All Articles →
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -646,88 +660,30 @@ function Index() {
 function StatsStrip() {
   const { ref, inView } = useInView<HTMLElement>();
 
-  const colSpan = ["md:col-span-3", "md:col-span-2", "md:col-span-3", "md:col-span-2", "md:col-span-2"];
-
   return (
     <section
       ref={ref}
-      aria-labelledby="indicators-heading"
-      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-24 pb-12"
+      aria-label="Key indicators"
+      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-20 md:pt-28 pb-20 md:pb-28"
     >
-      {/* Header row */}
-      <div className="flex items-end justify-between text-[11px] uppercase tracking-[0.25em] text-white/55 font-mono">
-        <h2 id="indicators-heading" className="flex items-center gap-2">
-          <span aria-hidden>§ 02 / Indicators</span>
-          <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
-        </h2>
-        <span className="hidden sm:inline text-white/35">Updated · MMV·MMXXVI</span>
-      </div>
-
-      {/* Top hairline — draws in */}
-      <div className="relative mt-4 h-px bg-white/10 overflow-hidden">
-        <span
-          aria-hidden
-          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
-            inView ? "scale-x-100" : "scale-x-0"
-          }`}
-        />
-      </div>
-
-      {/* Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-12">
-        {facts.map((f, i) => (
-          <article
-            key={f.label}
-            className={`group relative ${colSpan[i]} px-5 md:px-6 pt-8 md:pt-10 pb-8 md:pb-10 border-white/10 ${
-              i > 0 ? "md:border-l" : ""
-            } ${i % 2 === 1 ? "border-l md:border-l" : ""} ${
-              i < facts.length - 1 ? "border-b md:border-b-0" : ""
-            } reveal`}
-            data-delay={String(Math.min(i + 1, 5))}
+      <div className="grid grid-cols-2 gap-x-6 md:gap-x-16 gap-y-12">
+        {bigStats.map((s, i) => (
+          <div
+            key={s.label}
+            className="reveal"
+            data-delay={String(i + 1)}
           >
-            <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.3em] text-white/40 font-mono mb-6 md:mb-10">
-              <span aria-hidden className="transition-transform duration-300 group-hover:-translate-y-0.5 inline-block">
-                0{i + 1}
-              </span>
-              <span aria-hidden className="w-6 h-px bg-white/20" />
-            </div>
-
             <div
               className="font-medium text-white tracking-[-0.04em] leading-[0.92]"
-              style={{ fontSize: "clamp(44px, 6.4vw, 96px)" }}
+              style={{ fontSize: "clamp(56px, 11vw, 160px)" }}
             >
-              <StatValue fact={f} start={inView} />
+              <BigStatValue stat={s} start={inView} />
             </div>
-
-            <div className="relative mt-6 md:mt-8 h-px bg-white/10 overflow-hidden">
-              <span
-                aria-hidden
-                className={`absolute inset-0 bg-white/30 origin-left transition-transform duration-700 ease-out motion-reduce:transition-none ${
-                  inView ? "scale-x-100" : "scale-x-0"
-                }`}
-                style={{ transitionDelay: inView ? `${200 + i * 80}ms` : "0ms" }}
-              />
-            </div>
-
-            <p className="mt-4 text-[11px] uppercase tracking-[0.22em] text-white/60 leading-snug max-w-[22ch]">
-              {f.label}
+            <p className="mt-4 md:mt-6 text-[14px] md:text-[16px] text-white/55 leading-snug max-w-[24ch]">
+              {s.label}
             </p>
-
-            {f.caption ? (
-              <p className="mt-2 text-[11px] italic text-white/35 leading-snug">{f.caption}</p>
-            ) : null}
-          </article>
+          </div>
         ))}
-      </div>
-
-      <div className="relative h-px bg-white/10 overflow-hidden">
-        <span
-          aria-hidden
-          className={`absolute inset-0 bg-white/40 origin-left transition-transform duration-[900ms] ease-out motion-reduce:transition-none ${
-            inView ? "scale-x-100" : "scale-x-0"
-          }`}
-          style={{ transitionDelay: inView ? "500ms" : "0ms" }}
-        />
       </div>
     </section>
   );

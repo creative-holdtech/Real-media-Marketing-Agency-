@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useState } from "react";
 
+import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
 import { archive, featured } from "@/lib/posts";
 
@@ -90,14 +91,17 @@ function BlogPage() {
 
       {/* Pill NAV */}
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
-        <nav aria-label="Primary" className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-2 pr-2">
+        <nav aria-label="Primary" className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2">
           <div className="flex items-center gap-3">
             <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
               <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
               Journal — dispatches from R-M
             </span>
+            <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white">
+              R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+            </Link>
           </div>
-          <Link to="/" aria-label="R-M home" className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
+          <Link to="/" aria-label="R-M home" className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
             R—M<span aria-hidden className="text-[#e85d3a]">.</span>
           </Link>
           <div className="flex items-center gap-1">
@@ -111,9 +115,10 @@ function BlogPage() {
                 <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
               </li>
             </ul>
-            <a href="#" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="#" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
               Get Audit
             </a>
+            <MobileMenu />
           </div>
         </nav>
       </header>
