@@ -98,7 +98,7 @@ export function MobileMenu() {
 
             <div className="mt-10 flex flex-col gap-4">
               <a
-                href="#"
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 className="text-center text-[14px] px-6 py-4 rounded-full bg-[#e85d3a] text-white font-medium"
               >
