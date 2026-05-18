@@ -246,3 +246,19 @@ img {
 .animate-hero-float-a { animation: hero-float-a 18s ease-in-out infinite; }
 .animate-hero-float-b { animation: hero-float-b 22s ease-in-out infinite; }
 .animate-hero-float-c { animation: hero-float-c 26s ease-in-out infinite; }
+
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.3333%); }
+}
+.animate-marquee-x { animation: marquee-x 40s linear infinite; }
+
+@keyframes marquee-slow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee-slow { animation: marquee-slow 80s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-x, .animate-marquee-slow { animation: none; }
+}
