@@ -72,30 +72,15 @@ function useCountUp(target: number, start: boolean, duration = 1400) {
   return n;
 }
 
-function StatValue({ fact, start }: { fact: Fact; start: boolean }) {
-  const counted = useCountUp(fact.count?.to ?? 0, start && !!fact.count);
-  if (fact.count) {
-    return (
-      <>
-        {counted}
-        {fact.count.suffix ?? ""}
-      </>
-    );
-  }
-  // Non-numeric: stack two-word values onto two lines for Swiss rhythm
-  const parts = fact.value.split(/[\s+]/).filter(Boolean);
-  if (parts.length >= 2) {
-    return (
-      <span className="block leading-[0.92]">
-        <span className="block">{parts[0]}</span>
-        <span className="block text-white/55">
-          {fact.value.includes("+") ? "+" : ""}
-          {parts.slice(1).join(" ")}
-        </span>
-      </span>
-    );
-  }
-  return <>{fact.value}</>;
+function BigStatValue({ stat, start }: { stat: BigStat; start: boolean }) {
+  const n = useCountUp(stat.to, start);
+  return (
+    <>
+      {stat.prefix ?? ""}
+      {n}
+      {stat.suffix ?? ""}
+    </>
+  );
 }
 
 const metrics = [
