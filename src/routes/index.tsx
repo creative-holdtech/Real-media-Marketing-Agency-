@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
 
 import { useReveal } from "@/hooks/use-reveal";
 
@@ -8,13 +9,95 @@ export const Route = createFileRoute("/")({
 
 const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
 
-const facts = [
-  ["40+", "Projects delivered"],
-  ["4", "Core industries"],
-  ["EU+MENA", "Active markets"],
-  ["Tier 1–3", "Experience"],
-  ["1 team", "Strategy + execution"],
+type Fact = {
+  value: string;
+  label: string;
+  caption?: string;
+  count?: { to: number; suffix?: string };
+};
+
+const facts: Fact[] = [
+  { value: "40+", label: "Projects delivered", caption: "Since 2019", count: { to: 40, suffix: "+" } },
+  { value: "04", label: "Core industries", count: { to: 4, suffix: "" } },
+  { value: "EU+MENA", label: "Active markets" },
+  { value: "Tier 1–3", label: "Niche experience" },
+  { value: "1 team", label: "Strategy + execution", caption: "One studio, end-to-end" },
 ];
+
+function useInView<T extends Element>(options?: IntersectionObserverInit) {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || inView) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setInView(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.25, ...options },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [inView, options]);
+  return { ref, inView };
+}
+
+function useCountUp(target: number, start: boolean, duration = 1400) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      setN(target);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(target * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [target, start, duration]);
+  return n;
+}
+
+function StatValue({ fact, start }: { fact: Fact; start: boolean }) {
+  const counted = useCountUp(fact.count?.to ?? 0, start && !!fact.count);
+  if (fact.count) {
+    return (
+      <>
+        {counted}
+        {fact.count.suffix ?? ""}
+      </>
+    );
+  }
+  // Non-numeric: stack two-word values onto two lines for Swiss rhythm
+  const parts = fact.value.split(/[\s+]/).filter(Boolean);
+  if (parts.length >= 2) {
+    return (
+      <span className="block leading-[0.92]">
+        <span className="block">{parts[0]}</span>
+        <span className="block text-white/55">
+          {fact.value.includes("+") ? "+" : ""}
+          {parts.slice(1).join(" ")}
+        </span>
+      </span>
+    );
+  }
+  return <>{fact.value}</>;
+}
 
 const metrics = [
   ["01", "40+", "Launched projects"],
