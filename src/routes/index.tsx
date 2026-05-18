@@ -1,535 +1,374 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroBloom from "@/assets/hero-bloom.jpg";
 import { useReveal } from "@/hooks/use-reveal";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav = ["Home", "Work", About: "About", "Thinking"] as unknown as string[];
+const navItems = ["Home", "Work", "About", "Thinking"];
 
-const facts = [
-  ["40+", "Projects delivered"],
-  ["4", "Core industries"],
-  ["EU+MENA", "Active markets"],
-  ["Tier 1–3", "Experience"],
-  ["1 team", "Strategy + execution"],
+const clients = [
+  "Remedy",
+  "Supercharge",
+  "A1Base",
+  "Iceberg",
+  "Coherence",
+  "Advance VC",
+  "Syenta",
+  "Updoc",
+  "Giant Leap",
+  "Firmable",
+  "Elita",
+  "Andromeda",
+  "Veraty",
+  "Workyard",
+  "Earlywork",
+  "Wedgetail",
+  "Quoin",
+  "Blackbird",
+  "Exposure",
+  "Aquila",
+  "T-EDI",
+  "Diag-Nose",
+  "Aces",
 ];
 
-const metrics = [
-  ["01", "40+", "Launched projects"],
-  ["02", "04", "Industries mastered"],
-  ["03", "EU·MENA", "Markets"],
-  ["04", "High-risk", "Niche expertise"],
-  ["05", "Long-term", "Growth focus"],
+const projects = [
+  {
+    title: "Established Diag-Nose's institutional credibility ahead of a $3M non-dilutive grant.",
+    tags: ["Life Science", "AI", "Web"],
+    grad: "from-[#1e3a5f] via-[#2d6e9e] to-[#e8b48a]",
+  },
+  {
+    title: "Repositioned Coherence Neuro ahead of a $10M raise.",
+    tags: ["Neuro-Tech", "AI", "Brand", "Web", "Narrative", "Deck"],
+    grad: "from-[#1a1a3a] via-[#5a3a8a] to-[#e8a87c]",
+  },
+  {
+    title: "Reframed Blackbird Foundation's digital presence to reflect the depth of their mission.",
+    tags: ["Venture Foundation", "Web"],
+    grad: "from-[#0a0a0a] via-[#1a1a1a] to-[#3a3a3a]",
+  },
+  {
+    title: "Positioned Veraty AI for credibility, performance, and scale.",
+    tags: ["Legal-Tech", "AI", "Web"],
+    grad: "from-[#0c2340] via-[#2d8a9e] to-[#5cbdb9]",
+  },
+  {
+    title: "Architected Iceberg Quantum's presence ahead of its emergence from stealth.",
+    tags: ["Deep Tech", "AI", "Brand", "Web"],
+    grad: "from-[#0a1428] via-[#3a6ba8] to-[#b8d4e8]",
+  },
+];
+
+const services = [
+  {
+    name: "Narratives",
+    desc: "Bridge the gap between complex engineering and market demand. We give you the exact words to capture attention, align your team, and build shared conviction.",
+    tags: ["Brand Strategy", "Product Marketing", "Messaging"],
+  },
+  {
+    name: "Brand",
+    desc: "Prove you are building a category. We engineer brands that broadcast long-term intent and separate you from the noise.",
+    tags: ["Visual Identities", "Naming", "Brand Guidelines"],
+  },
+  {
+    name: "Decks",
+    desc: "Don't let friction dilute your pitch. We strip away the friction to build compelling, highly precise investor materials engineered to get to \u201cyes.\u201d",
+    tags: ["Deck Strategy", "Investor Narrative"],
+  },
+  {
+    name: "Websites",
+    desc: "Build a digital front door that works as hard as your tech stack. We combine immersive UX and elite UI to turn complex products into obvious solutions.",
+    tags: ["Design", "Development", "Animation"],
+  },
 ];
 
 const testimonials = [
-  {
-    quote:
-      "R-M helped us rebuild the way we communicate our value. The clarity alone changed how clients perceived our brand.",
-    who: "Founder",
-    company: "Fintech Company",
-  },
-  {
-    quote:
-      "Their process feels less like outsourcing and more like having an internal strategic team.",
-    who: "COO",
-    company: "Performance Agency",
-  },
-  {
-    quote:
-      "They move fast, stay structured, and understand difficult markets better than most agencies we worked with.",
-    who: "Head of Growth",
-    company: "iGaming Brand",
-  },
-];
-
-const cases = [
-  {
-    metric: "+312%",
-    label: "Qualified leads",
-    sector: "Fintech / EU Market",
-    desc: "Complete repositioning and acquisition system redesign for a scaling fintech company.",
-  },
-  {
-    metric: "4.7×",
-    label: "ROAS increase",
-    sector: "iGaming / MENA",
-    desc: "Strategic creative direction and funnel optimization across multiple GEOs.",
-  },
-];
-
-const articles = [
-  ["Growth Strategy", "Why most scaling brands fail after rapid growth"],
-  ["Positioning", "The difference between visibility and market authority"],
-  ["Performance", "How structured systems outperform aggressive tactics"],
+  { quote: "So impressed with the unparalleled responsiveness and open communication throughout our collaboration. Their infectious energy and remarkable design elevated our project.", who: "Lisa Miller", role: "CEO, Wedgetail" },
+  { quote: "Truly awesome to work with the team, such positive vibrant energy. Exceptional design, leading with creativity and great intuition for translating our ideas.", who: "Eamonn Colley", role: "Co-CEO, Vexev" },
+  { quote: "An exceptional experience from start to finish. Their collaborative approach and deep understanding of the unique challenges startups face set them apart.", who: "Sarah Fleetwood", role: "Product Designer, Veraty AI" },
+  { quote: "I couldn't be happier with the results. These people are true experts in their field.", who: "Emma Jones", role: "CEO, T-EDI" },
+  { quote: "From the start, they were trusted partners. Creative, flexible and passionate, they deliver amazing results.", who: "Maria Catanzariti", role: "Head of Comms, Square Peg" },
+  { quote: "The whole process was frictionless. Wonderful people, extremely good at what they do.", who: "Felix Thomsen", role: "CEO, Iceberg Quantum" },
+  { quote: "A rare combination of brilliant project management, crystal-clear communication, and genuine creative partnership.", who: "Joel Connolly", role: "Head of Blackbird Foundation" },
+  { quote: "There is no one who comes close to matching their level of professionalism, skill, quality, and value.", who: "John Suntup", role: "Founder, ACE Ventures" },
 ];
 
 function Index() {
   useReveal();
+  // double the testimonial track for seamless marquee
+  const tMarquee = [...testimonials, ...testimonials];
+  const cMarquee = [...clients, ...clients, ...clients];
+
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#e85d3a] selection:text-black">
+    <div className="min-h-screen bg-[#070a18] text-white selection:bg-white selection:text-black overflow-x-hidden">
       {/* NAV */}
-      <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-[#0a0a0a]/70 border-b border-white/5">
-        <nav className="max-w-[1440px] mx-auto px-6 md:px-12 h-16 flex items-center justify-between">
-          <a href="#" className="font-semibold tracking-tight text-base">
-            R—M<span className="text-[#e85d3a]">.</span>
+      <header className="fixed top-4 left-0 right-0 z-50 px-4">
+        <nav className="max-w-[1320px] mx-auto h-14 rounded-full bg-black/55 backdrop-blur-md border border-white/10 pl-2 pr-2 flex items-center justify-between">
+          <div className="flex items-center gap-2 pl-2">
+            <span className="inline-flex h-7 w-7 rounded-full bg-white/10 items-center justify-center text-[12px]">✦</span>
+            <span className="hidden sm:inline text-[12px] text-white/70">Loved by founders from Syd to SF</span>
+          </div>
+          <a href="#" className="absolute left-1/2 -translate-x-1/2 text-[17px] font-medium tracking-tight">
+            DreamLab
           </a>
-          <ul className="hidden md:flex items-center gap-8 text-[13px] text-white/60">
-            {nav.map((n) => (
-              <li key={n}>
-                <a href="#" className="hover:text-white transition-colors">
-                  {n}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <a
-            href="#"
-            className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
-          >
-            Get Audit →
-          </a>
-        </nav>
-      </header>
-
-      {/* HERO */}
-      <section className="relative pt-32 md:pt-40 pb-24 md:pb-32 px-6 md:px-12 max-w-[1440px] mx-auto overflow-hidden">
-        {/* Gradient backdrop */}
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(60%_50%_at_15%_20%,rgba(232,93,58,0.28),transparent_60%),radial-gradient(50%_55%_at_85%_30%,rgba(120,80,220,0.22),transparent_65%),radial-gradient(70%_60%_at_50%_100%,rgba(40,120,200,0.18),transparent_70%)]" />
-          <div className="absolute -top-32 -left-24 w-[520px] h-[520px] rounded-full bg-[#e85d3a]/25 blur-[120px] animate-hero-float-a" />
-          <div className="absolute top-10 right-[-120px] w-[480px] h-[480px] rounded-full bg-[#7a5cff]/20 blur-[140px] animate-hero-float-b" />
-          <div className="absolute bottom-[-160px] left-1/3 w-[600px] h-[600px] rounded-full bg-[#2f7ad1]/20 blur-[160px] animate-hero-float-c" />
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_60%,#0a0a0a_100%)]" />
-          <div className="absolute inset-0 opacity-[0.04] mix-blend-overlay bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22120%22 height=%22120%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
-        </div>
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          <div className="col-span-12 md:col-span-7 reveal">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-10">
-              [ R-M Studio — Est. Strategy & Growth ]
-            </p>
-            <h1 className="text-[44px] md:text-[88px] lg:text-[104px] leading-[0.95] tracking-[-0.03em] font-medium">
-              We build marketing
-              <br />
-              systems that
-              <br />
-              <span className="italic font-light text-white/70">survive</span>{" "}
-              beyond
-              <br />
-              trends.
-            </h1>
-          </div>
-          <div className="col-span-12 md:col-span-5 md:pl-8 flex flex-col justify-end reveal" data-delay="2">
-            <p className="text-[14px] text-white/60 leading-relaxed max-w-sm mb-10">
-              Strategy, positioning and execution under one team — built for
-              ambitious brands operating in competitive industries across the
-              EU and MENA.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <a
-                href="#"
-                className="text-[13px] px-5 py-3 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black hover:-translate-y-0.5"
-              >
-                Start Project →
-              </a>
-              <a
-                href="#"
-                className="text-[13px] px-5 py-3 rounded-full border border-white/15 text-white hover:border-white hover:-translate-y-0.5"
-              >
-                View Case Studies
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Hero image */}
-        <div className="mt-20 md:mt-28 relative aspect-[16/8] overflow-hidden rounded-sm reveal-scale hover-zoom">
-          <img
-            src={heroBloom}
-            alt="Abstract chromatic bloom artwork"
-            width={1280}
-            height={1280}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a]/40 via-transparent to-transparent" />
-          <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-[11px] uppercase tracking-[0.2em] text-white/80">
-            <span>Vol. 01 — Ethereal Visions</span>
-            <span>2025 / Now</span>
-          </div>
-        </div>
-
-        {/* Facts row */}
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-5 gap-px bg-white/10 border border-white/10">
-          {facts.map(([k, v], i) => (
-            <div
-              key={v}
-              className="bg-[#0a0a0a] p-6 reveal"
-              data-delay={String(Math.min(i + 1, 5))}
-            >
-              <div className="text-2xl md:text-3xl font-medium tracking-tight">
-                {k}
-              </div>
-              <div className="text-[11px] uppercase tracking-[0.15em] text-white/40 mt-2">
-                {v}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* METRICS + ABOUT */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-12">
-          <div className="col-span-12 md:col-span-5 reveal">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
-              [ 02 — About ]
-            </p>
-            <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              A studio for brands<br />
-              <span className="italic font-light text-white/60">
-                that take risks.
-              </span>
-            </h2>
-            <p className="mt-10 text-[15px] text-white/60 leading-relaxed max-w-md">
-              R-M works with ambitious brands operating in competitive
-              industries. We combine strategy, positioning, and execution into
-              systems designed for long-term growth — not temporary spikes.
-            </p>
-            <p className="mt-4 text-[15px] text-white/60 leading-relaxed max-w-md">
-              Fast decisions, clear structure, and deep industry understanding
-              shape every project we take on.
-            </p>
-          </div>
-          <div className="col-span-12 md:col-span-7 md:pl-8">
-            <ul className="divide-y divide-white/10 border-y border-white/10">
-              {metrics.map(([n, big, label], i) => (
-                <li
-                  key={n}
-                  className="grid grid-cols-12 items-baseline py-6 group hover:bg-white/[0.02] transition-colors reveal"
-                  data-delay={String(Math.min(i + 1, 5))}
-                >
-                  <span className="col-span-2 text-[11px] text-white/30 tracking-[0.2em]">
+          <div className="flex items-center gap-1">
+            <ul className="hidden md:flex items-center gap-1 text-[13px] text-white/75 mr-2">
+              {navItems.map((n) => (
+                <li key={n}>
+                  <a href="#" className="px-3 py-2 rounded-full hover:bg-white/10 hover:text-white transition-colors">
                     {n}
-                  </span>
-                  <span className="col-span-5 text-2xl md:text-3xl font-medium tracking-tight group-hover:text-[#e85d3a] transition-colors">
-                    {big}
-                  </span>
-                  <span className="col-span-5 text-[13px] text-white/50 text-right md:text-left">
-                    {label}
-                  </span>
+                  </a>
                 </li>
               ))}
             </ul>
+            <a
+              href="#contact"
+              className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-white/90 transition-colors"
+            >
+              Book a call
+            </a>
           </div>
-        </div>
-      </section>
+        </nav>
+      </header>
 
-      {/* TESTIMONIALS */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-16">
-          [ 03 — Voices ]
-        </p>
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          {testimonials.map((t, i) => (
-            <figure
-              key={i}
-              className="col-span-12 md:col-span-4 border-t border-white/15 pt-8 reveal"
-              data-delay={String(i + 1)}
-            >
-              <blockquote className="text-[20px] md:text-[22px] leading-[1.3] tracking-[-0.01em] font-light text-white/90">
-                <span className="text-[#e85d3a] mr-1">“</span>
-                {t.quote}
-                <span className="text-[#e85d3a] ml-1">”</span>
-              </blockquote>
-              <figcaption className="mt-10 text-[12px] uppercase tracking-[0.18em] text-white/40">
-                {t.who} — <span className="text-white/70">{t.company}</span>
-              </figcaption>
-            </figure>
-          ))}
+      {/* HERO — full-bleed sunrise gradient */}
+      <section className="relative min-h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden">
+        {/* sunrise gradient */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,#070a18_0%,#0b1430_18%,#1a3a6a_42%,#5e6f8a_62%,#c89a7a_82%,#f3c39a_94%,#f7d3b0_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[40%] bg-[radial-gradient(ellipse_60%_80%_at_50%_100%,rgba(255,200,150,0.55),transparent_70%)]" />
+          {/* film grain */}
+          <div className="absolute inset-0 opacity-[0.10] mix-blend-overlay bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
         </div>
-      </section>
 
-      {/* PRODUCTS */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8 mb-16">
-          <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
-            [ 04 — Products ]
+        <div className="max-w-[1100px] mx-auto pt-28 pb-24">
+          <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] lg:text-[128px] leading-[0.95] tracking-[-0.045em] font-semibold">
+            Make your technology
+            <br />
+            feel inevitable
+          </h1>
+          <p className="reveal mt-8 text-[15px] md:text-[17px] text-white/80 max-w-[640px] mx-auto leading-relaxed" data-delay="2">
+            We translate breakthrough tech into clear, undeniable market signals. Trusted by 275+ frontier founders and Tier 1 VCs.
           </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-            Choose the level<br />
-            of support you need<br />
-            <span className="italic font-light text-white/60">right now.</span>
-          </h2>
         </div>
 
-        <div className="grid grid-cols-12 gap-px bg-white/10 border border-white/10">
-          {[
-            {
-              name: "Sprint",
-              tag: "Fast Execution",
-              desc: "Fast execution for brands that need clarity, positioning, and launch-ready assets quickly.",
-              items: [
-                "Strategic positioning",
-                "Landing page / funnel design",
-                "Messaging structure",
-                "Launch-ready delivery",
-              ],
-              time: "2–4 weeks",
-            },
-            {
-              name: "Marathon",
-              tag: "Long-Term Partnership",
-              desc: "Long-term strategic partnership focused on scaling, optimization, and sustainable growth.",
-              items: [
-                "Ongoing strategy support",
-                "Growth systems & optimization",
-                "Creative & marketing execution",
-                "Continuous performance improvements",
-              ],
-              time: "Ongoing partnership",
-            },
-          ].map((p, i) => (
-            <article
-              key={p.name}
-              className="col-span-12 md:col-span-6 bg-[#0a0a0a] p-8 md:p-12 flex flex-col reveal"
-              data-delay={String(i + 1)}
-            >
-              <div className="flex items-baseline justify-between mb-12">
-                <h3 className="text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none">
-                  {p.name}
-                </h3>
-                <span className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-                  {p.tag}
-                </span>
-              </div>
-              <p className="text-[14px] text-white/60 leading-relaxed max-w-md mb-10">
-                {p.desc}
-              </p>
-              <ul className="space-y-3 mb-10">
-                {p.items.map((it) => (
-                  <li
-                    key={it}
-                    className="text-[14px] text-white/80 flex gap-3 border-b border-white/5 pb-3"
-                  >
-                    <span className="text-[#e85d3a]">—</span>
-                    {it}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-auto flex items-end justify-between pt-8">
-                <div>
-                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-                    Timeline
-                  </div>
-                  <div className="text-[14px] mt-1">{p.time}</div>
-                </div>
-                <a
-                  href="#"
-                  className="text-[13px] px-5 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors"
-                >
-                  Learn More →
-                </a>
-              </div>
-            </article>
-          ))}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-white/70">
+          <span>Swipe to explore</span>
+          <span className="text-base">↓</span>
         </div>
       </section>
 
-      {/* CASES */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="flex items-end justify-between mb-16">
-          <div>
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6">
-              [ 05 — Cases ]
-            </p>
-            <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Results we<br />
-              <span className="italic font-light text-white/60">deliver.</span>
-            </h2>
-          </div>
-          <a
-            href="#"
-            className="hidden md:inline-block text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
-          >
-            View All Cases →
-          </a>
-        </div>
-
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          {cases.map((c, i) => (
-            <article
-              key={i}
-              className="col-span-12 md:col-span-6 group cursor-pointer reveal"
-              data-delay={String(i + 1)}
-            >
-              <div className="aspect-[4/3] bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 mb-8 relative overflow-hidden transition-transform duration-700 ease-out group-hover:scale-[1.01]">
-                <div
-                  className="absolute inset-0 opacity-60 mix-blend-screen"
-                  style={{
-                    background:
-                      i === 0
-                        ? "radial-gradient(circle at 30% 40%, #e85d3a55, transparent 60%), radial-gradient(circle at 70% 70%, #4a6b8a44, transparent 60%)"
-                        : "radial-gradient(circle at 70% 30%, #c9a84c55, transparent 60%), radial-gradient(circle at 30% 70%, #5a8a5c44, transparent 60%)",
-                  }}
-                />
-                <div className="absolute top-6 left-6 text-[11px] uppercase tracking-[0.2em] text-white/60">
-                  Case 0{i + 1}
-                </div>
-                <div className="absolute bottom-6 left-6 right-6 flex items-baseline justify-between">
-                  <div className="text-[56px] md:text-[80px] font-medium tracking-[-0.04em] leading-none text-white">
-                    {c.metric}
-                  </div>
-                  <div className="text-[12px] uppercase tracking-[0.15em] text-white/70 text-right">
-                    {c.label}
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-baseline justify-between mb-3">
-                <span className="text-[12px] uppercase tracking-[0.18em] text-white/40">
-                  {c.sector}
-                </span>
-                <span className="text-[12px] text-white/60 group-hover:text-[#e85d3a] transition-colors">
-                  Read Case →
-                </span>
-              </div>
-              <p className="text-[15px] text-white/70 leading-relaxed max-w-md">
-                {c.desc}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* BLOG */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8 mb-12">
-          <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
-            [ 06 — Insights ]
-          </p>
-          <h2 className="col-span-12 md:col-span-9 text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-            From our<br />
-            <span className="italic font-light text-white/60">insights.</span>
-          </h2>
-        </div>
-
-        <ul className="border-t border-white/15">
-          {articles.map(([cat, title], i) => (
-            <li key={i} className="reveal" data-delay={String(i + 1)}>
-              <a
-                href="#"
-                className="grid grid-cols-12 items-baseline gap-4 py-8 border-b border-white/15 group hover:bg-white/[0.02] -mx-4 px-4 transition-all duration-500 hover:px-6"
+      {/* TRUSTED-BY MARQUEE */}
+      <section className="relative py-16 border-t border-white/10 bg-[#070a18]">
+        <p className="text-center text-[11px] uppercase tracking-[0.3em] text-white/40 mb-10">Trusted by</p>
+        <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_10%,#000_90%,transparent)]">
+          <div className="flex gap-14 whitespace-nowrap animate-marquee-x will-change-transform">
+            {cMarquee.map((c, i) => (
+              <span
+                key={`${c}-${i}`}
+                className="text-[22px] md:text-[26px] font-medium text-white/55 hover:text-white transition-colors tracking-tight shrink-0"
               >
-                <span className="col-span-2 md:col-span-1 text-[11px] text-white/30 tracking-[0.2em]">
-                  0{i + 1}
-                </span>
-                <span className="col-span-10 md:col-span-3 text-[12px] uppercase tracking-[0.18em] text-white/50">
-                  {cat}
-                </span>
-                <span className="col-span-10 md:col-span-7 text-[20px] md:text-[28px] font-medium tracking-[-0.01em] leading-tight group-hover:text-[#e85d3a] transition-colors">
-                  {title}
-                </span>
-                <span className="hidden md:block col-span-1 text-[12px] text-white/40 text-right group-hover:text-white">
-                  Read →
-                </span>
-              </a>
+                {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MANIFESTO */}
+      <section className="px-6 md:px-12 max-w-[1320px] mx-auto py-28 md:py-40 border-t border-white/10">
+        <div className="grid grid-cols-12 gap-6 md:gap-12">
+          <h2 className="col-span-12 md:col-span-5 reveal text-[36px] md:text-[56px] leading-[1.02] tracking-[-0.03em] font-semibold">
+            Don't dilute<br />the breakthrough
+          </h2>
+          <div className="col-span-12 md:col-span-7 md:pl-8 reveal" data-delay="2">
+            <p className="text-[16px] md:text-[19px] text-white/75 leading-[1.55] max-w-[640px]">
+              The gap between your core technology and how the market perceives it is costing you capital and customers. We don't dumb down the complexity just to make it fit a template. We use precision design to make your exact technical advantage obvious to the outside world.
+            </p>
+            <p className="mt-6 text-[16px] md:text-[19px] text-white/60 leading-[1.55] max-w-[640px]">
+              Through high-conviction brand identities, pitch decks, and websites, we help technical founders define their category and signal their ambition to the people who matter most.
+            </p>
+          </div>
+        </div>
+
+        {/* big stats */}
+        <div className="mt-24 md:mt-32 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 border-t border-white/10 pt-16">
+          <div className="reveal">
+            <div className="text-[120px] md:text-[200px] font-semibold leading-[0.9] tracking-[-0.06em] bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
+              275<span className="text-white/70">+</span>
+            </div>
+            <div className="mt-4 text-[13px] uppercase tracking-[0.25em] text-white/50">Technical founders</div>
+          </div>
+          <div className="reveal" data-delay="2">
+            <div className="text-[120px] md:text-[200px] font-semibold leading-[0.9] tracking-[-0.06em] bg-gradient-to-b from-white to-white/50 bg-clip-text text-transparent">
+              $250<span className="text-white/70">M</span>
+            </div>
+            <div className="mt-4 text-[13px] uppercase tracking-[0.25em] text-white/50">Capital secured by our teams</div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED PROJECTS */}
+      <section className="px-6 md:px-12 max-w-[1320px] mx-auto py-24 md:py-32 border-t border-white/10">
+        <div className="flex items-end justify-between mb-12">
+          <h2 className="text-[32px] md:text-[44px] tracking-[-0.02em] font-semibold">Featured projects</h2>
+          <a href="#" className="text-[13px] text-white/70 hover:text-white border-b border-white/20 pb-0.5">All Work →</a>
+        </div>
+
+        <div className="grid grid-cols-12 gap-6 md:gap-8">
+          {projects.map((p, i) => {
+            const span = i === 0 || i === 3 ? "md:col-span-7" : "md:col-span-5";
+            return (
+              <article
+                key={i}
+                className={`col-span-12 ${span} group cursor-pointer reveal`}
+                data-delay={String((i % 3) + 1)}
+              >
+                <div className={`relative aspect-[4/3] overflow-hidden rounded-sm bg-gradient-to-br ${p.grad} border border-white/10`}>
+                  <div className="absolute inset-0 opacity-[0.08] mix-blend-overlay bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 flex items-end p-6 md:p-8 transition-transform duration-700 ease-out group-hover:scale-[1.02]">
+                    <div className="flex flex-wrap gap-2">
+                      {p.tags.map((t) => (
+                        <span key={t} className="text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-sm border border-white/15">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-6 text-[18px] md:text-[22px] leading-snug tracking-[-0.01em] text-white/90 group-hover:text-white max-w-[560px]">
+                  {p.title}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section className="px-6 md:px-12 max-w-[1320px] mx-auto py-28 md:py-40 border-t border-white/10">
+        <h2 className="reveal text-[36px] md:text-[64px] leading-[1] tracking-[-0.03em] font-semibold max-w-[900px]">
+          Engineering the signal for frontier tech
+        </h2>
+
+        <ul className="mt-16 border-t border-white/15">
+          {services.map((s, i) => (
+            <li key={s.name} className="reveal" data-delay={String(i + 1)}>
+              <div className="grid grid-cols-12 gap-6 items-start py-10 border-b border-white/15 group hover:bg-white/[0.02] transition-colors -mx-4 px-4">
+                <span className="col-span-2 text-[11px] text-white/35 tracking-[0.25em]">0{i + 1}</span>
+                <h3 className="col-span-10 md:col-span-3 text-[28px] md:text-[40px] font-medium tracking-[-0.02em] leading-none group-hover:translate-x-1 transition-transform">
+                  {s.name}
+                </h3>
+                <p className="col-span-12 md:col-span-5 text-[14px] md:text-[15px] text-white/65 leading-relaxed">
+                  {s.desc}
+                </p>
+                <div className="col-span-12 md:col-span-2 flex flex-wrap gap-2 md:justify-end">
+                  {s.tags.map((t) => (
+                    <span key={t} className="text-[10px] uppercase tracking-[0.2em] text-white/55 border border-white/15 rounded-full px-2.5 py-1">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </li>
           ))}
         </ul>
+      </section>
 
-        <div className="mt-10">
-          <a
-            href="#"
-            className="text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
-          >
-            View All Articles →
-          </a>
+      {/* TESTIMONIALS MARQUEE */}
+      <section className="py-28 md:py-36 border-t border-white/10 overflow-hidden">
+        <h2 className="px-6 md:px-12 max-w-[1320px] mx-auto text-[32px] md:text-[56px] tracking-[-0.03em] font-semibold leading-[1.02] mb-16">
+          Hear from the founders<br />shaping what's next
+        </h2>
+
+        <div className="relative [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
+          <div className="flex gap-6 animate-marquee-slow will-change-transform">
+            {tMarquee.map((t, i) => (
+              <figure
+                key={i}
+                className="shrink-0 w-[360px] md:w-[440px] p-7 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm"
+              >
+                <blockquote className="text-[15px] md:text-[16px] leading-[1.55] text-white/85">
+                  <span className="text-white/40 mr-1">“</span>
+                  {t.quote}
+                  <span className="text-white/40 ml-1">”</span>
+                </blockquote>
+                <figcaption className="mt-6 pt-5 border-t border-white/10 text-[12px] uppercase tracking-[0.18em] text-white/55">
+                  <span className="text-white/85">{t.who}</span> — {t.role}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CONTACT BANNER */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
-        <h2 className="text-[44px] md:text-[88px] lg:text-[120px] leading-[0.95] tracking-[-0.03em] font-medium reveal">
-          Let's build<br />
-          something that<br />
-          <span className="italic font-light text-white/50">lasts.</span>
-        </h2>
-        <div className="mt-12 flex flex-wrap gap-4">
-          <a
-            href="#"
-            className="text-[13px] px-6 py-4 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black transition-colors"
-          >
-            Get Free Audit →
-          </a>
-          <a
-            href="#"
-            className="text-[13px] px-6 py-4 rounded-full border border-white/15 hover:border-white transition-colors"
-          >
-            hello@r-m.studio
-          </a>
+      {/* CTA / CONTACT */}
+      <section id="contact" className="relative px-6 md:px-12 py-32 md:py-48 border-t border-white/10 overflow-hidden">
+        <div aria-hidden className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,#070a18_0%,#1a3a6a_55%,#e8a87c_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-[60%] bg-[radial-gradient(ellipse_60%_80%_at_50%_100%,rgba(255,200,150,0.45),transparent_70%)]" />
+        </div>
+        <div className="max-w-[1100px] mx-auto text-center">
+          <h2 className="reveal text-[44px] md:text-[88px] lg:text-[112px] leading-[0.95] tracking-[-0.04em] font-semibold">
+            Let's make it<br />inevitable.
+          </h2>
+          <div className="mt-12 flex flex-wrap justify-center gap-4">
+            <a href="#" className="text-[14px] px-7 py-4 rounded-full bg-white text-black font-medium hover:bg-white/90 transition">
+              Book a call →
+            </a>
+            <a href="#" className="text-[14px] px-7 py-4 rounded-full border border-white/30 text-white hover:bg-white/10 transition">
+              hello@dreamlab.studio
+            </a>
+          </div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 pb-10 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          <div className="col-span-12 md:col-span-5">
-            <div className="text-3xl font-semibold tracking-tight">
-              R—M<span className="text-[#e85d3a]">.</span>
+      <footer className="bg-[#070a18] px-6 md:px-12 pt-20 pb-10 border-t border-white/10">
+        <div className="max-w-[1320px] mx-auto">
+          <div className="grid grid-cols-12 gap-8">
+            <div className="col-span-12 md:col-span-5">
+              <div className="text-3xl font-semibold tracking-tight">DreamLab</div>
+              <p className="mt-5 text-[14px] text-white/60 leading-relaxed max-w-sm">
+                Engineering the signal for frontier tech. Brand, narrative, decks, and websites for founders building what's next.
+              </p>
             </div>
-            <p className="mt-5 text-[14px] text-white/55 leading-relaxed max-w-xs">
-              Strategic growth partner for ambitious brands operating in
-              competitive industries.
-            </p>
-            <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
-              <a href="#" className="hover:text-white">LinkedIn</a>
-              <a href="#" className="hover:text-white">Behance</a>
-              <a href="#" className="hover:text-white">Instagram</a>
+            <div className="col-span-6 md:col-span-2">
+              <div className="text-[11px] uppercase tracking-[0.25em] text-white/35 mb-5">Site</div>
+              <ul className="space-y-3 text-[14px] text-white/75">
+                <li><a href="#" className="hover:text-white">Home</a></li>
+                <li><a href="#" className="hover:text-white">Work</a></li>
+                <li><a href="#" className="hover:text-white">About</a></li>
+                <li><a href="#" className="hover:text-white">Thinking</a></li>
+              </ul>
+            </div>
+            <div className="col-span-6 md:col-span-2">
+              <div className="text-[11px] uppercase tracking-[0.25em] text-white/35 mb-5">Contact</div>
+              <ul className="space-y-3 text-[14px] text-white/75">
+                <li><a href="#" className="hover:text-white">Book a call</a></li>
+                <li><a href="#" className="hover:text-white">hello@dreamlab.studio</a></li>
+              </ul>
+            </div>
+            <div className="col-span-12 md:col-span-3">
+              <div className="text-[11px] uppercase tracking-[0.25em] text-white/35 mb-5">Studios</div>
+              <div className="text-[14px] text-white/75">Sydney — San Francisco</div>
+              <div className="mt-4 flex gap-4 text-[12px] uppercase tracking-[0.2em] text-white/50">
+                <a href="#" className="hover:text-white">LinkedIn</a>
+                <a href="#" className="hover:text-white">Instagram</a>
+                <a href="#" className="hover:text-white">X</a>
+              </div>
             </div>
           </div>
 
-          <div className="col-span-6 md:col-span-2">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Work
-            </div>
-            <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">Services</a></li>
-              <li><a href="#" className="hover:text-white">Products</a></li>
-              <li><a href="#" className="hover:text-white">Case Studies</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
-            </ul>
+          <div className="mt-16 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.2em] text-white/35">
+            <span>© DreamLab 2025</span>
+            <span>Made with intent</span>
+            <a href="#" className="hover:text-white">Privacy</a>
           </div>
-
-          <div className="col-span-6 md:col-span-2">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Studio
-            </div>
-            <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Contacts</a></li>
-              <li><a href="#" className="hover:text-white">Audit</a></li>
-            </ul>
-          </div>
-
-          <div className="col-span-12 md:col-span-3">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Located
-            </div>
-            <div className="text-[14px] text-white/70">
-              Kyiv — EU — MENA
-            </div>
-            <div className="mt-5 text-[12px] text-white/40 leading-relaxed">
-              Operating across CET / GST timezones for partners in finance,
-              iGaming, performance, and lifestyle.
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-20 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.18em] text-white/30">
-          <span>© R-M 2025</span>
-          <a href="#" className="hover:text-white">Privacy Policy</a>
-          <span>Vol. 01 — Made with intent</span>
         </div>
       </footer>
     </div>
