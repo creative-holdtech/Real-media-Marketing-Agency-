@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import heroBloom from "@/assets/hero-bloom.jpg";
+import { useReveal } from "@/hooks/use-reveal";
 
 export const Route = createFileRoute("/")({
   component: Index,
