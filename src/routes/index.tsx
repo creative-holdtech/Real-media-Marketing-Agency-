@@ -127,11 +127,7 @@ const cases = [
   },
 ];
 
-const articles = [
-  ["Growth Strategy", "Why most scaling brands fail after rapid growth"],
-  ["Positioning", "The difference between visibility and market authority"],
-  ["Performance", "How structured systems outperform aggressive tactics"],
-];
+const insightPosts = posts.slice(0, 3);
 
 function Index() {
   useReveal();
