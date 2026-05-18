@@ -382,6 +382,8 @@ function Index() {
                 "Launch-ready delivery",
               ],
               time: "2–4 weeks",
+              gradient:
+                "radial-gradient(circle at 30% 20%, #e85d3a55, transparent 55%), radial-gradient(circle at 80% 80%, #4a6b8a44, transparent 60%)",
             },
             {
               name: "Marathon",
@@ -394,39 +396,50 @@ function Index() {
                 "Continuous performance improvements",
               ],
               time: "Ongoing partnership",
+              gradient:
+                "radial-gradient(circle at 75% 25%, #c9a84c55, transparent 55%), radial-gradient(circle at 20% 85%, #5a8a5c55, transparent 60%)",
             },
           ].map((p, i) => (
             <article
               key={p.name}
-              className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] p-8 md:p-10 hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
+              className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] p-8 md:p-10 overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
-              <div className="flex items-start justify-between gap-4 mb-8">
-                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white/10 text-white/70">
+              <div
+                aria-hidden
+                className="absolute inset-0 opacity-70 mix-blend-screen pointer-events-none transition-opacity duration-700 group-hover:opacity-90"
+                style={{ background: p.gradient }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent via-transparent to-black/60"
+              />
+              <div className="relative flex items-start justify-between gap-4 mb-8">
+                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
                   {p.tag}
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/40 border border-white/10 text-white/60">
+                <span className="text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/70">
                   {p.time}
                 </span>
               </div>
-              <h3 className="text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none mb-6 text-white">
+              <h3 className="relative text-[40px] md:text-[56px] font-medium tracking-[-0.03em] leading-none mb-6 text-white">
                 {p.name}
               </h3>
-              <p className="text-[14px] text-white/60 leading-relaxed max-w-md mb-8">
+              <p className="relative text-[14px] text-white/70 leading-relaxed max-w-md mb-8">
                 {p.desc}
               </p>
-              <ul className="space-y-3 mb-10">
+              <ul className="relative space-y-3 mb-10">
                 {p.items.map((it) => (
                   <li
                     key={it}
-                    className="text-[14px] text-white/80 flex gap-3 border-b border-white/5 pb-3"
+                    className="text-[14px] text-white/85 flex gap-3 border-b border-white/10 pb-3"
                   >
                     <span className="text-[#e85d3a]">—</span>
                     {it}
                   </li>
                 ))}
               </ul>
-              <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/10">
+              <div className="relative mt-auto flex items-center justify-between pt-6 border-t border-white/10">
                 <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                   Learn more
                 </span>
@@ -462,46 +475,62 @@ function Index() {
           </a>
         </div>
 
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {cases.map((c, i) => (
             <article
               key={i}
-              className="col-span-12 md:col-span-6 group cursor-pointer reveal"
+              className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/10 mb-8 relative overflow-hidden transition-transform duration-700 ease-out group-hover:scale-[1.01]">
+              <figure className="relative aspect-[4/3] overflow-hidden">
                 <div
-                  className="absolute inset-0 opacity-60 mix-blend-screen"
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-br from-white/[0.06] to-white/[0.01]"
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 opacity-80 mix-blend-screen transition-transform duration-700 group-hover:scale-[1.04]"
                   style={{
                     background:
                       i === 0
-                        ? "radial-gradient(circle at 30% 40%, #e85d3a55, transparent 60%), radial-gradient(circle at 70% 70%, #4a6b8a44, transparent 60%)"
-                        : "radial-gradient(circle at 70% 30%, #c9a84c55, transparent 60%), radial-gradient(circle at 30% 70%, #5a8a5c44, transparent 60%)",
+                        ? "radial-gradient(circle at 30% 40%, #e85d3a66, transparent 60%), radial-gradient(circle at 70% 70%, #4a6b8a55, transparent 60%)"
+                        : "radial-gradient(circle at 70% 30%, #c9a84c66, transparent 60%), radial-gradient(circle at 30% 70%, #5a8a5c55, transparent 60%)",
                   }}
                 />
-                <div className="absolute top-6 left-6 text-[11px] uppercase tracking-[0.2em] text-white/60">
+                <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
                   Case 0{i + 1}
-                </div>
-                <div className="absolute bottom-6 left-6 right-6 flex items-baseline justify-between">
+                </span>
+                <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/70">
+                  {c.sector}
+                </span>
+                <div className="absolute bottom-5 left-5 right-5 flex items-baseline justify-between gap-4">
                   <div className="text-[56px] md:text-[80px] font-medium tracking-[-0.04em] leading-none text-white">
                     {c.metric}
                   </div>
-                  <div className="text-[12px] uppercase tracking-[0.15em] text-white/70 text-right">
+                  <div className="text-[12px] uppercase tracking-[0.15em] text-white/80 text-right max-w-[40%]">
                     {c.label}
                   </div>
                 </div>
-              </div>
-              <div className="flex items-baseline justify-between mb-3">
-                <span className="text-[12px] uppercase tracking-[0.18em] text-white/40">
-                  {c.sector}
+                <span
+                  aria-hidden
+                  className="absolute bottom-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white text-black font-medium"
+                >
+                  Read →
                 </span>
-                <span className="text-[12px] text-white/60 group-hover:text-[#e85d3a] transition-colors">
-                  Read Case →
-                </span>
+              </figure>
+              <div className="p-6 md:p-8 flex flex-col gap-4">
+                <p className="text-[15px] text-white/75 leading-relaxed">
+                  {c.desc}
+                </p>
+                <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                  <span className="text-[11px] uppercase tracking-[0.18em] text-white/40">
+                    {c.sector}
+                  </span>
+                  <span className="text-[12px] text-white/60 group-hover:text-[#e85d3a] transition-colors">
+                    Read Case →
+                  </span>
+                </div>
               </div>
-              <p className="text-[15px] text-white/70 leading-relaxed max-w-md">
-                {c.desc}
-              </p>
             </article>
           ))}
         </div>
