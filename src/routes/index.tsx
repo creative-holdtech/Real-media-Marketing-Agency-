@@ -660,7 +660,7 @@ function Index() {
 
         <div className="mt-20 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.18em] text-white/30">
           <span>© R-M 2025</span>
-          <a href="#" className="hover:text-white">Privacy Policy</a>
+          <span className="opacity-60">Privacy Policy</span>
           <span>Vol. 01 — Made with intent</span>
         </div>
       </footer>
