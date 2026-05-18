@@ -49,7 +49,13 @@ export const Route = createFileRoute("/blog/$slug")({
   component: ArticlePage,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav: { label: string; href: string }[] = [
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
+];
 
 function ArticlePage() {
   useReveal();
@@ -118,13 +124,13 @@ function ArticlePage() {
           <div className="flex items-center gap-1">
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
               {nav.map((n) => (
-                <li key={n}><a href="#" className="hover:text-white transition-colors">{n}</a></li>
+                <li key={n.label}><a href={n.href} className="hover:text-white transition-colors">{n.label}</a></li>
               ))}
               <li>
                 <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
               </li>
             </ul>
-            <a href="#" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="/#contact" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
               Get Audit
             </a>
           </div>
@@ -352,7 +358,7 @@ function ArticlePage() {
           <ul className="flex items-center gap-6">
             <li><Link to="/" className="hover:text-white transition-colors rounded-md">Home</Link></li>
             <li><Link to="/blog" className="hover:text-white transition-colors rounded-md">Journal</Link></li>
-            <li><a href="#" className="hover:text-white transition-colors rounded-md">Privacy</a></li>
+            <li><span className="opacity-70">Privacy</span></li>
           </ul>
         </nav>
       </footer>

@@ -9,7 +9,13 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav: { label: string; href: string }[] = [
+  { label: "Services", href: "#products" },
+  { label: "Products", href: "#products" },
+  { label: "Case Studies", href: "#cases" },
+  { label: "Insights", href: "#insights" },
+  { label: "About", href: "#about" },
+];
 
 type BigStat = {
   prefix?: string;
@@ -186,24 +192,29 @@ function Index() {
                 R—M<span aria-hidden className="text-[#e85d3a]">.</span>
               </Link>
             </div>
-            <a
-              href="#"
+            <Link
+              to="/"
               className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
             >
               R—M<span className="text-[#e85d3a]">.</span>
-            </a>
+            </Link>
             <div className="flex items-center gap-1">
               <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
                 {nav.map((n) => (
-                  <li key={n}>
-                    <a href="#" className="hover:text-white transition-colors">
-                      {n}
+                  <li key={n.label}>
+                    <a href={n.href} className="hover:text-white transition-colors">
+                      {n.label}
                     </a>
                   </li>
                 ))}
+                <li>
+                  <Link to="/blog" className="hover:text-white transition-colors">
+                    Journal
+                  </Link>
+                </li>
               </ul>
               <a
-                href="#"
+                href="#contact"
                 className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
               >
                 Get Audit
@@ -228,14 +239,14 @@ function Index() {
 
           <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3" data-delay="3">
             <a
-              href="#"
-              className="text-[13px] px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-white/90 hover:-translate-y-0.5"
+              href="#contact"
+              className="text-[13px] px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-white/90 hover:-translate-y-0.5 transition-all"
             >
               Start Project →
             </a>
             <a
-              href="#"
-              className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5"
+              href="#cases"
+              className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all"
             >
               View Case Studies
             </a>
@@ -274,7 +285,7 @@ function Index() {
       <StatsStrip />
 
       {/* METRICS + ABOUT */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="about" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-12">
           <div className="col-span-12 md:col-span-5 reveal">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
@@ -346,7 +357,7 @@ function Index() {
       </section>
 
       {/* PRODUCTS */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="products" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-8 mb-16">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 04 — Products ]
@@ -420,7 +431,7 @@ function Index() {
                   <div className="text-[14px] mt-1">{p.time}</div>
                 </div>
                 <a
-                  href="#"
+                  href="#contact"
                   className="text-[13px] px-5 py-3 rounded-full border border-white/20 hover:bg-white hover:text-black transition-colors"
                 >
                   Learn More →
@@ -432,7 +443,7 @@ function Index() {
       </section>
 
       {/* CASES */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="cases" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="flex items-end justify-between mb-16">
           <div>
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6">
@@ -444,7 +455,7 @@ function Index() {
             </h2>
           </div>
           <a
-            href="#"
+            href="#cases"
             className="hidden md:inline-block text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
           >
             View All Cases →
@@ -497,7 +508,7 @@ function Index() {
       </section>
 
       {/* BLOG */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="insights" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="grid grid-cols-12 gap-6 md:gap-8 mb-12">
           <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.2em] text-white/40">
             [ 06 — Insights ]
@@ -570,7 +581,7 @@ function Index() {
       </section>
 
       {/* CONTACT BANNER */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+      <section id="contact" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <h2 className="text-[44px] md:text-[88px] lg:text-[120px] leading-[0.95] tracking-[-0.03em] font-medium reveal">
           Let's build<br />
           something that<br />
@@ -578,13 +589,13 @@ function Index() {
         </h2>
         <div className="mt-12 flex flex-wrap gap-4">
           <a
-            href="#"
+            href="mailto:hello@r-m.studio?subject=Free%20Audit%20request"
             className="text-[13px] px-6 py-4 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black transition-colors"
           >
             Get Free Audit →
           </a>
           <a
-            href="#"
+            href="mailto:hello@r-m.studio"
             className="text-[13px] px-6 py-4 rounded-full border border-white/15 hover:border-white transition-colors"
           >
             hello@r-m.studio
@@ -604,9 +615,9 @@ function Index() {
               competitive industries.
             </p>
             <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
-              <a href="#" className="hover:text-white">LinkedIn</a>
-              <a href="#" className="hover:text-white">Behance</a>
-              <a href="#" className="hover:text-white">Instagram</a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+              <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Behance</a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
             </div>
           </div>
 
@@ -615,10 +626,10 @@ function Index() {
               Work
             </div>
             <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">Services</a></li>
-              <li><a href="#" className="hover:text-white">Products</a></li>
-              <li><a href="#" className="hover:text-white">Case Studies</a></li>
-              <li><a href="#" className="hover:text-white">Blog</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Services</a></li>
+              <li><a href="#products" className="hover:text-white transition-colors">Products</a></li>
+              <li><a href="#cases" className="hover:text-white transition-colors">Case Studies</a></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
             </ul>
           </div>
 
@@ -627,9 +638,9 @@ function Index() {
               Studio
             </div>
             <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#" className="hover:text-white">About</a></li>
-              <li><a href="#" className="hover:text-white">Contacts</a></li>
-              <li><a href="#" className="hover:text-white">Audit</a></li>
+              <li><a href="#about" className="hover:text-white transition-colors">About</a></li>
+              <li><a href="#contact" className="hover:text-white transition-colors">Contacts</a></li>
+              <li><a href="mailto:hello@r-m.studio?subject=Free%20Audit%20request" className="hover:text-white transition-colors">Audit</a></li>
             </ul>
           </div>
 
@@ -649,7 +660,7 @@ function Index() {
 
         <div className="mt-20 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.18em] text-white/30">
           <span>© R-M 2025</span>
-          <a href="#" className="hover:text-white">Privacy Policy</a>
+          <span className="opacity-60">Privacy Policy</span>
           <span>Vol. 01 — Made with intent</span>
         </div>
       </footer>

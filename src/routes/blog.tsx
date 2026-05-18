@@ -26,7 +26,13 @@ export const Route = createFileRoute("/blog")({
   component: BlogPage,
 });
 
-const nav = ["Services", "Products", "Case Studies", "Insights", "About"];
+const nav: { label: string; href: string }[] = [
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
+];
 const categories = ["All", "Strategy", "Positioning", "Performance", "Brand", "Field Notes"];
 
 function BlogPage() {
@@ -107,15 +113,15 @@ function BlogPage() {
           <div className="flex items-center gap-1">
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
               {nav.map((n) => (
-                <li key={n}>
-                  <a href="#" className="hover:text-white transition-colors">{n}</a>
+                <li key={n.label}>
+                  <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
                 </li>
               ))}
               <li>
                 <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
               </li>
             </ul>
-            <a href="#" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="/#contact" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
               Get Audit
             </a>
             <MobileMenu />
@@ -371,9 +377,13 @@ function BlogPage() {
               <span className="text-[11px] uppercase tracking-[0.2em] text-white/40">
                 Showing {filtered.length} of {archive.length} entries
               </span>
-              <a href="#" className="text-[13px] px-6 py-3 rounded-full border border-white/20 hover:border-white hover:-translate-y-0.5 transition-all min-h-[44px] inline-flex items-center">
-                Load more →
-              </a>
+              <button
+                type="button"
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className="text-[13px] px-6 py-3 rounded-full border border-white/20 hover:border-white hover:-translate-y-0.5 transition-all min-h-[44px] inline-flex items-center cursor-pointer"
+              >
+                Back to top ↑
+              </button>
             </div>
           )}
         </section>
@@ -409,7 +419,7 @@ function BlogPage() {
           <span>© R-M 2026</span>
           <ul className="flex items-center gap-6">
             <li><Link to="/" className="hover:text-white transition-colors rounded-md">← Back home</Link></li>
-            <li><a href="#" className="hover:text-white transition-colors rounded-md">Privacy</a></li>
+            <li><span className="opacity-70">Privacy</span></li>
             <li><span aria-label="Locations">Kyiv / EU / MENA</span></li>
           </ul>
         </nav>

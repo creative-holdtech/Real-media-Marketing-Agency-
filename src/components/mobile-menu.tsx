@@ -2,11 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 const items: { label: string; to?: string; href?: string }[] = [
-  { label: "Services", href: "#" },
-  { label: "Products", href: "#" },
-  { label: "Case Studies", href: "#" },
-  { label: "Insights", href: "#" },
-  { label: "About", href: "#" },
+  { label: "Services", href: "/#products" },
+  { label: "Products", href: "/#products" },
+  { label: "Case Studies", href: "/#cases" },
+  { label: "Insights", href: "/#insights" },
+  { label: "About", href: "/#about" },
   { label: "Journal", to: "/blog" },
 ];
 
@@ -98,15 +98,19 @@ export function MobileMenu() {
 
             <div className="mt-10 flex flex-col gap-4">
               <a
-                href="#"
+                href="/#contact"
                 onClick={() => setOpen(false)}
                 className="text-center text-[14px] px-6 py-4 rounded-full bg-[#e85d3a] text-white font-medium"
               >
                 Get Audit →
               </a>
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40 text-center">
+              <a
+                href="mailto:hello@r-m.studio"
+                onClick={() => setOpen(false)}
+                className="text-[11px] uppercase tracking-[0.25em] text-white/40 hover:text-white text-center transition-colors"
+              >
                 hello@r-m.studio
-              </p>
+              </a>
             </div>
           </nav>
         </div>
