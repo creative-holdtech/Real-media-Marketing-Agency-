@@ -26,7 +26,7 @@ export const Route = createFileRoute("/seo")({
 
 const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "/#products" },
-  { label: "Case Studies", href: "/#cases" },
+  { label: "Case Studies", href: "/cases" },
   { label: "Insights", href: "/#insights" },
 ];
 
@@ -465,7 +465,7 @@ function SeoPage() {
                   Get an audit
                 </MagneticButton>
                 <MagneticButton
-                  href="/#cases"
+                  href="/cases"
                   strength={6}
                   className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
                 >
@@ -492,7 +492,7 @@ function SeoPage() {
               <h3 className="text-[12px] uppercase tracking-[0.16em] text-white/45 mb-4">Studio</h3>
               <ul className="space-y-3 text-[14px] text-white/75">
                 <li><a href="/#products" className="hover:text-white transition-colors">Services</a></li>
-                <li><a href="/#cases" className="hover:text-white transition-colors">Case studies</a></li>
+                <li><a href="/cases" className="hover:text-white transition-colors">Case studies</a></li>
                 <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
               </ul>
             </div>

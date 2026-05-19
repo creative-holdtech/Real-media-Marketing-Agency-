@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { HeroWebGL } from "@/components/hero-webgl";
 import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
+import { cases as caseStudies } from "@/lib/cases";
 import { posts } from "@/lib/posts";
 
 export const Route = createFileRoute("/")({
@@ -12,8 +13,7 @@ export const Route = createFileRoute("/")({
 
 const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "#products" },
-  { label: "Products", href: "#products" },
-  { label: "Case Studies", href: "#cases" },
+  { label: "Case Studies", to: "/cases" },
   { label: "Insights", href: "#insights" },
   { label: "About", to: "/about" },
 ];
@@ -119,20 +119,13 @@ const testimonials = [
   },
 ];
 
-const cases = [
-  {
-    metric: "+312%",
-    label: "Qualified leads",
-    sector: "Fintech / EU Market",
-    desc: "Complete repositioning and acquisition system redesign for a scaling fintech company.",
-  },
-  {
-    metric: "4.7×",
-    label: "ROAS increase",
-    sector: "iGaming / MENA",
-    desc: "Strategic creative direction and funnel optimization across multiple GEOs.",
-  },
-];
+const cases = caseStudies.slice(0, 2).map((c) => ({
+  slug: c.slug,
+  metric: c.primaryMetric.value,
+  label: c.primaryMetric.label,
+  sector: `${c.niche} / ${c.client}`,
+  desc: c.preview,
+}));
 
 const insightPosts = posts.slice(0, 3);
 
@@ -254,12 +247,12 @@ function Index() {
             >
               Start Project →
             </a>
-            <a
-              href="#cases"
+            <Link
+              to="/cases"
               className="text-[13px] px-6 py-3 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all"
             >
               View Case Studies
-            </a>
+            </Link>
           </div>
 
           {/* Swipe indicator */}
@@ -477,18 +470,20 @@ function Index() {
               <span className="italic font-light text-white/60">deliver.</span>
             </h2>
           </div>
-          <a
-            href="#cases"
+          <Link
+            to="/cases"
             className="hidden md:inline-block text-[13px] text-white/60 hover:text-white border-b border-white/20 pb-1"
           >
             View All Cases →
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {cases.map((c, i) => (
-            <article
-              key={i}
+            <Link
+              key={c.slug}
+              to="/cases/$slug"
+              params={{ slug: c.slug }}
               className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
@@ -536,15 +531,12 @@ function Index() {
                   <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                     {c.sector}
                   </span>
-                  <a
-                    href="#contact"
-                    className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
-                  >
+                  <span className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium group-hover:bg-[#e85d3a] group-hover:text-white transition-colors">
                     Read Case →
-                  </a>
+                  </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
@@ -669,9 +661,8 @@ function Index() {
             </div>
             <ul className="space-y-3 text-[14px] text-white/70">
               <li><a href="#products" className="hover:text-white transition-colors">Services</a></li>
-              <li><a href="#products" className="hover:text-white transition-colors">Products</a></li>
-              <li><a href="#cases" className="hover:text-white transition-colors">Case Studies</a></li>
-              <li><Link to="/blog" className="hover:text-white transition-colors">Blog</Link></li>
+              <li><Link to="/cases" className="hover:text-white transition-colors">Case Studies</Link></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors">Journal</Link></li>
             </ul>
           </div>
 

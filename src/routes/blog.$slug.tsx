@@ -53,7 +53,7 @@ export const Route = createFileRoute("/blog/$slug")({
 const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "/#products" },
   { label: "Products", href: "/#products" },
-  { label: "Case Studies", href: "/#cases" },
+  { label: "Case Studies", href: "/cases" },
   { label: "Insights", href: "/#insights" },
   { label: "About", to: "/about" },
 ];
