@@ -119,20 +119,13 @@ const testimonials = [
   },
 ];
 
-const cases = [
-  {
-    metric: "+312%",
-    label: "Qualified leads",
-    sector: "Fintech / EU Market",
-    desc: "Complete repositioning and acquisition system redesign for a scaling fintech company.",
-  },
-  {
-    metric: "4.7×",
-    label: "ROAS increase",
-    sector: "iGaming / MENA",
-    desc: "Strategic creative direction and funnel optimization across multiple GEOs.",
-  },
-];
+const cases = caseStudies.slice(0, 2).map((c) => ({
+  slug: c.slug,
+  metric: c.primaryMetric.value,
+  label: c.primaryMetric.label,
+  sector: `${c.niche} / ${c.client}`,
+  desc: c.preview,
+}));
 
 const insightPosts = posts.slice(0, 3);
 
