@@ -417,9 +417,14 @@ function Index() {
           <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
             How we engage
           </p>
-          <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-            Choose the level<br />
-            of support you need<br />
+          <h2 className="text-[36px] md:text-[56px] leading-[1.05] tracking-[-0.02em] font-medium max-w-[16ch]">
+            Choose the level of{" "}
+            <span
+              aria-hidden
+              className="inline-block align-middle w-16 md:w-24 h-9 md:h-12 rounded-full bg-cover bg-center mx-1 ring-1 ring-white/15"
+              style={{ backgroundImage: "url(https://picsum.photos/seed/rm-team/400/200)" }}
+            />{" "}
+            support you need{" "}
             <span className="italic font-light text-white/60">right now.</span>
           </h2>
         </div>
