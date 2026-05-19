@@ -390,271 +390,316 @@ function AboutPage() {
         </nav>
       </header>
 
-      <main id="main">
-        {/* TICKER */}
-        <div className="marquee overflow-hidden border-b border-white/5 pt-24 md:pt-28" aria-hidden>
-          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-white/55">
+      <main id="main" className="font-mono-tac">
+        {/* ============ SYSTEM TICKER ============ */}
+        <div className="marquee overflow-hidden border-b border-white/15 pt-24 md:pt-28 bg-[#0a0a0a]" aria-hidden>
+          <div className="marquee-track flex gap-10 whitespace-nowrap py-2.5 text-[10px] uppercase tracking-[0.32em] text-white/60">
             {[...tickerWords, ...tickerWords, ...tickerWords].map((w, i) => (
-              <span key={i} className="flex items-center gap-12">
-                {w}
-                <span className="inline-block w-1 h-1 rounded-full bg-white/25" />
+              <span key={i} className="flex items-center gap-10">
+                <span className="text-[#E61919]">▌</span>{w}
+                <span className="text-white/30">///</span>
               </span>
             ))}
           </div>
         </div>
 
-        {/* 8.1 — HERO */}
+        {/* ============ 01 — IDENT / HERO ============ */}
         <section
           aria-labelledby="page-title"
-          className="px-6 md:px-12 max-w-[1280px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[72vh] flex flex-col justify-center"
+          className="relative border-b border-white/15 tac-scanlines"
         >
-          <div className="grid grid-cols-12 gap-5">
-            <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6 md:mb-0" style={{ color: "var(--accent-red)" }}>
-              Who we are
-            </p>
-            <div className="col-span-12 md:col-span-10 md:col-start-3">
+          <div className="relative tac-noise px-6 md:px-12 max-w-[1320px] mx-auto pt-10 md:pt-14 pb-14 md:pb-20">
+            {/* Top status bar */}
+            <div className="grid grid-cols-12 gap-px bg-white/15 border border-white/15 mb-10 md:mb-14 text-[10px] uppercase tracking-[0.28em]">
+              {[
+                ["UNIT", "R—M / 00"],
+                ["STATUS", <><span className="inline-block w-1.5 h-1.5 bg-[#E61919] mr-2 tac-blink" />OPERATIONAL</>],
+                ["LAT", "50.4501°N"],
+                ["LON", "30.5234°E"],
+                ["REV", "2.6 / 2026"],
+                ["SIG", "—— ATX-09"],
+              ].map(([k, v], i) => (
+                <div key={i} className="col-span-6 md:col-span-2 bg-[#0a0a0a] px-3 py-2.5 flex items-center justify-between gap-3">
+                  <span className="text-white/45">{k}</span>
+                  <span className="text-white">{v as React.ReactNode}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-12 gap-5 items-end">
+              <div className="col-span-12 md:col-span-3">
+                <p className="text-[10px] uppercase tracking-[0.32em] text-[#E61919] mb-3">
+                  [ FILE — 001 / ABOUT ]
+                </p>
+                <p className="text-[11px] uppercase tracking-[0.22em] text-white/55 leading-[1.6]">
+                  CLASSIFIED:&nbsp;PUBLIC<br/>
+                  DEPT:&nbsp;STRATEGY&nbsp;//&nbsp;BRAND<br/>
+                  CREW:&nbsp;04&nbsp;OPERATORS<br/>
+                  RANGE:&nbsp;EU&nbsp;/&nbsp;MENA
+                </p>
+              </div>
+
               <h1
                 id="page-title"
-                className="text-[44px] sm:text-[72px] md:text-[104px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
+                className="col-span-12 md:col-span-9 font-mega uppercase text-white"
+                style={{ fontSize: "clamp(3.5rem, 11vw, 11.5rem)" }}
               >
-                A small studio for{" "}
-                <span className="font-light text-white/45 inline">
-                  founders who actually ship.
-                </span>
+                R—M<br/>
+                <span className="text-[#E61919]">STUDIO/</span><span className="text-white/35">OPS.</span>
               </h1>
-              <p className="mt-8 max-w-[640px] text-[16px] md:text-[18px] leading-[1.6] text-white/70">
-                R-M is a strategy and brand studio for AI, Fintech, Web3 and
-                lifestyle operators. Two cells, one studio. Senior on every call.
-              </p>
+            </div>
 
-              <div
-                className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
-                data-delay="2"
-              >
-                <MagneticButton
+            {/* Strike rule */}
+            <div className="mt-10 md:mt-14 h-[2px] bg-[#E61919] w-full" />
+
+            <div className="grid grid-cols-12 gap-5 mt-8">
+              <p className="col-span-12 md:col-span-5 text-[13px] leading-[1.7] text-white/80 uppercase tracking-[0.04em]">
+                &gt;&gt; A SMALL UNIT FOR FOUNDERS WHO SHIP. STRATEGY AND BRAND OPS FOR AI, FINTECH, WEB3, AND LIFESTYLE OPERATORS. TWO CELLS, ONE STUDIO. SENIOR ON EVERY CALL.
+              </p>
+              <div className="col-span-12 md:col-span-4 md:col-start-7 text-[10px] uppercase tracking-[0.28em] text-white/55 space-y-2">
+                <div className="flex justify-between border-b border-white/15 pb-1.5"><span>BRANDS DEPLOYED</span><span className="text-white tabular-nums">47</span></div>
+                <div className="flex justify-between border-b border-white/15 pb-1.5"><span>CAPITAL SECURED</span><span className="text-white tabular-nums">€280M</span></div>
+                <div className="flex justify-between border-b border-white/15 pb-1.5"><span>OP. RANGE</span><span className="text-white tabular-nums">7 YRS</span></div>
+                <div className="flex justify-between"><span>FAILURE RATE</span><span className="text-[#E61919] tabular-nums">0.00%</span></div>
+              </div>
+              <div className="col-span-12 md:col-span-3 flex md:justify-end items-end">
+                <a
                   href="/#contact"
-                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                  className="inline-flex items-center gap-3 px-5 py-3.5 bg-[#E61919] text-[#0a0a0a] text-[11px] uppercase tracking-[0.24em] font-bold hover:bg-white transition-colors"
                 >
-                  Book an audit
-                  <span aria-hidden>→</span>
-                </MagneticButton>
-                <MagneticButton
-                  href="#cases"
-                  strength={10}
-                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
-                >
-                  Selected work
-                </MagneticButton>
-                <span className="inline-flex items-center h-12 pl-4 ml-1 border-l border-white/10 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 tabular-nums">
-                  47 brands · €280M raised · 7 yrs
-                </span>
+                  REQ. AUDIT <span className="font-mono-tac">▶▶</span>
+                </a>
               </div>
             </div>
+
+            {/* Crosshairs at corners */}
+            <span className="tac-crosshair" style={{ top: 8, left: 8 }} />
+            <span className="tac-crosshair" style={{ top: 8, right: 8 }} />
+            <span className="tac-crosshair" style={{ bottom: 8, left: 8 }} />
+            <span className="tac-crosshair" style={{ bottom: 8, right: 8 }} />
           </div>
         </section>
 
+        {/* ============ 02 — DOCTRINE / APPROACH ============ */}
+        <section
+          aria-labelledby="mission-heading"
+          className="border-b border-white/15 bg-[#0a0a0a]"
+        >
+          <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-16 md:py-24">
+            <div className="grid grid-cols-12 gap-5 mb-12 md:mb-16">
+              <p className="col-span-12 md:col-span-3 text-[10px] uppercase tracking-[0.32em] text-[#E61919]">
+                &lt; SECTION 02 / DOCTRINE &gt;
+              </p>
+              <h2
+                id="mission-heading"
+                className="col-span-12 md:col-span-9 font-mega uppercase text-white"
+                style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)" }}
+              >
+                THREE PRINCIPLES.<br/>
+                <span className="text-white/35">NO EXCEPTIONS.</span>
+              </h2>
+            </div>
 
+            <ol role="list" className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/15 border border-white/15">
+              {pillars.map((p) => (
+                <li
+                  key={p.n}
+                  className="relative bg-[#0a0a0a] p-6 md:p-8 min-h-[320px] flex flex-col"
+                >
+                  <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/45 mb-8 pb-3 border-b border-white/15">
+                    <span>[ P—{p.n} / {p.tag.toUpperCase()} ]</span>
+                    <span className="text-[#E61919] tac-blink">●</span>
+                  </div>
+                  <div
+                    className="font-mega text-[#E61919] mb-6"
+                    style={{ fontSize: "clamp(4rem, 9vw, 7rem)" }}
+                  >
+                    {p.n}
+                  </div>
+                  <h3 className="text-[18px] md:text-[20px] uppercase tracking-[-0.01em] font-bold text-white leading-[1.15] mb-4">
+                    {p.title}
+                  </h3>
+                  <p className="text-[12px] leading-[1.7] text-white/70 uppercase tracking-[0.02em] mt-auto">
+                    {p.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
 
-
-        {/* 8.2 — MISSION & APPROACH (rotating pillars) */}
-        <SpinPillars />
-
-        {/* 8.3 — TEAM — ElevenLabs-style dark, clean card grid */}
+        {/* ============ 03 — PERSONNEL / TEAM ============ */}
         <section
           aria-labelledby="team-heading"
-          className="bg-[#0a0a0a] text-white border-t border-white/10"
+          className="border-b border-white/15 bg-[#0a0a0a]"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <div className="grid grid-cols-12 gap-5 mb-16 md:mb-20 reveal-fade">
-              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-4 md:mb-0">
-                The team
+          <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-16 md:py-24">
+            <div className="grid grid-cols-12 gap-5 mb-10 md:mb-14">
+              <p className="col-span-12 md:col-span-3 text-[10px] uppercase tracking-[0.32em] text-[#E61919]">
+                &lt; SECTION 03 / PERSONNEL &gt;
               </p>
-              <div className="col-span-12 md:col-span-7 md:col-start-3">
-                <h2
-                  id="team-heading"
-                  className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.03em] font-medium text-white"
-                >
-                  Who actually{" "}
-                  <span className="font-light text-white/45 inline">does the work.</span>
-                </h2>
-              </div>
-              <p className="col-span-12 md:col-span-3 md:col-start-10 text-[14px] md:text-[15px] leading-[1.55] text-white/60">
-                A small, senior team. Every project is led by the people whose names you see below — no juniors, no handoffs.
+              <h2
+                id="team-heading"
+                className="col-span-12 md:col-span-6 font-mega uppercase text-white"
+                style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)" }}
+              >
+                CREW<br/><span className="text-white/35">ROSTER.</span>
+              </h2>
+              <p className="col-span-12 md:col-span-3 text-[11px] uppercase tracking-[0.22em] leading-[1.7] text-white/60 self-end">
+                &gt;&gt; FOUR OPERATORS. ZERO JUNIORS. ZERO HANDOFFS. EVERY ENGAGEMENT LED BY THE NAMES BELOW.
               </p>
             </div>
 
-            <div className="grid grid-cols-12 gap-5">
-              <div className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <TiltCard className="reveal group block relative" max={6}>
-                  <a href="/#contact" className="block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
-                    <ParallaxImage
-                      src={teamPhotos[0]}
-                      alt={`${team[0].name}, ${team[0].role}`}
-                      range={50}
-                      className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8" style={{ transform: "translateZ(40px)" }}>
-                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
-                        01 · {team[0].city}
+            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/15 border border-white/15">
+              {team.map((m, i) => (
+                <li key={m.name} className="bg-[#0a0a0a] group">
+                  <a href="/#contact" className="block">
+                    <div className="relative aspect-[3/4] overflow-hidden border-b border-white/15">
+                      <img
+                        src={teamPhotos[i]}
+                        alt={`${m.name}, ${m.role}`}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover grayscale contrast-110 group-hover:grayscale-0 transition-all duration-700"
+                      />
+                      <div className="absolute inset-0 tac-scanlines opacity-60 pointer-events-none" />
+                      <div className="absolute top-0 left-0 right-0 px-3 py-2 flex items-center justify-between text-[9px] uppercase tracking-[0.24em] text-white bg-black/60 backdrop-blur-sm">
+                        <span>ID—{String(i + 1).padStart(3, "0")}</span>
+                        <span className="text-[#E61919]">● REC</span>
                       </div>
-                      <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
-                        {team[0].name} — {team[0].role}
-                      </h3>
-                      <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
-                        {team[0].spec}
-                      </p>
+                      <div className="absolute bottom-0 left-0 right-0 px-3 py-2 text-[9px] uppercase tracking-[0.24em] text-white/70 bg-black/60 backdrop-blur-sm flex justify-between">
+                        <span>{m.initials}</span>
+                        <span>{m.city.toUpperCase()}</span>
+                      </div>
+                    </div>
+                    <div className="p-4 md:p-5">
+                      <div className="text-[18px] uppercase tracking-[-0.01em] font-bold text-white leading-[1.1]">
+                        {m.name}
+                      </div>
+                      <div className="mt-2 text-[10px] uppercase tracking-[0.28em] text-white/55">
+                        {m.role}
+                      </div>
+                      <div className="mt-3 pt-3 border-t border-white/15 text-[10px] uppercase tracking-[0.28em] text-[#E61919]">
+                        SPEC / {m.spec}
+                      </div>
                     </div>
                   </a>
-                </TiltCard>
-
-                <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
-                  {team.slice(1).map((m, idx) => {
-                    const i = idx + 1;
-                    return (
-                      <li key={m.name} className="reveal group lg:flex-1" data-delay={String(i + 1)}>
-                        <a href="/#contact" className="relative block h-full overflow-hidden rounded-xl bg-white/5">
-                          <div className="flex h-full min-h-[140px]">
-                            <div className="relative w-[40%] lg:w-[45%] shrink-0 overflow-hidden">
-                              <img
-                                src={teamPhotos[i]}
-                                alt={`${m.name}, ${m.role}`}
-                                loading="lazy"
-                                width={400}
-                                height={400}
-                                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.04] transition-transform duration-[900ms] ease-out"
-                              />
-                            </div>
-                            <div className="flex-1 p-4 md:p-5 flex flex-col justify-end">
-                              <div className="text-[10px] uppercase tracking-[0.28em] text-white/45 mb-1.5 tabular-nums">
-                                {String(i + 1).padStart(2, "0")} · {m.city}
-                              </div>
-                              <h3 className="text-[15px] md:text-[17px] leading-[1.25] tracking-[-0.01em] font-medium text-white">
-                                {m.name}
-                              </h3>
-                              <p className="mt-1 text-[12px] md:text-[13px] leading-[1.45] text-white/60">
-                                {m.role}
-                              </p>
-                            </div>
-                          </div>
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
-        {/* 8.4 — NICHES — ElevenLabs strict editorial list */}
+        {/* ============ 04 — VERTICALS / NICHES ============ */}
         <section
           aria-labelledby="niches-heading"
-          className="bg-[#0a0a0a] text-white border-t border-white/10"
+          className="border-b border-white/15 bg-[#0a0a0a] tac-scanlines"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <div className="grid grid-cols-12 gap-5 mb-16 md:mb-20 reveal-fade">
-              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-4 md:mb-0">
-                Our niches
+          <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-16 md:py-24">
+            <div className="grid grid-cols-12 gap-5 mb-12 md:mb-16">
+              <p className="col-span-12 md:col-span-3 text-[10px] uppercase tracking-[0.32em] text-[#E61919]">
+                &lt; SECTION 04 / OP. THEATERS &gt;
               </p>
               <h2
                 id="niches-heading"
-                className="col-span-12 md:col-span-7 md:col-start-3 text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.03em] font-medium text-white"
+                className="col-span-12 md:col-span-9 font-mega uppercase text-white"
+                style={{ fontSize: "clamp(2.5rem, 7vw, 6rem)" }}
               >
-                Four verticals.{" "}
-                <span className="font-light text-white/45 inline">Where we go deep.</span>
+                FOUR VERTICALS.<br/>
+                <span className="text-white/35">WHERE WE GO DEEP.</span>
               </h2>
-              <p className="col-span-12 md:col-span-3 md:col-start-10 text-[14px] md:text-[15px] leading-[1.55] text-white/60">
-                We don't chase categories. These are the rooms we already know — and where our work compounds.
-              </p>
             </div>
 
-            <div className="grid grid-cols-12 gap-5">
-              <ul role="list" className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10">
-                {niches.map((n, i) => (
-                  <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                    <TiltCard max={7} className="group">
-                      <a
-                        href="/#contact"
-                        aria-label={`Discuss ${n.title} engagement`}
-                        className="block"
-                      >
-                        <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
-                          <img
-                            src={nicheCovers[n.illustration]}
-                            alt={`${n.title} — minimalist mark`}
-                            loading="lazy"
-                            width={800}
-                            height={800}
-                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
-                            style={{ transform: "translateZ(0)" }}
-                          />
-                        </div>
-                        <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
-                          {n.n} · Vertical
-                        </div>
-                        <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
-                          {n.title}
-                        </h3>
-                        <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
-                          {n.body}
-                        </p>
-                      </a>
-                    </TiltCard>
-                  </li>
+            <table className="w-full border-collapse text-left">
+              <thead>
+                <tr className="text-[10px] uppercase tracking-[0.28em] text-white/45 border-y border-white/15">
+                  <th className="py-3 px-2 w-[60px] font-normal">N°</th>
+                  <th className="py-3 px-2 w-[28%] font-normal">VERTICAL</th>
+                  <th className="py-3 px-2 font-normal">DOCTRINE</th>
+                  <th className="py-3 px-2 w-[80px] font-normal text-right">SIG</th>
+                </tr>
+              </thead>
+              <tbody>
+                {niches.map((n) => (
+                  <tr
+                    key={n.n}
+                    className="border-b border-white/15 hover:bg-white/[0.03] transition-colors group"
+                  >
+                    <td className="py-6 px-2 align-top text-[#E61919] font-bold tabular-nums text-[14px]">
+                      {n.n}
+                    </td>
+                    <td className="py-6 px-2 align-top">
+                      <div className="text-[20px] md:text-[26px] uppercase tracking-[-0.02em] font-bold text-white leading-[1] mb-2">
+                        {n.title}
+                      </div>
+                      <div className="text-[10px] uppercase tracking-[0.28em] text-white/45">
+                        UNIT—{n.illustration.toUpperCase()}
+                      </div>
+                    </td>
+                    <td className="py-6 px-2 align-top text-[12px] leading-[1.65] text-white/70 uppercase tracking-[0.02em]">
+                      {n.body}
+                    </td>
+                    <td className="py-6 px-2 align-top text-right text-[10px] uppercase tracking-[0.28em] text-white/55 tabular-nums">
+                      <span className="inline-flex items-center gap-2 group-hover:text-[#E61919]">
+                        ENGAGE <span>▶</span>
+                      </span>
+                    </td>
+                  </tr>
                 ))}
-              </ul>
-            </div>
+              </tbody>
+            </table>
           </div>
         </section>
 
-        {/* 8.5 — CTA / Ending — normalized */}
+        {/* ============ 05 — TRANSMISSION / CTA ============ */}
         <section
           aria-labelledby="cta-heading"
-          className="bg-[#0a0a0a] text-white border-t border-white/10"
+          className="relative border-b border-white/15 bg-[#0a0a0a] overflow-hidden"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <div className="grid grid-cols-12 gap-5 reveal-fade">
-              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] mb-4 md:mb-0" style={{ color: "var(--accent-red)" }}>
-                Ending
+          <div className="absolute inset-0 tac-grid-bg opacity-40 pointer-events-none" />
+          <div className="relative px-6 md:px-12 max-w-[1320px] mx-auto py-20 md:py-32">
+            <div className="grid grid-cols-12 gap-5 mb-10">
+              <p className="col-span-12 md:col-span-3 text-[10px] uppercase tracking-[0.32em] text-[#E61919]">
+                &lt; SECTION 05 / TRANSMISSION &gt;
               </p>
-              <div className="col-span-12 md:col-span-10 md:col-start-3">
-                <h2
-                  id="cta-heading"
-                  className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1] tracking-[-0.03em] font-medium text-white"
+              <div className="col-span-12 md:col-span-9 text-[10px] uppercase tracking-[0.28em] text-white/45 md:text-right tabular-nums">
+                CH 09 — 2400 BAUD — ENCRYPTED — STAND BY ▌
+              </div>
+            </div>
+
+            <h2
+              id="cta-heading"
+              className="font-mega uppercase text-white mb-12"
+              style={{ fontSize: "clamp(2.75rem, 10vw, 10rem)" }}
+            >
+              REQUEST<br/>
+              <span className="text-[#E61919]">CONTACT./</span><br/>
+              <span className="text-white/30">END TRANSMISSION.</span>
+            </h2>
+
+            <div className="grid grid-cols-12 gap-5 items-end border-t-2 border-[#E61919] pt-8">
+              <p className="col-span-12 md:col-span-6 text-[13px] leading-[1.7] text-white/80 uppercase tracking-[0.04em]">
+                &gt;&gt; READY TO SCALE? OPEN A CHANNEL. WE RESPOND WITHIN 24H AT ANY LATITUDE.
+              </p>
+              <div className="col-span-12 md:col-span-6 flex flex-wrap items-center gap-3 md:justify-end">
+                <a
+                  href="/#contact"
+                  className="inline-flex items-center gap-3 px-6 py-4 bg-[#E61919] text-[#0a0a0a] text-[11px] uppercase tracking-[0.24em] font-bold hover:bg-white transition-colors"
                 >
-                  <span className="block">A functional tool</span>
-                  <span className="block text-white/75 font-light">built to generate growth,</span>
-                  <span className="block">attract clients and sharpen</span>
-                  <span className="block text-white/40 font-light">the expertise founders ship.</span>
-                </h2>
-
-                <p className="mt-10 max-w-[520px] text-[15px] md:text-[16px] leading-[1.6] text-white/65">
-                  Ready to scale your brand? Let's build something bold together.
-                </p>
-
-                <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <MagneticButton
-                    href="/#contact"
-                    className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
-                  >
-                    Book an audit
-                    <span aria-hidden>→</span>
-                  </MagneticButton>
-                  <MagneticButton
-                    href="mailto:hello@r-m.studio"
-                    strength={10}
-                    className="inline-flex items-center h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
-                  >
-                    hello@r-m.studio
-                  </MagneticButton>
-                </div>
+                  BOOK AUDIT <span>▶▶</span>
+                </a>
+                <a
+                  href="mailto:hello@r-m.studio"
+                  className="inline-flex items-center gap-3 px-6 py-4 border border-white/30 text-white text-[11px] uppercase tracking-[0.24em] font-bold hover:border-[#E61919] hover:text-[#E61919] transition-colors"
+                >
+                  HELLO@R-M.STUDIO
+                </a>
               </div>
             </div>
           </div>
         </section>
 
       </main>
+
 
       <footer className="bg-[#0a0a0a] border-t border-white/10 text-white">
         <div className="px-6 md:px-12 max-w-[1280px] mx-auto pt-20 pb-10">
