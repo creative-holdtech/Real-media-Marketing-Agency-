@@ -466,13 +466,6 @@ function AboutPage() {
               </MagneticButton>
             </div>
 
-            <div className="mt-14 inline-flex items-center gap-6 px-6 py-3 rounded-full border border-white/10 bg-black/30 backdrop-blur-md text-[11px] uppercase tracking-[0.28em] text-white/60 tabular-nums">
-              <span>47 brands</span>
-              <span aria-hidden className="w-1 h-1 rounded-full bg-white/30" />
-              <span>€280M raised</span>
-              <span aria-hidden className="w-1 h-1 rounded-full bg-white/30" />
-              <span>7 years</span>
-            </div>
           </div>
         </section>
 
