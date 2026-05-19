@@ -662,7 +662,7 @@ function AboutPage() {
           aria-labelledby="cta-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-b border-white/10"
         >
-          <div className="reveal text-center mx-auto max-w-[1100px]">
+          <div className="reveal text-center mx-auto max-w-[1100px] text-slate-50">
             <p
               className="text-[11px] uppercase tracking-[0.28em] leading-[1] mb-10 md:mb-12"
               style={{ color: "var(--accent-red)" }}
