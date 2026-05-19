@@ -347,8 +347,7 @@ function Index() {
                   {e.band}
                 </span>
                 <Link
-                  to={e.href.split("?")[0]}
-                  search={{ engagement: e.name.toLowerCase() }}
+                  to="/contact"
                   className="text-[12px] uppercase tracking-[0.22em] px-5 py-3 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
                 >
                   Talk about {e.name} →
