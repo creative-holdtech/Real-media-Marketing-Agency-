@@ -324,19 +324,16 @@ function Index() {
           </div>
           <div className="col-span-12 md:col-span-7 md:pl-8">
             <ul className="divide-y divide-white/10 border-y border-white/10">
-              {metrics.map(([n, big, label], i) => (
+              {metrics.map(([big, label], i) => (
                 <li
-                  key={n}
-                  className="grid grid-cols-12 items-baseline py-6 group hover:bg-white/[0.02] transition-colors reveal"
+                  key={label}
+                  className="grid grid-cols-12 items-baseline py-7 group hover:bg-white/[0.02] transition-colors reveal"
                   data-delay={String(Math.min(i + 1, 5))}
                 >
-                  <span className="col-span-2 text-[11px] text-white/30 tracking-[0.2em]">
-                    {n}
-                  </span>
-                  <span className="col-span-5 text-2xl md:text-3xl font-medium tracking-tight group-hover:text-[#e85d3a] transition-colors">
+                  <span className="col-span-7 text-3xl md:text-5xl font-medium tracking-[-0.02em] group-hover:text-[#e85d3a] transition-colors">
                     {big}
                   </span>
-                  <span className="col-span-5 text-[13px] text-white/50 text-right md:text-left">
+                  <span className="col-span-5 text-[13px] uppercase tracking-[0.2em] text-white/50 text-right">
                     {label}
                   </span>
                 </li>
