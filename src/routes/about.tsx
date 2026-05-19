@@ -237,7 +237,8 @@ function GrainyGradient({
   );
 }
 
-// Swiss / Galaxy-grade line glyphs — one per niche, line-only on bone white
+// Swiss / Galaxy-grade line glyphs — one per niche, line-only on bone white.
+// Strokes redraw on card hover via .niche-glyph .glyph-anim (see styles.css).
 function NicheGlyph({ kind }: { kind: NicheIllustration }) {
   const stroke = "#0a0a0a";
   const common = {
@@ -245,9 +246,12 @@ function NicheGlyph({ kind }: { kind: NicheIllustration }) {
     stroke,
     strokeWidth: 0.6,
     vectorEffect: "non-scaling-stroke" as const,
+    className: "glyph-anim",
+    strokeDasharray: "400",
+    strokeDashoffset: "0",
   };
   return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 w-full h-full">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="niche-glyph absolute inset-0 w-full h-full">
       <g opacity="0.08" stroke={stroke} strokeWidth="0.25">
         {Array.from({ length: 9 }).map((_, i) => (
           <line key={`v${i}`} x1={10 + i * 10} y1="10" x2={10 + i * 10} y2="90" />
@@ -256,6 +260,7 @@ function NicheGlyph({ kind }: { kind: NicheIllustration }) {
           <line key={`h${i}`} x1="10" y1={10 + i * 10} x2="90" y2={10 + i * 10} />
         ))}
       </g>
+
 
       {kind === "ai" && (
         <g {...common}>
