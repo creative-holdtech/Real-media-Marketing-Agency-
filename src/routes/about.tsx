@@ -601,56 +601,31 @@ function AboutPage() {
           </div>
 
 
-          {/* Swiss editorial 2×2 grid — horizontal cards, plate left + content right.
-              Hairline separators, zero corner radius, explicit CTA in every card. */}
-          <ul role="list" className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10">
+          {/* Clean minimalist card grid — white cards, line illustration on top, small caption bottom */}
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {niches.map((n, i) => (
               <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                <article className="niche-card group h-full grid grid-cols-12 bg-[#efeeea] text-[#0a0a0a]">
-                  {/* Editorial plate — Swiss diagram */}
-                  <div className="col-span-12 sm:col-span-5 relative aspect-square sm:aspect-auto overflow-hidden border-b sm:border-b-0 sm:border-r border-[#0a0a0a]/12 bg-[#efeeea]">
+                <a
+                  href="/#contact"
+                  aria-label={`Discuss ${n.title} engagement`}
+                  className="niche-card group block h-full rounded-3xl bg-white text-[#0a0a0a] overflow-hidden transition-transform duration-500 ease-out hover:-translate-y-1"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-white">
                     <img
                       src={nicheCovers[n.illustration]}
-                      alt={`${n.title} — editorial plate`}
+                      alt={`${n.title} — minimalist mark`}
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-contain transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
                     />
                   </div>
-
-                  {/* Content column */}
-                  <div className="col-span-12 sm:col-span-7 flex flex-col p-6 md:p-8">
-                    <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60 tabular-nums">
-                      <span>{n.n} / 04</span>
-                      <span aria-hidden>Vertical</span>
-                    </div>
-
-                    <div className="mt-8 md:mt-10 pt-6 border-t border-[#0a0a0a]/12">
-                      <h3 className="text-[26px] md:text-[32px] leading-[1.05] tracking-[-0.02em] font-medium">
-                        {n.title}
-                      </h3>
-                      <p className="mt-4 text-[14px] md:text-[15px] text-[#0a0a0a]/70 leading-[1.65] max-w-[44ch]">
-                        {n.body}
-                      </p>
-                    </div>
-
-                    {/* Footer with explicit CTA — guaranteed in every card */}
-                    <div className="mt-auto pt-8 flex items-end justify-between gap-4 border-t border-[#0a0a0a]/12">
-                      <div className="pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55 tabular-nums">
-                        R—M / V·{n.n}
-                      </div>
-                      <a
-                        href="/#contact"
-                        aria-label={`Discuss ${n.title} engagement`}
-                        className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] font-medium text-[#0a0a0a] border-b border-[#0a0a0a] pb-1.5 hover:gap-4 transition-all"
-                      >
-                        Discuss vertical
-                        <span aria-hidden>→</span>
-                      </a>
-                    </div>
+                  <div className="px-7 md:px-8 pb-7 md:pb-8 pt-2">
+                    <h3 className="text-[15px] md:text-[16px] leading-[1.45] tracking-[-0.005em] font-normal text-[#0a0a0a]/85 max-w-[28ch]">
+                      {n.title}
+                    </h3>
                   </div>
-                </article>
+                </a>
               </li>
             ))}
           </ul>
