@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { HeroWebGL } from "@/components/hero-webgl";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { cases as caseStudies } from "@/lib/cases";
 import { posts } from "@/lib/posts";
@@ -376,12 +377,12 @@ function Index() {
                 <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                   Learn more
                 </span>
-                <a
-                  href="#contact"
+                <Link
+                  to="/audit"
                   className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
                 >
                   Get Started →
-                </a>
+                </Link>
               </div>
             </article>
           ))}
@@ -541,44 +542,12 @@ function Index() {
         </div>
       </section>
 
-      {/* CONTACT BANNER */}
-      <section id="contact" className="relative px-6 md:px-12 max-w-[1440px] mx-auto py-28 md:py-40 border-t border-white/10 overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full opacity-50 blur-3xl pointer-events-none"
-          style={{ background: "radial-gradient(circle, #e85d3a55, transparent 70%)" }}
-        />
-        <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-10 reveal">
-          The conversation starts here
-        </p>
-        <h2 className="text-[44px] md:text-[88px] lg:text-[128px] leading-[0.92] tracking-[-0.035em] font-medium reveal max-w-[1200px]">
-          Let&apos;s build something that{" "}
-          <span className="italic font-light text-white/50">lasts.</span>
-        </h2>
-
-        <div className="mt-14 flex flex-wrap items-center gap-4 reveal" data-delay="2">
-          <a
-            href="mailto:hello@r-m.studio?subject=Free%20Audit%20request"
-            className="group inline-flex items-center gap-3 text-[14px] px-7 py-4 rounded-full bg-[#e85d3a] text-white font-medium hover:bg-white hover:text-black hover:-translate-y-0.5 transition-all duration-300"
-          >
-            Get Free Audit
-            <span aria-hidden className="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
-          </a>
-          <a
-            href="mailto:hello@r-m.studio"
-            className="text-[14px] px-7 py-4 rounded-full border border-white/15 hover:border-white hover:bg-white/[0.04] transition-colors"
-          >
-            hello@r-m.studio
-          </a>
-          <Link
-            to="/cases"
-            className="text-[13px] uppercase tracking-[0.22em] text-white/50 hover:text-white border-b border-white/15 hover:border-white pb-1 transition-colors ml-2"
-          >
-            See the proof
-          </Link>
-        </div>
-
-      </section>
+      {/* UNIFIED CTA */}
+      <UnifiedCTA
+        eyebrow="The conversation starts here"
+        title="Let's build something"
+        titleAccent="that lasts."
+      />
 
       <SiteFooter />
     </div>
