@@ -740,18 +740,7 @@ function TeamBento() {
               fontSize: "clamp(2.5rem, 7vw, 6rem)",
             }}
           >
-            The people who actually
-            <span
-              aria-hidden
-              className="inline-block align-middle mx-3 md:mx-4 rounded-full bg-cover bg-center ring-1 ring-white/15"
-              style={{
-                width: "clamp(72px, 9vw, 144px)",
-                height: "clamp(40px, 5vw, 72px)",
-                backgroundImage: `url(${teamPhotos[0]})`,
-                filter: "saturate(0.5) brightness(1.05)",
-              }}
-            />
-            ship{" "}
+            The people who actually ship{" "}
             <span
               className="font-light text-white/45"
               style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
