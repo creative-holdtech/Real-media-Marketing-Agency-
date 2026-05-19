@@ -573,31 +573,34 @@ function AboutPage() {
               <ul role="list" className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {niches.map((n, i) => (
                   <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                    <a
-                      href="/#contact"
-                      aria-label={`Discuss ${n.title} engagement`}
-                      className="group block"
-                    >
-                      <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
-                        <img
-                          src={nicheCovers[n.illustration]}
-                          alt={`${n.title} — minimalist mark`}
-                          loading="lazy"
-                          width={800}
-                          height={800}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
-                        />
-                      </div>
-                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
-                        {n.n} · Vertical
-                      </div>
-                      <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
-                        {n.title}
-                      </h3>
-                      <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
-                        {n.body}
-                      </p>
-                    </a>
+                    <TiltCard max={7} className="group">
+                      <a
+                        href="/#contact"
+                        aria-label={`Discuss ${n.title} engagement`}
+                        className="block"
+                      >
+                        <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
+                          <img
+                            src={nicheCovers[n.illustration]}
+                            alt={`${n.title} — minimalist mark`}
+                            loading="lazy"
+                            width={800}
+                            height={800}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                            style={{ transform: "translateZ(0)" }}
+                          />
+                        </div>
+                        <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
+                          {n.n} · Vertical
+                        </div>
+                        <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
+                          {n.title}
+                        </h3>
+                        <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
+                          {n.body}
+                        </p>
+                      </a>
+                    </TiltCard>
                   </li>
                 ))}
               </ul>
