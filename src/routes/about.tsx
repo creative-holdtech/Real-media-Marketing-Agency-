@@ -363,36 +363,50 @@ function AboutPage() {
             </h2>
           </div>
           <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {team.map((m, i) => (
-              <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                <article className="group h-full flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500">
-                  <figure className="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#0f0f0f] to-[#1a1a1a]">
-                    <div aria-hidden className="absolute inset-0 grid place-items-center text-[140px] font-medium text-white/[0.06] tracking-tight">
-                      {m.initials}
-                    </div>
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/75" />
-                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
-                      {m.city}
-                    </span>
-                    <a
-                      href="#"
-                      aria-label={`${m.name} on LinkedIn`}
-                      className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85 hover:bg-[#e85d3a] hover:text-white hover:border-transparent transition-colors"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
-                      </svg>
-                    </a>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="text-[18px] font-medium text-white leading-tight">{m.name}</div>
-                      <div className="text-[12px] text-white/65 mt-1">{m.role}</div>
-                      <div className="text-[11px] uppercase tracking-[0.18em] text-[#e85d3a] mt-2">{m.spec}</div>
-                    </div>
-                  </figure>
-                </article>
-              </li>
-            ))}
+            {team.map((m, i) => {
+              const kinds: NicheIllustration[] = ["ai", "fintech", "hospitality", "b2b"];
+              const kind = kinds[i % kinds.length];
+              return (
+                <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
+                  <article className="group h-full flex flex-col rounded-3xl overflow-hidden bg-[#efeeea] hover:-translate-y-1 transition-transform duration-500">
+                    <figure className="aspect-[4/5] relative overflow-hidden">
+                      <GrainyGradient kind={kind} />
+                      {/* Initials watermark */}
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 grid place-items-center text-[140px] font-medium text-white/15 tracking-tight pointer-events-none"
+                      >
+                        {m.initials}
+                      </div>
+                      {/* Bottom legibility scrim */}
+                      <div
+                        aria-hidden
+                        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55"
+                      />
+                      <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90">
+                        {m.city}
+                      </span>
+                      <a
+                        href="#"
+                        aria-label={`${m.name} on LinkedIn`}
+                        className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90 hover:bg-white hover:text-black hover:border-transparent transition-colors"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
+                        </svg>
+                      </a>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="text-[18px] font-medium text-white leading-tight">{m.name}</div>
+                        <div className="text-[12px] text-white/80 mt-1">{m.role}</div>
+                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/70 mt-2">{m.spec}</div>
+                      </div>
+                    </figure>
+                  </article>
+                </li>
+              );
+            })}
           </ul>
+
         </section>
 
         {/* 8.4 — NICHES */}
