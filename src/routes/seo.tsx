@@ -484,7 +484,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
     );
   }
   return (
-    <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#0a0a0a] p-6">
+    <div className="relative aspect-[4/5] rounded-3xl border border-white/10 overflow-hidden bg-[#111] p-6 transition-[border-color] duration-500 hover:border-white/25">
       <div className="absolute inset-0 opacity-50" style={{
         background:
           "conic-gradient(from 200deg at 60% 50%, rgba(255,75,40,0.25), transparent 30%, rgba(80,60,255,0.25), transparent 70%)",
