@@ -2,10 +2,10 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
-import { cases, getCase, getOtherCases } from "@/lib/cases";
+import { cases, getCase, getOtherCases, type CaseStudy } from "@/lib/cases";
 
 export const Route = createFileRoute("/cases/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { study: CaseStudy } => {
     const study = getCase(params.slug);
     if (!study) throw notFound();
     return { study };
