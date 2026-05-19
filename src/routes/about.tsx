@@ -663,19 +663,17 @@ function AboutPage() {
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
-            <div className="col-span-12 md:col-span-3 reveal">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
-                <span aria-hidden>[ </span>8.5 — Work with us<span aria-hidden> ]</span>
+            <div className="col-span-12 md:col-span-10 md:col-start-2 reveal text-center">
+              <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6" style={{ color: "var(--accent-red)" }}>
+                Work with us
               </p>
-              <p className="mt-4 text-[12px] text-white/55 tabular-nums">End / Index</p>
-            </div>
-            <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
-              <h2 id="cta-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
-                Have a brand worth<br />
-                <span className="font-light text-white/55">building carefully?</span>
+              <h2 id="cta-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.03em] font-medium text-white">
+                Have a brand worth{" "}
+                <span className="font-light text-white/45 inline">building carefully?</span>
               </h2>
             </div>
           </div>
+
 
           <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-16">
             <div className="col-span-12 md:col-span-3">
