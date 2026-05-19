@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 
 const items: { label: string; to?: string; href?: string }[] = [
   { label: "Services", href: "/#products" },
-  { label: "Products", href: "/#products" },
-  { label: "Case Studies", href: "/#cases" },
+  { label: "Case Studies", to: "/cases" },
   { label: "Insights", href: "/#insights" },
   { label: "About", to: "/about" },
   { label: "Journal", to: "/blog" },
