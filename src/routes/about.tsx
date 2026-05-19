@@ -671,7 +671,7 @@ function AboutPage() {
             </p>
             <h2
               id="cta-heading"
-              className="font-medium text-white/40 inline px-[64px]"
+              className="font-medium text-white/40 inline text-7xl px-[66px]"
             >
               R-M's studio is not just a presentation of services{" "}
               <span className="font-medium text-white/40 inline">
