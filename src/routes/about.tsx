@@ -574,21 +574,23 @@ function AboutPage() {
         >
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
             <div className="grid grid-cols-12 gap-5 mb-16 md:mb-20 reveal">
-              <div className="col-span-12 md:col-span-6 md:col-start-7 text-left">
-                <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-6">
-                  Our niches
-                </p>
-                <h2
-                  id="niches-heading"
-                  className="text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.02em] font-medium text-white"
-                >
-                  Four verticals. Where we go deep.
-                </h2>
-              </div>
+              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-4 md:mb-0">
+                Our niches
+              </p>
+              <h2
+                id="niches-heading"
+                className="col-span-12 md:col-span-7 md:col-start-3 text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.03em] font-medium text-white"
+              >
+                Four verticals.{" "}
+                <span className="font-light text-white/45 inline">Where we go deep.</span>
+              </h2>
+              <p className="col-span-12 md:col-span-3 md:col-start-10 text-[14px] md:text-[15px] leading-[1.55] text-white/60">
+                We don't chase categories. These are the rooms we already know — and where our work compounds.
+              </p>
             </div>
 
             <div className="grid grid-cols-12 gap-5">
-              <ul role="list" className="col-span-12 md:col-span-6 md:col-start-7 grid grid-cols-2 gap-x-5 gap-y-10">
+              <ul role="list" className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {niches.map((n, i) => (
                   <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
                     <a
