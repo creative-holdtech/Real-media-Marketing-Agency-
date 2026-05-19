@@ -422,14 +422,14 @@ function AboutPage() {
         {/* 8.1 — HERO */}
         <section
           aria-labelledby="page-title"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-20 md:pb-28 min-h-[60vh] flex flex-col justify-center"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[60vh] flex flex-col justify-center"
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
                 <span aria-hidden>[ </span>8.1 — Who we are<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30">Studio №01 · Since 2019</p>
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Studio №01 · Since 2019</p>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
@@ -450,6 +450,7 @@ function AboutPage() {
             </div>
           </div>
         </section>
+
 
         {/* 8.2 — MISSION & APPROACH (rotating pillars) */}
         <SpinPillars />
