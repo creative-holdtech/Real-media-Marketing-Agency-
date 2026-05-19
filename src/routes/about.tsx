@@ -215,8 +215,6 @@ function AboutPage() {
         {/* ============= DESIRE — TEAM BENTO ============= */}
         <TeamBento />
 
-        {/* ============= DESIRE — TESTIMONIAL CAROUSEL ============= */}
-        <TestimonialCarousel />
 
         {/* ============= ACTION — CTA ============= */}
         <CTASection />
