@@ -263,24 +263,35 @@ function Index() {
           </div>
         </div>
 
-        {/* Trusted-by strip at bottom of hero */}
-        <div className="relative border-t border-white/10 bg-black/30 backdrop-blur-sm">
-          <div className="max-w-[1320px] mx-auto px-6 md:px-12 py-6 flex items-center gap-8 md:gap-14 overflow-x-auto">
-            <span className="text-[10px] uppercase tracking-[0.25em] text-white/40 whitespace-nowrap">
-              Trusted by
-              <br />
-              visionaries
+        {/* Trusted-by — infinite marquee */}
+        <div className="relative border-t border-white/10 bg-black/40 backdrop-blur-sm">
+          <div className="max-w-[1320px] mx-auto px-6 md:px-12 py-6 flex items-center gap-8 md:gap-12">
+            <span className="hidden sm:block text-[10px] uppercase tracking-[0.25em] text-white/40 whitespace-nowrap shrink-0">
+              Trusted by<br />visionaries
             </span>
-            {["supercharge", "firmable", "ElitaGenetics", "andromeda", "veraty", "WORKYARD", "earlywork.", "advance vc"].map(
-              (b) => (
-                <span
-                  key={b}
-                  className="text-[15px] md:text-[17px] font-medium text-white/55 whitespace-nowrap tracking-tight hover:text-white transition-colors"
-                >
-                  {b}
-                </span>
-              ),
-            )}
+            <div
+              className="marquee relative flex-1 overflow-hidden"
+              style={{
+                maskImage:
+                  "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+              }}
+            >
+              <div className="marquee-track flex items-center gap-10 md:gap-14 w-max">
+                {Array.from({ length: 2 }).flatMap((_, dup) =>
+                  ["supercharge", "firmable", "ElitaGenetics", "andromeda", "veraty", "WORKYARD", "earlywork.", "advance vc"].map((b) => (
+                    <span
+                      key={`${dup}-${b}`}
+                      aria-hidden={dup === 1}
+                      className="text-[15px] md:text-[18px] font-medium text-white/55 hover:text-white whitespace-nowrap tracking-tight transition-colors"
+                    >
+                      {b}
+                    </span>
+                  )),
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </section>
