@@ -39,7 +39,7 @@ export const Route = createFileRoute("/about")({
     links: [
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,400&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap",
       },
     ],
   }),
@@ -138,7 +138,7 @@ function AboutPage() {
   return (
     <div
       className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#efeeea] selection:text-black overflow-x-hidden w-full max-w-full"
-      style={{ fontFamily: '"Outfit", system-ui, sans-serif' }}
+      style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
     >
       <a href="#main" className="skip-link">Skip to content</a>
       <ScrollProgressBar />
@@ -282,19 +282,19 @@ function HeroAsymmetric() {
               id="page-title"
               className="reveal max-w-[18ch] font-medium text-white tracking-[-0.04em] leading-[0.92]"
               style={{
-                fontFamily: '"Fraunces", "Outfit", serif',
+                fontFamily: '"Geist", system-ui, sans-serif',
                 fontSize: "clamp(3rem, 7.2vw, 6.5rem)",
                 fontWeight: 400,
               }}
             >
               A small studio<br />
               for founders{" "}
-              <em
-                className="not-italic font-light text-white/55 inline"
-                style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+              <span
+                className="font-light text-white/55 inline"
+                style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
               >
                 who actually ship.
-              </em>
+              </span>
             </h1>
 
             <p
@@ -405,7 +405,7 @@ function ManifestoScrub() {
           <p
             className="col-span-12 md:col-span-9 font-medium tracking-[-0.025em] text-white leading-[1.12]"
             style={{
-              fontFamily: '"Fraunces", serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(1.75rem, 3.8vw, 3.5rem)",
             }}
@@ -448,18 +448,18 @@ function NumbersBento() {
             <p
               className="font-medium text-white tracking-[-0.035em] leading-[0.96]"
               style={{
-                fontFamily: '"Fraunces", serif',
+                fontFamily: '"Geist", system-ui, sans-serif',
                 fontWeight: 400,
                 fontSize: "clamp(2.5rem, 6vw, 5rem)",
               }}
             >
               Seven years.{" "}
-              <em
-                className="not-italic font-light text-white/45"
-                style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+              <span
+                className="font-light text-white/45"
+                style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
               >
                 Compounded across founder teams.
-              </em>
+              </span>
             </p>
           </div>
           <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] text-white/55 md:pb-3">
@@ -601,18 +601,18 @@ function VerticalsAccordion() {
             id="verticals-heading"
             className="col-span-12 md:col-span-9 font-medium text-white tracking-[-0.04em] leading-[0.95]"
             style={{
-              fontFamily: '"Fraunces", serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(2.5rem, 7vw, 6rem)",
             }}
           >
             Four rooms{" "}
-            <em
-              className="not-italic font-light text-white/45"
-              style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+            <span
+              className="font-light text-white/45"
+              style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
             >
               we already know.
-            </em>
+            </span>
           </h2>
           <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] text-white/60 md:pb-3">
             We don't chase categories. We go deep where our work compounds.
@@ -686,7 +686,7 @@ function VerticalsAccordion() {
                     <h3
                       className="font-medium text-white tracking-[-0.02em] leading-[1.02]"
                       style={{
-                        fontFamily: '"Fraunces", serif',
+                        fontFamily: '"Geist", system-ui, sans-serif',
                         fontWeight: 400,
                         fontSize: "clamp(2rem, 3.6vw, 3.25rem)",
                       }}
@@ -720,7 +720,7 @@ function VerticalsAccordion() {
                 <div>
                   <h3
                     className="text-white font-medium tracking-[-0.02em] leading-[1.02]"
-                    style={{ fontFamily: '"Fraunces", serif', fontWeight: 400, fontSize: "1.75rem" }}
+                    style={{ fontFamily: '"Geist", system-ui, sans-serif', fontWeight: 400, fontSize: "1.75rem" }}
                   >
                     {v.title}
                   </h3>
@@ -759,7 +759,7 @@ function TeamBento() {
             id="team-heading"
             className="col-span-12 md:col-span-9 font-medium text-white tracking-[-0.04em] leading-[0.95]"
             style={{
-              fontFamily: '"Fraunces", serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(2.5rem, 7vw, 6rem)",
             }}
@@ -776,12 +776,12 @@ function TeamBento() {
               }}
             />
             ship{" "}
-            <em
-              className="not-italic font-light text-white/45"
-              style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+            <span
+              className="font-light text-white/45"
+              style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
             >
               the work.
-            </em>
+            </span>
           </h2>
           <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] text-white/60 md:pb-4">
             Four senior operators. No juniors, no handoffs — every engagement is led by the names below.
@@ -810,18 +810,18 @@ function TeamBento() {
               <p
                 className="font-medium tracking-[-0.025em] leading-[1.08] text-white"
                 style={{
-                  fontFamily: '"Fraunces", serif',
+                  fontFamily: '"Geist", system-ui, sans-serif',
                   fontWeight: 400,
                   fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
                 }}
               >
                 Senior hands on every project.{" "}
-                <em
-                  className="not-italic text-white/45 font-light"
-                  style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+                <span
+                  className="text-white/45 font-light"
+                  style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
                 >
                   No juniors. No subcontractors.
-                </em>
+                </span>
               </p>
               <div className="mt-6 flex items-center gap-6 text-[12px] text-white/55 tabular-nums">
                 <span><span className="text-white">12+</span> yrs avg</span>
@@ -875,7 +875,7 @@ function TeamCard({
           <h3
             className="font-medium text-white tracking-[-0.02em] leading-[1.02]"
             style={{
-              fontFamily: '"Fraunces", serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(1.75rem, 3.2vw, 2.75rem)",
             }}
@@ -982,17 +982,17 @@ function TestimonialCarousel() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
               className="font-medium text-white tracking-[-0.02em] leading-[1.18]"
               style={{
-                fontFamily: '"Fraunces", serif',
+                fontFamily: '"Geist", system-ui, sans-serif',
                 fontWeight: 400,
                 fontSize: "clamp(1.5rem, 3vw, 2.75rem)",
               }}
             >
-              <em
+              <span
                 className="not-italic"
-                style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+                style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
               >
                 "{t.quote}"
-              </em>
+              </span>
             </motion.blockquote>
 
             <div className="mt-10 flex items-center gap-4">
@@ -1054,18 +1054,18 @@ function CTASection() {
             id="cta-heading"
             className="font-medium text-white tracking-[-0.04em] leading-[0.95]"
             style={{
-              fontFamily: '"Fraunces", serif',
+              fontFamily: '"Geist", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(3rem, 8vw, 7rem)",
             }}
           >
             Let's build{" "}
-            <em
-              className="not-italic font-light text-white/45"
-              style={{ fontFamily: '"Fraunces", serif', fontStyle: "italic" }}
+            <span
+              className="font-light text-white/45"
+              style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
             >
               something that compounds.
-            </em>
+            </span>
           </h2>
         </div>
 
