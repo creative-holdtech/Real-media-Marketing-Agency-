@@ -67,14 +67,14 @@ export function MobileMenu() {
             <div className="h-14 flex items-center justify-between rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-xl pl-5 pr-2">
               <Link
                 to="/"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 className="font-semibold tracking-tight text-[15px] text-white"
               >
                 R—M<span aria-hidden className="text-[#e85d3a]">.</span>
               </Link>
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={close}
                 aria-label="Close menu"
                 className="inline-flex items-center gap-2 h-10 px-4 text-[12px] uppercase tracking-[0.22em] text-white/85 hover:text-white rounded-full"
               >
@@ -100,7 +100,7 @@ export function MobileMenu() {
                 <li key={it.label}>
                   <Link
                     to={it.to}
-                    onClick={() => setOpen(false)}
+                    onClick={close}
                     className="group flex items-baseline justify-between gap-4 py-5"
                   >
                     <span className="flex items-baseline gap-4 min-w-0">
@@ -129,7 +129,7 @@ export function MobileMenu() {
           <div className="px-6 pt-8 pb-10 mt-4 space-y-6">
             <Link
               to="/audit"
-              onClick={() => setOpen(false)}
+              onClick={close}
               className="inline-flex w-full items-center justify-between gap-2 h-14 px-6 text-[12px] uppercase tracking-[0.22em] rounded-full bg-white text-black font-medium active:scale-[0.98] transition-transform"
             >
               <span>Get the audit</span>
@@ -141,7 +141,7 @@ export function MobileMenu() {
                 <div className="text-white/30 text-[9px]">Write</div>
                 <a
                   href="mailto:hello@r-m.studio"
-                  onClick={() => setOpen(false)}
+                  onClick={close}
                   className="block text-white/80 hover:text-white normal-case tracking-normal text-[13px]"
                 >
                   hello@r-m.studio
