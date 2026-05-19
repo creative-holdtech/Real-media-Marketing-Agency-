@@ -114,7 +114,11 @@ function BlogPage() {
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
               {nav.map((n) => (
                 <li key={n.label}>
-                  <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
+                  {n.to ? (
+                    <Link to={n.to} className="hover:text-white transition-colors">{n.label}</Link>
+                  ) : (
+                    <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
+                  )}
                 </li>
               ))}
               <li>
