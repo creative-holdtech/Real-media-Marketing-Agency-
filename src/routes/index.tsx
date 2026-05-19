@@ -480,8 +480,10 @@ function Index() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {cases.map((c, i) => (
-            <article
-              key={i}
+            <Link
+              key={c.slug}
+              to="/cases/$slug"
+              params={{ slug: c.slug }}
               className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
@@ -529,15 +531,12 @@ function Index() {
                   <span className="text-[12px] text-white/60 group-hover:text-white transition-colors">
                     {c.sector}
                   </span>
-                  <a
-                    href="#contact"
-                    className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
-                  >
+                  <span className="text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium group-hover:bg-[#e85d3a] group-hover:text-white transition-colors">
                     Read Case →
-                  </a>
+                  </span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
