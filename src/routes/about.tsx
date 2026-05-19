@@ -431,37 +431,43 @@ function AboutPage() {
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-9 md:col-start-4">
-              <p className="text-[11px] uppercase tracking-[0.28em] text-white/60 mb-8 md:mb-10">
+              {/* Vertical rhythm: 8px baseline. kicker→H1 24, H1→sub 32, sub→CTA 40 */}
+              <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/60 mb-6">
                 Who we are
               </p>
-              <h1 id="page-title" className="text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
+              <h1
+                id="page-title"
+                className="text-[44px] sm:text-[72px] md:text-[104px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
+              >
                 A small studio for<br />
                 <span className="font-light text-white/70 inline-block">
                   founders who actually ship.
                 </span>
               </h1>
-              <p className="mt-10 max-w-[560px] text-[16px] md:text-[18px] leading-[1.65] text-white/75">
+              <p className="mt-8 max-w-[560px] text-[16px] md:text-[18px] leading-[1.6] text-white/75">
                 R-M is a strategy and brand studio for AI, Fintech, Web3 and
                 lifestyle operators. Two cells, one studio. Senior on every call.
               </p>
 
-
-              {/* Hero CTA + trust strip */}
-              <div className="reveal mt-10 flex flex-wrap items-center gap-x-5 gap-y-4" data-delay="2">
+              {/* Hero CTA + trust strip — buttons share h-12 to align baseline */}
+              <div
+                className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
+                data-delay="2"
+              >
                 <a
                   href="/#contact"
-                  className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                 >
                   Book an audit
                   <span aria-hidden>→</span>
                 </a>
                 <a
                   href="#cases"
-                  className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
+                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                 >
                   Selected work
                 </a>
-                <span className="text-[11px] uppercase tracking-[0.28em] text-white/55 tabular-nums pl-2 border-l border-white/10 ml-1">
+                <span className="inline-flex items-center h-12 pl-4 ml-1 border-l border-white/10 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 tabular-nums">
                   47 brands · €280M raised · 7 yrs
                 </span>
               </div>
