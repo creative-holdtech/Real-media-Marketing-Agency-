@@ -279,12 +279,12 @@ function SeoPage() {
         {/* ANTI-POSITION */}
         <section className="border-b border-white/10">
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
-            <Reveal>
+            <Reveal duration={0.5}>
               <p className="text-[11px] uppercase tracking-[0.28em] text-white/45 mb-8 tabular-nums">
                 Our position
               </p>
             </Reveal>
-            <Reveal delay={0.05}>
+            <Reveal delay={0.05} duration={0.5}>
               <h2 className="max-w-5xl text-[40px] sm:text-[64px] md:text-[88px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
                 We don't sell SEO traffic.{" "}
                 <span className="font-light text-white/45">
@@ -292,7 +292,7 @@ function SeoPage() {
                 </span>
               </h2>
             </Reveal>
-            <Reveal delay={0.1}>
+            <Reveal delay={0.1} duration={0.5}>
               <p className="mt-10 max-w-[680px] text-[15px] md:text-[17px] leading-[1.7] text-white/65">
                 The market is loaded with agencies optimising for impressions, anchor-text spam and
                 AI-generated word count. That model dies on every Google update. Ours doesn't —
@@ -313,7 +313,7 @@ function SeoPage() {
               >
                 <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
                   <div className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center ${reverse ? "md:[&>div:first-child]:order-2" : ""}`}>
-                    <Reveal className="md:col-span-7">
+                    <Reveal className="md:col-span-7" duration={0.5}>
                       <div className="flex items-baseline gap-5 mb-6">
                         <span className="text-[48px] md:text-[72px] leading-none font-light tracking-[-0.04em] text-white/25 tabular-nums">
                           {s.n}
@@ -340,7 +340,7 @@ function SeoPage() {
                       </ul>
                     </Reveal>
 
-                    <Reveal delay={0.1} className="md:col-span-5">
+                    <Reveal delay={0.1} className="md:col-span-5" duration={0.5}>
                       <ServiceArt kind={s.art as "intent" | "content" | "authority"} />
                     </Reveal>
                   </div>
@@ -353,7 +353,7 @@ function SeoPage() {
         {/* OUTCOMES — gapless bento */}
         <section aria-labelledby="outcomes-heading" className="border-b border-white/10 bg-[#070707]">
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <Reveal>
+            <Reveal duration={0.5}>
               <h2
                 id="outcomes-heading"
                 className="max-w-4xl text-[40px] sm:text-[64px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
@@ -375,7 +375,7 @@ function SeoPage() {
                     key={o.n}
                     delay={i * 0.05}
                     className={`${span} rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.015] p-6 md:p-10 overflow-hidden relative`}
-                  >
+                   duration={0.5}>
                     <div className="text-[10px] uppercase tracking-[0.28em] text-white/40 mb-5 tabular-nums">{o.n}</div>
                     <h3 className={`${i === 0 ? "text-[28px] md:text-[44px]" : "text-[22px] md:text-[30px]"} leading-[1.05] tracking-[-0.03em] font-medium text-white`}>
                       {o.title}
@@ -408,7 +408,7 @@ function SeoPage() {
             }}
           />
           <div className="px-6 md:px-12 max-w-[1200px] mx-auto py-28 md:py-40">
-            <Reveal>
+            <Reveal duration={0.5}>
               <blockquote className="text-[28px] sm:text-[40px] md:text-[56px] leading-[1.15] tracking-[-0.025em] font-medium text-white max-w-[22ch] md:max-w-[26ch]">
                 <span className="text-white/35">"</span>
                 Six months in, organic is 64% of pipeline. It's the first agency relationship
@@ -416,7 +416,7 @@ function SeoPage() {
                 <span className="text-white/35">"</span>
               </blockquote>
             </Reveal>
-            <Reveal delay={0.1}>
+            <Reveal delay={0.1} duration={0.5}>
               <div className="mt-12 flex items-center gap-5">
                 <div
                   aria-hidden
@@ -446,7 +446,7 @@ function SeoPage() {
             }}
           />
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-28 md:py-40 text-center">
-            <Reveal>
+            <Reveal duration={0.5}>
               <h2
                 id="cta-heading"
                 className="mx-auto max-w-5xl text-[44px] sm:text-[72px] md:text-[104px] leading-[0.98] tracking-[-0.04em] font-medium text-white"
@@ -455,7 +455,7 @@ function SeoPage() {
                 <span className="font-light text-white/55">Let's audit yours.</span>
               </h2>
             </Reveal>
-            <Reveal delay={0.1}>
+            <Reveal delay={0.1} duration={0.5}>
               <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
                 <MagneticButton
                   href="mailto:hello@r-m.studio?subject=SEO%20audit"
