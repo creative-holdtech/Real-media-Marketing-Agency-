@@ -324,7 +324,7 @@ function SeoPage() {
                   <Reveal
                     key={o.n}
                     delay={i * 0.05}
-                    className={`${span} rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.015] p-6 md:p-10 overflow-hidden relative`}
+                    className={`${span} rounded-3xl border border-white/10 bg-[#111] p-6 md:p-10 overflow-hidden relative transition-[border-color] duration-500 hover:border-white/25`}
                    duration={0.5}>
                     <div className="text-[10px] uppercase tracking-[0.28em] text-white/40 mb-5 tabular-nums">{o.n}</div>
                     <h3 className={`${i === 0 ? "text-[28px] md:text-[44px]" : "text-[22px] md:text-[30px]"} leading-[1.05] tracking-[-0.03em] font-medium text-white`}>
