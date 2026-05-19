@@ -635,17 +635,14 @@ function AboutPage() {
           </div>
         </section>
 
-        {/* 8.5 — CTA / Ending — normalized */}
+        {/* CTA */}
         <section
           aria-labelledby="cta-heading"
           className="bg-[#0a0a0a] text-white border-t border-white/10"
         >
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <div className="grid grid-cols-12 gap-5 reveal-fade">
-              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] mb-4 md:mb-0" style={{ color: "var(--accent-red)" }}>
-                Ending
-              </p>
-              <div className="col-span-12 md:col-span-10 md:col-start-3">
+            <div className="reveal-fade">
+              <div>
                 <h2
                   id="cta-heading"
                   className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1] tracking-[-0.03em] font-medium text-white"
