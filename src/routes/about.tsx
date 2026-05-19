@@ -347,3 +347,145 @@ function AboutPage() {
     </div>
   );
 }
+
+const spinMetrics = [
+  { big: "40+", label: "Projects delivered", caption: "Launched across EU and MENA since 2019." },
+  { big: "$120M+", label: "Capital secured", caption: "Raised by founder teams we partnered with." },
+  { big: "04", label: "Industries mastered", caption: "Fintech, lifestyle, hospitality, B2B SaaS." },
+  { big: "EU·MENA", label: "Markets", caption: "Two cells, one studio — Kyiv, Berlin, Dubai." },
+];
+
+function SpinMetrics() {
+  const wrapRef = useRef<HTMLDivElement | null>(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const el = wrapRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // progress 0 when section enters the sticky window, 1 when it leaves.
+      const total = rect.height - vh;
+      const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
+      setProgress(total > 0 ? scrolled / total : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const count = spinMetrics.length;
+  const active = Math.min(count - 1, Math.floor(progress * count * 0.999));
+  // Place markers so the active item sits at the 3 o'clock anchor (angle 0).
+  const step = 360 / count;
+  const rotation = -progress * (count - 1) * step;
+
+  return (
+    <section
+      ref={wrapRef}
+      aria-labelledby="metrics-heading"
+      className="relative border-t border-white/10"
+      style={{ height: `${count * 90}vh` }}
+    >
+      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+        <div className="px-6 md:px-12 max-w-[1440px] mx-auto w-full">
+          <div className="flex items-center justify-between mb-10 md:mb-16">
+            <h2 id="metrics-heading" className="text-[11px] uppercase tracking-[0.2em] text-white/40">
+              <span aria-hidden>[ </span>01 — By the numbers<span aria-hidden> ]</span>
+            </h2>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/30">
+              {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-12 gap-6 md:gap-12 items-center">
+            {/* Rotating circle */}
+            <div className="col-span-12 md:col-span-7 relative">
+              <div
+                className="relative mx-auto"
+                style={{ width: "min(560px, 90vw)", aspectRatio: "1 / 1" }}
+                aria-hidden
+              >
+                {/* circle outline */}
+                <div className="absolute inset-0 rounded-full border border-white/10" />
+                <div className="absolute inset-[10%] rounded-full border border-white/[0.04]" />
+
+                {/* rotating numbers */}
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    transform: `rotate(${rotation}deg)`,
+                    transition: "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+                  }}
+                >
+                  {spinMetrics.map((m, i) => {
+                    const angle = i * step;
+                    const isActive = i === active;
+                    return (
+                      <div
+                        key={i}
+                        className="absolute top-1/2 left-1/2"
+                        style={{
+                          transform: `rotate(${angle}deg) translateX(46%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
+                          transition: "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+                        }}
+                      >
+                        <div
+                          className="font-medium tracking-[-0.04em] leading-none transition-all duration-500"
+                          style={{
+                            fontSize: isActive ? "clamp(64px, 11vw, 160px)" : "clamp(28px, 4.5vw, 64px)",
+                            color: isActive ? "#e8e6e1" : "rgba(232,230,225,0.18)",
+                          }}
+                        >
+                          {String(i + 1).padStart(2, "0")}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* anchor dot at 3 o'clock */}
+                <span
+                  aria-hidden
+                  className="absolute top-1/2 left-1/2 w-2 h-2 -mt-1 rounded-full bg-[#e85d3a]"
+                  style={{ transform: "translateX(46%) translate(-50%, -50%)" }}
+                />
+              </div>
+            </div>
+
+            {/* Active label + caption */}
+            <div className="col-span-12 md:col-span-5 relative min-h-[180px] md:min-h-[260px]">
+              {spinMetrics.map((m, i) => (
+                <div
+                  key={i}
+                  aria-hidden={i !== active}
+                  className="absolute inset-0 flex flex-col justify-center transition-all duration-500"
+                  style={{
+                    opacity: i === active ? 1 : 0,
+                    transform: i === active ? "translateY(0)" : "translateY(16px)",
+                    pointerEvents: i === active ? "auto" : "none",
+                  }}
+                >
+                  <div className="text-[40px] md:text-[64px] leading-[1] tracking-[-0.02em] font-medium">
+                    {m.big}
+                  </div>
+                  <div className="mt-4 text-[12px] uppercase tracking-[0.2em] text-[#e85d3a]">
+                    {m.label}
+                  </div>
+                  <p className="mt-6 text-[15px] text-white/55 leading-relaxed max-w-sm">
+                    {m.caption}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
