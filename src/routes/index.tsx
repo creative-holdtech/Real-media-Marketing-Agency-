@@ -92,11 +92,11 @@ function BigStatValue({ stat, start }: { stat: BigStat; start: boolean }) {
 }
 
 const metrics = [
-  ["01", "40+", "Launched projects"],
-  ["02", "04", "Industries mastered"],
-  ["03", "EU·MENA", "Markets"],
-  ["04", "High-risk", "Niche expertise"],
-  ["05", "Long-term", "Growth focus"],
+  ["40+", "Launched projects"],
+  ["04", "Industries mastered"],
+  ["EU·MENA", "Active markets"],
+  ["High-risk", "Niche expertise"],
+  ["Long-term", "Growth focus"],
 ];
 
 const testimonials = [
