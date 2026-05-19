@@ -357,7 +357,7 @@ function AboutPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#e85d3a] selection:text-black">
+    <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#efeeea] selection:text-black">
       <a href="#main" className="skip-link">Skip to content</a>
 
       <div
@@ -369,7 +369,7 @@ function AboutPage() {
         className="fixed top-0 left-0 right-0 h-[2px] z-[60] bg-white/5"
       >
         <div
-          className="h-full bg-[#e85d3a] origin-left"
+          className="h-full bg-[#efeeea] origin-left"
           style={{ width: `${progress}%`, transition: "width 80ms linear" }}
         />
       </div>
@@ -378,16 +378,16 @@ function AboutPage() {
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
         <nav aria-label="Primary" className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2">
           <div className="flex items-center gap-3">
-            <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
-              <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
-              About — the studio behind R-M
+            <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[11px] uppercase tracking-[0.18em] font-medium px-3 py-1.5">
+              <span aria-hidden className="inline-block w-1 h-1 rounded-full bg-black" />
+              About / R—M Studio
             </span>
             <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white">
-              R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+              R—M<span aria-hidden>.</span>
             </Link>
           </div>
           <Link to="/" aria-label="R-M home" className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
-            R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+            R—M<span aria-hidden>.</span>
           </Link>
           <div className="flex items-center gap-1">
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
@@ -403,7 +403,7 @@ function AboutPage() {
                 <Link to="/blog" className="hover:text-white transition-colors">Journal</Link>
               </li>
             </ul>
-            <a href="/#contact" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="/#contact" className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors">
               Book an audit
             </a>
             <MobileMenu />
@@ -439,7 +439,7 @@ function AboutPage() {
             <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
                 A small studio for<br />
-                <span className="italic font-light text-white/75 drift inline-block">
+                <span className="font-light text-white/70 inline-block">
                   founders who actually ship.
                 </span>
               </h1>
@@ -452,14 +452,14 @@ function AboutPage() {
               <div className="reveal mt-10 flex flex-wrap items-center gap-x-5 gap-y-4" data-delay="2">
                 <a
                   href="/#contact"
-                  className="inline-flex items-center gap-2 text-[14px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                 >
                   Book an audit
                   <span aria-hidden>→</span>
                 </a>
                 <a
                   href="#cases"
-                  className="inline-flex items-center gap-2 text-[14px] px-6 py-3.5 rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
+                  className="inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                 >
                   Selected work
                 </a>
