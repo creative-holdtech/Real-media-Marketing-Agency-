@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
 import { archive, getPost, posts } from "@/lib/posts";
 
@@ -49,19 +50,39 @@ export const Route = createFileRoute("/blog/$slug")({
   component: ArticlePage,
 });
 
-const nav: { label: string; href: string }[] = [
+const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "/#products" },
   { label: "Products", href: "/#products" },
   { label: "Case Studies", href: "/#cases" },
   { label: "Insights", href: "/#insights" },
-  { label: "About", href: "/#about" },
+  { label: "About", to: "/about" },
 ];
+
+type Section = { id: string; label: string; paragraphs: string[] };
+
+function buildSections(body: string[]): Section[] {
+  // Split the flat body into logical sections (ElevenLabs-style TOC).
+  // Defensive: works for posts with any paragraph count.
+  const labels = ["Introduction", "Patterns we keep seeing", "What changes at scale", "Closing notes"];
+  if (body.length <= 1) return [{ id: "s-1", label: labels[0], paragraphs: body }];
+  // Distribute paragraphs across up to 4 buckets.
+  const buckets = Math.min(labels.length, Math.max(2, Math.ceil(body.length / 2)));
+  const perBucket = Math.ceil(body.length / buckets);
+  return Array.from({ length: buckets }, (_, i) => ({
+    id: `s-${i + 1}`,
+    label: labels[i] ?? `Section ${i + 1}`,
+    paragraphs: body.slice(i * perBucket, (i + 1) * perBucket),
+  })).filter((s) => s.paragraphs.length > 0);
+}
 
 function ArticlePage() {
   useReveal();
   const { post } = Route.useLoaderData();
   const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [activeId, setActiveId] = useState<string>("s-1");
+
+  const sections = useMemo(() => buildSections(post.body), [post.body]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -69,11 +90,23 @@ function ArticlePage() {
       const scrolled = h.scrollTop;
       const max = h.scrollHeight - h.clientHeight;
       setProgress(max > 0 ? (scrolled / max) * 100 : 0);
+
+      // Active TOC item
+      const offsets = sections
+        .map((s) => {
+          const el = document.getElementById(s.id);
+          if (!el) return null;
+          return { id: s.id, top: el.getBoundingClientRect().top };
+        })
+        .filter(Boolean) as { id: string; top: number }[];
+      const above = offsets.filter((o) => o.top <= 140);
+      const current = above.length ? above[above.length - 1] : offsets[0];
+      if (current) setActiveId(current.id);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [sections]);
 
   const currentIndex = posts.findIndex((p) => p.slug === post.slug);
   const next = posts[(currentIndex + 1) % posts.length];
@@ -117,173 +150,220 @@ function ArticlePage() {
               <span aria-hidden>←</span>
               Back to Journal
             </Link>
+            <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white pl-2">
+              R—M<span aria-hidden className="text-[#e85d3a]">.</span>
+            </Link>
           </div>
-          <Link to="/" aria-label="R-M home" className="absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
+          <Link to="/" aria-label="R-M home" className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
             R—M<span aria-hidden className="text-[#e85d3a]">.</span>
           </Link>
           <div className="flex items-center gap-1">
             <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
               {nav.map((n) => (
-                <li key={n.label}><a href={n.href} className="hover:text-white transition-colors">{n.label}</a></li>
+                <li key={n.label}>
+                  {n.to ? (
+                    <Link to={n.to} className="hover:text-white transition-colors">{n.label}</Link>
+                  ) : (
+                    <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
+                  )}
+                </li>
               ))}
               <li>
                 <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
               </li>
             </ul>
-            <a href="/#contact" className="text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
+            <a href="/#contact" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
               Get Audit
             </a>
+            <MobileMenu />
           </div>
         </nav>
       </header>
 
       <main id="main">
-        {/* Article header */}
         <article aria-labelledby="article-title">
-          <header className="px-6 md:px-12 max-w-[1100px] mx-auto pt-32 md:pt-44 pb-12 md:pb-16">
-            <nav aria-label="Breadcrumb" className="reveal text-[11px] uppercase tracking-[0.25em] text-white/40 mb-10 flex flex-wrap items-center gap-2">
-              <Link to="/" className="hover:text-white rounded-md">R-M</Link>
-              <span aria-hidden>/</span>
-              <Link to="/blog" className="hover:text-white rounded-md">Journal</Link>
-              <span aria-hidden>/</span>
-              <span className="text-[#e85d3a]">{post.category}</span>
+          {/* ===== Header (ElevenLabs-style: centered single column) ===== */}
+          <header className="px-6 md:px-12 max-w-[920px] mx-auto pt-32 md:pt-40 pb-10 md:pb-14">
+            {/* Breadcrumb */}
+            <nav aria-label="Breadcrumb" className="reveal text-[14px] text-white/50 mb-10 flex flex-wrap items-center gap-2">
+              <Link to="/blog" className="hover:text-white rounded-md">Blog</Link>
+              <span aria-hidden className="text-white/30">/</span>
+              <span className="text-white/70">{post.category}</span>
             </nav>
 
-            <h1 id="article-title" className="reveal text-[40px] sm:text-[60px] md:text-[84px] leading-[0.98] tracking-[-0.03em] font-medium text-white max-w-[18ch]">
+            {/* Title */}
+            <h1
+              id="article-title"
+              className="reveal text-[40px] sm:text-[56px] md:text-[72px] leading-[1.02] tracking-[-0.025em] font-medium text-white"
+            >
               {post.title}
             </h1>
 
-            <p className="reveal mt-10 max-w-[640px] text-[17px] md:text-[20px] leading-[1.5] text-white/70" data-delay="2">
-              {post.excerpt}
-            </p>
-
-            <div className="reveal mt-12 flex flex-wrap items-center gap-6 text-[12px] text-white/50" data-delay="3">
-              <div className="flex items-center gap-3">
-                <div aria-hidden className="w-9 h-9 rounded-full bg-gradient-to-br from-[#e85d3a] to-[#4a4a6e] grid place-items-center text-[11px] font-medium text-white">R</div>
-                <div>
-                  <div className="text-white/90">{post.author}</div>
-                  <div className="text-[11px] uppercase tracking-[0.2em] text-white/40 mt-0.5">Editorial team</div>
-                </div>
-              </div>
-              <span aria-hidden className="hidden sm:inline w-px h-8 bg-white/10" />
+            {/* Meta row: Written by + Published */}
+            <div className="reveal mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 text-[14px]" data-delay="2">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/40">Published</div>
+                <div className="text-white/40 mb-1.5">Written by</div>
+                <div className="text-white/90">{post.author}</div>
+              </div>
+              <div>
+                <div className="text-white/40 mb-1.5">Published</div>
                 <time dateTime={post.dateISO} className="text-white/90">{post.date}</time>
               </div>
-              <span aria-hidden className="hidden sm:inline w-px h-8 bg-white/10" />
-              <div>
-                <div className="text-[11px] uppercase tracking-[0.2em] text-white/40">Reading time</div>
-                <div className="text-white/90">{post.read}</div>
+            </div>
+
+            <hr className="mt-10 border-t border-white/10" />
+
+            {/* Listen pill + CTA row */}
+            <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+              <div className="flex items-center gap-3.5">
+                <span
+                  aria-hidden
+                  className="grid place-items-center w-11 h-11 rounded-full border border-white/15 text-white/70"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 ml-0.5">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+                <div>
+                  <div className="text-[14px] text-white/90 leading-tight">Listen to this article</div>
+                  <div className="text-[12px] text-white/40 mt-0.5">{post.read}</div>
+                </div>
               </div>
-              <div className="ml-auto flex items-center gap-2">
+              <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={copyLink}
-                  aria-label="Copy article link"
-                  className="text-[11px] uppercase tracking-[0.2em] px-4 py-2 rounded-full border border-white/15 hover:border-white hover:text-white transition-colors min-h-[36px]"
+                  className="text-[13px] px-5 py-2.5 rounded-full border border-white/15 hover:border-white hover:text-white text-white/80 transition-colors min-h-[40px]"
                 >
                   {copied ? "Copied ✓" : "Copy link"}
                 </button>
                 <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Share on Twitter"
-                  className="text-[11px] uppercase tracking-[0.2em] px-4 py-2 rounded-full border border-white/15 hover:border-white hover:text-white transition-colors min-h-[36px]"
+                  href="/#contact"
+                  className="text-[13px] px-5 py-2.5 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors min-h-[40px] inline-flex items-center"
                 >
-                  Share →
+                  Book an audit
                 </a>
               </div>
             </div>
           </header>
 
-          {/* Cover */}
-          <figure className="reveal-fade px-6 md:px-12 max-w-[1320px] mx-auto">
-            <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden rounded-3xl border border-white/10 bg-[#111]">
-              <img src={post.image} alt="" width={1280} height={1024} className="w-full h-full object-cover" />
-              <div
-                aria-hidden
-                className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none"
-                style={{
-                  backgroundImage:
-                    "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
-                }}
-              />
-            </div>
-            <figcaption className="mt-4 text-[11px] uppercase tracking-[0.2em] text-white/30">
-              Cover · {post.category}
-            </figcaption>
-          </figure>
-
-          {/* Body */}
-          <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-16 md:py-24 grid grid-cols-12 gap-6 md:gap-12">
-            {/* Sticky meta sidebar */}
-            <aside aria-label="Article meta" className="hidden lg:block lg:col-span-3">
-              <div className="sticky top-32 space-y-8">
-                <div className="rounded-2xl border border-white/10 p-5 bg-white/[0.02]">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-3">In this essay</p>
-                  <ul className="space-y-2 text-[13px] text-white/70">
-                    <li><a href="#section-1" className="hover:text-white rounded-md">01 · Opening</a></li>
-                    <li><a href="#section-2" className="hover:text-white rounded-md">02 · Patterns</a></li>
-                    <li><a href="#section-3" className="hover:text-white rounded-md">03 · Closing</a></li>
-                  </ul>
+          {/* ===== Body with sticky left TOC ===== */}
+          <div className="px-6 md:px-12 max-w-[1280px] mx-auto pb-20 md:pb-28 relative">
+            <div className="grid grid-cols-12 gap-8 lg:gap-12">
+              {/* Sticky TOC — left rail */}
+              <aside aria-label="Table of contents" className="hidden lg:block lg:col-span-3">
+                <div className="sticky top-32">
+                  <ol className="relative border-l border-white/10 pl-5 space-y-4">
+                    {sections.map((s, i) => {
+                      const isActive = activeId === s.id;
+                      return (
+                        <li key={s.id} className="relative">
+                          <span
+                            aria-hidden
+                            className={`absolute -left-[23px] top-1.5 w-[3px] h-4 rounded-full transition-colors ${
+                              isActive ? "bg-[#e85d3a]" : "bg-transparent"
+                            }`}
+                          />
+                          <a
+                            href={`#${s.id}`}
+                            className={`block text-[13px] leading-[1.45] transition-colors ${
+                              isActive ? "text-white" : "text-white/45 hover:text-white/80"
+                            }`}
+                          >
+                            <span className="text-white/30 tabular-nums mr-2">
+                              {String(i + 1).padStart(2, "0")}
+                            </span>
+                            {s.label}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ol>
                 </div>
-                <div className="rounded-2xl border border-white/10 p-5 bg-white/[0.02]">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-3">Filed under</p>
-                  <p className="text-[14px] text-[#e85d3a]">{post.category}</p>
-                </div>
-              </div>
-            </aside>
+              </aside>
 
-            <div className="col-span-12 lg:col-span-9 lg:pl-8">
-              <div className="prose-rm max-w-[68ch] space-y-8">
-                {post.body.map((para: string, i: number) => (
-                  <p
-                    key={i}
-                    id={i === 0 ? "section-1" : i === 1 ? "section-2" : i === 2 ? "section-3" : undefined}
-                    className={`text-[17px] md:text-[19px] leading-[1.65] text-white/80 ${
-                      i === 0
-                        ? "first-letter:text-[64px] first-letter:font-medium first-letter:float-left first-letter:leading-[0.9] first-letter:mr-3 first-letter:mt-1 first-letter:text-[#e85d3a]"
-                        : ""
-                    }`}
-                  >
-                    {para}
+              {/* Article body */}
+              <div className="col-span-12 lg:col-span-9">
+                <div className="max-w-[720px] mx-auto">
+                  {/* Lede / excerpt */}
+                  <p className="text-[18px] md:text-[20px] leading-[1.55] text-white/85 mb-12">
+                    {post.excerpt}
                   </p>
-                ))}
 
-                {/* Pull quote */}
-                <blockquote className="my-12 border-l-2 border-[#e85d3a] pl-6 md:pl-8">
-                  <p className="text-[24px] md:text-[32px] leading-[1.25] tracking-[-0.015em] font-light italic text-white/90">
-                    “The brands that compound are the ones willing to be boring on purpose.”
-                  </p>
-                </blockquote>
+                  {/* Cover */}
+                  <figure className="mb-14 -mx-2 sm:mx-0">
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-[#111]">
+                      <img
+                        src={post.image}
+                        alt=""
+                        width={1280}
+                        height={800}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  </figure>
 
-                <p className="text-[17px] md:text-[19px] leading-[1.65] text-white/80">
-                  None of this is a prescription. It's a description of what we keep seeing — and what we keep wishing more founders saw earlier. If any of it lands, the rest of the journal is here for you.
-                </p>
-              </div>
+                  {/* Sections */}
+                  {sections.map((section, sIdx) => (
+                    <section key={section.id} aria-labelledby={`${section.id}-h`} className="mb-14">
+                      <h2
+                        id={section.id}
+                        className="scroll-mt-32 text-[24px] md:text-[28px] leading-[1.2] tracking-[-0.015em] font-medium text-white mb-6"
+                      >
+                        <span id={`${section.id}-h`}>{section.label}</span>
+                      </h2>
+                      <div className="space-y-6">
+                        {section.paragraphs.map((para, i) => (
+                          <p
+                            key={i}
+                            className={`text-[17px] md:text-[18px] leading-[1.7] text-white/75 ${
+                              sIdx === 0 && i === 0
+                                ? "first-letter:text-[56px] first-letter:font-medium first-letter:float-left first-letter:leading-[0.9] first-letter:mr-3 first-letter:mt-1 first-letter:text-[#e85d3a]"
+                                : ""
+                            }`}
+                          >
+                            {para}
+                          </p>
+                        ))}
 
-              {/* Footer actions */}
-              <div className="mt-16 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
-                <Link to="/blog" className="text-[12px] uppercase tracking-[0.2em] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors">
-                  ← All entries
-                </Link>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={copyLink}
-                    className="text-[12px] uppercase tracking-[0.2em] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors"
-                  >
-                    {copied ? "Link copied ✓" : "Copy link"}
-                  </button>
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[12px] uppercase tracking-[0.2em] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors"
-                  >
-                    Share on X
-                  </a>
+                        {/* Pull quote after first section */}
+                        {sIdx === 0 && (
+                          <blockquote className="mt-10 border-l-2 border-[#e85d3a] pl-6">
+                            <p className="text-[22px] md:text-[26px] leading-[1.3] tracking-[-0.01em] font-light italic text-white/90">
+                              “The brands that compound are the ones willing to be boring on purpose.”
+                            </p>
+                          </blockquote>
+                        )}
+                      </div>
+                    </section>
+                  ))}
+
+                  {/* Footer actions */}
+                  <div className="mt-4 pt-8 border-t border-white/10 flex flex-wrap items-center justify-between gap-4">
+                    <Link
+                      to="/blog"
+                      className="text-[13px] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors"
+                    >
+                      ← All entries
+                    </Link>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={copyLink}
+                        className="text-[13px] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors"
+                      >
+                        {copied ? "Link copied ✓" : "Copy link"}
+                      </button>
+                      <a
+                        href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[13px] text-white/60 hover:text-white rounded-full px-4 py-2 border border-white/10 hover:border-white/40 transition-colors"
+                      >
+                        Share on X
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -291,7 +371,7 @@ function ArticlePage() {
         </article>
 
         {/* NEXT ARTICLE */}
-        <section aria-label="Next article" className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 md:py-24 border-t border-white/10">
+        <section aria-label="Next article" className="px-6 md:px-12 max-w-[1280px] mx-auto py-16 md:py-24 border-t border-white/10">
           <p className="text-[11px] uppercase tracking-[0.25em] text-white/40 mb-8">Up next</p>
           <Link
             to="/blog/$slug"
@@ -319,7 +399,7 @@ function ArticlePage() {
         </section>
 
         {/* RELATED */}
-        <section aria-labelledby="related-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 md:py-24 border-t border-white/10">
+        <section aria-labelledby="related-heading" className="px-6 md:px-12 max-w-[1280px] mx-auto py-16 md:py-24 border-t border-white/10">
           <div className="flex items-end justify-between mb-12">
             <h2 id="related-heading" className="text-[24px] md:text-[32px] tracking-[-0.02em] font-medium">
               More from the Journal
@@ -352,13 +432,13 @@ function ArticlePage() {
         </section>
       </main>
 
-      <footer className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 border-t border-white/10">
+      <footer className="px-6 md:px-12 max-w-[1280px] mx-auto py-16 border-t border-white/10">
         <nav aria-label="Footer" className="flex flex-wrap items-center justify-between gap-6 text-[12px] text-white/40">
           <span>© R-M 2026</span>
           <ul className="flex items-center gap-6">
-            <li><Link to="/" className="hover:text-white transition-colors rounded-md">Home</Link></li>
-            <li><Link to="/blog" className="hover:text-white transition-colors rounded-md">Journal</Link></li>
+            <li><Link to="/blog" className="hover:text-white transition-colors rounded-md">← Back to Journal</Link></li>
             <li><span className="opacity-70">Privacy</span></li>
+            <li><span aria-label="Locations">Kyiv / EU / MENA</span></li>
           </ul>
         </nav>
       </footer>
