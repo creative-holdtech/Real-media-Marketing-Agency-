@@ -648,7 +648,7 @@ function VerticalsAccordion() {
 
                 {/* Open state */}
                 <div
-                  className="absolute inset-0 flex flex-col justify-between p-8 md:p-10 transition-opacity duration-700 delay-200"
+                  className="absolute inset-0 flex flex-col justify-between p-8 md:p-10 transition-opacity duration-300 delay-150 ease-out"
                   style={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? "auto" : "none" }}
                 >
                   <div className="flex items-center justify-between">
