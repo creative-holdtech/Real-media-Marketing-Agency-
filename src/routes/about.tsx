@@ -638,12 +638,12 @@ function AboutPage() {
               </p>
               <h2
                 id="cta-heading"
-                className="text-[32px] sm:text-[44px] md:text-[56px] leading-[1.1] tracking-[-0.02em] font-medium text-white mx-auto"
+                className="text-[32px] sm:text-[44px] md:text-[56px] leading-[0.98] tracking-[-0.02em] font-medium text-white mx-auto text-balance"
               >
                 <span className="block">A functional tool</span>
-                <span className="block text-white/45 font-light">built to generate growth, attract clients,</span>
-                <span className="block">and sharpen</span>
-                <span className="block text-white/45 font-light">the expertise founders are already shipping.</span>
+                <span className="block text-white/75 font-light">built to generate growth,</span>
+                <span className="block">attract clients and sharpen</span>
+                <span className="block text-white/40 font-light">the expertise founders ship.</span>
               </h2>
 
               <p className="mt-10 text-[15px] md:text-[16px] leading-[1.6] text-white/65 max-w-[520px] mx-auto">
