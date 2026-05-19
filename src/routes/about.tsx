@@ -592,37 +592,53 @@ function AboutPage() {
             </div>
           </div>
 
-          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
+          {/* Swiss editorial 2×2 grid — horizontal cards, plate left + content right.
+              Hairline separators, zero corner radius, explicit CTA in every card. */}
+          <ul role="list" className="grid grid-cols-1 lg:grid-cols-2 gap-px bg-white/10 border border-white/10">
             {niches.map((n, i) => (
               <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                <article className="niche-card group h-full flex flex-col bg-[#efeeea] text-[#0a0a0a] relative">
-                  <div className="flex items-center justify-between px-5 pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60 tabular-nums">
-                    <span>{n.n} / 04</span>
-                    <span aria-hidden>Vertical</span>
-                  </div>
-
-                  {/* Editorial plate — uses generated Swiss diagram image */}
-                  <div className="relative aspect-square w-full overflow-hidden bg-[#efeeea]">
+                <article className="niche-card group h-full grid grid-cols-12 bg-[#efeeea] text-[#0a0a0a]">
+                  {/* Editorial plate — Swiss diagram */}
+                  <div className="col-span-12 sm:col-span-5 relative aspect-square sm:aspect-auto overflow-hidden border-b sm:border-b-0 sm:border-r border-[#0a0a0a]/12 bg-[#efeeea]">
                     <img
                       src={nicheCovers[n.illustration]}
                       alt={`${n.title} — editorial plate`}
                       loading="lazy"
                       width={1024}
                       height={1024}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out"
+                      className="absolute inset-0 w-full h-full object-cover"
                     />
                   </div>
 
-                  <div className="px-5 pt-6 pb-6 flex-1 flex flex-col border-t border-[#0a0a0a]/10">
-                    <h3 className="text-[24px] md:text-[28px] leading-[1.05] tracking-[-0.02em] font-medium">
-                      {n.title}
-                    </h3>
-                    <p className="mt-3 text-[14px] text-[#0a0a0a]/70 leading-[1.6] flex-1">
-                      {n.body}
-                    </p>
-                    <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60">
-                      <span>R—M · Vertical</span>
-                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                  {/* Content column */}
+                  <div className="col-span-12 sm:col-span-7 flex flex-col p-6 md:p-8">
+                    <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60 tabular-nums">
+                      <span>{n.n} / 04</span>
+                      <span aria-hidden>Vertical</span>
+                    </div>
+
+                    <div className="mt-8 md:mt-10 pt-6 border-t border-[#0a0a0a]/12">
+                      <h3 className="text-[26px] md:text-[32px] leading-[1.05] tracking-[-0.02em] font-medium">
+                        {n.title}
+                      </h3>
+                      <p className="mt-4 text-[14px] md:text-[15px] text-[#0a0a0a]/70 leading-[1.65] max-w-[44ch]">
+                        {n.body}
+                      </p>
+                    </div>
+
+                    {/* Footer with explicit CTA — guaranteed in every card */}
+                    <div className="mt-auto pt-8 flex items-end justify-between gap-4 border-t border-[#0a0a0a]/12">
+                      <div className="pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55 tabular-nums">
+                        R—M / V·{n.n}
+                      </div>
+                      <a
+                        href="/#contact"
+                        aria-label={`Discuss ${n.title} engagement`}
+                        className="mt-5 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] font-medium text-[#0a0a0a] border-b border-[#0a0a0a] pb-1.5 hover:gap-4 transition-all"
+                      >
+                        Discuss vertical
+                        <span aria-hidden>→</span>
+                      </a>
                     </div>
                   </div>
                 </article>
