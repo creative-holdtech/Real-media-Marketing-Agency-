@@ -636,9 +636,9 @@ function Index() {
                   </figure>
                   <div className="flex-1 flex flex-col">
                     <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.18em] text-white/40 mb-3">
-                      <span aria-hidden>{p.n}</span>
-                      <span aria-hidden className="w-1 h-1 rounded-full bg-white/20" />
                       <time dateTime={p.dateISO}>{p.date}</time>
+                      <span aria-hidden className="w-1 h-1 rounded-full bg-white/20" />
+                      <span>{p.category}</span>
                     </div>
                     <h3 className="text-[20px] md:text-[22px] leading-[1.2] tracking-[-0.015em] font-medium text-white/90 group-hover:text-white transition-colors">
                       {p.title}
