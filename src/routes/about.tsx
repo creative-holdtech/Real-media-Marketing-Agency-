@@ -382,20 +382,20 @@ function AboutPage() {
           </div>
           <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {team.map((m, i) => {
-              const kinds: NicheIllustration[] = ["ai", "fintech", "hospitality", "b2b"];
-              const kind = kinds[i % kinds.length];
+              const photo = teamPhotos[i % teamPhotos.length];
               return (
                 <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
                   <article className="group h-full flex flex-col rounded-3xl overflow-hidden bg-[#efeeea] hover:-translate-y-1 transition-transform duration-500">
                     <figure className="aspect-[4/5] relative overflow-hidden">
-                      <GrainyGradient kind={kind} />
-                      {/* Initials watermark */}
-                      <div
-                        aria-hidden
-                        className="absolute inset-0 grid place-items-center text-[140px] font-medium text-white/15 tracking-tight pointer-events-none"
-                      >
-                        {m.initials}
-                      </div>
+                      <img
+                        src={photo}
+                        alt={`${m.name}, ${m.role}`}
+                        loading="lazy"
+                        width={800}
+                        height={1000}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                      />
+
                       {/* Bottom legibility scrim */}
                       <div
                         aria-hidden
