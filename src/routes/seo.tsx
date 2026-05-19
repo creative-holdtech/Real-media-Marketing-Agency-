@@ -119,11 +119,23 @@ const marqueeWords = [
 ];
 
 function SeoPage() {
+  const reduce = useReducedMotion();
   const [rIndex, setRIndex] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setRIndex((i) => (i + 1) % ROTATE.length), 2200);
-    return () => clearInterval(t);
-  }, []);
+    if (reduce) return;
+    let t: ReturnType<typeof setInterval> | null = null;
+    const start = () => {
+      if (t) return;
+      t = setInterval(() => setRIndex((i) => (i + 1) % ROTATE.length), 2400);
+    };
+    const stop = () => {
+      if (t) { clearInterval(t); t = null; }
+    };
+    const onVis = () => (document.hidden ? stop() : start());
+    start();
+    document.addEventListener("visibilitychange", onVis);
+    return () => { stop(); document.removeEventListener("visibilitychange", onVis); };
+  }, [reduce]);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#efeeea] selection:text-black overflow-x-hidden">
