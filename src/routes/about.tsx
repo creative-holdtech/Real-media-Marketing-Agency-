@@ -404,55 +404,87 @@ function AboutPage() {
           </div>
         </div>
 
-        {/* 8.1 — HERO */}
+        {/* HERO — cinematic, full-bleed, 2 lines max */}
         <section
           aria-labelledby="page-title"
-          className="px-6 md:px-12 max-w-[1280px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[72vh] flex flex-col justify-center"
+          className="relative isolate overflow-hidden min-h-[88vh] flex flex-col justify-center pt-16 md:pt-24 pb-24 md:pb-32"
         >
-          <div className="grid grid-cols-12 gap-5">
-            <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6 md:mb-0" style={{ color: "var(--accent-red)" }}>
-              Who we are
-            </p>
-            <div className="col-span-12 md:col-span-10 md:col-start-3">
-              <h1
-                id="page-title"
-                className="text-[44px] sm:text-[72px] md:text-[104px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
-              >
-                A small studio for{" "}
-                <span className="font-light text-white/45 inline">
-                  founders who actually ship.
-                </span>
-              </h1>
-              <p className="mt-8 max-w-[640px] text-[16px] md:text-[18px] leading-[1.6] text-white/70">
-                R-M is a strategy and brand studio for AI, Fintech, Web3 and
-                lifestyle operators. Two cells, one studio. Senior on every call.
-              </p>
+          {/* Full-bleed atmospheric bg */}
+          <div aria-hidden className="absolute inset-0 -z-10">
+            <img
+              src={heroBloom}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-[0.38] grayscale contrast-125"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.85) 60%, #0a0a0a 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 mix-blend-overlay opacity-40"
+              style={{
+                background:
+                  "radial-gradient(circle at 20% 30%, rgba(255,59,26,0.18), transparent 45%), radial-gradient(circle at 85% 70%, rgba(58,160,214,0.14), transparent 50%)",
+              }}
+            />
+          </div>
 
-              <div
-                className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
-                data-delay="2"
+          <div className="relative px-6 md:px-12 max-w-[1360px] mx-auto w-full text-center">
+            <h1
+              id="page-title"
+              className="mx-auto max-w-6xl text-[44px] sm:text-[80px] md:text-[112px] leading-[0.98] tracking-[-0.04em] font-medium text-white"
+            >
+              A small studio{" "}
+              <span
+                aria-hidden
+                className="inline-block align-middle h-[0.7em] w-[1.6em] rounded-full bg-cover bg-center mx-1 md:mx-2 ring-1 ring-white/15 shadow-2xl"
+                style={{ backgroundImage: `url(${teamRm})`, transform: "translateY(-0.04em)" }}
+              />{" "}
+              for founders{" "}
+              <span className="font-light text-white/55 inline">who actually ship.</span>
+            </h1>
+
+            <p className="mx-auto mt-10 max-w-[640px] text-[16px] md:text-[19px] leading-[1.6] text-white/72">
+              Strategy and brand for AI, Fintech, Web3 and lifestyle operators.
+              Two cells, one studio. Senior on every call.
+            </p>
+
+            <div
+              className="reveal mt-12 flex flex-wrap items-center justify-center gap-x-4 gap-y-3"
+              data-delay="2"
+            >
+              <MagneticButton
+                href="/#contact"
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
               >
-                <MagneticButton
-                  href="/#contact"
-                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
-                >
-                  Book an audit
-                  <span aria-hidden>→</span>
-                </MagneticButton>
-                <MagneticButton
-                  href="#cases"
-                  strength={10}
-                  className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
-                >
-                  Selected work
-                </MagneticButton>
-                <span className="inline-flex items-center h-12 pl-4 ml-1 border-l border-white/10 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 tabular-nums">
-                  47 brands · €280M raised · 7 yrs
-                </span>
-              </div>
+                Book an audit
+                <span aria-hidden>→</span>
+              </MagneticButton>
+              <MagneticButton
+                href="#cases"
+                strength={10}
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-colors"
+              >
+                Selected work
+              </MagneticButton>
+            </div>
+
+            <div className="mt-14 inline-flex items-center gap-6 px-6 py-3 rounded-full border border-white/10 bg-black/30 backdrop-blur-md text-[11px] uppercase tracking-[0.28em] text-white/60 tabular-nums">
+              <span>47 brands</span>
+              <span aria-hidden className="w-1 h-1 rounded-full bg-white/30" />
+              <span>€280M raised</span>
+              <span aria-hidden className="w-1 h-1 rounded-full bg-white/30" />
+              <span>7 years</span>
             </div>
           </div>
         </section>
+
+        {/* BY THE NUMBERS — gapless bento */}
+        <NumbersBento />
+
 
 
 
