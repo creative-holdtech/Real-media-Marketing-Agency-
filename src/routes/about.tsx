@@ -41,7 +41,7 @@ export const Route = createFileRoute("/about")({
     links: [
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&display=swap",
       },
     ],
   }),
@@ -134,7 +134,7 @@ function AboutPage() {
   return (
     <div
       className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#efeeea] selection:text-black overflow-x-hidden w-full max-w-full"
-      style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif' }}
+      style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
     >
       <a href="#main" className="skip-link">Skip to content</a>
       <ScrollProgressBar />
@@ -234,7 +234,7 @@ function HeroAsymmetric() {
               id="page-title"
               className="reveal max-w-[18ch] font-medium text-white tracking-[-0.04em] leading-[0.92]"
               style={{
-                fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                 fontSize: "clamp(3rem, 7.2vw, 6.5rem)",
                 fontWeight: 400,
               }}
@@ -243,7 +243,7 @@ function HeroAsymmetric() {
               for founders{" "}
               <span
                 className="font-light text-white/55 inline"
-                style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif' }}
+                style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
               >
                 who actually ship.
               </span>
@@ -357,7 +357,7 @@ function ManifestoScrub() {
           <p
             className="col-span-12 md:col-span-9 font-medium tracking-[-0.025em] text-white leading-[1.12]"
             style={{
-              fontFamily: '"Instrument Sans", system-ui, sans-serif',
+              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(1.75rem, 3.8vw, 3.5rem)",
             }}
@@ -400,7 +400,7 @@ function NumbersBento() {
             <p
               className="font-medium text-white tracking-[-0.035em] leading-[0.96]"
               style={{
-                fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                 fontWeight: 400,
                 fontSize: "clamp(2.5rem, 6vw, 5rem)",
               }}
@@ -408,7 +408,7 @@ function NumbersBento() {
               Seven years.{" "}
               <span
                 className="font-light text-white/45"
-                style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif' }}
+                style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
               >
                 Compounded across founder teams.
               </span>
@@ -529,7 +529,7 @@ function VerticalsAccordion() {
             id="verticals-heading"
             className="col-span-12 md:col-span-9 font-medium text-white tracking-[-0.04em] leading-[0.95]"
             style={{
-              fontFamily: '"Instrument Sans", system-ui, sans-serif',
+              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
               fontWeight: 400,
               fontSize: "clamp(2.5rem, 7vw, 6rem)",
             }}
@@ -537,7 +537,7 @@ function VerticalsAccordion() {
             Four rooms{" "}
             <span
               className="font-light text-white/45"
-              style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif' }}
+              style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
             >
               we already know.
             </span>
@@ -615,7 +615,7 @@ function VerticalsAccordion() {
                     <h3
                       className="font-medium text-white tracking-[-0.02em] leading-[1.02]"
                       style={{
-                        fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                        fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                         fontWeight: 400,
                         fontSize: "clamp(2rem, 3.6vw, 3.25rem)",
                       }}
@@ -649,7 +649,7 @@ function VerticalsAccordion() {
                 <div>
                   <h3
                     className="text-white font-medium tracking-[-0.02em] leading-[1.02]"
-                    style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif', fontWeight: 400, fontSize: "1.75rem" }}
+                    style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif', fontWeight: 400, fontSize: "1.75rem" }}
                   >
                     {v.title}
                   </h3>
@@ -701,7 +701,7 @@ function TeamBento() {
             id="team-heading"
             className="font-medium text-white tracking-[-0.035em] leading-[0.95] max-w-[14ch]"
             style={{
-              fontFamily: '"Instrument Sans", system-ui, sans-serif',
+              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
               fontWeight: 500,
               fontSize: "clamp(2.75rem, 7vw, 6rem)",
             }}
@@ -711,7 +711,7 @@ function TeamBento() {
           <p
             className="max-w-[34ch] text-white/55 leading-[1.55]"
             style={{
-              fontFamily: '"Instrument Sans", system-ui, sans-serif',
+              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
               fontSize: "clamp(0.95rem, 1.1vw, 1.05rem)",
             }}
           >
@@ -749,7 +749,7 @@ function TeamBento() {
                 <p
                   className="text-white/65 leading-[1.55] max-w-[40ch]"
                   style={{
-                    fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                    fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                     fontSize: "clamp(0.9rem, 1vw, 0.98rem)",
                   }}
                 >
@@ -759,7 +759,7 @@ function TeamBento() {
                   <h3
                     className="text-white font-medium tracking-[-0.02em] leading-[1.05]"
                     style={{
-                      fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                      fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                       fontWeight: 500,
                       fontSize: "clamp(1.4rem, 2vw, 1.75rem)",
                     }}
@@ -769,7 +769,7 @@ function TeamBento() {
                   <p
                     className="mt-2 text-white/45"
                     style={{
-                      fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                      fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                       fontSize: "12px",
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",
@@ -853,14 +853,14 @@ function TestimonialCarousel() {
                 transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
                 className="font-medium text-white tracking-[-0.02em] leading-[1.18]"
                 style={{
-                  fontFamily: '"Instrument Sans", system-ui, sans-serif',
+                  fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
                   fontWeight: 400,
                   fontSize: "clamp(1.5rem, 3vw, 2.75rem)",
                 }}
               >
                 <span
                   className="not-italic"
-                  style={{ fontFamily: '"Instrument Sans", system-ui, sans-serif' }}
+                  style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
                 >
                   "{t.quote}"
                 </span>
