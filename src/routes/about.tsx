@@ -657,45 +657,58 @@ function AboutPage() {
         </section>
 
 
-        {/* 8.5 — CTA */}
+        {/* 8.5 — CTA / Ending */}
         <section
           aria-labelledby="cta-heading"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-b border-white/10"
         >
-          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
-            <div className="col-span-12 md:col-span-10 md:col-start-2 reveal text-center">
-              <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6" style={{ color: "var(--accent-red)" }}>
-                Work with us
-              </p>
-              <h2 id="cta-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.03em] font-medium text-white">
-                Have a brand worth{" "}
-                <span className="font-light text-white/45 inline">building carefully?</span>
-              </h2>
-            </div>
-          </div>
+          <div className="reveal text-center mx-auto max-w-[1100px]">
+            <p
+              className="text-[11px] uppercase tracking-[0.28em] leading-[1] mb-10 md:mb-12"
+              style={{ color: "var(--accent-red)" }}
+            >
+              Ending
+            </p>
+            <h2
+              id="cta-heading"
+              className="text-[40px] sm:text-[64px] md:text-[88px] lg:text-[104px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
+            >
+              R-M's studio is not just a presentation of services{" "}
+              <span className="font-medium text-white/40 inline">
+                — it's a functional digital tool built to generate growth,
+                attract clients, and highlight expertise.
+              </span>
+            </h2>
 
+            <div className="flex justify-center mt-16 md:mt-20" aria-hidden>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path
+                  d="M16 0 L19 13 L32 16 L19 19 L16 32 L13 19 L0 16 L13 13 Z"
+                  fill="var(--accent-red)"
+                />
+              </svg>
+            </div>
 
-          <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-16">
-            <div className="col-span-12 md:col-span-3">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">Next step</p>
-            </div>
-            <div className="col-span-12 md:col-span-5 reveal">
-              <p className="text-[15px] md:text-[17px] leading-relaxed text-white/65 max-w-[520px]">
-                A 30-minute audit. We pressure-test your positioning, narrative
-                and growth surface — and tell you what we'd ship in the first
-                ninety days.
-              </p>
-            </div>
-            <div className="col-span-12 md:col-span-4 reveal flex flex-col gap-3" data-delay="2">
+            <p
+              className="mt-10 md:mt-12 text-[15px] md:text-[17px] uppercase tracking-[0.18em] font-medium"
+              style={{ color: "var(--accent-red)" }}
+            >
+              Ready to scale your brand?
+            </p>
+            <p className="mt-3 text-[15px] md:text-[17px] uppercase tracking-[0.18em] text-white font-medium">
+              Let's build something bold together.
+            </p>
+
+            <div className="mt-12 md:mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
               <a
                 href="/#contact"
-                className="text-center text-[12px] uppercase tracking-[0.2em] px-6 py-4 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                className="text-[12px] uppercase tracking-[0.2em] px-6 py-4 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
               >
                 Book an audit →
               </a>
               <a
                 href="mailto:hello@r-m.studio"
-                className="text-center text-[12px] uppercase tracking-[0.25em] text-white/50 hover:text-white transition-colors py-2"
+                className="text-[12px] uppercase tracking-[0.25em] text-white/55 hover:text-white transition-colors py-2"
               >
                 hello@r-m.studio
               </a>
