@@ -285,7 +285,7 @@ function HeroAsymmetric() {
                   ? undefined
                   : { y: sy, scale, opacity }
               }
-              className="relative aspect-[4/5] rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]"
+              className="relative aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-[#111] shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]"
             >
               <img
                 src={teamRm}
@@ -733,7 +733,7 @@ function TeamBento() {
               className="group flex flex-col"
             >
               <div
-                className="relative rounded-2xl overflow-hidden aspect-[4/5]"
+                className="relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/10 bg-[#111] transition-[border-color] duration-500 group-hover:border-white/25"
                 style={{ backgroundColor: item.bg }}
               >
                 <img
@@ -741,7 +741,7 @@ function TeamBento() {
                   alt={`${item.person.name}, ${item.person.role}`}
                   className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-95 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.06] will-change-transform"
                 />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/5 rounded-2xl pointer-events-none" />
+                <div className="absolute inset-0 ring-1 ring-inset ring-white/5 rounded-3xl pointer-events-none" />
               </div>
 
               <div className="mt-6 md:mt-7 flex flex-col gap-4">
@@ -819,7 +819,7 @@ function TestimonialCarousel() {
                     zIndex: 10 - offset,
                   }}
                   transition={{ type: "spring", duration: 0.55, bounce: 0.18 }}
-                  className="absolute top-0 left-0 w-[220px] md:w-[280px] aspect-[4/5] rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] will-change-transform"
+                  className="absolute top-0 left-0 w-[220px] md:w-[280px] aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-[#111] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] will-change-transform"
                 >
                   <img
                     src={tt.avatar}

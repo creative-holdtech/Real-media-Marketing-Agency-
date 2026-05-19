@@ -324,7 +324,7 @@ function SeoPage() {
                   <Reveal
                     key={o.n}
                     delay={i * 0.05}
-                    className={`${span} rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.015] p-6 md:p-10 overflow-hidden relative`}
+                    className={`${span} rounded-3xl border border-white/10 bg-[#111] p-6 md:p-10 overflow-hidden relative transition-[border-color] duration-500 hover:border-white/25`}
                    duration={0.5}>
                     <div className="text-[10px] uppercase tracking-[0.28em] text-white/40 mb-5 tabular-nums">{o.n}</div>
                     <h3 className={`${i === 0 ? "text-[28px] md:text-[44px]" : "text-[22px] md:text-[30px]"} leading-[1.05] tracking-[-0.03em] font-medium text-white`}>
@@ -436,7 +436,7 @@ function SeoPage() {
 function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
   if (kind === "intent") {
     return (
-      <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-gradient-to-br from-white/[0.06] to-white/[0.01] p-6">
+      <div className="relative aspect-[4/5] rounded-3xl border border-white/10 overflow-hidden bg-[#111] p-6 transition-[border-color] duration-500 hover:border-white/25">
         <div className="absolute inset-0 opacity-60" style={{
           backgroundImage:
             "radial-gradient(circle at 30% 30%, rgba(255,75,40,0.35), transparent 45%), radial-gradient(circle at 70% 70%, rgba(80,60,255,0.3), transparent 50%)",
@@ -461,7 +461,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
   }
   if (kind === "content") {
     return (
-      <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#0c0c0c] p-6">
+      <div className="relative aspect-[4/5] rounded-3xl border border-white/10 overflow-hidden bg-[#111] p-6 transition-[border-color] duration-500 hover:border-white/25">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full blur-3xl opacity-40"
           style={{ background: "radial-gradient(circle, rgba(80,60,255,0.5), transparent 70%)" }} />
         <div className="relative h-full flex flex-col gap-4">
@@ -484,7 +484,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
     );
   }
   return (
-    <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#0a0a0a] p-6">
+    <div className="relative aspect-[4/5] rounded-3xl border border-white/10 overflow-hidden bg-[#111] p-6 transition-[border-color] duration-500 hover:border-white/25">
       <div className="absolute inset-0 opacity-50" style={{
         background:
           "conic-gradient(from 200deg at 60% 50%, rgba(255,75,40,0.25), transparent 30%, rgba(80,60,255,0.25), transparent 70%)",
