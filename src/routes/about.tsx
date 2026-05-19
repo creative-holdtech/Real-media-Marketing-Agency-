@@ -757,17 +757,18 @@ function SpinPillars() {
               </div>
             </div>
             <div className="col-span-9 md:col-span-3">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-[#e85d3a]">
-                {p.tag}
+              <p className="text-[11px] uppercase tracking-[0.28em] text-white/55 tabular-nums">
+                P / {p.n} — {p.tag}
               </p>
             </div>
             <div className="col-span-12 md:col-span-7">
               <h3 className="text-[24px] md:text-[40px] leading-[1.05] tracking-[-0.02em] font-medium text-white">
                 {p.title}
               </h3>
-              <p className="mt-5 max-w-[560px] text-[15px] md:text-[16px] leading-relaxed text-white/60">
+              <p className="mt-5 max-w-[560px] text-[15px] md:text-[16px] leading-[1.65] text-white/70">
                 {p.body}
               </p>
+
             </div>
           </li>
         ))}
