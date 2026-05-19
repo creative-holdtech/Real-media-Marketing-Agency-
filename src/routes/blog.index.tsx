@@ -130,7 +130,7 @@ function BlogPage() {
 
         {/* TOOLBAR */}
         <section aria-label="Filter and search articles" className="sticky top-[88px] z-40 px-6 md:px-12 max-w-[1440px] mx-auto">
-          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 border border-white/10 bg-black/70 backdrop-blur-xl rounded-3xl p-3 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
+          <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 border border-white/10 bg-[#0c0a09]/70 backdrop-blur-xl rounded-3xl p-3 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]">
             <form role="search" onSubmit={(e) => e.preventDefault()} className="flex items-center gap-3 flex-1 px-3">
               <label htmlFor={searchId} className="sr-only">Search articles</label>
               <svg aria-hidden xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4 text-white/40">
@@ -208,7 +208,7 @@ function BlogPage() {
                       "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
                   }}
                 />
-                <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white">
+                <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-[#0c0a09]/50 backdrop-blur-md border border-white/15 text-white">
                   Featured · {featured.read}
                 </span>
                 <span aria-hidden className="absolute bottom-4 right-4 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-within:opacity-100 transition-all duration-500 text-[11px] uppercase tracking-[0.25em] px-3 py-2 rounded-full bg-[#e85d3a] text-black font-medium">
@@ -300,10 +300,10 @@ function BlogPage() {
                               "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
                           }}
                         />
-                        <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
+                        <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-[#0c0a09]/60 backdrop-blur-md border border-white/15 text-white/90">
                           {p.category}
                         </span>
-                        <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/70">
+                        <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-[#0c0a09]/60 backdrop-blur-md border border-white/15 text-white/70">
                           {p.read}
                         </span>
                         <span aria-hidden className="absolute bottom-3 right-3 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 transition-all duration-500 text-[10px] uppercase tracking-[0.25em] px-3 py-1.5 rounded-full bg-white text-black font-medium">

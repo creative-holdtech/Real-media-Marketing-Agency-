@@ -252,7 +252,7 @@ function CaseDetail() {
                       background: `radial-gradient(circle at 30% 40%, ${o.accent}55, transparent 60%)`,
                     }}
                   />
-                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
+                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-[#0c0a09]/60 backdrop-blur-md border border-white/15 text-white/90">
                     {o.client}
                   </span>
                   <div className="absolute bottom-6 left-6 right-6">

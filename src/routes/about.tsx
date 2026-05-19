@@ -309,7 +309,7 @@ function HeroAsymmetric() {
             </motion.div>
 
             {/* Tiny floating meta plate */}
-            <div className="hidden lg:flex absolute -bottom-6 -left-10 z-10 items-center gap-3 rounded-full bg-black/70 backdrop-blur-md border border-white/10 px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-white/75">
+            <div className="hidden lg:flex absolute -bottom-6 -left-10 z-10 items-center gap-3 rounded-full bg-[#0c0a09]/70 backdrop-blur-md border border-white/10 px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-white/75">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Available · Q3 2026
             </div>

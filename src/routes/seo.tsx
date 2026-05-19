@@ -212,7 +212,7 @@ function SeoPage() {
         </section>
 
         {/* SOCIAL PROOF MARQUEE */}
-        <section aria-label="Trusted by" className="border-y border-white/10 bg-black/40">
+        <section aria-label="Trusted by" className="border-y border-white/10 bg-[#0c0a09]/40">
           <div className="overflow-hidden">
             <div className="flex gap-12 whitespace-nowrap py-5 text-[11px] uppercase tracking-[0.28em] text-white/55 animate-[marquee_38s_linear_infinite]">
               {[...marqueeWords, ...marqueeWords, ...marqueeWords].map((w, i) => (

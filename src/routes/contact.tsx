@@ -136,7 +136,7 @@ function ContactPage() {
                     required
                     rows={5}
                     placeholder="What are you trying to ship?"
-                    className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors resize-none"
+                    className="w-full bg-[#0c0a09]/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors resize-none"
                   />
                 </div>
               </div>
@@ -183,7 +183,7 @@ function Field({
         type={type}
         name={name}
         required={required}
-        className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors"
+        className="w-full bg-[#0c0a09]/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors"
       />
     </div>
   );

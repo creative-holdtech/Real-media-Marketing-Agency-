@@ -108,10 +108,10 @@ function CasesPage() {
                       background: `radial-gradient(circle at 30% 40%, ${c.accent}55, transparent 60%), radial-gradient(circle at 70% 70%, #ffffff10, transparent 60%)`,
                     }}
                   />
-                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/90">
+                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-[#0c0a09]/60 backdrop-blur-md border border-white/15 text-white/90">
                     {c.client}
                   </span>
-                  <span className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white/70">
+                  <span className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-[#0c0a09]/60 backdrop-blur-md border border-white/15 text-white/70">
                     {c.niche}
                   </span>
                   <div className="absolute bottom-6 left-6 right-6">

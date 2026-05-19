@@ -14,13 +14,13 @@ export function SiteHeader({ variant = "light" }: { variant?: "light" | "dark" }
   const tone =
     variant === "dark"
       ? {
-          shell: "border-white/10 bg-black/40 text-white/80",
+          shell: "border-white/10 bg-[#0c0a09]/40 text-white/80",
           link: "text-white/70 hover:text-white",
           cta: "bg-white text-black hover:bg-[#e85d3a] hover:text-white",
           wordmark: "text-white",
         }
       : {
-          shell: "border-white/10 bg-black/40 text-white/80",
+          shell: "border-white/10 bg-[#0c0a09]/40 text-white/80",
           link: "text-white/70 hover:text-white",
           cta: "bg-white text-black hover:bg-[#e85d3a] hover:text-white",
           wordmark: "text-white",
