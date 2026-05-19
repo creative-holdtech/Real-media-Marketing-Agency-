@@ -12,8 +12,7 @@ export const Route = createFileRoute("/")({
 
 const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "#products" },
-  { label: "Products", href: "#products" },
-  { label: "Case Studies", href: "#cases" },
+  { label: "Case Studies", to: "/cases" },
   { label: "Insights", href: "#insights" },
   { label: "About", to: "/about" },
 ];
