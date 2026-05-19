@@ -578,18 +578,6 @@ function Index() {
           </Link>
         </div>
 
-        {/* Bottom ticker */}
-        <div className="mt-24 md:mt-32 marquee relative overflow-hidden border-y border-white/10 py-6">
-          <div className="marquee-track flex items-center gap-12 w-max text-[28px] md:text-[42px] font-medium tracking-[-0.02em] text-white/30">
-            {Array.from({ length: 2 }).flatMap((_, dup) =>
-              ["Strategy", "·", "Positioning", "·", "Brand", "·", "Performance", "·", "Story", "·", "Systems", "·"].map((w, i) => (
-                <span key={`${dup}-${i}`} className={i % 2 === 0 ? "hover:text-[#e85d3a] transition-colors" : "text-[#e85d3a]/60"}>
-                  {w}
-                </span>
-              )),
-            )}
-          </div>
-        </div>
       </section>
 
       <SiteFooter />
