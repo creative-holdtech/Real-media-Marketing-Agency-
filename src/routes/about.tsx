@@ -819,7 +819,7 @@ function TestimonialCarousel() {
                     zIndex: 10 - offset,
                   }}
                   transition={{ type: "spring", duration: 0.55, bounce: 0.18 }}
-                  className="absolute top-0 left-0 w-[220px] md:w-[280px] aspect-[4/5] rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] will-change-transform"
+                  className="absolute top-0 left-0 w-[220px] md:w-[280px] aspect-[4/5] rounded-3xl overflow-hidden border border-white/10 bg-[#111] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] will-change-transform"
                 >
                   <img
                     src={tt.avatar}
