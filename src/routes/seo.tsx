@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MobileMenu } from "@/components/mobile-menu";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
 
