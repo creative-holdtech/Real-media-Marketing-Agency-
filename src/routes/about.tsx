@@ -431,19 +431,20 @@ function AboutPage() {
                 className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
                 data-delay="2"
               >
-                <a
+                <MagneticButton
                   href="/#contact"
                   className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                 >
                   Book an audit
                   <span aria-hidden>→</span>
-                </a>
-                <a
+                </MagneticButton>
+                <MagneticButton
                   href="#cases"
+                  strength={10}
                   className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                 >
                   Selected work
-                </a>
+                </MagneticButton>
                 <span className="inline-flex items-center h-12 pl-4 ml-1 border-l border-white/10 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 tabular-nums">
                   47 brands · €280M raised · 7 yrs
                 </span>
