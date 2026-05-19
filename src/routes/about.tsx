@@ -409,7 +409,7 @@ function AboutPage() {
       <main id="main">
         {/* TICKER */}
         <div className="marquee overflow-hidden border-b border-white/5 pt-24 md:pt-28" aria-hidden>
-          <div className="marquee-track flex gap-12 whitespace-nowrap py-3 text-[11px] uppercase tracking-[0.3em] text-white/30">
+          <div className="marquee-track flex gap-12 whitespace-nowrap py-3 text-[11px] uppercase tracking-[0.3em] text-white/55">
             {[...tickerWords, ...tickerWords, ...tickerWords].map((w, i) => (
               <span key={i} className="flex items-center gap-12">
                 {w}
@@ -426,10 +426,10 @@ function AboutPage() {
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.1 — Who we are<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Studio №01 · Since 2019</p>
+              <p className="mt-4 text-[12px] text-white/55 tabular-nums">Studio №01 · Since 2019</p>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
@@ -462,10 +462,10 @@ function AboutPage() {
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
             <div className="col-span-12 md:col-span-3 reveal">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.3 — Team<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Index 04 / 04</p>
+              <p className="mt-4 text-[12px] text-white/55 tabular-nums">Index 04 / 04</p>
             </div>
             <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
               <h2 id="team-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
@@ -534,10 +534,10 @@ function AboutPage() {
 
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
             <div className="col-span-12 md:col-span-3 reveal">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Index 04 / 04</p>
+              <p className="mt-4 text-[12px] text-white/55 tabular-nums">Index 04 / 04</p>
             </div>
             <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
               <h2 id="niches-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
@@ -551,10 +551,10 @@ function AboutPage() {
             {niches.map((n, i) => (
               <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
                 <article className="group h-full flex flex-col bg-[#efeeea] text-[#0a0a0a] relative">
-                  <div className="flex items-center justify-between px-5 pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/45 tabular-nums">
+                  <div className="flex items-center justify-between px-5 pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60 tabular-nums">
                     <span>{n.n} / 04</span>
                     <span aria-hidden className="inline-flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-[#0a0a0a]/40" />
+                      <span className="w-1 h-1 rounded-full bg-[#0a0a0a]/55" />
                       Vertical
                     </span>
                   </div>
@@ -589,7 +589,7 @@ function AboutPage() {
                     <p className="mt-3 text-[13px] text-[#0a0a0a]/60 leading-[1.55] flex-1">
                       {n.body}
                     </p>
-                    <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/40">
+                    <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60">
                       <span>R—M · Studio</span>
                       <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                     </div>
@@ -612,10 +612,10 @@ function AboutPage() {
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
             <div className="col-span-12 md:col-span-3 reveal">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.5 — Work with us<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30 tabular-nums">End / Index</p>
+              <p className="mt-4 text-[12px] text-white/55 tabular-nums">End / Index</p>
             </div>
             <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
               <h2 id="cta-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
@@ -627,7 +627,7 @@ function AboutPage() {
 
           <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-14">
             <div className="col-span-12 md:col-span-3">
-              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">Next step</p>
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">Next step</p>
             </div>
             <div className="col-span-12 md:col-span-5 reveal">
               <p className="text-[15px] md:text-[17px] leading-relaxed text-white/65 max-w-[520px]">
@@ -656,7 +656,7 @@ function AboutPage() {
       </main>
 
       <footer className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 border-t border-white/10">
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-between gap-6 text-[12px] text-white/40">
+        <nav aria-label="Footer" className="flex flex-wrap items-center justify-between gap-6 text-[12px] text-white/60">
           <span>© R-M 2026</span>
           <ul className="flex items-center gap-6">
             <li><Link to="/" className="hover:text-white transition-colors rounded-md">← Back home</Link></li>
@@ -679,10 +679,10 @@ function SpinPillars() {
       {/* Swiss-style header: 12-col grid, meta left, title right */}
       <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
         <div className="col-span-12 md:col-span-3 reveal">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
             <span aria-hidden>[ </span>8.2 — Mission &amp; approach<span aria-hidden> ]</span>
           </p>
-          <p className="mt-4 text-[12px] text-white/30 tabular-nums">
+          <p className="mt-4 text-[12px] text-white/55 tabular-nums">
             03 principles
           </p>
         </div>
