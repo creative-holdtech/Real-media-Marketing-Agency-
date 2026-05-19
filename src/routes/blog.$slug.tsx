@@ -213,22 +213,9 @@ function ArticlePage() {
 
             <hr className="mt-10 border-t border-white/10" />
 
-            {/* Listen pill + CTA row */}
-            <div className="mt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
-              <div className="flex items-center gap-3.5">
-                <span
-                  aria-hidden
-                  className="grid place-items-center w-11 h-11 rounded-full border border-white/15 text-white/70"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-3.5 h-3.5 ml-0.5">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-                <div>
-                  <div className="text-[14px] text-white/90 leading-tight">Listen to this article</div>
-                  <div className="text-[12px] text-white/40 mt-0.5">{post.read}</div>
-                </div>
-              </div>
+            {/* CTA row */}
+            <div className="mt-8 flex items-center justify-between gap-3">
+              <div className="text-[12px] uppercase tracking-[0.25em] text-white/40">{post.read}</div>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
