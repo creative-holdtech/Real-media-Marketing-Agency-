@@ -159,7 +159,10 @@ function Index() {
               "radial-gradient(55% 45% at 25% 30%, rgba(168,180,150,0.55), transparent 70%), radial-gradient(50% 55% at 70% 55%, rgba(45,30,80,0.75), transparent 70%), radial-gradient(40% 35% at 85% 20%, rgba(120,135,110,0.4), transparent 70%), radial-gradient(45% 40% at 15% 85%, rgba(30,20,60,0.7), transparent 70%)",
           }}
         />
+        {/* WebGL flow-field — sits above gradients, below grain & content. Auto-disables on reduced-motion, mobile, no-WebGL, or perf drops. */}
+        <HeroWebGL />
         {/* Heavy analog grain — base layer */}
+
         <div
           aria-hidden
           className="absolute inset-0 -z-10 opacity-[0.55] mix-blend-overlay"
