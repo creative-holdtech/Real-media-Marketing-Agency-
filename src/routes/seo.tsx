@@ -180,7 +180,7 @@ function SeoPage() {
             </ul>
             <a
               href="#contact"
-              className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+              className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
             >
               Get an audit
             </a>
@@ -245,15 +245,15 @@ function SeoPage() {
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
               <MagneticButton
                 href="#contact"
-                strength={14}
-                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                strength={8}
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 Get an audit
               </MagneticButton>
               <MagneticButton
                 href="#services"
-                strength={10}
-                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-colors"
+                strength={6}
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 How we work
               </MagneticButton>
@@ -332,7 +332,7 @@ function SeoPage() {
                         {s.deliverables.map((d) => (
                           <li
                             key={d}
-                            className="text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-white/15 text-white/75 hover:border-white/35 hover:text-white transition-colors"
+                            className="text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-white/15 text-white/75 hover:border-white/35 hover:text-white transition-[color,border-color,transform] duration-150 ease-out active:scale-[0.97]"
                           >
                             {d}
                           </li>
@@ -459,15 +459,15 @@ function SeoPage() {
               <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
                 <MagneticButton
                   href="mailto:hello@r-m.studio?subject=SEO%20audit"
-                  strength={14}
-                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                  strength={8}
+                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
                 >
                   Get an audit
                 </MagneticButton>
                 <MagneticButton
                   href="/#cases"
-                  strength={10}
-                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-colors"
+                  strength={6}
+                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
                 >
                   See case studies
                 </MagneticButton>
