@@ -138,7 +138,7 @@ function SeoPage() {
   }, [reduce]);
 
   return (
-    <div className="min-h-screen bg-[#0b0b0c] text-[#e9e4d8] selection:bg-[#f2efe7] selection:text-black overflow-x-hidden">
+    <div className="min-h-screen bg-[#1a1d22] text-[#ece6d6] selection:bg-[#f5f0e2] selection:text-black overflow-x-hidden">
       <a href="#main" className="skip-link">Skip to content</a>
       <ScrollProgressBar />
 
@@ -180,7 +180,7 @@ function SeoPage() {
             </ul>
             <a
               href="#contact"
-              className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#f2efe7] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+              className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#f5f0e2] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
             >
               Get an audit
             </a>
@@ -201,7 +201,7 @@ function SeoPage() {
             className="absolute inset-0 -z-10"
             style={{
               background:
-                "radial-gradient(60% 50% at 50% 35%, rgba(200,191,174,0.20), transparent 70%), radial-gradient(40% 40% at 80% 80%, rgba(168,183,196,0.14), transparent 70%), #070708",
+                "radial-gradient(60% 50% at 50% 35%, rgba(120,140,160,0.18), transparent 70%), radial-gradient(40% 40% at 80% 80%, rgba(236,230,214,0.07), transparent 70%), #16191d",
             }}
           />
           <div
@@ -246,7 +246,7 @@ function SeoPage() {
               <MagneticButton
                 href="#contact"
                 strength={8}
-                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#f2efe7] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#f5f0e2] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 Get an audit
               </MagneticButton>
@@ -351,7 +351,7 @@ function SeoPage() {
         </section>
 
         {/* OUTCOMES — gapless bento */}
-        <section aria-labelledby="outcomes-heading" className="border-b border-white/10 bg-[#070708]">
+        <section aria-labelledby="outcomes-heading" className="border-b border-white/10 bg-[#16191d]">
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
             <Reveal duration={0.5}>
               <h2
@@ -404,7 +404,7 @@ function SeoPage() {
             className="absolute inset-0 -z-10"
             style={{
               background:
-                "radial-gradient(50% 60% at 30% 40%, rgba(168,183,196,0.22), transparent 70%), #0b0b0c",
+                "radial-gradient(50% 60% at 30% 40%, rgba(236,230,214,0.10), transparent 70%), #1a1d22",
             }}
           />
           <div className="px-6 md:px-12 max-w-[1200px] mx-auto py-28 md:py-40">
@@ -460,7 +460,7 @@ function SeoPage() {
                 <MagneticButton
                   href="mailto:hello@r-m.studio?subject=SEO%20audit"
                   strength={8}
-                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#f2efe7] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                  className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#f5f0e2] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
                 >
                   Get an audit
                 </MagneticButton>
@@ -477,7 +477,7 @@ function SeoPage() {
         </section>
       </main>
 
-      <footer className="bg-[#0b0b0c] border-t border-white/10 text-white">
+      <footer className="bg-[#1a1d22] border-t border-white/10 text-white">
         <div className="px-6 md:px-12 max-w-[1280px] mx-auto pt-20 pb-10">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-y-10 gap-x-6 pb-16 border-b border-white/10">
             <div className="col-span-2 md:col-span-4">
@@ -534,7 +534,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
       <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-gradient-to-br from-white/[0.06] to-white/[0.01] p-6">
         <div className="absolute inset-0 opacity-60" style={{
           backgroundImage:
-            "radial-gradient(circle at 30% 30%, rgba(200,191,174,0.35), transparent 45%), radial-gradient(circle at 70% 70%, rgba(168,183,196,0.30), transparent 50%)",
+            "radial-gradient(circle at 30% 30%, rgba(120,140,160,0.30), transparent 45%), radial-gradient(circle at 70% 70%, rgba(236,230,214,0.20), transparent 50%)",
         }} />
         <div className="relative h-full flex flex-col justify-between">
           <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">Intent map</div>
@@ -556,9 +556,9 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
   }
   if (kind === "content") {
     return (
-      <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#101012] p-6">
+      <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#22262c] p-6">
         <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full blur-3xl opacity-40"
-          style={{ background: "radial-gradient(circle, rgba(168,183,196,0.45), transparent 70%)" }} />
+          style={{ background: "radial-gradient(circle, rgba(236,230,214,0.30), transparent 70%)" }} />
         <div className="relative h-full flex flex-col gap-4">
           <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">Pillar / cluster</div>
           <div className="space-y-2">
@@ -579,10 +579,10 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
     );
   }
   return (
-    <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#0b0b0c] p-6">
+    <div className="relative aspect-[4/5] rounded-2xl border border-white/10 overflow-hidden bg-[#1a1d22] p-6">
       <div className="absolute inset-0 opacity-50" style={{
         background:
-          "conic-gradient(from 200deg at 60% 50%, rgba(200,191,174,0.25), transparent 30%, rgba(168,183,196,0.25), transparent 70%)",
+          "conic-gradient(from 200deg at 60% 50%, rgba(120,140,160,0.22), transparent 30%, rgba(236,230,214,0.18), transparent 70%)",
       }} />
       <div className="relative h-full flex flex-col">
         <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">Authority graph</div>
