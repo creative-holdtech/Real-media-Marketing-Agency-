@@ -62,8 +62,8 @@ function ServicesIndex() {
           {servicesList.map((s, i) => (
             <Link
               key={s.slug}
-              to={s.slug === "seo" ? "/seo" : "/services/$slug"}
-              params={s.slug === "seo" ? undefined : { slug: s.slug }}
+              to="/services/$slug"
+              params={{ slug: s.slug }}
               className="group relative flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] reveal"
               data-delay={String((i % 4) + 1)}
             >
