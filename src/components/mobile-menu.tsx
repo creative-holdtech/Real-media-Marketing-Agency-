@@ -43,10 +43,10 @@ export function MobileMenu() {
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
-          className="fixed inset-0 z-[70] bg-black/95 backdrop-blur-xl text-white animate-in fade-in duration-200"
+          className="fixed inset-0 z-[70] bg-[#0a0a0a] text-white animate-in fade-in duration-200 overflow-y-auto"
         >
           <div className="px-4 pt-4">
-            <div className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/60 backdrop-blur-xl pl-5 pr-2">
+            <div className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-[#111] pl-5 pr-2">
               <Link
                 to="/"
                 onClick={() => setOpen(false)}
@@ -58,7 +58,7 @@ export function MobileMenu() {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="text-[13px] uppercase tracking-[0.2em] text-white/85 hover:text-white px-4 py-2 rounded-full"
+                className="text-[12px] uppercase tracking-[0.22em] text-white/85 hover:text-white px-4 py-2 rounded-full"
               >
                 Close
               </button>
@@ -67,18 +67,23 @@ export function MobileMenu() {
 
           <nav
             aria-label="Mobile primary"
-            className="px-8 pt-16 pb-12 flex flex-col h-[calc(100vh-72px)]"
+            className="px-8 pt-12 pb-10 flex flex-col min-h-[calc(100dvh-72px)]"
           >
-            <ul className="flex-1 flex flex-col gap-2">
-              {items.map((it) =>
+            <ul className="flex-1 flex flex-col divide-y divide-white/8 border-y border-white/8">
+              {items.map((it, i) =>
                 it.to ? (
                   <li key={it.label}>
                     <Link
                       to={it.to}
                       onClick={() => setOpen(false)}
-                      className="block text-[44px] leading-[1.1] tracking-[-0.03em] font-medium text-white/90 hover:text-[#e85d3a] transition-colors py-2"
+                      className="group flex items-baseline justify-between py-5 text-white/90 hover:text-[#e85d3a] transition-colors"
                     >
-                      {it.label}
+                      <span className="text-[36px] leading-[1.1] tracking-[-0.03em] font-medium">
+                        {it.label}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 tabular-nums">
+                        0{i + 1}
+                      </span>
                     </Link>
                   </li>
                 ) : (
@@ -86,34 +91,43 @@ export function MobileMenu() {
                     <a
                       href={it.href}
                       onClick={() => setOpen(false)}
-                      className="block text-[44px] leading-[1.1] tracking-[-0.03em] font-medium text-white/90 hover:text-[#e85d3a] transition-colors py-2"
+                      className="flex items-baseline justify-between py-5 text-white/90 hover:text-[#e85d3a] transition-colors"
                     >
-                      {it.label}
+                      <span className="text-[36px] leading-[1.1] tracking-[-0.03em] font-medium">
+                        {it.label}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 tabular-nums">
+                        0{i + 1}
+                      </span>
                     </a>
                   </li>
                 ),
               )}
             </ul>
 
-            <div className="mt-10 flex flex-col gap-4">
+            <div className="mt-10 flex flex-col gap-5">
               <Link
                 to="/audit"
                 onClick={() => setOpen(false)}
-                className="text-center text-[14px] px-6 py-4 rounded-full bg-[#e85d3a] text-white font-medium"
+                className="inline-flex items-center justify-center gap-2 h-14 px-7 text-[12px] uppercase tracking-[0.22em] rounded-full bg-white text-black font-medium active:scale-[0.97] transition-transform"
               >
-                Get Audit →
+                Get the audit →
               </Link>
-              <a
-                href="mailto:hello@r-m.studio"
-                onClick={() => setOpen(false)}
-                className="text-[11px] uppercase tracking-[0.25em] text-white/40 hover:text-white text-center transition-colors"
-              >
-                hello@r-m.studio
-              </a>
+              <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.25em] text-white/35">
+                <a
+                  href="mailto:hello@r-m.studio"
+                  onClick={() => setOpen(false)}
+                  className="hover:text-white transition-colors"
+                >
+                  hello@r-m.studio
+                </a>
+                <span>Kyiv · EU · MENA</span>
+              </div>
             </div>
           </nav>
         </div>
       )}
+
     </>
   );
 }
