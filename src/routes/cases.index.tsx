@@ -5,7 +5,7 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { caseNiches, cases, type CaseNiche } from "@/lib/cases";
 
-export const Route = createFileRoute("/cases")({
+export const Route = createFileRoute("/cases/")({
   head: () => ({
     meta: [
       { title: "Case Studies — Results We Deliver | R-M" },
