@@ -311,7 +311,7 @@ function HeroAsymmetric() {
             >
               <MagneticButton
                 href="/#contact"
-                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
+                className="inline-flex items-center gap-2 h-12 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] active:scale-[0.97] transition-[transform,background-color] duration-150 ease-out will-change-transform"
               >
                 Book an audit
                 <span aria-hidden>→</span>
