@@ -175,20 +175,15 @@ function AuditPage() {
       </section>
 
       {/* FORM */}
-      <section id="audit-form" className="relative px-6 md:px-12 max-w-[1100px] mx-auto py-24 md:py-32">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 50% 50%, rgba(232,93,58,0.18), transparent 70%)",
-          }}
-        />
-        <div className="reveal text-center mb-12">
-          <h2 className="text-[40px] sm:text-[56px] md:text-[72px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            Request the audit.
+      <section id="audit-form" className="px-6 md:px-12 max-w-[820px] mx-auto py-24 md:py-36">
+        <div className="reveal mb-16 md:mb-20">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-6">
+            Request the audit
+          </p>
+          <h2 className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
+            Tell us where you're stuck.
           </h2>
-          <p className="mt-5 text-[14px] md:text-[15px] text-white/55">
+          <p className="mt-5 text-[14px] md:text-[15px] text-white/45">
             Free · No obligation · Result in 3–5 days
           </p>
         </div>
@@ -205,21 +200,21 @@ function AuditPage() {
             window.location.href = `mailto:hello@r-m.studio?${params}`;
             setSent(true);
           }}
-          className="reveal rounded-3xl border border-white/10 bg-[#111] p-6 md:p-12 transition-[border-color] duration-500 hover:border-white/20"
+          className="reveal"
           data-delay="2"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-9">
             <Field label="Name" name="name" required />
             <Field label="Company" name="company" />
             <Field label="Email" name="email" type="email" required />
             <Field label="Website" name="site" placeholder="https://" />
           </div>
 
-          <div className="mt-8">
-            <div className="text-[11px] uppercase tracking-[0.22em] text-white/45 mb-4">
+          <div className="mt-14">
+            <div className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5">
               What are you interested in?
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-7 gap-y-3">
               {["SMM", "PR", "SEO", "Performance"].map((k) => {
                 const active = picks.includes(k);
                 return (
@@ -228,10 +223,10 @@ function AuditPage() {
                     type="button"
                     onClick={() => toggle(k)}
                     aria-pressed={active}
-                    className={`text-[12px] uppercase tracking-[0.2em] px-4 py-2 rounded-full border transition-colors active:scale-[0.97] ${
+                    className={`text-[14px] pb-1 border-b transition-colors ${
                       active
-                        ? "bg-white text-black border-white"
-                        : "border-white/15 text-white/65 hover:border-white/40 hover:text-white"
+                        ? "text-white border-[#e85d3a]"
+                        : "text-white/45 border-transparent hover:text-white/80"
                     }`}
                   >
                     {k}
@@ -241,21 +236,21 @@ function AuditPage() {
             </div>
           </div>
 
-          <div className="mt-8">
-            <label className="block text-[11px] uppercase tracking-[0.22em] text-white/45 mb-3">
-              Anything else we should know?
+          <div className="mt-14">
+            <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
+              Anything else?
             </label>
             <textarea
               name="notes"
-              rows={4}
+              rows={2}
               placeholder="What's the biggest thing stuck right now?"
-              className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors resize-none"
+              className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
             />
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-[12px] text-white/45">
-              Free · No obligation · Result in 3–5 days
+          <div className="mt-16 flex flex-wrap items-center justify-between gap-4">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-white/35">
+              Reply within 1 business day
             </p>
             <button
               type="submit"
@@ -287,7 +282,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-[11px] uppercase tracking-[0.22em] text-white/45 mb-3">
+      <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-3">
         {label}
         {required && <span className="text-[#e85d3a] ml-1">*</span>}
       </label>
@@ -296,7 +291,7 @@ function Field({
         name={name}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-[15px] text-white placeholder:text-white/30 focus:outline-none focus:border-white/40 transition-colors"
+        className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors"
       />
     </div>
   );
