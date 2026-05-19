@@ -573,50 +573,53 @@ function AboutPage() {
           className="bg-[#0a0a0a] text-white border-t border-white/10"
         >
           <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
-            <div className="max-w-[760px] mb-16 md:mb-20 reveal">
-              <p className="text-[12px] uppercase tracking-[0.16em] text-white/50 mb-5">
-                Our niches
-              </p>
-              <h2
-                id="niches-heading"
-                className="text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.02em] font-medium text-white"
-              >
-                Four verticals. Where we go deep.
-              </h2>
+            <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-20 reveal">
+              <div className="col-span-12 md:col-span-8 md:col-start-3 text-left">
+                <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-6">
+                  Our niches
+                </p>
+                <h2
+                  id="niches-heading"
+                  className="text-[40px] sm:text-[52px] md:text-[64px] leading-[1.05] tracking-[-0.02em] font-medium text-white"
+                >
+                  Four verticals. Where we go deep.
+                </h2>
+              </div>
             </div>
 
-            <ul role="list" className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8">
-              {niches.map((n, i) => (
-                <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                  <a
-                    href="/#contact"
-                    aria-label={`Discuss ${n.title} engagement`}
-                    className="group block"
-                  >
-                    <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
-                      <img
-                        src={nicheCovers[n.illustration]}
-                        alt={`${n.title} — minimalist mark`}
-                        loading="lazy"
-                        width={800}
-                        height={800}
-                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
-                      />
-                    </div>
-                    <div className="text-[11px] uppercase tracking-[0.14em] text-white/45 mb-1.5 tabular-nums">
-                      {n.n} · Vertical
-                    </div>
-                    <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
-                      {n.title}
-                    </h3>
-                    <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
-                      {n.body}
-                    </p>
-                  </a>
-                </li>
-              ))}
-            </ul>
-
+            <div className="grid grid-cols-12 gap-6 md:gap-12">
+              <ul role="list" className="col-span-12 md:col-span-8 md:col-start-5 grid grid-cols-2 gap-x-5 gap-y-10">
+                {niches.map((n, i) => (
+                  <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
+                    <a
+                      href="/#contact"
+                      aria-label={`Discuss ${n.title} engagement`}
+                      className="group block"
+                    >
+                      <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
+                        <img
+                          src={nicheCovers[n.illustration]}
+                          alt={`${n.title} — minimalist mark`}
+                          loading="lazy"
+                          width={800}
+                          height={800}
+                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                        />
+                      </div>
+                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
+                        {n.n} · Vertical
+                      </div>
+                      <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
+                        {n.title}
+                      </h3>
+                      <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
+                        {n.body}
+                      </p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
