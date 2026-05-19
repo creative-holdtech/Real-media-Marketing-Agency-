@@ -383,7 +383,7 @@ function AboutPage() {
 function SpinPillars() {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
-  const [prev, setPrev] = useState(0);
+
 
   useEffect(() => {
     const onScroll = () => {
