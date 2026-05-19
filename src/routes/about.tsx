@@ -4,6 +4,24 @@ import { useEffect, useState } from "react";
 import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
 
+import nicheAi from "@/assets/niche-ai.jpg";
+import nicheFintech from "@/assets/niche-fintech.jpg";
+import nicheHospitality from "@/assets/niche-hospitality.jpg";
+import nicheB2b from "@/assets/niche-b2b.jpg";
+import teamRm from "@/assets/team-rm.jpg";
+import teamAl from "@/assets/team-al.jpg";
+import teamSk from "@/assets/team-sk.jpg";
+import teamJd from "@/assets/team-jd.jpg";
+
+const nicheCovers: Record<"ai" | "fintech" | "hospitality" | "b2b", string> = {
+  ai: nicheAi,
+  fintech: nicheFintech,
+  hospitality: nicheHospitality,
+  b2b: nicheB2b,
+};
+const teamPhotos = [teamRm, teamAl, teamSk, teamJd];
+
+
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
