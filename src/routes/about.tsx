@@ -486,7 +486,7 @@ function AboutPage() {
           aria-labelledby="team-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
-          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.3 — Team<span aria-hidden> ]</span>
@@ -581,7 +581,7 @@ function AboutPage() {
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
 
-          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
@@ -657,7 +657,7 @@ function AboutPage() {
           aria-labelledby="cta-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
-          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
                 <span aria-hidden>[ </span>8.5 — Work with us<span aria-hidden> ]</span>
@@ -672,7 +672,7 @@ function AboutPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-14">
+          <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-16">
             <div className="col-span-12 md:col-span-3">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">Next step</p>
             </div>
