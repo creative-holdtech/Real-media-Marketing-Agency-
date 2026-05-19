@@ -237,6 +237,93 @@ function GrainyGradient({
   );
 }
 
+// Swiss / Galaxy-grade line glyphs — one per niche, line-only on bone white
+function NicheGlyph({ kind }: { kind: NicheIllustration }) {
+  const stroke = "#0a0a0a";
+  const common = {
+    fill: "none",
+    stroke,
+    strokeWidth: 0.6,
+    vectorEffect: "non-scaling-stroke" as const,
+  };
+  return (
+    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 w-full h-full">
+      <g opacity="0.08" stroke={stroke} strokeWidth="0.25">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <line key={`v${i}`} x1={10 + i * 10} y1="10" x2={10 + i * 10} y2="90" />
+        ))}
+        {Array.from({ length: 9 }).map((_, i) => (
+          <line key={`h${i}`} x1="10" y1={10 + i * 10} x2="90" y2={10 + i * 10} />
+        ))}
+      </g>
+
+      {kind === "ai" && (
+        <g {...common}>
+          <circle cx="50" cy="50" r="22" />
+          <circle cx="50" cy="50" r="14" />
+          <circle cx="50" cy="50" r="6" />
+          <ellipse cx="50" cy="50" rx="34" ry="14" />
+          <ellipse cx="50" cy="50" rx="34" ry="14" transform="rotate(60 50 50)" />
+          <ellipse cx="50" cy="50" rx="34" ry="14" transform="rotate(120 50 50)" />
+          <circle cx="50" cy="50" r="1.2" fill={stroke} />
+        </g>
+      )}
+
+      {kind === "fintech" && (
+        <g {...common}>
+          {[[50,30],[34,42],[66,42],[50,54],[34,66],[66,66]].map(([cx,cy],i)=>(
+            <polygon key={i} points={`${cx},${cy-8} ${cx+7},${cy-4} ${cx+7},${cy+4} ${cx},${cy+8} ${cx-7},${cy+4} ${cx-7},${cy-4}`} />
+          ))}
+          <line x1="50" y1="30" x2="34" y2="42" />
+          <line x1="50" y1="30" x2="66" y2="42" />
+          <line x1="34" y1="42" x2="50" y2="54" />
+          <line x1="66" y1="42" x2="50" y2="54" />
+          <line x1="50" y1="54" x2="34" y2="66" />
+          <line x1="50" y1="54" x2="66" y2="66" />
+          {[[50,30],[34,42],[66,42],[50,54],[34,66],[66,66]].map(([cx,cy],i)=>(
+            <circle key={`d${i}`} cx={cx} cy={cy} r="0.9" fill={stroke} />
+          ))}
+        </g>
+      )}
+
+      {kind === "hospitality" && (
+        <g {...common}>
+          <line x1="14" y1="78" x2="86" y2="78" />
+          <path d="M28,78 L28,52 A22,22 0 0 1 72,52 L72,78" />
+          <line x1="28" y1="62" x2="72" y2="62" strokeDasharray="0.8 1.6" />
+          <circle cx="50" cy="52" r="10" />
+          <circle cx="50" cy="52" r="4" />
+          <circle cx="50" cy="52" r="0.9" fill={stroke} />
+          <line x1="28" y1="78" x2="28" y2="82" />
+          <line x1="50" y1="78" x2="50" y2="82" />
+          <line x1="72" y1="78" x2="72" y2="82" />
+        </g>
+      )}
+
+      {kind === "b2b" && (
+        <g {...common}>
+          <polygon points="50,22 74,34 74,58 50,70 26,58 26,34" />
+          <polygon points="50,34 62,40 62,52 50,58 38,52 38,40" />
+          <line x1="50" y1="22" x2="50" y2="34" />
+          <line x1="26" y1="34" x2="38" y2="40" />
+          <line x1="74" y1="34" x2="62" y2="40" />
+          <line x1="50" y1="58" x2="50" y2="70" />
+          <line x1="14" y1="80" x2="86" y2="80" strokeDasharray="0.8 1.6" />
+          <circle cx="50" cy="22" r="0.9" fill={stroke} />
+          <circle cx="26" cy="58" r="0.9" fill={stroke} />
+          <circle cx="74" cy="58" r="0.9" fill={stroke} />
+        </g>
+      )}
+
+      <text x="14" y="16" fontSize="2.4" fill={stroke} opacity="0.5" fontFamily="ui-sans-serif, system-ui" letterSpacing="0.6">
+        R—M / {kind.toUpperCase()}
+      </text>
+    </svg>
+  );
+}
+
+
+
 
 
 function AboutPage() {
@@ -427,55 +514,82 @@ function AboutPage() {
 
         </section>
 
-        {/* 8.4 — NICHES */}
+        {/* 8.4 — NICHES — Swiss line-only, muted grain */}
         <section
           aria-labelledby="niches-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
         >
-          <div className="flex flex-col items-center text-center mb-14">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
-            </p>
-            <h2 id="niches-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Four verticals.<br />
-              <span className="italic font-light text-white/60">Where we go deep.</span>
-            </h2>
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+            <div className="col-span-12 md:col-span-3 reveal">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+                <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
+              </p>
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Index 04 / 04</p>
+            </div>
+            <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
+              <h2 id="niches-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
+                Four verticals.<br />
+                <span className="italic font-light text-white/55">Where we go deep.</span>
+              </h2>
+            </div>
           </div>
-          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
             {niches.map((n, i) => (
               <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                <article className="group h-full flex flex-col rounded-[20px] bg-[#efeeea] text-[#0a0a0a] overflow-hidden hover:-translate-y-1 transition-transform duration-500">
-                  {/* Editorial cover — ElevenLabs blog style */}
-                  <div className="aspect-[16/10] w-full overflow-hidden relative">
-                    <img
-                      src={nicheCovers[n.illustration]}
-                      alt={`${n.title} — editorial cover`}
-                      loading="lazy"
-                      width={1280}
-                      height={800}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                    />
+                <article className="group h-full flex flex-col bg-[#efeeea] text-[#0a0a0a] relative">
+                  <div className="flex items-center justify-between px-5 pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/45 tabular-nums">
+                    <span>{n.n} / 04</span>
+                    <span aria-hidden className="inline-flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-[#0a0a0a]/40" />
+                      Vertical
+                    </span>
                   </div>
 
+                  {/* Geometric plate — line only, muted grain */}
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <NicheGlyph kind={n.illustration} />
+                    <svg aria-hidden className="absolute inset-0 w-full h-full mix-blend-multiply opacity-[0.18] pointer-events-none">
+                      <filter id={`grain-${n.illustration}`}>
+                        <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch" />
+                        <feColorMatrix type="saturate" values="0" />
+                      </filter>
+                      <rect width="100%" height="100%" filter={`url(#grain-${n.illustration})`} />
+                    </svg>
+                    <div aria-hidden className="absolute inset-3 border border-[#0a0a0a]/10" />
+                    <span aria-hidden className="absolute top-3 left-3 w-2 h-2 border-t border-l border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute top-3 right-3 w-2 h-2 border-t border-r border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute bottom-3 left-3 w-2 h-2 border-b border-l border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute bottom-3 right-3 w-2 h-2 border-b border-r border-[#0a0a0a]/35" />
+                    <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55">
+                      Fig. {n.n}
+                    </span>
+                    <span className="absolute bottom-4 right-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55">
+                      {n.illustration}
+                    </span>
+                  </div>
 
-                  {/* Meta + text */}
-                  <div className="px-5 pt-5 pb-6 flex-1 flex flex-col">
-                    <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/45 tabular-nums mb-3">
-                      <span>{n.n} / 04</span>
-                      <span>Vertical</span>
-                    </div>
-                    <h3 className="text-[20px] md:text-[22px] leading-[1.15] tracking-[-0.015em] font-medium">
+                  <div className="px-5 pt-6 pb-6 flex-1 flex flex-col border-t border-[#0a0a0a]/10">
+                    <h3 className="text-[22px] md:text-[26px] leading-[1.05] tracking-[-0.02em] font-medium">
                       {n.title}
                     </h3>
                     <p className="mt-3 text-[13px] text-[#0a0a0a]/60 leading-[1.55] flex-1">
                       {n.body}
                     </p>
+                    <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/40">
+                      <span>R—M · Studio</span>
+                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    </div>
                   </div>
                 </article>
               </li>
             ))}
           </ul>
 
+          <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/35">
+            <span>R—M / Verticals · MMXXVI</span>
+            <span>Line · Grain · Silence</span>
+          </div>
         </section>
 
         {/* 8.5 — CTA */}
