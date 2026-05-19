@@ -491,56 +491,87 @@ function AboutPage() {
               </h2>
             </div>
           </div>
-          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
-            {team.map((m, i) => {
-              const photo = teamPhotos[i % teamPhotos.length];
-              return (
-                <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                  <article className="group h-full flex flex-col bg-[#efeeea] relative">
-                    <figure className="aspect-[4/5] relative overflow-hidden">
+          {/* Asymmetric grid: founder hero card (5 cols) + 3 stacked rows (7 cols) */}
+          <div className="grid grid-cols-12 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
+            {/* Lead */}
+            {team.slice(0, 1).map((m) => (
+              <article key={m.name} className="reveal group col-span-12 lg:col-span-5 bg-[#efeeea] relative">
+                <figure className="aspect-[4/5] lg:aspect-auto lg:h-full relative overflow-hidden">
+                  <img
+                    src={teamPhotos[0]}
+                    alt={`${m.name}, ${m.role}`}
+                    loading="lazy"
+                    width={800}
+                    height={1000}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                  />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55" />
+                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.28em] px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white/90">
+                    {m.city} · Founder
+                  </span>
+                  <a
+                    href="#"
+                    aria-label={`${m.name} on LinkedIn`}
+                    className="absolute top-4 right-4 w-9 h-9 grid place-items-center rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-white/90 hover:bg-white hover:text-black hover:border-transparent transition-colors"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
+                    </svg>
+                  </a>
+                  <div className="absolute bottom-5 left-5 right-5">
+                    <div className="text-[28px] md:text-[32px] font-medium text-white leading-[1.05] tracking-[-0.015em]">{m.name}</div>
+                    <div className="mt-2 text-[13px] text-white/85">{m.role}</div>
+                    <div className="mt-3 text-[10px] uppercase tracking-[0.28em] text-white/70">{m.spec}</div>
+                  </div>
+                </figure>
+              </article>
+            ))}
+
+            {/* Stacked rows */}
+            <div className="col-span-12 lg:col-span-7 grid grid-rows-3 gap-px bg-white/10">
+              {team.slice(1).map((m, i) => {
+                const photo = teamPhotos[(i + 1) % teamPhotos.length];
+                return (
+                  <article key={m.name} className="reveal group bg-[#efeeea] grid grid-cols-12 items-stretch" data-delay={String(i + 2)}>
+                    <figure className="col-span-5 md:col-span-4 aspect-[4/5] md:aspect-auto relative overflow-hidden">
                       <img
                         src={photo}
                         alt={`${m.name}, ${m.role}`}
                         loading="lazy"
-                        width={800}
-                        height={1000}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+                        width={600}
+                        height={750}
+                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
                       />
-
-                      {/* Bottom legibility scrim */}
-                      <div
-                        aria-hidden
-                        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55"
-                      />
-                      <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.28em] px-2.5 py-1 rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90">
-                        {m.city}
-                      </span>
-                      <a
-                        href="#"
-                        aria-label={`${m.name} on LinkedIn`}
-                        className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90 hover:bg-white hover:text-black hover:border-transparent transition-colors"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                          <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
-                        </svg>
-                      </a>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="text-[18px] font-medium text-white leading-tight">{m.name}</div>
-                        <div className="text-[12px] text-white/80 mt-1">{m.role}</div>
-                        <div className="text-[10px] uppercase tracking-[0.28em] text-white/70 mt-2">{m.spec}</div>
-                      </div>
                     </figure>
+                    <div className="col-span-7 md:col-span-8 flex flex-col justify-between p-5 md:p-7 text-[#0a0a0a]">
+                      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60 tabular-nums">
+                        <span>0{i + 2} / 04</span>
+                        <span>{m.city}</span>
+                      </div>
+                      <div>
+                        <div className="text-[22px] md:text-[26px] font-medium leading-[1.05] tracking-[-0.015em]">{m.name}</div>
+                        <div className="mt-2 text-[13px] text-[#0a0a0a]/70">{m.role}</div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/60">{m.spec}</div>
+                        <a
+                          href="#"
+                          aria-label={`${m.name} on LinkedIn`}
+                          className="w-9 h-9 grid place-items-center rounded-full border border-[#0a0a0a]/15 text-[#0a0a0a]/75 hover:bg-[#0a0a0a] hover:text-white hover:border-transparent transition-colors"
+                        >
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                            <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
                   </article>
-                </li>
-              );
-            })}
-          </ul>
-
-          <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/35">
-            <span>R—M / Team · MMXXVI</span>
-            <span>Kyiv · Berlin · Dubai · Lisbon</span>
+                );
+              })}
+            </div>
           </div>
         </section>
+
 
 
         {/* 8.4 — NICHES — Swiss line-only, muted grain */}
