@@ -427,14 +427,13 @@ function AboutPage() {
         {/* 8.1 — HERO */}
         <section
           aria-labelledby="page-title"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[72vh] flex flex-col justify-center"
+          className="px-6 md:px-12 max-w-[1280px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[72vh] flex flex-col justify-center"
         >
-          <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
-            <div className="col-span-12 md:col-span-10 md:col-start-2 text-center">
-              {/* Vertical rhythm: 8px baseline. kicker→H1 24, H1→sub 32, sub→CTA 40 */}
-              <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6" style={{ color: "var(--accent-red)" }}>
-                Who we are
-              </p>
+          <div className="grid grid-cols-12 gap-5">
+            <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] mb-6 md:mb-0" style={{ color: "var(--accent-red)" }}>
+              Who we are
+            </p>
+            <div className="col-span-12 md:col-span-10 md:col-start-3">
               <h1
                 id="page-title"
                 className="text-[44px] sm:text-[72px] md:text-[104px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
@@ -444,14 +443,13 @@ function AboutPage() {
                   founders who actually ship.
                 </span>
               </h1>
-              <p className="mt-8 max-w-[640px] mx-auto text-[16px] md:text-[18px] leading-[1.6] text-white/70">
+              <p className="mt-8 max-w-[640px] text-[16px] md:text-[18px] leading-[1.6] text-white/70">
                 R-M is a strategy and brand studio for AI, Fintech, Web3 and
                 lifestyle operators. Two cells, one studio. Senior on every call.
               </p>
 
-              {/* Hero CTA + trust strip — buttons share h-12 to align baseline */}
               <div
-                className="reveal mt-10 flex flex-wrap items-center justify-center gap-x-4 gap-y-3"
+                className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
                 data-delay="2"
               >
                 <a
