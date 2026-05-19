@@ -14,6 +14,7 @@ import teamRm from "@/assets/team-rm.jpg";
 import teamAl from "@/assets/team-al.jpg";
 import teamSk from "@/assets/team-sk.jpg";
 import teamJd from "@/assets/team-jd.jpg";
+import heroBloom from "@/assets/hero-bloom.jpg";
 
 const nicheCovers: Record<"ai" | "fintech" | "hospitality" | "b2b", string> = {
   ai: nicheAi,
