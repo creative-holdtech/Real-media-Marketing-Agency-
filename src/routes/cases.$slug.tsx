@@ -50,7 +50,7 @@ export const Route = createFileRoute("/cases/$slug")({
 
 function CaseDetail() {
   useReveal();
-  const { study: c } = Route.useLoaderData();
+  const { study: c } = Route.useLoaderData() as { study: CaseStudy };
   const others = getOtherCases(c.slug, 3);
 
   return (
