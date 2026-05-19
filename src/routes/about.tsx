@@ -529,8 +529,9 @@ function AboutPage() {
         {/* 8.4 — NICHES — Swiss line-only, muted grain */}
         <section
           aria-labelledby="niches-heading"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
+
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
