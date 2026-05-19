@@ -381,179 +381,63 @@ function AboutPage() {
 }
 
 function SpinPillars() {
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const targetRef = useRef(0);
-  const [smooth, setSmooth] = useState(0);
-
-  // Read scroll progress synchronously; smooth it with rAF lerp for buttery motion.
-  useEffect(() => {
-    let raf = 0;
-    let current = 0;
-
-    const readTarget = () => {
-      const el = wrapRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const total = rect.height - vh;
-      const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-      targetRef.current = total > 0 ? scrolled / total : 0;
-    };
-
-    const tick = () => {
-      // Critically-damped lerp — feels heavy/fluid, never overshoots.
-      const next = current + (targetRef.current - current) * 0.08;
-      current = Math.abs(next - targetRef.current) < 0.0005 ? targetRef.current : next;
-      setSmooth(current);
-      raf = requestAnimationFrame(tick);
-    };
-
-    readTarget();
-    raf = requestAnimationFrame(tick);
-    window.addEventListener("scroll", readTarget, { passive: true });
-    window.addEventListener("resize", readTarget);
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", readTarget);
-      window.removeEventListener("resize", readTarget);
-    };
-  }, []);
-
-  const count = pillars.length;
-  // Continuous "active index" 0..count-1 from smoothed progress
-  const cursor = smooth * (count - 1);
-  const active = Math.round(cursor);
-  const step = 30; // degrees between items on the visible arc
-  const rotation = -cursor * step;
-
   return (
     <section
-      ref={wrapRef}
       aria-labelledby="mission-heading"
-      className="relative border-t border-white/10"
-      style={{ height: `${count * 110}vh` }}
+      className="border-t border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-32"
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
-        {/* Header chrome */}
-        <div className="absolute top-0 left-0 right-0 z-20 px-6 md:px-12 pt-28 md:pt-32">
-          <div className="max-w-[1440px] mx-auto flex items-center justify-between">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-              <span aria-hidden>[ </span>8.2 — Mission & approach<span aria-hidden> ]</span>
-            </p>
-            <span className="text-[11px] uppercase tracking-[0.2em] text-white/30 tabular-nums">
-              {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
-            </span>
-          </div>
+      {/* Swiss-style header: 12-col grid, meta left, title right */}
+      <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
+        <div className="col-span-12 md:col-span-3 reveal">
+          <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+            <span aria-hidden>[ </span>8.2 — Mission &amp; approach<span aria-hidden> ]</span>
+          </p>
+          <p className="mt-4 text-[12px] text-white/30 tabular-nums">
+            03 principles
+          </p>
         </div>
-
-        <h2 id="mission-heading" className="sr-only">Mission and approach</h2>
-
-        {/* Giant circle — anchored off-screen left, only the right arc shows */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute top-1/2 -translate-y-1/2"
-          style={{
-            left: "min(-42vh, -380px)",
-            width: "min(140vh, 1100px)",
-            height: "min(140vh, 1100px)",
-          }}
-        >
-          <div className="absolute inset-0 rounded-full border border-white/[0.07]" />
-          <div className="absolute inset-[6%] rounded-full border border-white/[0.04]" />
-          <div className="absolute inset-[14%] rounded-full border border-white/[0.025]" />
-
-          {/* Rotating ring of numbers */}
-          <div
-            className="absolute inset-0"
-            style={{
-              transform: `rotate(${rotation}deg)`,
-              willChange: "transform",
-            }}
+        <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
+          <h2
+            id="mission-heading"
+            className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium text-white"
           >
-            {pillars.map((p, i) => {
-              const angle = i * step;
-              const distToActive = Math.abs(i - cursor);
-              // Smooth interpolation of size + opacity by distance
-              const t = Math.max(0, 1 - distToActive); // 1 at active, 0 one step away
-              const size = 28 + t * 132; // 28px → 160px
-              const opacity = 0.12 + t * 0.88;
-              return (
-                <div
-                  key={i}
-                  className="absolute top-1/2 left-1/2"
-                  style={{
-                    transform: `rotate(${angle}deg) translateX(46%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
-                    willChange: "transform",
-                  }}
-                >
-                  <div
-                    className="font-medium tracking-[-0.04em] leading-none"
-                    style={{
-                      fontSize: `${size}px`,
-                      color: `rgba(232,230,225,${opacity})`,
-                    }}
-                  >
-                    {p.n}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Anchor dot at 3 o'clock of the giant circle */}
-          <span
-            className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-[#e85d3a]"
-            style={{ transform: "translateX(46%) translate(-50%, -50%)" }}
-          />
-        </div>
-
-        {/* Active content — slides smoothly from the right */}
-        <div className="relative z-10 h-full flex items-center">
-          <div className="px-6 md:px-12 max-w-[1440px] mx-auto w-full grid grid-cols-12 gap-6 md:gap-12">
-            <div className="hidden md:block md:col-span-6" />
-            <div className="col-span-12 md:col-span-6 relative min-h-[280px] md:min-h-[360px]">
-              {pillars.map((p, i) => {
-                const delta = i - cursor; // signed distance to active
-                const t = Math.max(0, 1 - Math.abs(delta));
-                const opacity = t * t; // sharper fade — only active is fully visible
-                const tx = delta * 80; // slides horizontally as it leaves
-                return (
-                  <div
-                    key={p.n}
-                    aria-hidden={i !== active}
-                    className="absolute inset-0 flex flex-col justify-center"
-                    style={{
-                      opacity,
-                      transform: `translate3d(${tx}px, 0, 0)`,
-                      pointerEvents: i === active ? "auto" : "none",
-                      willChange: "transform, opacity",
-                    }}
-                  >
-                    <div className="text-[11px] uppercase tracking-[0.25em] text-[#e85d3a] mb-5">
-                      {p.tag}
-                    </div>
-                    <h3 className="text-[32px] md:text-[56px] leading-[1.02] tracking-[-0.025em] font-medium text-white">
-                      {p.title}
-                    </h3>
-                    <p className="mt-6 text-[15px] md:text-[17px] text-white/60 leading-relaxed max-w-md">
-                      {p.body}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll hint */}
-        <div
-          aria-hidden
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-white/30"
-        >
-          Scroll ↓
+            How we work.<br />
+            <span className="italic font-light text-white/60">Three principles.</span>
+          </h2>
         </div>
       </div>
+
+      {/* Pillars — clean 12-col rows, numbered, generous whitespace */}
+      <ol role="list" className="border-t border-white/10">
+        {pillars.map((p, i) => (
+          <li
+            key={p.n}
+            className="reveal grid grid-cols-12 gap-6 md:gap-12 items-start border-b border-white/10 py-10 md:py-16"
+            data-delay={String(Math.min(i + 1, 5))}
+          >
+            <div className="col-span-3 md:col-span-2">
+              <div className="text-[40px] md:text-[64px] leading-none font-medium tracking-[-0.03em] text-white tabular-nums">
+                {p.n}
+              </div>
+            </div>
+            <div className="col-span-9 md:col-span-3">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-[#e85d3a]">
+                {p.tag}
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-7">
+              <h3 className="text-[24px] md:text-[40px] leading-[1.05] tracking-[-0.02em] font-medium text-white">
+                {p.title}
+              </h3>
+              <p className="mt-5 max-w-[560px] text-[15px] md:text-[16px] leading-relaxed text-white/60">
+                {p.body}
+              </p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }
+
 
