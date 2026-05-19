@@ -382,44 +382,61 @@ function AboutPage() {
 
 function SpinPillars() {
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const [progress, setProgress] = useState(0);
+  const targetRef = useRef(0);
+  const [smooth, setSmooth] = useState(0);
 
-
+  // Read scroll progress synchronously; smooth it with rAF lerp for buttery motion.
   useEffect(() => {
-    const onScroll = () => {
+    let raf = 0;
+    let current = 0;
+
+    const readTarget = () => {
       const el = wrapRef.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const total = rect.height - vh;
       const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-      setProgress(total > 0 ? scrolled / total : 0);
+      targetRef.current = total > 0 ? scrolled / total : 0;
     };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+
+    const tick = () => {
+      // Critically-damped lerp — feels heavy/fluid, never overshoots.
+      const next = current + (targetRef.current - current) * 0.08;
+      current = Math.abs(next - targetRef.current) < 0.0005 ? targetRef.current : next;
+      setSmooth(current);
+      raf = requestAnimationFrame(tick);
+    };
+
+    readTarget();
+    raf = requestAnimationFrame(tick);
+    window.addEventListener("scroll", readTarget, { passive: true });
+    window.addEventListener("resize", readTarget);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", readTarget);
+      window.removeEventListener("resize", readTarget);
     };
   }, []);
 
   const count = pillars.length;
-  const active = Math.min(count - 1, Math.floor(progress * count * 0.999));
-  const step = 360 / count;
-  const rotation = -progress * (count - 1) * step;
-
+  // Continuous "active index" 0..count-1 from smoothed progress
+  const cursor = smooth * (count - 1);
+  const active = Math.round(cursor);
+  const step = 30; // degrees between items on the visible arc
+  const rotation = -cursor * step;
 
   return (
     <section
       ref={wrapRef}
       aria-labelledby="mission-heading"
       className="relative border-t border-white/10"
-      style={{ height: `${count * 100}vh` }}
+      style={{ height: `${count * 110}vh` }}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        <div className="px-6 md:px-12 max-w-[1440px] mx-auto w-full">
-          <div className="flex items-center justify-between mb-10 md:mb-14">
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {/* Header chrome */}
+        <div className="absolute top-0 left-0 right-0 z-20 px-6 md:px-12 pt-28 md:pt-32">
+          <div className="max-w-[1440px] mx-auto flex items-center justify-between">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
               <span aria-hidden>[ </span>8.2 — Mission & approach<span aria-hidden> ]</span>
             </p>
@@ -427,80 +444,89 @@ function SpinPillars() {
               {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
             </span>
           </div>
+        </div>
 
-          <h2 id="mission-heading" className="sr-only">Mission and approach</h2>
+        <h2 id="mission-heading" className="sr-only">Mission and approach</h2>
 
-          <div className="grid grid-cols-12 gap-6 md:gap-12 items-center">
-            {/* Rotating circle — LEFT */}
-            <div className="col-span-12 md:col-span-6 relative">
-              <div
-                className="relative mx-auto"
-                style={{ width: "min(560px, 88vw)", aspectRatio: "1 / 1" }}
-                aria-hidden
-              >
-                <div className="absolute inset-0 rounded-full border border-white/10" />
-                <div className="absolute inset-[8%] rounded-full border border-white/[0.05]" />
-                <div className="absolute inset-[20%] rounded-full border border-white/[0.03]" />
+        {/* Giant circle — anchored off-screen left, only the right arc shows */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 -translate-y-1/2"
+          style={{
+            left: "min(-42vh, -380px)",
+            width: "min(140vh, 1100px)",
+            height: "min(140vh, 1100px)",
+          }}
+        >
+          <div className="absolute inset-0 rounded-full border border-white/[0.07]" />
+          <div className="absolute inset-[6%] rounded-full border border-white/[0.04]" />
+          <div className="absolute inset-[14%] rounded-full border border-white/[0.025]" />
 
-                {/* rotating numbers */}
+          {/* Rotating ring of numbers */}
+          <div
+            className="absolute inset-0"
+            style={{
+              transform: `rotate(${rotation}deg)`,
+              willChange: "transform",
+            }}
+          >
+            {pillars.map((p, i) => {
+              const angle = i * step;
+              const distToActive = Math.abs(i - cursor);
+              // Smooth interpolation of size + opacity by distance
+              const t = Math.max(0, 1 - distToActive); // 1 at active, 0 one step away
+              const size = 28 + t * 132; // 28px → 160px
+              const opacity = 0.12 + t * 0.88;
+              return (
                 <div
-                  className="absolute inset-0"
+                  key={i}
+                  className="absolute top-1/2 left-1/2"
                   style={{
-                    transform: `rotate(${rotation}deg)`,
-                    transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    transform: `rotate(${angle}deg) translateX(46%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
+                    willChange: "transform",
                   }}
                 >
-                  {pillars.map((p, i) => {
-                    const angle = i * step;
-                    const isActive = i === active;
-                    return (
-                      <div
-                        key={i}
-                        className="absolute top-1/2 left-1/2"
-                        style={{
-                          transform: `rotate(${angle}deg) translateX(44%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
-                          transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
-                        }}
-                      >
-                        <div
-                          className="font-medium tracking-[-0.04em] leading-none transition-all duration-700"
-                          style={{
-                            fontSize: isActive ? "clamp(72px, 12vw, 180px)" : "clamp(28px, 4.5vw, 64px)",
-                            color: isActive ? "#e8e6e1" : "rgba(232,230,225,0.14)",
-                          }}
-                        >
-                          {p.n}
-                        </div>
-                      </div>
-                    );
-                  })}
+                  <div
+                    className="font-medium tracking-[-0.04em] leading-none"
+                    style={{
+                      fontSize: `${size}px`,
+                      color: `rgba(232,230,225,${opacity})`,
+                    }}
+                  >
+                    {p.n}
+                  </div>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* anchor dot at 3 o'clock */}
-                <span
-                  className="absolute top-1/2 left-1/2 w-2.5 h-2.5 rounded-full bg-[#e85d3a]"
-                  style={{ transform: "translateX(44%) translate(-50%, -50%)" }}
-                />
-              </div>
-            </div>
+          {/* Anchor dot at 3 o'clock of the giant circle */}
+          <span
+            className="absolute top-1/2 left-1/2 w-2 h-2 rounded-full bg-[#e85d3a]"
+            style={{ transform: "translateX(46%) translate(-50%, -50%)" }}
+          />
+        </div>
 
-            {/* Active content — slides in from the RIGHT */}
-            <div className="col-span-12 md:col-span-6 relative min-h-[220px] md:min-h-[320px] overflow-hidden">
+        {/* Active content — slides smoothly from the right */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="px-6 md:px-12 max-w-[1440px] mx-auto w-full grid grid-cols-12 gap-6 md:gap-12">
+            <div className="hidden md:block md:col-span-6" />
+            <div className="col-span-12 md:col-span-6 relative min-h-[280px] md:min-h-[360px]">
               {pillars.map((p, i) => {
-                const isActive = i === active;
-                // direction: items after active sit off-right, before active off-left
-                const offset = i === active ? 0 : i > active ? 60 : -60;
+                const delta = i - cursor; // signed distance to active
+                const t = Math.max(0, 1 - Math.abs(delta));
+                const opacity = t * t; // sharper fade — only active is fully visible
+                const tx = delta * 80; // slides horizontally as it leaves
                 return (
                   <div
                     key={p.n}
-                    aria-hidden={!isActive}
+                    aria-hidden={i !== active}
                     className="absolute inset-0 flex flex-col justify-center"
                     style={{
-                      opacity: isActive ? 1 : 0,
-                      transform: `translateX(${offset}px)`,
-                      transition:
-                        "opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
-                      pointerEvents: isActive ? "auto" : "none",
+                      opacity,
+                      transform: `translate3d(${tx}px, 0, 0)`,
+                      pointerEvents: i === active ? "auto" : "none",
+                      willChange: "transform, opacity",
                     }}
                   >
                     <div className="text-[11px] uppercase tracking-[0.25em] text-[#e85d3a] mb-5">
@@ -518,7 +544,16 @@ function SpinPillars() {
             </div>
           </div>
         </div>
+
+        {/* Scroll hint */}
+        <div
+          aria-hidden
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.3em] text-white/30"
+        >
+          Scroll ↓
+        </div>
       </div>
     </section>
   );
 }
+
