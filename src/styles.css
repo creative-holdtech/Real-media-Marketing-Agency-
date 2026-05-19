@@ -149,7 +149,15 @@
   }
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&display=swap');
+
+/* Display serif for editorial numerals. opsz axis at 144 unlocks the
+   dramatic display cut; lining tabular figures keep metric columns aligned. */
+.font-display {
+  font-family: 'Fraunces', 'Times New Roman', serif;
+  font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 0;
+  font-feature-settings: 'lnum', 'tnum', 'ss01';
+}
 
 /* ============ Smooth motion ============ */
 html {
