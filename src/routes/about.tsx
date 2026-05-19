@@ -634,19 +634,20 @@ function AboutPage() {
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <a
+                  <MagneticButton
                     href="/#contact"
                     className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                   >
                     Book an audit
                     <span aria-hidden>→</span>
-                  </a>
-                  <a
+                  </MagneticButton>
+                  <MagneticButton
                     href="mailto:hello@r-m.studio"
+                    strength={10}
                     className="inline-flex items-center h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                   >
                     hello@r-m.studio
-                  </a>
+                  </MagneticButton>
                 </div>
               </div>
             </div>
