@@ -715,172 +715,68 @@ function VerticalsAccordion() {
 /*  TEAM — gapless bento                                               */
 /* ================================================================== */
 function TeamBento() {
+  const featured = [team[0], team[1], team[3]];
   return (
     <section
       aria-labelledby="team-heading"
-      className="bg-[#0a0a0a] text-white border-t border-white/10 relative overflow-hidden"
+      className="bg-[#0a0a0a] text-white border-t border-white/10 relative"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-60"
-        style={{
-          background:
-            "radial-gradient(60% 50% at 80% 20%, rgba(120,80,200,0.10), transparent 60%), radial-gradient(50% 40% at 10% 90%, rgba(200,120,80,0.08), transparent 60%)",
-        }}
-      />
-
-      <div className="relative px-6 md:px-12 max-w-[1320px] mx-auto py-32 md:py-48">
-        <div className="grid grid-cols-12 gap-5 mb-20 md:mb-28 reveal-fade items-end">
+      <div className="relative px-6 md:px-12 max-w-[1320px] mx-auto py-16 md:py-20">
+        {/* Tight editorial heading */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8 md:mb-10 reveal-fade">
           <h2
             id="team-heading"
-            className="col-span-12 md:col-span-9 font-medium text-white tracking-[-0.04em] leading-[0.95]"
+            className="font-medium text-white tracking-[-0.035em] leading-[0.98]"
             style={{
               fontFamily: '"Geist", system-ui, sans-serif',
-              fontWeight: 400,
-              fontSize: "clamp(2.5rem, 7vw, 6rem)",
+              fontWeight: 500,
+              fontSize: "clamp(2rem, 3.6vw, 3rem)",
             }}
           >
-            The people who actually ship{" "}
-            <span
-              className="font-light text-white/45"
-              style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
-            >
-              the work.
-            </span>
+            The people who ship the work.
           </h2>
-          <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] text-white/60 md:pb-4">
-            Four senior operators. No juniors, no handoffs — every engagement is led by the names below.
+          <p className="max-w-[36ch] text-[13px] md:text-[14px] leading-[1.55] text-white/55">
+            Three senior operators. Every engagement is led, not delegated.
           </p>
         </div>
 
-        {/* Gapless bento: 4 cols × 3 rows. 12 cells. 2x2 + 1x1 + 1x1 + 2x2 + 2x1 = 12. */}
-        <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-3 gap-3 md:gap-4 [grid-auto-flow:dense] md:auto-rows-[minmax(220px,1fr)]">
-          <TeamCard person={team[0]} idx="01" anchor src={teamPhotos[0]} />
-          <TeamCard person={team[1]} idx="02" src={teamPhotos[1]} delay="2" />
-          <TeamCard person={team[2]} idx="03" src={teamPhotos[2]} delay="3" />
-          <TeamCard person={team[3]} idx="04" anchor align="right" src={teamPhotos[3]} delay="2" />
-
-          {/* Stat card — 2×1, fills last row left side */}
-          <div
-            className="reveal group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.06] to-white/[0.02] md:col-span-2 md:row-span-1 p-6 md:p-10 flex flex-col justify-between"
-            data-delay="3"
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] uppercase tracking-[0.32em] text-white/55">
-                Operating principle
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.32em] text-white/40 tabular-nums">05</span>
-            </div>
-            <div>
-              <p
-                className="font-medium tracking-[-0.025em] leading-[1.08] text-white"
-                style={{
-                  fontFamily: '"Geist", system-ui, sans-serif',
-                  fontWeight: 400,
-                  fontSize: "clamp(1.5rem, 2.6vw, 2.25rem)",
-                }}
-              >
-                Senior hands on every project.{" "}
-                <span
-                  className="text-white/45 font-light"
-                  style={{ fontFamily: '"Geist", system-ui, sans-serif' }}
-                >
-                  No juniors. No subcontractors.
-                </span>
-              </p>
-              <div className="mt-6 flex items-center gap-6 text-[12px] text-white/55 tabular-nums">
-                <span><span className="text-white">12+</span> yrs avg</span>
-                <span className="w-px h-3 bg-white/15" />
-                <span><span className="text-white">4</span> cities</span>
-                <span className="w-px h-3 bg-white/15" />
-                <span><span className="text-white">100%</span> founder-led</span>
+        {/* 3 equal cards, B&W, fit one screen */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+          {featured.map((person, i) => (
+            <a
+              key={person.initials}
+              href="/#contact"
+              className="reveal group relative overflow-hidden rounded-xl bg-white/[0.04] aspect-[3/4] md:aspect-[3/4]"
+              data-delay={String(i + 1)}
+            >
+              <img
+                src={teamPhotos[team.indexOf(person)]}
+                alt={`${person.name}, ${person.role}`}
+                className="absolute inset-0 w-full h-full object-cover grayscale contrast-[1.05] brightness-95 transition-transform duration-[900ms] ease-out group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              <div className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.3em] text-white/70 tabular-nums">
+                {String(i + 1).padStart(2, "0")} / {person.city}
               </div>
-            </div>
-          </div>
+              <div className="absolute bottom-0 left-0 right-0 p-5">
+                <h3
+                  className="text-white font-medium tracking-[-0.015em] leading-[1.05]"
+                  style={{ fontSize: "clamp(1.25rem, 1.8vw, 1.6rem)" }}
+                >
+                  {person.name}
+                </h3>
+                <p className="mt-1.5 text-[12px] text-white/65">
+                  {person.role}
+                </p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-function TeamCard({
-  person,
-  idx,
-  src,
-  anchor,
-  align = "left",
-  delay,
-}: {
-  person: (typeof team)[number];
-  idx: string;
-  src: string;
-  anchor?: boolean;
-  align?: "left" | "right";
-  delay?: string;
-}) {
-  if (anchor) {
-    return (
-      <a
-        href="/#contact"
-        data-delay={delay}
-        className="reveal group relative overflow-hidden rounded-2xl bg-white/[0.04] md:col-span-2 md:row-span-2 aspect-[4/5] md:aspect-auto"
-      >
-        <img
-          src={src}
-          alt={`${person.name}, ${person.role}`}
-          className="absolute inset-0 w-full h-full object-cover saturate-[0.45] brightness-105 transition-transform duration-[1100ms] ease-out group-hover:scale-[1.06] group-hover:saturate-100"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-        <div
-          className={`absolute top-6 ${align === "right" ? "right-6 md:right-8" : "left-6 md:left-8"} text-[10px] uppercase tracking-[0.32em] text-white/70 tabular-nums`}
-        >
-          {idx} / {person.city}
-        </div>
-        <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-          <h3
-            className="font-medium text-white tracking-[-0.02em] leading-[1.02]"
-            style={{
-              fontFamily: '"Geist", system-ui, sans-serif',
-              fontWeight: 400,
-              fontSize: "clamp(1.75rem, 3.2vw, 2.75rem)",
-            }}
-          >
-            {person.name}
-          </h3>
-          <p className="mt-3 text-[14px] md:text-[15px] text-white/75">
-            {person.role} — <span className="text-white/55">{person.spec}</span>
-          </p>
-        </div>
-      </a>
-    );
-  }
-
-  return (
-    <a
-      href="/#contact"
-      data-delay={delay}
-      className="reveal group relative overflow-hidden rounded-2xl bg-white/[0.04] md:col-span-1 md:row-span-1 aspect-square"
-    >
-      <img
-        src={src}
-        alt={`${person.name}, ${person.role}`}
-        className="absolute inset-0 w-full h-full object-cover saturate-[0.4] brightness-110 transition-transform duration-[900ms] ease-out group-hover:scale-[1.08] group-hover:saturate-100"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/85 to-transparent" />
-      <div className="absolute inset-0 p-5 flex flex-col justify-between">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-white/65 tabular-nums">
-          {idx} / {person.city}
-        </span>
-        <div>
-          <h3 className="text-[20px] md:text-[22px] font-medium tracking-[-0.015em] leading-[1.05]">
-            {person.name}
-          </h3>
-          <p className="mt-1.5 text-[12px] text-white/65">{person.role}</p>
-        </div>
-      </div>
-    </a>
-  );
-}
 
 /* ================================================================== */
 /*  TESTIMONIALS — overlapping portraits carousel                      */
