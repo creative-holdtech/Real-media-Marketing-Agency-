@@ -484,83 +484,85 @@ function AboutPage() {
           aria-labelledby="team-heading"
           className="bg-[#0a0a0a] text-white border-t border-white/10"
         >
-          <div className="px-6 md:px-12 max-w-[1400px] mx-auto py-16 md:py-20 lg:min-h-screen flex flex-col">
-            <div className="grid grid-cols-12 gap-5 mb-10 reveal">
-              <div className="col-span-12 lg:col-span-6 lg:col-start-7 text-left">
-                <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-6">
-                  The team
-                </p>
+          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
+            <div className="grid grid-cols-12 gap-5 mb-16 md:mb-20 reveal">
+              <p className="col-span-12 md:col-span-2 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 mb-4 md:mb-0">
+                The team
+              </p>
+              <div className="col-span-12 md:col-span-7 md:col-start-3">
                 <h2
                   id="team-heading"
-                  className="text-[32px] sm:text-[40px] md:text-[48px] leading-[1.05] tracking-[-0.02em] font-medium text-white"
+                  className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.03em] font-medium text-white"
                 >
-                  Who actually does the work.
+                  Who actually{" "}
+                  <span className="font-light text-white/45 inline">does the work.</span>
                 </h2>
-                <p className="mt-5 text-[14px] md:text-[15px] leading-[1.55] text-white/60 max-w-[460px]">
-                  A small, senior team. Every project is led by the people whose names you see below — no juniors, no handoffs.
-                </p>
               </div>
+              <p className="col-span-12 md:col-span-3 md:col-start-10 text-[14px] md:text-[15px] leading-[1.55] text-white/60">
+                A small, senior team. Every project is led by the people whose names you see below — no juniors, no handoffs.
+              </p>
             </div>
 
-            {/* ElevenLabs-style: 1 featured + 3 stacked */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 flex-1 min-h-0">
-              <a href="/#contact" className="reveal group block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:h-full">
-                <img
-                  src={teamPhotos[0]}
-                  alt={`${team[0].name}, ${team[0].role}`}
-                  loading="lazy"
-                  width={1200}
-                  height={1400}
-                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                  <div className="text-[11px] uppercase tracking-[0.16em] text-white/70 mb-3 tabular-nums">
-                    01 · {team[0].city}
+            <div className="grid grid-cols-12 gap-5">
+              <div className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
+                <a href="/#contact" className="reveal group block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
+                  <img
+                    src={teamPhotos[0]}
+                    alt={`${team[0].name}, ${team[0].role}`}
+                    loading="lazy"
+                    width={1200}
+                    height={1400}
+                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                    <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
+                      01 · {team[0].city}
+                    </div>
+                    <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
+                      {team[0].name} — {team[0].role}
+                    </h3>
+                    <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
+                      {team[0].spec}
+                    </p>
                   </div>
-                  <h3 className="text-[24px] md:text-[32px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
-                    {team[0].name} — {team[0].role}
-                  </h3>
-                  <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
-                    {team[0].spec}
-                  </p>
-                </div>
-              </a>
+                </a>
 
-              <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5 lg:h-full">
-                {team.slice(1).map((m, idx) => {
-                  const i = idx + 1;
-                  return (
-                    <li key={m.name} className="reveal group lg:flex-1" data-delay={String(i + 1)}>
-                      <a href="/#contact" className="relative block h-full overflow-hidden rounded-xl bg-white/5">
-                        <div className="flex h-full min-h-[140px]">
-                          <div className="relative w-[40%] lg:w-[45%] shrink-0 overflow-hidden">
-                            <img
-                              src={teamPhotos[i]}
-                              alt={`${m.name}, ${m.role}`}
-                              loading="lazy"
-                              width={400}
-                              height={400}
-                              className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.04] transition-transform duration-[900ms] ease-out"
-                            />
-                          </div>
-                          <div className="flex-1 p-4 md:p-5 flex flex-col justify-end">
-                            <div className="text-[10px] uppercase tracking-[0.16em] text-white/45 mb-1.5 tabular-nums">
-                              {String(i + 1).padStart(2, "0")} · {m.city}
+                <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
+                  {team.slice(1).map((m, idx) => {
+                    const i = idx + 1;
+                    return (
+                      <li key={m.name} className="reveal group lg:flex-1" data-delay={String(i + 1)}>
+                        <a href="/#contact" className="relative block h-full overflow-hidden rounded-xl bg-white/5">
+                          <div className="flex h-full min-h-[140px]">
+                            <div className="relative w-[40%] lg:w-[45%] shrink-0 overflow-hidden">
+                              <img
+                                src={teamPhotos[i]}
+                                alt={`${m.name}, ${m.role}`}
+                                loading="lazy"
+                                width={400}
+                                height={400}
+                                className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.04] transition-transform duration-[900ms] ease-out"
+                              />
                             </div>
-                            <h3 className="text-[15px] md:text-[17px] leading-[1.25] tracking-[-0.01em] font-medium text-white">
-                              {m.name}
-                            </h3>
-                            <p className="mt-1 text-[12px] md:text-[13px] leading-[1.45] text-white/60">
-                              {m.role}
-                            </p>
+                            <div className="flex-1 p-4 md:p-5 flex flex-col justify-end">
+                              <div className="text-[10px] uppercase tracking-[0.28em] text-white/45 mb-1.5 tabular-nums">
+                                {String(i + 1).padStart(2, "0")} · {m.city}
+                              </div>
+                              <h3 className="text-[15px] md:text-[17px] leading-[1.25] tracking-[-0.01em] font-medium text-white">
+                                {m.name}
+                              </h3>
+                              <p className="mt-1 text-[12px] md:text-[13px] leading-[1.45] text-white/60">
+                                {m.role}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         </section>
