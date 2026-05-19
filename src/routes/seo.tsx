@@ -1,7 +1,7 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { MobileMenu } from "@/components/mobile-menu";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
 
 export const Route = createFileRoute("/seo")({
@@ -24,11 +24,6 @@ export const Route = createFileRoute("/seo")({
   component: SeoPage,
 });
 
-const nav: { label: string; href?: string; to?: string }[] = [
-  { label: "Services", href: "/#products" },
-  { label: "Case Studies", href: "/cases" },
-  { label: "Insights", href: "/#insights" },
-];
 
 const ROTATE = ["INTENT", "COMPOUND", "LEADERSHIP", "AUTHORITY"];
 
@@ -142,52 +137,7 @@ function SeoPage() {
       <a href="#main" className="skip-link">Skip to content</a>
       <ScrollProgressBar />
 
-      {/* Pill NAV */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8">
-        <nav
-          aria-label="Primary"
-          className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2"
-        >
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[11px] uppercase tracking-[0.18em] font-medium px-3 py-1.5">
-              <span aria-hidden className="inline-block w-1 h-1 rounded-full bg-black" />
-              SEO / R—M Studio
-            </span>
-            <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white">
-              R—M<span aria-hidden>.</span>
-            </Link>
-          </div>
-          <Link
-            to="/"
-            aria-label="R-M home"
-            className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]"
-          >
-            R—M<span aria-hidden>.</span>
-          </Link>
-          <div className="flex items-center gap-1">
-            <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
-              {nav.map((n) => (
-                <li key={n.label}>
-                  <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
-                </li>
-              ))}
-              <li>
-                <Link to="/about" className="hover:text-white transition-colors">About</Link>
-              </li>
-              <li>
-                <Link to="/blog" className="hover:text-white transition-colors">Journal</Link>
-              </li>
-            </ul>
-            <a
-              href="#contact"
-              className="hidden md:inline-block text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
-            >
-              Get an audit
-            </a>
-            <MobileMenu />
-          </div>
-        </nav>
-      </header>
+      <SiteHeader variant="dark" />
 
       <main id="main">
         {/* HERO */}
@@ -477,52 +427,7 @@ function SeoPage() {
         </section>
       </main>
 
-      <footer className="bg-[#0a0a0a] border-t border-white/10 text-white">
-        <div className="px-6 md:px-12 max-w-[1280px] mx-auto pt-20 pb-10">
-          <div className="grid grid-cols-2 md:grid-cols-12 gap-y-10 gap-x-6 pb-16 border-b border-white/10">
-            <div className="col-span-2 md:col-span-4">
-              <Link to="/" className="text-[18px] font-medium tracking-[-0.01em] text-white">
-                R-M Studio
-              </Link>
-              <p className="mt-4 text-[14px] leading-[1.6] text-white/55 max-w-[280px]">
-                Strategy and brand studio for ambitious founders. Kyiv · EU · MENA.
-              </p>
-            </div>
-            <div className="col-span-1 md:col-span-2 md:col-start-6">
-              <h3 className="text-[12px] uppercase tracking-[0.16em] text-white/45 mb-4">Studio</h3>
-              <ul className="space-y-3 text-[14px] text-white/75">
-                <li><a href="/#products" className="hover:text-white transition-colors">Services</a></li>
-                <li><a href="/cases" className="hover:text-white transition-colors">Case studies</a></li>
-                <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-              </ul>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <h3 className="text-[12px] uppercase tracking-[0.16em] text-white/45 mb-4">Resources</h3>
-              <ul className="space-y-3 text-[14px] text-white/75">
-                <li><Link to="/blog" className="hover:text-white transition-colors">Journal</Link></li>
-                <li><a href="/#insights" className="hover:text-white transition-colors">Insights</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
-              </ul>
-            </div>
-            <div className="col-span-2 md:col-span-2">
-              <h3 className="text-[12px] uppercase tracking-[0.16em] text-white/45 mb-4">Contact</h3>
-              <ul className="space-y-3 text-[14px] text-white/75">
-                <li><a href="mailto:hello@r-m.studio" className="hover:text-white transition-colors">hello@r-m.studio</a></li>
-                <li><a href="https://linkedin.com" className="hover:text-white transition-colors">LinkedIn</a></li>
-                <li><a href="https://x.com" className="hover:text-white transition-colors">Twitter / X</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="pt-8 flex flex-wrap items-center justify-between gap-4 text-[12px] text-white/45">
-            <span>© R-M Studio 2026 · All rights reserved.</span>
-            <ul className="flex items-center gap-6">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms</a></li>
-              <li><span>Kyiv / EU / MENA</span></li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

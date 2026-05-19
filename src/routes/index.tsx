@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { HeroWebGL } from "@/components/hero-webgl";
 import { MobileMenu } from "@/components/mobile-menu";
+import { SiteFooter } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { cases as caseStudies } from "@/lib/cases";
 import { posts } from "@/lib/posts";
@@ -292,7 +293,7 @@ function Index() {
         <div className="grid grid-cols-12 gap-6 md:gap-12">
           <div className="col-span-12 md:col-span-5 reveal">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
-              [ 02 — About ]
+              The studio
             </p>
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
               A studio for brands<br />
@@ -337,7 +338,7 @@ function Index() {
       {/* TESTIMONIALS */}
       <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-16">
-          [ 03 — Voices ]
+          Voices from the field
         </p>
         <div className="grid grid-cols-12 gap-6 md:gap-8">
           {testimonials.map((t, i) => (
@@ -363,7 +364,7 @@ function Index() {
       <section id="products" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="flex flex-col items-center text-center gap-6 mb-16">
           <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-            [ 04 — Products ]
+            How we engage
           </p>
           <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
             Choose the level<br />
@@ -463,7 +464,7 @@ function Index() {
         <div className="flex items-end justify-between mb-16">
           <div>
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-6">
-              [ 05 — Cases ]
+              Selected case studies
             </p>
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
               Results we<br />
@@ -545,7 +546,7 @@ function Index() {
       <section id="insights" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
         <div className="flex flex-col items-center text-center gap-6 mb-12">
           <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-            [ 06 — Insights ]
+            From the Journal
           </p>
           <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
             From our<br />
@@ -637,66 +638,7 @@ function Index() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 pb-10 border-t border-white/10">
-        <div className="grid grid-cols-12 gap-6 md:gap-8">
-          <div className="col-span-12 md:col-span-5">
-            <div className="text-3xl font-semibold tracking-tight">
-              R—M<span className="text-[#e85d3a]">.</span>
-            </div>
-            <p className="mt-5 text-[14px] text-white/55 leading-relaxed max-w-xs">
-              Strategic growth partner for ambitious brands operating in
-              competitive industries.
-            </p>
-            <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
-              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
-              <a href="https://www.behance.net/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Behance</a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
-            </div>
-          </div>
-
-          <div className="col-span-6 md:col-span-2">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Work
-            </div>
-            <ul className="space-y-3 text-[14px] text-white/70">
-              <li><a href="#products" className="hover:text-white transition-colors">Services</a></li>
-              <li><Link to="/cases" className="hover:text-white transition-colors">Case Studies</Link></li>
-              <li><Link to="/blog" className="hover:text-white transition-colors">Journal</Link></li>
-            </ul>
-          </div>
-
-          <div className="col-span-6 md:col-span-2">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Studio
-            </div>
-            <ul className="space-y-3 text-[14px] text-white/70">
-              <li><Link to="/about" className="hover:text-white transition-colors">About</Link></li>
-              <li><a href="#contact" className="hover:text-white transition-colors">Contacts</a></li>
-              <li><a href="mailto:hello@r-m.studio?subject=Free%20Audit%20request" className="hover:text-white transition-colors">Audit</a></li>
-            </ul>
-          </div>
-
-          <div className="col-span-12 md:col-span-3">
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">
-              Located
-            </div>
-            <div className="text-[14px] text-white/70">
-              Kyiv — EU — MENA
-            </div>
-            <div className="mt-5 text-[12px] text-white/40 leading-relaxed">
-              Operating across CET / GST timezones for partners in finance,
-              iGaming, performance, and lifestyle.
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-20 pt-6 border-t border-white/10 flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.18em] text-white/30">
-          <span>© R-M 2025</span>
-          <span className="opacity-60">Privacy Policy</span>
-          <span>Vol. 01 — Made with intent</span>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

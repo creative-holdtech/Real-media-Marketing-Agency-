@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
-import { MobileMenu } from "@/components/mobile-menu";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { archive, getPost, posts } from "@/lib/posts";
 
@@ -50,13 +50,6 @@ export const Route = createFileRoute("/blog/$slug")({
   component: ArticlePage,
 });
 
-const nav: { label: string; href?: string; to?: string }[] = [
-  { label: "Services", href: "/#products" },
-  { label: "Products", href: "/#products" },
-  { label: "Case Studies", href: "/cases" },
-  { label: "Insights", href: "/#insights" },
-  { label: "About", to: "/about" },
-];
 
 type Section = { id: string; label: string; paragraphs: string[] };
 
@@ -139,46 +132,7 @@ function ArticlePage() {
         <div className="h-full bg-[#e85d3a] origin-left" style={{ width: `${progress}%`, transition: "width 80ms linear" }} />
       </div>
 
-      {/* NAV */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
-        <nav aria-label="Primary" className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-2 pr-2">
-          <div className="flex items-center gap-3">
-            <Link
-              to="/blog"
-              className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5 hover:bg-[#e85d3a] hover:text-white transition-colors"
-            >
-              <span aria-hidden>←</span>
-              Back to Journal
-            </Link>
-            <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white pl-2">
-              R—M<span aria-hidden className="text-[#e85d3a]">.</span>
-            </Link>
-          </div>
-          <Link to="/" aria-label="R-M home" className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
-            R—M<span aria-hidden className="text-[#e85d3a]">.</span>
-          </Link>
-          <div className="flex items-center gap-1">
-            <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
-              {nav.map((n) => (
-                <li key={n.label}>
-                  {n.to ? (
-                    <Link to={n.to} className="hover:text-white transition-colors">{n.label}</Link>
-                  ) : (
-                    <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
-                  )}
-                </li>
-              ))}
-              <li>
-                <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
-              </li>
-            </ul>
-            <a href="/#contact" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
-              Get Audit
-            </a>
-            <MobileMenu />
-          </div>
-        </nav>
-      </header>
+      <SiteHeader variant="dark" />
 
       <main id="main">
         <article aria-labelledby="article-title">
@@ -419,16 +373,7 @@ function ArticlePage() {
         </section>
       </main>
 
-      <footer className="px-6 md:px-12 max-w-[1280px] mx-auto py-16 border-t border-white/10">
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-between gap-6 text-[12px] text-white/40">
-          <span>© R-M 2026</span>
-          <ul className="flex items-center gap-6">
-            <li><Link to="/blog" className="hover:text-white transition-colors rounded-md">← Back to Journal</Link></li>
-            <li><span className="opacity-70">Privacy</span></li>
-            <li><span aria-label="Locations">Kyiv / EU / MENA</span></li>
-          </ul>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useId, useState } from "react";
 
-import { MobileMenu } from "@/components/mobile-menu";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { archive, featured } from "@/lib/posts";
 
@@ -26,13 +26,6 @@ export const Route = createFileRoute("/blog/")({
   component: BlogPage,
 });
 
-const nav: { label: string; href?: string; to?: string }[] = [
-  { label: "Services", href: "/#products" },
-  { label: "Products", href: "/#products" },
-  { label: "Case Studies", href: "/cases" },
-  { label: "Insights", href: "/#insights" },
-  { label: "About", to: "/about" },
-];
 const categories = ["All", "Strategy", "Positioning", "Performance", "Brand", "Field Notes"];
 
 function BlogPage() {
@@ -95,43 +88,7 @@ function BlogPage() {
         />
       </div>
 
-      {/* Pill NAV */}
-      <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
-        <nav aria-label="Primary" className="max-w-[1320px] mx-auto h-14 flex items-center justify-between rounded-full border border-white/10 bg-black/40 backdrop-blur-xl pl-5 md:pl-2 pr-2">
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:flex items-center gap-2 rounded-full bg-white/95 text-black text-[12px] font-medium px-3 py-1.5">
-              <span aria-hidden className="inline-block w-1.5 h-1.5 rounded-full bg-[#e85d3a]" />
-              Journal — dispatches from R-M
-            </span>
-            <Link to="/" aria-label="R-M home" className="sm:hidden font-semibold tracking-tight text-[15px] text-white">
-              R—M<span aria-hidden className="text-[#e85d3a]">.</span>
-            </Link>
-          </div>
-          <Link to="/" aria-label="R-M home" className="hidden md:block absolute left-1/2 -translate-x-1/2 font-semibold tracking-tight text-[15px]">
-            R—M<span aria-hidden className="text-[#e85d3a]">.</span>
-          </Link>
-          <div className="flex items-center gap-1">
-            <ul className="hidden md:flex items-center gap-6 text-[13px] text-white/70 mr-4">
-              {nav.map((n) => (
-                <li key={n.label}>
-                  {n.to ? (
-                    <Link to={n.to} className="hover:text-white transition-colors">{n.label}</Link>
-                  ) : (
-                    <a href={n.href} className="hover:text-white transition-colors">{n.label}</a>
-                  )}
-                </li>
-              ))}
-              <li>
-                <Link to="/blog" aria-current="page" className="text-white">Journal</Link>
-              </li>
-            </ul>
-            <a href="/#contact" className="hidden md:inline-block text-[13px] px-4 py-2 rounded-full bg-white text-black font-medium hover:bg-[#e85d3a] hover:text-white transition-colors">
-              Get Audit
-            </a>
-            <MobileMenu />
-          </div>
-        </nav>
-      </header>
+      <SiteHeader variant="dark" />
 
       <main id="main">
         {/* TICKER */}
@@ -151,7 +108,7 @@ function BlogPage() {
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
-                <span aria-hidden>[ </span>Journal — 2026<span aria-hidden> ]</span>
+                Journal — Vol. 14 · 2026
               </p>
               <p className="mt-4 text-[12px] text-white/30">Issue №14</p>
             </div>
@@ -224,7 +181,7 @@ function BlogPage() {
         <section aria-labelledby="featured-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-16 md:pb-24">
           <div className="flex items-end justify-between mb-10">
             <h2 id="featured-heading" className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-              <span aria-hidden>[ </span>01 — Featured<span aria-hidden> ]</span>
+              Featured · Editor's selection
             </h2>
             <span className="text-[11px] uppercase tracking-[0.2em] text-white/30 hidden md:inline">
               Editor's selection
@@ -290,7 +247,7 @@ function BlogPage() {
           <div className="flex items-end justify-between mb-12">
             <div>
               <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-3">
-                <span aria-hidden>[ </span>02 — Archive<span aria-hidden> ]</span>
+                Archive
               </p>
               <h2 id="archive-heading" className="text-[24px] md:text-[32px] tracking-[-0.02em] font-medium">
                 {active === "All" ? "All entries" : active}
@@ -404,7 +361,7 @@ function BlogPage() {
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-7 reveal">
               <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
-                <span aria-hidden>[ </span>03 — Subscribe<span aria-hidden> ]</span>
+                Subscribe
               </p>
               <h2 id="subscribe-heading" className="text-[36px] md:text-[64px] leading-[1] tracking-[-0.025em] font-medium">
                 Quiet dispatches.<br />
@@ -418,16 +375,7 @@ function BlogPage() {
         </section>
       </main>
 
-      <footer className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 border-t border-white/10">
-        <nav aria-label="Footer" className="flex flex-wrap items-center justify-between gap-6 text-[12px] text-white/40">
-          <span>© R-M 2026</span>
-          <ul className="flex items-center gap-6">
-            <li><Link to="/" className="hover:text-white transition-colors rounded-md">← Back home</Link></li>
-            <li><span className="opacity-70">Privacy</span></li>
-            <li><span aria-label="Locations">Kyiv / EU / MENA</span></li>
-          </ul>
-        </nav>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
