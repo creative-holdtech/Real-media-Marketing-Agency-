@@ -409,9 +409,6 @@ function SpinPillars() {
   const step = 360 / count;
   const rotation = -progress * (count - 1) * step;
 
-  useEffect(() => {
-    setPrev((p) => (p === active ? p : active));
-  }, [active]);
 
   return (
     <section
