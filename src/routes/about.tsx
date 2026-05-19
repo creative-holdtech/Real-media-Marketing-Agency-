@@ -422,14 +422,14 @@ function AboutPage() {
         {/* 8.1 — HERO */}
         <section
           aria-labelledby="page-title"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-20 md:pb-28 min-h-[60vh] flex flex-col justify-center"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[60vh] flex flex-col justify-center"
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
                 <span aria-hidden>[ </span>8.1 — Who we are<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30">Studio №01 · Since 2019</p>
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Studio №01 · Since 2019</p>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
@@ -451,28 +451,35 @@ function AboutPage() {
           </div>
         </section>
 
+
         {/* 8.2 — MISSION & APPROACH (rotating pillars) */}
         <SpinPillars />
 
         {/* 8.3 — TEAM */}
         <section
           aria-labelledby="team-heading"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
-          <div className="flex flex-col items-center text-center mb-14">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>8.3 — Team<span aria-hidden> ]</span>
-            </p>
-            <h2 id="team-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Who actually does the work.
-            </h2>
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+            <div className="col-span-12 md:col-span-3 reveal">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+                <span aria-hidden>[ </span>8.3 — Team<span aria-hidden> ]</span>
+              </p>
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Index 04 / 04</p>
+            </div>
+            <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
+              <h2 id="team-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
+                Who actually<br />
+                <span className="italic font-light text-white/55">does the work.</span>
+              </h2>
+            </div>
           </div>
-          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
             {team.map((m, i) => {
               const photo = teamPhotos[i % teamPhotos.length];
               return (
                 <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                  <article className="group h-full flex flex-col rounded-3xl overflow-hidden bg-[#efeeea] hover:-translate-y-1 transition-transform duration-500">
+                  <article className="group h-full flex flex-col bg-[#efeeea] relative">
                     <figure className="aspect-[4/5] relative overflow-hidden">
                       <img
                         src={photo}
@@ -488,7 +495,7 @@ function AboutPage() {
                         aria-hidden
                         className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/55"
                       />
-                      <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90">
+                      <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.28em] px-2.5 py-1 rounded-full bg-black/35 backdrop-blur-md border border-white/20 text-white/90">
                         {m.city}
                       </span>
                       <a
@@ -503,7 +510,7 @@ function AboutPage() {
                       <div className="absolute bottom-4 left-4 right-4">
                         <div className="text-[18px] font-medium text-white leading-tight">{m.name}</div>
                         <div className="text-[12px] text-white/80 mt-1">{m.role}</div>
-                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/70 mt-2">{m.spec}</div>
+                        <div className="text-[10px] uppercase tracking-[0.28em] text-white/70 mt-2">{m.spec}</div>
                       </div>
                     </figure>
                   </article>
@@ -512,13 +519,19 @@ function AboutPage() {
             })}
           </ul>
 
+          <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/35">
+            <span>R—M / Team · MMXXVI</span>
+            <span>Kyiv · Berlin · Dubai · Lisbon</span>
+          </div>
         </section>
+
 
         {/* 8.4 — NICHES — Swiss line-only, muted grain */}
         <section
           aria-labelledby="niches-heading"
-          className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
+
           <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
@@ -597,15 +610,31 @@ function AboutPage() {
           aria-labelledby="cta-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
         >
-          <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
-            <div className="col-span-12 md:col-span-8 reveal">
-              <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+            <div className="col-span-12 md:col-span-3 reveal">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
                 <span aria-hidden>[ </span>8.5 — Work with us<span aria-hidden> ]</span>
               </p>
-              <h2 id="cta-heading" className="text-[36px] md:text-[64px] leading-[1] tracking-[-0.025em] font-medium">
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">End / Index</p>
+            </div>
+            <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
+              <h2 id="cta-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
                 Have a brand worth<br />
-                <span className="italic font-light text-white/60">building carefully?</span>
+                <span className="italic font-light text-white/55">building carefully?</span>
               </h2>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-12 gap-6 md:gap-12 border-t border-white/10 pt-10 md:pt-14">
+            <div className="col-span-12 md:col-span-3">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">Next step</p>
+            </div>
+            <div className="col-span-12 md:col-span-5 reveal">
+              <p className="text-[15px] md:text-[17px] leading-relaxed text-white/65 max-w-[520px]">
+                A 30-minute audit. We pressure-test your positioning, narrative
+                and growth surface — and tell you what we'd ship in the first
+                ninety days.
+              </p>
             </div>
             <div className="col-span-12 md:col-span-4 reveal flex flex-col gap-3" data-delay="2">
               <a
@@ -616,13 +645,14 @@ function AboutPage() {
               </a>
               <a
                 href="mailto:hello@r-m.studio"
-                className="text-center text-[12px] uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors py-2"
+                className="text-center text-[12px] uppercase tracking-[0.25em] text-white/50 hover:text-white transition-colors py-2"
               >
                 hello@r-m.studio
               </a>
             </div>
           </div>
         </section>
+
       </main>
 
       <footer className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 border-t border-white/10">
@@ -643,8 +673,9 @@ function SpinPillars() {
   return (
     <section
       aria-labelledby="mission-heading"
-      className="border-t border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-32"
+      className="border-t border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32"
     >
+
       {/* Swiss-style header: 12-col grid, meta left, title right */}
       <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
         <div className="col-span-12 md:col-span-3 reveal">
