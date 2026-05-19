@@ -609,14 +609,15 @@ function VerticalsAccordion() {
                 className="relative h-full overflow-hidden text-left focus:outline-none"
                 style={{
                   flexGrow: isActive ? 4 : 1,
-                  transition: "flex-grow 900ms cubic-bezier(0.22, 1, 0.36, 1)",
+                  transition: "flex-grow 450ms cubic-bezier(0.32, 0.72, 0, 1)",
                 }}
               >
                 <img
                   src={v.img}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover transition-all duration-[1100ms] ease-out"
+                  className="absolute inset-0 w-full h-full object-cover"
                   style={{
+                    transition: "transform 700ms cubic-bezier(0.23,1,0.32,1), filter 500ms ease",
                     filter: isActive ? "saturate(0.85) brightness(0.85)" : "saturate(0.25) brightness(0.45)",
                     transform: isActive ? "scale(1.02)" : "scale(1.08)",
                   }}
