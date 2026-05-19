@@ -133,7 +133,7 @@ const insightPosts = posts.slice(0, 3);
 function Index() {
   useReveal();
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#e85d3a] selection:text-black">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#e85d3a] selection:text-black">
       {/* HERO with full-bleed gradient + pill nav */}
       <section className="relative min-h-screen w-full overflow-hidden">
         {/* Gradient background — sage green → deep indigo/violet (reference) */}
