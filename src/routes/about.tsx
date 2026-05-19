@@ -725,24 +725,20 @@ function SpinPillars() {
 
       {/* Swiss-style header: 12-col grid, meta left, title right */}
       <div className="grid grid-cols-12 gap-6 md:gap-12 mb-16 md:mb-24">
-        <div className="col-span-12 md:col-span-3 reveal">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-white/60">
-            <span aria-hidden>[ </span>8.2 — Mission &amp; approach<span aria-hidden> ]</span>
+        <div className="col-span-12 md:col-span-10 md:col-start-2 reveal text-center">
+          <p className="text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/60 mb-6">
+            Mission &amp; approach
           </p>
-          <p className="mt-4 text-[12px] text-white/55 tabular-nums">
-            03 principles
-          </p>
-        </div>
-        <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
           <h2
             id="mission-heading"
-            className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium text-white"
+            className="text-[36px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.03em] font-medium text-white"
           >
             How we work.<br />
             <span className="font-light text-white/60">Three principles.</span>
           </h2>
         </div>
       </div>
+
 
       {/* Pillars — clean 12-col rows, numbered, generous whitespace */}
       <ol role="list" className="border-t border-white/10">
