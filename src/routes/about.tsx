@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+
 
 import { MobileMenu } from "@/components/mobile-menu";
 import { useReveal } from "@/hooks/use-reveal";
+import { ScrollProgressBar, MagneticButton, TiltCard, ParallaxImage } from "@/components/motion-bits";
+
 
 import nicheAi from "@/assets/niche-ai.jpg";
 import nicheFintech from "@/assets/niche-fintech.jpg";
@@ -333,18 +335,6 @@ function NicheGlyph({ kind }: { kind: NicheIllustration }) {
 
 function AboutPage() {
   useReveal();
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const max = h.scrollHeight - h.clientHeight;
-      setProgress(max > 0 ? (h.scrollTop / max) * 100 : 0);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const tickerWords = [
     "About",
@@ -360,19 +350,8 @@ function AboutPage() {
     <div className="min-h-screen bg-[#0a0a0a] text-[#e8e6e1] selection:bg-[#efeeea] selection:text-black">
       <a href="#main" className="skip-link">Skip to content</a>
 
-      <div
-        role="progressbar"
-        aria-label="Reading progress"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(progress)}
-        className="fixed top-0 left-0 right-0 h-[2px] z-[60] bg-white/5"
-      >
-        <div
-          className="h-full bg-[#efeeea] origin-left"
-          style={{ width: `${progress}%`, transition: "width 80ms linear" }}
-        />
-      </div>
+      <ScrollProgressBar />
+
 
       {/* Pill NAV */}
       <header className="fixed top-4 left-0 right-0 z-50 px-4 md:px-8 reveal-fade">
@@ -452,19 +431,20 @@ function AboutPage() {
                 className="reveal mt-10 flex flex-wrap items-center gap-x-4 gap-y-3"
                 data-delay="2"
               >
-                <a
+                <MagneticButton
                   href="/#contact"
                   className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                 >
                   Book an audit
                   <span aria-hidden>→</span>
-                </a>
-                <a
+                </MagneticButton>
+                <MagneticButton
                   href="#cases"
+                  strength={10}
                   className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                 >
                   Selected work
-                </a>
+                </MagneticButton>
                 <span className="inline-flex items-center h-12 pl-4 ml-1 border-l border-white/10 text-[11px] uppercase tracking-[0.28em] leading-[1] text-white/55 tabular-nums">
                   47 brands · €280M raised · 7 yrs
                 </span>
@@ -505,28 +485,28 @@ function AboutPage() {
 
             <div className="grid grid-cols-12 gap-5">
               <div className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <a href="/#contact" className="reveal group block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
-                  <img
-                    src={teamPhotos[0]}
-                    alt={`${team[0].name}, ${team[0].role}`}
-                    loading="lazy"
-                    width={1200}
-                    height={1400}
-                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
-                      01 · {team[0].city}
+                <TiltCard className="reveal group block relative" max={6}>
+                  <a href="/#contact" className="block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
+                    <ParallaxImage
+                      src={teamPhotos[0]}
+                      alt={`${team[0].name}, ${team[0].role}`}
+                      range={50}
+                      className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8" style={{ transform: "translateZ(40px)" }}>
+                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
+                        01 · {team[0].city}
+                      </div>
+                      <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
+                        {team[0].name} — {team[0].role}
+                      </h3>
+                      <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
+                        {team[0].spec}
+                      </p>
                     </div>
-                    <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
-                      {team[0].name} — {team[0].role}
-                    </h3>
-                    <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
-                      {team[0].spec}
-                    </p>
-                  </div>
-                </a>
+                  </a>
+                </TiltCard>
 
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
                   {team.slice(1).map((m, idx) => {
@@ -593,31 +573,34 @@ function AboutPage() {
               <ul role="list" className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-10">
                 {niches.map((n, i) => (
                   <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                    <a
-                      href="/#contact"
-                      aria-label={`Discuss ${n.title} engagement`}
-                      className="group block"
-                    >
-                      <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
-                        <img
-                          src={nicheCovers[n.illustration]}
-                          alt={`${n.title} — minimalist mark`}
-                          loading="lazy"
-                          width={800}
-                          height={800}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
-                        />
-                      </div>
-                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
-                        {n.n} · Vertical
-                      </div>
-                      <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
-                        {n.title}
-                      </h3>
-                      <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
-                        {n.body}
-                      </p>
-                    </a>
+                    <TiltCard max={7} className="group">
+                      <a
+                        href="/#contact"
+                        aria-label={`Discuss ${n.title} engagement`}
+                        className="block"
+                      >
+                        <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
+                          <img
+                            src={nicheCovers[n.illustration]}
+                            alt={`${n.title} — minimalist mark`}
+                            loading="lazy"
+                            width={800}
+                            height={800}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                            style={{ transform: "translateZ(0)" }}
+                          />
+                        </div>
+                        <div className="text-[11px] uppercase tracking-[0.28em] text-white/55 mb-2 tabular-nums">
+                          {n.n} · Vertical
+                        </div>
+                        <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
+                          {n.title}
+                        </h3>
+                        <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
+                          {n.body}
+                        </p>
+                      </a>
+                    </TiltCard>
                   </li>
                 ))}
               </ul>
@@ -651,19 +634,20 @@ function AboutPage() {
                 </p>
 
                 <div className="mt-10 flex flex-wrap items-center gap-4">
-                  <a
+                  <MagneticButton
                     href="/#contact"
                     className="inline-flex items-center gap-2 h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-colors"
                   >
                     Book an audit
                     <span aria-hidden>→</span>
-                  </a>
-                  <a
+                  </MagneticButton>
+                  <MagneticButton
                     href="mailto:hello@r-m.studio"
+                    strength={10}
                     className="inline-flex items-center h-12 px-6 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/15 text-white/85 hover:bg-white/5 transition-colors"
                   >
                     hello@r-m.studio
-                  </a>
+                  </MagneticButton>
                 </div>
               </div>
             </div>
