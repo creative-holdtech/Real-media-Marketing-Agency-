@@ -485,28 +485,28 @@ function AboutPage() {
 
             <div className="grid grid-cols-12 gap-5">
               <div className="col-span-12 md:col-span-10 md:col-start-3 grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <a href="/#contact" className="reveal group block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
-                  <img
-                    src={teamPhotos[0]}
-                    alt={`${team[0].name}, ${team[0].role}`}
-                    loading="lazy"
-                    width={1200}
-                    height={1400}
-                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:scale-[1.03] transition-transform duration-[900ms] ease-out"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
-                      01 · {team[0].city}
+                <TiltCard className="reveal group block relative" max={6}>
+                  <a href="/#contact" className="block relative overflow-hidden rounded-xl bg-white/5 aspect-[4/5] lg:aspect-auto lg:min-h-[480px]">
+                    <ParallaxImage
+                      src={teamPhotos[0]}
+                      alt={`${team[0].name}, ${team[0].role}`}
+                      range={50}
+                      className="absolute inset-0 w-full h-full object-cover grayscale transition-transform duration-[900ms] ease-out group-hover:scale-[1.06]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8" style={{ transform: "translateZ(40px)" }}>
+                      <div className="text-[11px] uppercase tracking-[0.28em] text-white/70 mb-3 tabular-nums">
+                        01 · {team[0].city}
+                      </div>
+                      <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
+                        {team[0].name} — {team[0].role}
+                      </h3>
+                      <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
+                        {team[0].spec}
+                      </p>
                     </div>
-                    <h3 className="text-[24px] md:text-[28px] leading-[1.1] tracking-[-0.01em] font-medium text-white max-w-[20ch]">
-                      {team[0].name} — {team[0].role}
-                    </h3>
-                    <p className="mt-3 text-[13px] md:text-[14px] text-white/70">
-                      {team[0].spec}
-                    </p>
-                  </div>
-                </a>
+                  </a>
+                </TiltCard>
 
                 <ul role="list" className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-5">
                   {team.slice(1).map((m, idx) => {
