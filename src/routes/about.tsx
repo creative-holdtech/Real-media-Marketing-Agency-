@@ -548,7 +548,7 @@ function AboutPage() {
               </h2>
             </div>
 
-            <ul role="list" className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10">
+            <ul role="list" className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-8">
               {niches.map((n, i) => (
                 <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
                   <a
@@ -556,29 +556,30 @@ function AboutPage() {
                     aria-label={`Discuss ${n.title} engagement`}
                     className="group block"
                   >
-                    <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-white mb-5">
+                    <div className="relative aspect-square overflow-hidden rounded-lg bg-[#ececec] mb-4">
                       <img
                         src={nicheCovers[n.illustration]}
                         alt={`${n.title} — minimalist mark`}
                         loading="lazy"
-                        width={1024}
-                        height={640}
-                        className="absolute inset-0 w-full h-full object-contain transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+                        width={800}
+                        height={800}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
                       />
                     </div>
-                    <div className="text-[12px] uppercase tracking-[0.14em] text-white/45 mb-2 tabular-nums">
+                    <div className="text-[11px] uppercase tracking-[0.14em] text-white/45 mb-1.5 tabular-nums">
                       {n.n} · Vertical
                     </div>
-                    <h3 className="text-[20px] md:text-[22px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
+                    <h3 className="text-[16px] md:text-[17px] leading-[1.3] tracking-[-0.01em] font-medium text-white group-hover:text-white/80 transition-colors">
                       {n.title}
                     </h3>
-                    <p className="mt-2 text-[15px] leading-[1.55] text-white/60 max-w-[42ch]">
+                    <p className="mt-1.5 text-[13px] leading-[1.5] text-white/60">
                       {n.body}
                     </p>
                   </a>
                 </li>
               ))}
             </ul>
+
           </div>
         </section>
 
