@@ -427,55 +427,82 @@ function AboutPage() {
 
         </section>
 
-        {/* 8.4 — NICHES */}
+        {/* 8.4 — NICHES — Swiss line-only, muted grain */}
         <section
           aria-labelledby="niches-heading"
           className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
         >
-          <div className="flex flex-col items-center text-center mb-14">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
-            </p>
-            <h2 id="niches-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Four verticals.<br />
-              <span className="italic font-light text-white/60">Where we go deep.</span>
-            </h2>
+          <div className="grid grid-cols-12 gap-6 md:gap-12 mb-14 md:mb-20">
+            <div className="col-span-12 md:col-span-3 reveal">
+              <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
+                <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
+              </p>
+              <p className="mt-4 text-[12px] text-white/30 tabular-nums">Index 04 / 04</p>
+            </div>
+            <div className="col-span-12 md:col-span-9 reveal" data-delay="2">
+              <h2 id="niches-heading" className="text-[36px] sm:text-[56px] md:text-[80px] leading-[0.95] tracking-[-0.03em] font-medium">
+                Four verticals.<br />
+                <span className="italic font-light text-white/55">Where we go deep.</span>
+              </h2>
+            </div>
           </div>
-          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 rounded-[20px] overflow-hidden">
             {niches.map((n, i) => (
               <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
-                <article className="group h-full flex flex-col rounded-[20px] bg-[#efeeea] text-[#0a0a0a] overflow-hidden hover:-translate-y-1 transition-transform duration-500">
-                  {/* Editorial cover — ElevenLabs blog style */}
-                  <div className="aspect-[16/10] w-full overflow-hidden relative">
-                    <img
-                      src={nicheCovers[n.illustration]}
-                      alt={`${n.title} — editorial cover`}
-                      loading="lazy"
-                      width={1280}
-                      height={800}
-                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                    />
+                <article className="group h-full flex flex-col bg-[#efeeea] text-[#0a0a0a] relative">
+                  <div className="flex items-center justify-between px-5 pt-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/45 tabular-nums">
+                    <span>{n.n} / 04</span>
+                    <span aria-hidden className="inline-flex items-center gap-2">
+                      <span className="w-1 h-1 rounded-full bg-[#0a0a0a]/40" />
+                      Vertical
+                    </span>
                   </div>
 
+                  {/* Geometric plate — line only, muted grain */}
+                  <div className="relative aspect-square w-full overflow-hidden">
+                    <NicheGlyph kind={n.illustration} />
+                    <svg aria-hidden className="absolute inset-0 w-full h-full mix-blend-multiply opacity-[0.18] pointer-events-none">
+                      <filter id={`grain-${n.illustration}`}>
+                        <feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" stitchTiles="stitch" />
+                        <feColorMatrix type="saturate" values="0" />
+                      </filter>
+                      <rect width="100%" height="100%" filter={`url(#grain-${n.illustration})`} />
+                    </svg>
+                    <div aria-hidden className="absolute inset-3 border border-[#0a0a0a]/10" />
+                    <span aria-hidden className="absolute top-3 left-3 w-2 h-2 border-t border-l border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute top-3 right-3 w-2 h-2 border-t border-r border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute bottom-3 left-3 w-2 h-2 border-b border-l border-[#0a0a0a]/35" />
+                    <span aria-hidden className="absolute bottom-3 right-3 w-2 h-2 border-b border-r border-[#0a0a0a]/35" />
+                    <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55">
+                      Fig. {n.n}
+                    </span>
+                    <span className="absolute bottom-4 right-5 text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/55">
+                      {n.illustration}
+                    </span>
+                  </div>
 
-                  {/* Meta + text */}
-                  <div className="px-5 pt-5 pb-6 flex-1 flex flex-col">
-                    <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/45 tabular-nums mb-3">
-                      <span>{n.n} / 04</span>
-                      <span>Vertical</span>
-                    </div>
-                    <h3 className="text-[20px] md:text-[22px] leading-[1.15] tracking-[-0.015em] font-medium">
+                  <div className="px-5 pt-6 pb-6 flex-1 flex flex-col border-t border-[#0a0a0a]/10">
+                    <h3 className="text-[22px] md:text-[26px] leading-[1.05] tracking-[-0.02em] font-medium">
                       {n.title}
                     </h3>
                     <p className="mt-3 text-[13px] text-[#0a0a0a]/60 leading-[1.55] flex-1">
                       {n.body}
                     </p>
+                    <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-[#0a0a0a]/40">
+                      <span>R—M · Studio</span>
+                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                    </div>
                   </div>
                 </article>
               </li>
             ))}
           </ul>
 
+          <div className="mt-6 flex items-center justify-between text-[10px] uppercase tracking-[0.28em] text-white/35">
+            <span>R—M / Verticals · MMXXVI</span>
+            <span>Line · Grain · Silence</span>
+          </div>
         </section>
 
         {/* 8.5 — CTA */}
