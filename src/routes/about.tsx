@@ -11,65 +11,106 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "R-M is a strategy and brand studio for ambitious founders. Field notes on how we work, who we are, and what we believe.",
+          "R-M is a strategy and brand studio for ambitious founders across AI SaaS, Fintech, Web3 and lifestyle.",
       },
       { property: "og:title", content: "About — R-M Studio" },
       {
         property: "og:description",
         content:
-          "R-M is a strategy and brand studio for ambitious founders. Field notes on how we work, who we are, and what we believe.",
+          "R-M is a strategy and brand studio for ambitious founders across AI SaaS, Fintech, Web3 and lifestyle.",
       },
     ],
   }),
   component: AboutPage,
 });
 
-const nav: { label: string; href: string }[] = [
+const nav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", href: "/#products" },
   { label: "Products", href: "/#products" },
   { label: "Case Studies", href: "/#cases" },
   { label: "Insights", href: "/#insights" },
 ];
 
-const principles = [
+// 8.2 — Mission / Approach pillars (rotating circle items)
+const pillars = [
   {
     n: "01",
-    tag: "Strategy",
-    title: "Position before production.",
-    body: "We start with the sharpest articulation of what a brand actually is — then design, copy, and campaigns follow with discipline.",
-    gradient:
-      "radial-gradient(circle at 30% 20%, #e85d3a55, transparent 55%), radial-gradient(circle at 80% 80%, #4a6b8a44, transparent 60%)",
+    tag: "Idea",
+    title: "Sharp positioning, first.",
+    body: "We start with the cleanest possible articulation of what the brand is, who it is for, and why it deserves to exist. Everything downstream — design, copy, growth — inherits that clarity.",
   },
   {
     n: "02",
-    tag: "Velocity",
-    title: "Compounding over spikes.",
-    body: "Short engagements optimise for one launch. We design systems that get sharper every quarter, not louder every campaign.",
-    gradient:
-      "radial-gradient(circle at 75% 25%, #c9a84c55, transparent 55%), radial-gradient(circle at 20% 85%, #5a8a5c55, transparent 60%)",
+    tag: "Approach",
+    title: "Systems, not one-offs.",
+    body: "Brand systems, growth loops, content engines. We build durable infrastructure that compounds quarter after quarter, instead of one launch that fades in a week.",
   },
   {
     n: "03",
-    tag: "Craft",
-    title: "Taste is non-negotiable.",
-    body: "Every surface — from a footer link to a flagship film — is shipped at the same standard. Quiet, considered, unmistakably ours.",
-    gradient:
-      "radial-gradient(circle at 25% 70%, #6c5ce755, transparent 55%), radial-gradient(circle at 80% 25%, #e8478a44, transparent 60%)",
+    tag: "Result",
+    title: "Numbers founders care about.",
+    body: "Capital secured, qualified pipeline, lower CAC, defensible category position. Outcomes that move the cap table — not vanity impressions.",
   },
 ];
 
+// 8.3 — Team
 const team = [
-  { initials: "RM", name: "R. Mirza", role: "Founder · Strategy", city: "Kyiv" },
-  { initials: "AL", name: "A. Levchenko", role: "Creative Director", city: "Berlin" },
-  { initials: "SK", name: "S. Karim", role: "Performance Lead", city: "Dubai" },
-  { initials: "JD", name: "J. Dovgan", role: "Brand Designer", city: "Lisbon" },
+  {
+    initials: "RM",
+    name: "R. Mirza",
+    role: "Founder · Strategy",
+    spec: "Positioning · GTM",
+    city: "Kyiv",
+  },
+  {
+    initials: "AL",
+    name: "A. Levchenko",
+    role: "Creative Director",
+    spec: "Brand systems",
+    city: "Berlin",
+  },
+  {
+    initials: "SK",
+    name: "S. Karim",
+    role: "Performance Lead",
+    spec: "Paid · Lifecycle",
+    city: "Dubai",
+  },
+  {
+    initials: "JD",
+    name: "J. Dovgan",
+    role: "Brand Designer",
+    spec: "Identity · Motion",
+    city: "Lisbon",
+  },
 ];
 
-const timeline = [
-  { year: "2019", title: "Studio founded", body: "Started as a two-person practice in Kyiv working with early-stage founders." },
-  { year: "2021", title: "EU expansion", body: "Opened a satellite cell in Berlin and began long-term retainers with category leaders." },
-  { year: "2023", title: "MENA chapter", body: "First flagship launches across the Gulf — luxury, fintech, and lifestyle verticals." },
-  { year: "2026", title: "40+ launches", body: "$120M+ in capital secured by founder teams we partnered with." },
+// 8.4 — Niches
+const niches = [
+  {
+    n: "01",
+    title: "AI SaaS",
+    body: "Positioning, pricing and launch systems for AI-native products fighting for category leadership.",
+    accent: "#e85d3a",
+  },
+  {
+    n: "02",
+    title: "Fintech + Web3",
+    body: "Trust-led brand systems and growth for regulated finance, neobanks, and on-chain primitives.",
+    accent: "#c9a84c",
+  },
+  {
+    n: "03",
+    title: "Hospitality + Lifestyle",
+    body: "Flagship identity and storytelling for hotels, restaurants and lifestyle labels across EU and MENA.",
+    accent: "#5a8a5c",
+  },
+  {
+    n: "04",
+    title: "B2B Platforms",
+    body: "Repositioning legacy B2B and enterprise platforms into sharper, founder-grade narratives.",
+    accent: "#6c5ce7",
+  },
 ];
 
 function AboutPage() {
@@ -165,82 +206,52 @@ function AboutPage() {
           </div>
         </div>
 
-        {/* HERO */}
-        <section className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20" aria-labelledby="page-title">
+        {/* 8.1 — HERO */}
+        <section
+          aria-labelledby="page-title"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-20 md:pb-28 min-h-[60vh] flex flex-col justify-center"
+        >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
-                <span aria-hidden>[ </span>About — 2026<span aria-hidden> ]</span>
+                <span aria-hidden>[ </span>8.1 — Who we are<span aria-hidden> ]</span>
               </p>
-              <p className="mt-4 text-[12px] text-white/30">Studio №01</p>
+              <p className="mt-4 text-[12px] text-white/30">Studio №01 · Since 2019</p>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
-                A small studio<br />
+                A small studio for<br />
                 <span className="italic font-light text-white/60 drift inline-block">
-                  for ambitious founders.
+                  founders who actually ship.
                 </span>
               </h1>
-              <p className="reveal mt-10 max-w-[620px] text-[15px] md:text-[16px] leading-relaxed text-white/60" data-delay="2">
+              <p className="reveal mt-10 max-w-[620px] text-[15px] md:text-[17px] leading-relaxed text-white/65" data-delay="2">
                 R-M is a strategy and brand studio working with operators across
-                the EU and MENA. We help founders position sharply, launch
-                cleanly, and compound year over year — not chase quarterly noise.
+                AI SaaS, Fintech, Web3 and lifestyle. We help founders position
+                sharply, launch cleanly, and compound year over year — instead
+                of chasing quarterly noise.
+              </p>
+              <p className="reveal mt-4 max-w-[620px] text-[15px] md:text-[17px] leading-relaxed text-white/55" data-delay="3">
+                Two cells, one studio. Senior on every call.
               </p>
             </div>
           </div>
         </section>
 
-        {/* METRICS — scroll-driven rotating circle */}
-        <SpinMetrics />
+        {/* 8.2 — MISSION & APPROACH (rotating pillars) */}
+        <SpinPillars />
 
-
-        {/* PRINCIPLES — blog-card style */}
-        <section aria-labelledby="principles-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 md:py-24 border-t border-white/10">
-          <div className="flex flex-col items-center text-center mb-12">
+        {/* 8.3 — TEAM */}
+        <section
+          aria-labelledby="team-heading"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
+        >
+          <div className="flex flex-col items-center text-center mb-14">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>02 — Principles<span aria-hidden> ]</span>
-            </p>
-            <h2 id="principles-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Three things we keep<br />
-              <span className="italic font-light text-white/60">non-negotiable.</span>
-            </h2>
-          </div>
-          <ul role="list" className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {principles.map((p, i) => (
-              <li key={p.n} className="reveal" data-delay={String(i + 1)}>
-                <article className="group h-full flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500">
-                  <figure className="aspect-[4/3] relative overflow-hidden">
-                    <div aria-hidden className="absolute inset-0" style={{ backgroundImage: p.gradient }} />
-                    <div aria-hidden className="absolute inset-0 mix-blend-screen" style={{ backgroundImage: p.gradient }} />
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
-                    <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
-                      {p.tag}
-                    </span>
-                    <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
-                      {p.n}
-                    </span>
-                  </figure>
-                  <div className="flex-1 flex flex-col p-6 md:p-8">
-                    <h3 className="text-[22px] md:text-[24px] leading-[1.15] tracking-[-0.015em] font-medium text-white">
-                      {p.title}
-                    </h3>
-                    <p className="mt-4 text-[14px] text-white/55 leading-relaxed flex-1">{p.body}</p>
-                  </div>
-                </article>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* TEAM */}
-        <section aria-labelledby="team-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 md:py-24 border-t border-white/10">
-          <div className="flex flex-col items-center text-center mb-12">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>03 — Team<span aria-hidden> ]</span>
+              <span aria-hidden>[ </span>8.3 — Team<span aria-hidden> ]</span>
             </p>
             <h2 id="team-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Small by design.<br />
-              <span className="italic font-light text-white/60">Senior on every call.</span>
+              Who actually does the work.
             </h2>
           </div>
           <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -248,16 +259,26 @@ function AboutPage() {
               <li key={m.name} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
                 <article className="group h-full flex flex-col rounded-3xl border border-white/10 bg-[#111] overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500">
                   <figure className="aspect-[4/5] relative overflow-hidden bg-gradient-to-br from-[#1a1a1a] via-[#0f0f0f] to-[#1a1a1a]">
-                    <div aria-hidden className="absolute inset-0 grid place-items-center text-[120px] font-medium text-white/[0.06] tracking-tight">
+                    <div aria-hidden className="absolute inset-0 grid place-items-center text-[140px] font-medium text-white/[0.06] tracking-tight">
                       {m.initials}
                     </div>
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70" />
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/75" />
                     <span className="absolute top-3 left-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85">
                       {m.city}
                     </span>
+                    <a
+                      href="#"
+                      aria-label={`${m.name} on LinkedIn`}
+                      className="absolute top-3 right-3 w-9 h-9 grid place-items-center rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-white/85 hover:bg-[#e85d3a] hover:text-white hover:border-transparent transition-colors"
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.07c.67-1.27 2.3-2.6 4.73-2.6 5.06 0 6 3.33 6 7.66V24h-5v-7.1c0-1.7-.03-3.88-2.36-3.88-2.37 0-2.74 1.85-2.74 3.76V24h-5V8z" />
+                      </svg>
+                    </a>
                     <div className="absolute bottom-4 left-4 right-4">
-                      <div className="text-[18px] font-medium text-white">{m.name}</div>
-                      <div className="text-[12px] text-white/60 mt-1">{m.role}</div>
+                      <div className="text-[18px] font-medium text-white leading-tight">{m.name}</div>
+                      <div className="text-[12px] text-white/65 mt-1">{m.role}</div>
+                      <div className="text-[11px] uppercase tracking-[0.18em] text-[#e85d3a] mt-2">{m.spec}</div>
                     </div>
                   </figure>
                 </article>
@@ -266,50 +287,61 @@ function AboutPage() {
           </ul>
         </section>
 
-        {/* TIMELINE */}
-        <section aria-labelledby="timeline-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto py-16 md:py-24 border-t border-white/10">
-          <div className="flex flex-col items-center text-center mb-12">
+        {/* 8.4 — NICHES */}
+        <section
+          aria-labelledby="niches-heading"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-20 md:py-28 border-t border-white/10"
+        >
+          <div className="flex flex-col items-center text-center mb-14">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-4">
-              <span aria-hidden>[ </span>04 — Trajectory<span aria-hidden> ]</span>
+              <span aria-hidden>[ </span>8.4 — Our niches<span aria-hidden> ]</span>
             </p>
-            <h2 id="timeline-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Seven quiet years.
+            <h2 id="niches-heading" className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
+              Four verticals.<br />
+              <span className="italic font-light text-white/60">Where we go deep.</span>
             </h2>
           </div>
-          <ul role="list" className="divide-y divide-white/10 border-y border-white/10">
-            {timeline.map((t, i) => (
-              <li
-                key={t.year}
-                className="grid grid-cols-12 items-baseline py-6 md:py-8 group hover:bg-white/[0.02] transition-colors reveal"
-                data-delay={String(Math.min(i + 1, 5))}
-              >
-                <span className="col-span-3 md:col-span-2 text-[20px] md:text-2xl font-medium tracking-tight group-hover:text-[#e85d3a] transition-colors">
-                  {t.year}
-                </span>
-                <span className="col-span-9 md:col-span-4 text-[16px] md:text-[20px] text-white/90">
-                  {t.title}
-                </span>
-                <span className="col-start-4 col-span-9 md:col-start-auto md:col-span-6 mt-2 md:mt-0 text-[14px] text-white/55 leading-relaxed">
-                  {t.body}
-                </span>
+          <ul role="list" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {niches.map((n, i) => (
+              <li key={n.n} className="reveal" data-delay={String(Math.min(i + 1, 5))}>
+                <article
+                  className="group h-full flex flex-col rounded-3xl border border-white/10 bg-[#111] p-6 md:p-8 hover:border-white/25 hover:-translate-y-1 transition-all duration-500 relative overflow-hidden"
+                >
+                  <div
+                    aria-hidden
+                    className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500 blur-2xl"
+                    style={{ background: n.accent }}
+                  />
+                  <div className="relative flex items-center justify-between mb-10">
+                    <span
+                      className="w-10 h-10 grid place-items-center rounded-full text-[12px] font-medium"
+                      style={{ background: `${n.accent}22`, color: n.accent, border: `1px solid ${n.accent}55` }}
+                    >
+                      {n.n}
+                    </span>
+                    <span aria-hidden className="w-2 h-2 rounded-full" style={{ background: n.accent }} />
+                  </div>
+                  <h3 className="relative text-[22px] md:text-[24px] leading-[1.15] tracking-[-0.015em] font-medium text-white">
+                    {n.title}
+                  </h3>
+                  <p className="relative mt-4 text-[14px] text-white/55 leading-relaxed flex-1">
+                    {n.body}
+                  </p>
+                </article>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* BIG TYPE STATEMENT */}
-        <section aria-hidden className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-40 border-t border-white/10 overflow-hidden">
-          <p className="text-[18vw] md:text-[14vw] leading-[0.85] tracking-[-0.05em] font-medium text-white/[0.06] whitespace-nowrap">
-            Quiet · Clarity · Compounding
-          </p>
-        </section>
-
-        {/* CTA */}
-        <section aria-labelledby="cta-heading" className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10">
+        {/* 8.5 — CTA */}
+        <section
+          aria-labelledby="cta-heading"
+          className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
+        >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-8 reveal">
               <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">
-                <span aria-hidden>[ </span>05 — Work with us<span aria-hidden> ]</span>
+                <span aria-hidden>[ </span>8.5 — Work with us<span aria-hidden> ]</span>
               </p>
               <h2 id="cta-heading" className="text-[36px] md:text-[64px] leading-[1] tracking-[-0.025em] font-medium">
                 Have a brand worth<br />
@@ -348,16 +380,10 @@ function AboutPage() {
   );
 }
 
-const spinMetrics = [
-  { big: "40+", label: "Projects delivered", caption: "Launched across EU and MENA since 2019." },
-  { big: "$120M+", label: "Capital secured", caption: "Raised by founder teams we partnered with." },
-  { big: "04", label: "Industries mastered", caption: "Fintech, lifestyle, hospitality, B2B SaaS." },
-  { big: "EU·MENA", label: "Markets", caption: "Two cells, one studio — Kyiv, Berlin, Dubai." },
-];
-
-function SpinMetrics() {
+function SpinPillars() {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [progress, setProgress] = useState(0);
+  const [prev, setPrev] = useState(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -365,7 +391,6 @@ function SpinMetrics() {
       if (!el) return;
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
-      // progress 0 when section enters the sticky window, 1 when it leaves.
       const total = rect.height - vh;
       const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
       setProgress(total > 0 ? scrolled / total : 0);
@@ -379,51 +404,56 @@ function SpinMetrics() {
     };
   }, []);
 
-  const count = spinMetrics.length;
+  const count = pillars.length;
   const active = Math.min(count - 1, Math.floor(progress * count * 0.999));
-  // Place markers so the active item sits at the 3 o'clock anchor (angle 0).
   const step = 360 / count;
   const rotation = -progress * (count - 1) * step;
+
+  useEffect(() => {
+    setPrev((p) => (p === active ? p : active));
+  }, [active]);
 
   return (
     <section
       ref={wrapRef}
-      aria-labelledby="metrics-heading"
+      aria-labelledby="mission-heading"
       className="relative border-t border-white/10"
-      style={{ height: `${count * 90}vh` }}
+      style={{ height: `${count * 100}vh` }}
     >
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         <div className="px-6 md:px-12 max-w-[1440px] mx-auto w-full">
-          <div className="flex items-center justify-between mb-10 md:mb-16">
-            <h2 id="metrics-heading" className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-              <span aria-hidden>[ </span>01 — By the numbers<span aria-hidden> ]</span>
-            </h2>
-            <span className="text-[11px] uppercase tracking-[0.2em] text-white/30">
+          <div className="flex items-center justify-between mb-10 md:mb-14">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
+              <span aria-hidden>[ </span>8.2 — Mission & approach<span aria-hidden> ]</span>
+            </p>
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/30 tabular-nums">
               {String(active + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
             </span>
           </div>
 
+          <h2 id="mission-heading" className="sr-only">Mission and approach</h2>
+
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-center">
-            {/* Rotating circle */}
-            <div className="col-span-12 md:col-span-7 relative">
+            {/* Rotating circle — LEFT */}
+            <div className="col-span-12 md:col-span-6 relative">
               <div
                 className="relative mx-auto"
-                style={{ width: "min(560px, 90vw)", aspectRatio: "1 / 1" }}
+                style={{ width: "min(560px, 88vw)", aspectRatio: "1 / 1" }}
                 aria-hidden
               >
-                {/* circle outline */}
                 <div className="absolute inset-0 rounded-full border border-white/10" />
-                <div className="absolute inset-[10%] rounded-full border border-white/[0.04]" />
+                <div className="absolute inset-[8%] rounded-full border border-white/[0.05]" />
+                <div className="absolute inset-[20%] rounded-full border border-white/[0.03]" />
 
                 {/* rotating numbers */}
                 <div
                   className="absolute inset-0"
                   style={{
                     transform: `rotate(${rotation}deg)`,
-                    transition: "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+                    transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
                   }}
                 >
-                  {spinMetrics.map((m, i) => {
+                  {pillars.map((p, i) => {
                     const angle = i * step;
                     const isActive = i === active;
                     return (
@@ -431,18 +461,18 @@ function SpinMetrics() {
                         key={i}
                         className="absolute top-1/2 left-1/2"
                         style={{
-                          transform: `rotate(${angle}deg) translateX(46%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
-                          transition: "transform 600ms cubic-bezier(0.22, 1, 0.36, 1)",
+                          transform: `rotate(${angle}deg) translateX(44%) rotate(${-angle - rotation}deg) translate(-50%, -50%)`,
+                          transition: "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
                         }}
                       >
                         <div
-                          className="font-medium tracking-[-0.04em] leading-none transition-all duration-500"
+                          className="font-medium tracking-[-0.04em] leading-none transition-all duration-700"
                           style={{
-                            fontSize: isActive ? "clamp(64px, 11vw, 160px)" : "clamp(28px, 4.5vw, 64px)",
-                            color: isActive ? "#e8e6e1" : "rgba(232,230,225,0.18)",
+                            fontSize: isActive ? "clamp(72px, 12vw, 180px)" : "clamp(28px, 4.5vw, 64px)",
+                            color: isActive ? "#e8e6e1" : "rgba(232,230,225,0.14)",
                           }}
                         >
-                          {String(i + 1).padStart(2, "0")}
+                          {p.n}
                         </div>
                       </div>
                     );
@@ -451,37 +481,43 @@ function SpinMetrics() {
 
                 {/* anchor dot at 3 o'clock */}
                 <span
-                  aria-hidden
-                  className="absolute top-1/2 left-1/2 w-2 h-2 -mt-1 rounded-full bg-[#e85d3a]"
-                  style={{ transform: "translateX(46%) translate(-50%, -50%)" }}
+                  className="absolute top-1/2 left-1/2 w-2.5 h-2.5 rounded-full bg-[#e85d3a]"
+                  style={{ transform: "translateX(44%) translate(-50%, -50%)" }}
                 />
               </div>
             </div>
 
-            {/* Active label + caption */}
-            <div className="col-span-12 md:col-span-5 relative min-h-[180px] md:min-h-[260px]">
-              {spinMetrics.map((m, i) => (
-                <div
-                  key={i}
-                  aria-hidden={i !== active}
-                  className="absolute inset-0 flex flex-col justify-center transition-all duration-500"
-                  style={{
-                    opacity: i === active ? 1 : 0,
-                    transform: i === active ? "translateY(0)" : "translateY(16px)",
-                    pointerEvents: i === active ? "auto" : "none",
-                  }}
-                >
-                  <div className="text-[40px] md:text-[64px] leading-[1] tracking-[-0.02em] font-medium">
-                    {m.big}
+            {/* Active content — slides in from the RIGHT */}
+            <div className="col-span-12 md:col-span-6 relative min-h-[220px] md:min-h-[320px] overflow-hidden">
+              {pillars.map((p, i) => {
+                const isActive = i === active;
+                // direction: items after active sit off-right, before active off-left
+                const offset = i === active ? 0 : i > active ? 60 : -60;
+                return (
+                  <div
+                    key={p.n}
+                    aria-hidden={!isActive}
+                    className="absolute inset-0 flex flex-col justify-center"
+                    style={{
+                      opacity: isActive ? 1 : 0,
+                      transform: `translateX(${offset}px)`,
+                      transition:
+                        "opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 800ms cubic-bezier(0.22, 1, 0.36, 1)",
+                      pointerEvents: isActive ? "auto" : "none",
+                    }}
+                  >
+                    <div className="text-[11px] uppercase tracking-[0.25em] text-[#e85d3a] mb-5">
+                      {p.tag}
+                    </div>
+                    <h3 className="text-[32px] md:text-[56px] leading-[1.02] tracking-[-0.025em] font-medium text-white">
+                      {p.title}
+                    </h3>
+                    <p className="mt-6 text-[15px] md:text-[17px] text-white/60 leading-relaxed max-w-md">
+                      {p.body}
+                    </p>
                   </div>
-                  <div className="mt-4 text-[12px] uppercase tracking-[0.2em] text-[#e85d3a]">
-                    {m.label}
-                  </div>
-                  <p className="mt-6 text-[15px] text-white/55 leading-relaxed max-w-sm">
-                    {m.caption}
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
