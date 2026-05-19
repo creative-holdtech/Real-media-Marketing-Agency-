@@ -680,14 +680,6 @@ function AboutPage() {
               </span>
             </h2>
 
-            <div className="flex justify-center mt-16 md:mt-20" aria-hidden>
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <path
-                  d="M16 0 L19 13 L32 16 L19 19 L16 32 L13 19 L0 16 L13 13 Z"
-                  fill="var(--accent-red)"
-                />
-              </svg>
-            </div>
 
             <p
               className="mt-10 md:mt-12 text-[15px] md:text-[17px] uppercase tracking-[0.18em] font-medium"
