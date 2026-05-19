@@ -430,13 +430,10 @@ function AboutPage() {
           className="px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-24 md:pb-32 min-h-[72vh] flex flex-col justify-center"
         >
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
-            <div className="col-span-12 md:col-span-3">
-              <p className="text-[11px] uppercase tracking-[0.28em] text-white/60">
-                <span aria-hidden>[ </span>8.1 — Who we are<span aria-hidden> ]</span>
+            <div className="col-span-12 md:col-span-9 md:col-start-4">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-white/60 mb-8 md:mb-10">
+                Who we are
               </p>
-              <p className="mt-4 text-[12px] text-white/55 tabular-nums">Studio №01 · Since 2019</p>
-            </div>
-            <div className="col-span-12 md:col-span-9">
               <h1 id="page-title" className="text-[44px] sm:text-[72px] md:text-[104px] leading-[0.95] tracking-[-0.035em] font-medium text-white">
                 A small studio for<br />
                 <span className="font-light text-white/70 inline-block">
@@ -447,6 +444,7 @@ function AboutPage() {
                 R-M is a strategy and brand studio for AI, Fintech, Web3 and
                 lifestyle operators. Two cells, one studio. Senior on every call.
               </p>
+
 
               {/* Hero CTA + trust strip */}
               <div className="reveal mt-10 flex flex-wrap items-center gap-x-5 gap-y-4" data-delay="2">
