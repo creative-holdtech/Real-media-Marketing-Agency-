@@ -165,7 +165,7 @@ function Index() {
         </p>
         <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] lg:text-[128px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
           Strategy and execution for founders{" "}
-          <span className="italic font-light text-white/70">raising in EU and MENA.</span>
+          <span className="font-light text-white/70">raising in EU and MENA.</span>
         </h1>
         <p
           className="reveal mt-8 max-w-[640px] text-[16px] md:text-[18px] leading-relaxed text-white/80"
@@ -236,7 +236,7 @@ function Index() {
       {/* STATS */}
       <StatsStrip />
 
-      {/* STUDIO — kept editorial: eyebrow + italic h2 (anchor #1) */}
+      {/* STUDIO — kept editorial: eyebrow + h2 (anchor #1) */}
       <section
         id="about"
         className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
@@ -247,7 +247,7 @@ function Index() {
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
               Built for teams
               <br />
-              <span className="italic font-light text-white/60">that ship every week.</span>
+              <span className="font-light text-white/60">that ship every week.</span>
             </h2>
             <p className="mt-10 text-[15px] text-white/75 leading-relaxed max-w-md">
               Eight operators. No account managers, no junior layer. We have built and sold
@@ -327,7 +327,7 @@ function Index() {
               data-delay={String(i + 1)}
             >
               <div className="flex items-baseline gap-5">
-                <span className="text-[64px] md:text-[88px] leading-none font-light italic text-rm-accent tracking-[-0.035em]">
+                <span className="text-[64px] md:text-[88px] leading-none font-light text-rm-accent tracking-[-0.035em]">
                   {e.numeral}
                 </span>
                 <div className="flex flex-col gap-1">
@@ -372,7 +372,7 @@ function Index() {
         </div>
       </section>
 
-      {/* CASES — kept editorial: eyebrow + italic h2 (anchor #2) */}
+      {/* CASES — kept editorial: eyebrow + h2 (anchor #2) */}
       <section
         id="cases"
         className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-32 border-t border-white/10"
@@ -385,7 +385,7 @@ function Index() {
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
               Results we
               <br />
-              <span className="italic font-light text-white/60">deliver.</span>
+              <span className="font-light text-white/60">deliver.</span>
             </h2>
           </div>
           <Link

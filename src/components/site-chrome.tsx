@@ -50,13 +50,13 @@ export function SiteHeader({ variant = "light" }: { variant?: "light" | "dark" }
                 {n.to ? (
                   <Link
                     to={n.to}
-                    className={`${tone.link} transition-colors`}
+                    className={`${tone.link} transition-colors duration-150`}
                     activeProps={{ className: `${tone.link} text-white` }}
                   >
                     {n.label}
                   </Link>
                 ) : (
-                  <a href={n.href} className={`${tone.link} transition-colors`}>
+                  <a href={n.href} className={`${tone.link} transition-colors duration-150`}>
                     {n.label}
                   </a>
                 )}
@@ -92,7 +92,7 @@ export function SiteFooter() {
               href="https://www.linkedin.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              className="hover:text-white transition-colors duration-150"
             >
               LinkedIn
             </a>
@@ -100,7 +100,7 @@ export function SiteFooter() {
               href="https://www.behance.net/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              className="hover:text-white transition-colors duration-150"
             >
               Behance
             </a>
@@ -108,7 +108,7 @@ export function SiteFooter() {
               href="https://www.instagram.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-white transition-colors"
+              className="hover:text-white transition-colors duration-150"
             >
               Instagram
             </a>
@@ -119,17 +119,17 @@ export function SiteFooter() {
           <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">Work</div>
           <ul className="space-y-3 text-[14px] text-white/70">
             <li>
-              <Link to="/services" className="hover:text-white transition-colors">
+              <Link to="/services" className="hover:text-white transition-colors duration-150">
                 Services
               </Link>
             </li>
             <li>
-              <Link to="/cases" className="hover:text-white transition-colors">
+              <Link to="/cases" className="hover:text-white transition-colors duration-150">
                 Case Studies
               </Link>
             </li>
             <li>
-              <Link to="/blog" className="hover:text-white transition-colors">
+              <Link to="/blog" className="hover:text-white transition-colors duration-150">
                 Journal
               </Link>
             </li>
@@ -140,17 +140,17 @@ export function SiteFooter() {
           <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">Studio</div>
           <ul className="space-y-3 text-[14px] text-white/70">
             <li>
-              <Link to="/about" className="hover:text-white transition-colors">
+              <Link to="/about" className="hover:text-white transition-colors duration-150">
                 About
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:text-white transition-colors">
+              <Link to="/contact" className="hover:text-white transition-colors duration-150">
                 Contact
               </Link>
             </li>
             <li>
-              <Link to="/audit" className="hover:text-white transition-colors">
+              <Link to="/audit" className="hover:text-white transition-colors duration-150">
                 Free Audit
               </Link>
             </li>

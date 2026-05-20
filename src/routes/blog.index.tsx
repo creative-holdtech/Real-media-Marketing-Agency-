@@ -124,7 +124,7 @@ function BlogPage() {
               >
                 Field notes on
                 <br />
-                <span className="italic font-light text-white/60 drift inline-block">
+                <span className="font-light text-white/60 drift inline-block">
                   building brands that last.
                 </span>
               </h1>
@@ -473,7 +473,7 @@ function BlogPage() {
               >
                 Quiet dispatches.
                 <br />
-                <span className="italic font-light text-white/60">Once a month, at most.</span>
+                <span className="font-light text-white/60">Once a month, at most.</span>
               </h2>
             </div>
             <div className="col-span-12 md:col-span-5 reveal" data-delay="2">

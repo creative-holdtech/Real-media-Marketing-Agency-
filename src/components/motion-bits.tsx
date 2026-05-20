@@ -161,7 +161,7 @@ export function Reveal({
   children,
   delay = 0,
   y = 16,
-  duration = 0.7,
+  duration = 0.55,
   className,
 }: {
   children: ReactNode;

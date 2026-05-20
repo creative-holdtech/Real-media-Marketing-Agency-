@@ -48,7 +48,7 @@ function ContactPage() {
               The conversation starts here
             </p>
             <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[12ch]">
-              Let's <span className="italic font-light text-white/70">talk.</span>
+              Let's <span className="font-light text-white/70">talk.</span>
             </h1>
             <p
               className="reveal mt-8 max-w-[44ch] text-[15px] md:text-[17px] leading-relaxed rm-body"

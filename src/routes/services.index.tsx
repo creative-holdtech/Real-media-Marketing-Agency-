@@ -43,7 +43,7 @@ function ServicesIndex() {
         />
         <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] lg:text-[128px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
           Six disciplines.{" "}
-          <span className="italic font-light text-white/70">One operating system.</span>
+          <span className="font-light text-white/70">One operating system.</span>
         </h1>
         <p
           className="reveal mt-8 max-w-[720px] text-[15px] md:text-[17px] leading-relaxed rm-body"

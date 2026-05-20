@@ -98,13 +98,13 @@ const verticals = [
     n: "03",
     title: "Hospitality",
     body: "Flagship identity and storytelling for hotels, restaurants and lifestyle labels across EU and MENA.",
-    img: "https://picsum.photos/seed/rm-vertical-hospitality-3/1200/1600",
+    img: "https://picsum.photos/seed/rm-vertical-restaurant-11/1200/1600",
   },
   {
     n: "04",
     title: "B2B Platforms",
     body: "Repositioning legacy B2B and enterprise platforms into sharper, founder-grade narratives.",
-    img: "https://picsum.photos/seed/rm-vertical-b2b-9/1200/1600",
+    img: "https://picsum.photos/seed/rm-vertical-office-22/1200/1600",
   },
 ];
 
@@ -276,38 +276,6 @@ function HeroAsymmetric() {
             </div>
           </div>
 
-          {/* RIGHT: floating asymmetric portrait, overlapping from bottom-right */}
-          <div className="col-span-12 lg:col-span-4 relative lg:-mb-32 lg:translate-y-16">
-            <motion.div
-              style={reduce ? undefined : { y: sy, scale, opacity }}
-              className="relative aspect-[4/5] rm-media-card shadow-[0_40px_120px_-30px_rgba(0,0,0,0.9)]"
-            >
-              <img
-                src={teamRm}
-                alt="R. Mirza, founder"
-                className="absolute inset-0 w-full h-full object-cover saturate-[0.4] brightness-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-              <div className="absolute top-5 left-5 text-[10px] uppercase tracking-[0.32em] text-white/75 tabular-nums">
-                Founder / Kyiv
-              </div>
-              <div className="absolute bottom-6 left-6 right-6">
-                <p
-                  className="text-white font-medium tracking-[-0.01em] leading-[1.1]"
-                  style={{ fontSize: "clamp(1.25rem, 1.6vw, 1.6rem)" }}
-                >
-                  R. Mirza
-                </p>
-                <p className="mt-1 text-[12px] text-white/65">Strategy · Positioning</p>
-              </div>
-            </motion.div>
-
-            {/* Tiny floating meta plate */}
-            <div className="hidden lg:flex absolute -bottom-6 -left-10 z-10 items-center gap-3 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/10 px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-white/75">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Available · Q3 2026
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -467,20 +435,20 @@ function NumbersBento() {
 
         {/* Gapless bento — 4 cols x 2 rows = 8 cells. Pieces: 2x2 + 2x1 + 1x1 + 1x1 = 8 */}
         <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-3 md:gap-4 [grid-auto-flow:dense] md:auto-rows-[minmax(180px,1fr)]">
-          {/* Hero metric — capital raised — 2x2 */}
-          <div className="reveal group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 md:col-span-2 md:row-span-2 p-7 md:p-10 flex flex-col justify-between">
-            <div className="flex items-start justify-between">
-              <span className="text-[10px] uppercase tracking-[0.32em] text-white/45">
+          {/* Hero metric — capital raised — full width on mobile, 2x2 on desktop */}
+          <div className="reveal group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 col-span-2 md:col-span-2 md:row-span-2 p-7 md:p-10 flex flex-col justify-between">
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <span className="text-[10px] uppercase tracking-[0.28em] text-white/45 whitespace-nowrap">
                 Capital raised
               </span>
-              <span className="text-[10px] uppercase tracking-[0.32em] text-white/35 tabular-nums">
+              <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 tabular-nums whitespace-nowrap">
                 2019—2026
               </span>
             </div>
             <div>
               <div
                 className="font-medium tracking-[-0.05em] text-white tabular-nums leading-[0.86]"
-                style={{ fontSize: "clamp(80px, 14vw, 200px)" }}
+                style={{ fontSize: "clamp(56px, 14vw, 200px)" }}
               >
                 €280<span className="text-white/30">M</span>
               </div>
@@ -534,7 +502,7 @@ function NumberCell({
 }) {
   return (
     <div
-      className={`reveal group relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-6 md:p-8 flex flex-col justify-between ${wide ? "md:col-span-2 md:row-span-1" : "md:col-span-1 md:row-span-1"}`}
+      className={`reveal group relative overflow-hidden rounded-2xl bg-white/[0.05] border border-white/[0.08] p-6 md:p-8 flex flex-col justify-between ${wide ? "col-span-2 md:col-span-2 md:row-span-1" : "col-span-1 md:col-span-1 md:row-span-1"}`}
       data-delay={delay}
     >
       <span className="text-[10px] uppercase tracking-[0.32em] text-white/45">{label}</span>
@@ -721,19 +689,19 @@ function TeamBento() {
   const featured = [
     {
       person: team[0],
-      bg: "#C2410C",
+      bg: "#1c1410",
       blurb:
         "Founder-led strategy and positioning. Twelve years turning ambiguous markets into sharp, defensible narratives.",
     },
     {
       person: team[1],
-      bg: "#7C3AED",
+      bg: "#111110",
       blurb:
         "Brand systems with operational teeth. Identity, art direction and motion built to scale across every surface.",
     },
     {
       person: team[3],
-      bg: "#DB2777",
+      bg: "#18130f",
       blurb:
         "Designs the marks, type and motion that make the work unmistakable in feed, deck and product.",
     },

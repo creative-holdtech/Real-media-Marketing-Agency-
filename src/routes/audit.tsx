@@ -88,7 +88,7 @@ function AuditPage() {
         </p>
         <h1 className="reveal text-[44px] sm:text-[80px] md:text-[112px] leading-[0.95] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
           A free marketing audit.{" "}
-          <span className="italic font-light text-white/55">No fluff. No pitch.</span>
+          <span className="font-light text-white/55">No fluff. No pitch.</span>
         </h1>
 
         <ul

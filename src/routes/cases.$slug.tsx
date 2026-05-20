@@ -164,7 +164,7 @@ function CaseDetail() {
           <div className="col-span-12 md:col-span-6 reveal">
             <p className="rm-eyebrow mb-6">The task</p>
             <h2 className="rm-title-section text-[28px] md:text-[40px]">
-              <span className="italic font-light text-white/60">What stood</span> in front of{" "}
+              <span className="font-light text-white/60">What stood</span> in front of{" "}
               {c.client}.
             </h2>
             <p className="mt-8 rm-copy-lead max-w-[52ch]">{c.situation}</p>
@@ -172,7 +172,7 @@ function CaseDetail() {
           <div className="col-span-12 md:col-span-6 reveal" data-delay="2">
             <p className="rm-eyebrow mb-6">The challenge</p>
             <h2 className="rm-title-section text-[28px] md:text-[40px]">
-              <span className="italic font-light text-white/60">Why it was</span> hard to move.
+              <span className="font-light text-white/60">Why it was</span> hard to move.
             </h2>
             <p className="mt-8 rm-copy-lead max-w-[52ch]">{c.challenge}</p>
           </div>
@@ -187,7 +187,7 @@ function CaseDetail() {
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
               What we
               <br />
-              <span className="italic font-light text-white/60">actually did.</span>
+              <span className="font-light text-white/60">actually did.</span>
             </h2>
           </div>
           <ol className="col-span-12 md:col-span-8 relative">
@@ -223,7 +223,7 @@ function CaseDetail() {
           <h2 className="text-[36px] md:text-[64px] leading-[1] tracking-[-0.02em] font-medium max-w-[20ch]">
             Numbers the team
             <br />
-            <span className="italic font-light text-white/60">still runs on.</span>
+            <span className="font-light text-white/60">still runs on.</span>
           </h2>
         </div>
 
@@ -252,7 +252,7 @@ function CaseDetail() {
             style={{ borderColor: c.accent }}
             data-delay="2"
           >
-            <p className="text-[18px] md:text-[22px] leading-[1.4] tracking-[-0.01em] text-white/85 italic font-light">
+            <p className="text-[18px] md:text-[22px] leading-[1.4] tracking-[-0.01em] text-white/85 font-light">
               “{c.quote.text}”
             </p>
             <footer className="mt-6 text-[12px] uppercase tracking-[0.18em] text-white/50">
@@ -269,7 +269,7 @@ function CaseDetail() {
             <h2 className="text-[28px] md:text-[40px] leading-[1] tracking-[-0.02em] font-medium">
               Other
               <br />
-              <span className="italic font-light text-white/60">projects.</span>
+              <span className="font-light text-white/60">projects.</span>
             </h2>
             <Link
               to="/cases"

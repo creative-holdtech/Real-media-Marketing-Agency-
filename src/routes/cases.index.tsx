@@ -49,7 +49,7 @@ function CasesPage() {
         />
         <p className="reveal rm-eyebrow mb-8">Case studies</p>
         <h1 className="reveal rm-title-hero max-w-[14ch]">
-          Results our <span className="italic font-light text-white/70">clients ship.</span>
+          Results our <span className="font-light text-white/70">clients ship.</span>
         </h1>
         <p className="reveal mt-8 max-w-[640px] rm-copy-lead" data-delay="2">
           Engagements with founders and growth teams across AI SaaS, Fintech, Cybersecurity and

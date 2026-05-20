@@ -33,7 +33,7 @@ export const Route = createFileRoute("/blog/$slug")({
           404 — Not in the journal
         </p>
         <h1 className="text-[40px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-          This essay <span className="italic font-light text-white/60">doesn't exist.</span>
+          This essay <span className="font-light text-white/60">doesn't exist.</span>
         </h1>
         <Link
           to="/blog"
@@ -303,7 +303,7 @@ function ArticlePage() {
                         {/* Pull quote after first section */}
                         {sIdx === 0 && (
                           <blockquote className="mt-10 border-l-2 border-rm-accent pl-6">
-                            <p className="text-[22px] md:text-[26px] leading-[1.3] tracking-[-0.01em] font-light italic text-white/90">
+                            <p className="text-[22px] md:text-[26px] leading-[1.3] tracking-[-0.01em] font-light text-white/90">
                               “The brands that compound are the ones willing to be boring on
                               purpose.”
                             </p>
