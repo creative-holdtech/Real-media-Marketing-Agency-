@@ -118,17 +118,23 @@ export function HeroWebGL() {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
+    let inViewport = true;
     let visible = true;
+    const syncVisibility = () => {
+      visible = inViewport && !document.hidden;
+    };
     const io = new IntersectionObserver(
       (ents) => {
-        for (const e of ents) visible = e.isIntersecting;
+        for (const e of ents) inViewport = e.isIntersecting;
+        syncVisibility();
       },
       { threshold: 0.01 },
     );
     io.observe(canvas);
+    syncVisibility();
 
     const onVis = () => {
-      visible = visible && !document.hidden;
+      syncVisibility();
     };
     document.addEventListener("visibilitychange", onVis);
 

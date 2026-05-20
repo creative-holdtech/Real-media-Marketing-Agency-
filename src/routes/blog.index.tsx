@@ -3,7 +3,7 @@ import { useEffect, useId, useState } from "react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
-import { archive, featured } from "@/lib/posts";
+import { archive, featured, posts } from "@/lib/posts";
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -54,7 +54,8 @@ function BlogPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const filtered = archive.filter((p) => active === "All" || p.category === active);
+  const filterSource = active === "All" ? archive : posts;
+  const filtered = filterSource.filter((p) => active === "All" || p.category === active);
 
   const tickerWords = [
     "Blog",
@@ -388,7 +389,7 @@ function BlogPage() {
           {filtered.length > 0 && (
             <div className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-6">
               <span className="text-[11px] uppercase tracking-[0.2em] text-white/40">
-                Showing {filtered.length} of {archive.length} entries
+                Showing {filtered.length} of {filterSource.length} entries
               </span>
               <button
                 type="button"

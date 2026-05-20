@@ -1,3 +1,8 @@
+import nicheAi from "@/assets/niche-ai.jpg";
+import nicheB2b from "@/assets/niche-b2b.jpg";
+import nicheFintech from "@/assets/niche-fintech.jpg";
+import nicheHospitality from "@/assets/niche-hospitality.jpg";
+
 export type CaseMetric = { value: string; label: string };
 
 export type CaseStudy = {
@@ -70,8 +75,8 @@ export const cases: CaseStudy[] = [
       role: "Co-founder, Nebula AI",
     },
     accent: "#7c5cff",
-    coverImage: "/src/assets/niche-ai.jpg",
-    heroImage: "/src/assets/niche-ai.jpg",
+    coverImage: nicheAi,
+    heroImage: nicheAi,
   },
   {
     slug: "vault-fintech",
@@ -120,8 +125,8 @@ export const cases: CaseStudy[] = [
       role: "Head of Growth, Vault",
     },
     accent: "#e85d3a",
-    coverImage: "/src/assets/niche-fintech.jpg",
-    heroImage: "/src/assets/niche-fintech.jpg",
+    coverImage: nicheFintech,
+    heroImage: nicheFintech,
   },
   {
     slug: "sentinel-security",
@@ -170,8 +175,8 @@ export const cases: CaseStudy[] = [
       role: "CMO, Sentinel",
     },
     accent: "#3b82f6",
-    coverImage: "/src/assets/niche-b2b.jpg",
-    heroImage: "/src/assets/niche-b2b.jpg",
+    coverImage: nicheB2b,
+    heroImage: nicheB2b,
   },
   {
     slug: "ace-igaming",
@@ -220,8 +225,8 @@ export const cases: CaseStudy[] = [
       role: "Head of Acquisition, ACE",
     },
     accent: "#c9a84c",
-    coverImage: "/src/assets/niche-hospitality.jpg",
-    heroImage: "/src/assets/niche-hospitality.jpg",
+    coverImage: nicheHospitality,
+    heroImage: nicheHospitality,
   },
 ];
 
