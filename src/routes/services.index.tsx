@@ -65,7 +65,7 @@ function ServicesIndex() {
               className="group relative flex flex-col rm-card overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] reveal"
               data-delay={String((i % 4) + 1)}
             >
-              <figure className="relative aspect-[16/10] overflow-hidden">
+              <figure className="relative aspect-video md:aspect-[16/10] overflow-hidden">
                 <div
                   aria-hidden
                   className="absolute inset-0"
@@ -76,17 +76,17 @@ function ServicesIndex() {
                 <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/15 text-white/90">
                   {s.shortName}
                 </span>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="text-[40px] md:text-[64px] font-medium tracking-[-0.04em] leading-[0.95] text-white max-w-[18ch]">
+                <div className="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
+                  <div className="text-[28px] sm:text-[36px] md:text-[64px] font-medium tracking-[-0.04em] leading-[0.95] text-white max-w-[18ch]">
                     {s.name}
                   </div>
-                  <div className="mt-3 text-[12px] uppercase tracking-[0.18em] text-white/70">
+                  <div className="mt-2 md:mt-3 text-[11px] md:text-[12px] uppercase tracking-[0.18em] text-white/70">
                     {s.tagline}
                   </div>
                 </div>
               </figure>
-              <div className="p-6 md:p-8 flex flex-col gap-5">
-                <p className="text-[15px] rm-body leading-relaxed">{s.heroIntro}</p>
+              <div className="p-4 md:p-8 flex flex-col gap-3 md:gap-5">
+                <p className="text-[14px] md:text-[15px] rm-body leading-relaxed line-clamp-3 md:line-clamp-none">{s.heroIntro}</p>
                 <div className="flex items-center justify-between pt-4 border-t border-white/10">
                   <span className="text-[12px] text-white/55">
                     {s.pillars.length} pillars · Retainer or sprint
