@@ -5,6 +5,7 @@ import { MobileMenu } from "@/components/mobile-menu";
 export const siteNav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", to: "/services" },
   { label: "Cases", to: "/cases" },
+  { label: "Products", to: "/products" },
   { label: "About", to: "/about" },
   { label: "Journal", to: "/blog" },
   { label: "Contact", to: "/contact" },

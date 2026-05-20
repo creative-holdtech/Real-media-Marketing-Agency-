@@ -16,12 +16,20 @@ export function useReveal() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            io.unobserve(entry.target);
+            const el = entry.target as HTMLElement;
+            // Promote to GPU layer only for the duration of the animation.
+            el.style.willChange = "opacity, transform, filter";
+            el.classList.add("is-visible");
+            io.unobserve(el);
+            el.addEventListener(
+              "animationend",
+              () => { el.style.willChange = "auto"; },
+              { once: true },
+            );
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+      { threshold: 0.18, rootMargin: "0px 0px -5% 0px" },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();

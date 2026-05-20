@@ -3,9 +3,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 const items: { label: string; to: string; sub: string }[] = [
-  { label: "Services", to: "/services", sub: "What we do" },
-  { label: "Cases",    to: "/cases",    sub: "Selected work" },
-  { label: "About",   to: "/about",    sub: "The studio" },
+  { label: "Services",  to: "/services",  sub: "What we do" },
+  { label: "Cases",     to: "/cases",     sub: "Selected work" },
+  { label: "Products",  to: "/products",  sub: "Sprint & Marathon" },
+  { label: "About",     to: "/about",     sub: "The studio" },
   { label: "Journal", to: "/blog",     sub: "Notes & essays" },
   { label: "Contact", to: "/contact",  sub: "Start a project" },
 ];

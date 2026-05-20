@@ -310,11 +310,13 @@ button {
 @keyframes rm-fade-up {
   from {
     opacity: 0;
-    transform: translate3d(0, 24px, 0);
+    transform: translate3d(0, 10px, 0);
+    filter: blur(3px);
   }
   to {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+    filter: blur(0px);
   }
 }
 
@@ -342,7 +344,8 @@ button {
 .reveal-fade,
 .reveal-scale {
   opacity: 0;
-  will-change: opacity, transform;
+  /* will-change added/removed dynamically by useReveal hook to avoid
+     holding GPU layers on every element from page load. */
   /* Safety fallback — if IntersectionObserver never fires (no-JS, slow boot,
      prerender, full-page snapshots, OG crawlers) content becomes visible
      after 1.8s instead of staying invisible forever. */
@@ -350,15 +353,15 @@ button {
 }
 
 .reveal.is-visible {
-  animation: rm-fade-up 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rm-fade-up 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .reveal-fade.is-visible {
-  animation: rm-fade-in 900ms ease both;
+  animation: rm-fade-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .reveal-scale.is-visible {
-  animation: rm-scale-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rm-scale-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* Stagger helpers */
