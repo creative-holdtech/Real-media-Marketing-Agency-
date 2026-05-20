@@ -85,19 +85,17 @@ function CasesPage() {
             <p className="rm-copy-lead max-w-[44ch]">No cases in this niche yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 [grid-auto-flow:dense]">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {filtered.map((c, i) => (
               <Link
                 key={c.slug}
                 to="/cases/$slug"
                 params={{ slug: c.slug }}
-                className={`group relative flex flex-col rm-card overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] reveal ${
-                  i === 0 ? "md:col-span-2" : ""
-                }`}
+                className="group relative flex h-full flex-col rm-card overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] reveal"
                 data-delay={String((i % 4) + 1)}
                 style={{ transitionDelay: `${i * 45}ms` }}
               >
-                <figure className="relative aspect-[16/10] overflow-hidden">
+                <figure className="relative aspect-[5/4] overflow-hidden">
                   <div
                     aria-hidden
                     className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
@@ -113,15 +111,12 @@ function CasesPage() {
                     }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-black/35" />
-                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/15 text-white/90">
-                    {c.client}
-                  </span>
-                  <span className="absolute top-4 right-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/15 text-white/75">
+                  <span className="absolute top-4 left-4 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/15 text-white/80">
                     {c.niche}
                   </span>
                   <div className="absolute bottom-5 left-5 right-5 md:bottom-6 md:left-6 md:right-6">
                     <div
-                      className={`${i === 0 ? "text-[40px] sm:text-[56px] md:text-[104px]" : "text-[36px] sm:text-[48px] md:text-[78px]"} font-medium tracking-[-0.04em] leading-none text-white`}
+                      className="text-[38px] sm:text-[48px] md:text-[56px] font-medium tracking-[-0.04em] leading-none text-white"
                     >
                       {c.primaryMetric.value}
                     </div>
@@ -130,15 +125,25 @@ function CasesPage() {
                     </div>
                   </div>
                 </figure>
-                <div className="p-5 md:p-7 flex flex-col gap-4">
-                  <p className="rm-copy-lead text-[14px] md:text-[15px] leading-relaxed">{c.preview}</p>
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                    <span className="text-[12px] text-white/55">
-                      {c.format} · {c.duration}
-                    </span>
-                    <span className="inline-flex rm-touch items-center text-[11px] uppercase tracking-[0.25em] px-4 py-2 rounded-full bg-white text-black font-medium group-hover:bg-rm-accent group-hover:text-white transition-colors">
-                      Read case →
-                    </span>
+                <div className="p-5 md:p-6 flex flex-1 flex-col">
+                  <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
+                    {String(i + 1).padStart(2, "0")} · {c.client}
+                  </p>
+                  <p className="mt-5 text-[26px] md:text-[32px] leading-[1.03] tracking-[-0.02em] text-white/92 line-clamp-2">
+                    {c.headline}
+                  </p>
+                  <p className="mt-5 text-[15px] text-white/60 leading-relaxed line-clamp-3">
+                    {c.preview}
+                  </p>
+                  <div className="mt-auto pt-6">
+                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
+                      <span className="text-[12px] text-white/55">
+                        {c.format} · {c.duration}
+                      </span>
+                      <span className="inline-flex rm-touch items-center text-[11px] uppercase tracking-[0.25em] text-white/75 group-hover:text-rm-accent transition-colors">
+                        Read case →
+                      </span>
+                    </div>
                   </div>
                 </div>
               </Link>
