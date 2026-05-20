@@ -160,7 +160,7 @@ export function ParallaxImage({
 export function Reveal({
   children,
   delay = 0,
-  y = 16,
+  y = 8,
   duration = 0.55,
   className,
 }: {

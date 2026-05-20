@@ -152,37 +152,31 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           aria-labelledby="outcomes-heading"
           className="border-b border-white/10 bg-rm-surface"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-32">
+          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-16 md:py-24">
             <Reveal duration={0.5}>
               <h2
                 id="outcomes-heading"
-                className="max-w-4xl text-[40px] sm:text-[64px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
+                className="max-w-4xl text-[32px] sm:text-[48px] md:text-[60px] leading-[1.05] tracking-[-0.03em] font-medium text-white"
               >
                 What changes in the business.{" "}
                 <span className="font-light text-white/45">Four shifts.</span>
               </h2>
             </Reveal>
 
-            <div className="mt-16 grid grid-flow-dense grid-cols-2 md:grid-cols-6 gap-3 md:gap-4">
+            <div className="mt-10 md:mt-12 grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
               {s.outcomes.map((o, i) => {
-                const span =
-                  i === 0
-                    ? "col-span-2 md:col-span-3 md:row-span-2"
-                    : i === 1
-                      ? "col-span-2 md:col-span-3"
-                      : "col-span-1 md:col-span-3";
                 return (
                   <Reveal
                     key={o.n}
                     delay={i * 0.05}
-                    className={`${span} rm-card p-6 md:p-10 overflow-hidden relative transition-[border-color] duration-500 hover:border-white/25`}
+                    className="rm-card p-6 md:p-8 overflow-hidden relative transition-[border-color] duration-500 hover:border-white/25"
                     duration={0.5}
                   >
                     <div className="text-[10px] uppercase tracking-[0.28em] text-white/40 mb-5 tabular-nums">
                       {o.n}
                     </div>
                     <h3
-                      className={`${i === 0 ? "text-[28px] md:text-[44px]" : "text-[22px] md:text-[30px]"} leading-[1.05] tracking-[-0.03em] font-medium text-white`}
+                      className="text-[20px] md:text-[26px] leading-[1.1] tracking-[-0.03em] font-medium text-white"
                     >
                       {o.title}
                     </h3>
