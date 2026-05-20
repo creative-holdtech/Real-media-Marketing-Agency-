@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
@@ -8,13 +8,13 @@ import { archive, featured } from "@/lib/posts";
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
-      { title: "Journal — R-M" },
+      { title: "Blog — R-M" },
       {
         name: "description",
         content:
           "Essays, field notes and strategic frameworks from R-M on positioning, growth and brand systems.",
       },
-      { property: "og:title", content: "Journal — R-M" },
+      { property: "og:title", content: "Blog — R-M" },
       {
         property: "og:description",
         content:
@@ -26,7 +26,15 @@ export const Route = createFileRoute("/blog/")({
   component: BlogPage,
 });
 
-const categories = ["All", "Strategy", "Positioning", "Performance", "Brand", "Field Notes"];
+const categories = [
+  "All",
+  "Strategy",
+  "Growth Strategy",
+  "Positioning",
+  "Performance",
+  "Brand",
+  "Field Notes",
+];
 
 function BlogPage() {
   useReveal();
@@ -46,12 +54,10 @@ function BlogPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const filtered = archive.filter((p) => {
-    return active === "All" || p.category === active;
-  });
+  const filtered = archive.filter((p) => active === "All" || p.category === active);
 
   const tickerWords = [
-    "Journal",
+    "Blog",
     "Strategy",
     "Positioning",
     "Performance",
@@ -104,7 +110,7 @@ function BlogPage() {
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
-                Journal — Vol. 14 · 2026
+                Blog — Vol. 14 · 2026
               </p>
               <p className="mt-4 text-[12px] text-white/30">Issue №14</p>
             </div>
@@ -135,7 +141,7 @@ function BlogPage() {
           <div
             role="tablist"
             aria-label="Filter by category"
-            className="flex flex-wrap items-center gap-2 border border-white/12 rounded-3xl bg-white/[0.03] backdrop-blur-md px-4 py-3 md:px-5 md:py-3.5"
+            className="flex flex-wrap items-center gap-2"
           >
             {categories.map((c) => {
               const isActive = c === active;
