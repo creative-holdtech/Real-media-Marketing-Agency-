@@ -149,10 +149,10 @@ function Index() {
       <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20 overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-70"
+          className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(50% 60% at 22% 28%, rgba(232,93,58,0.20), transparent 70%), radial-gradient(45% 55% at 78% 68%, rgba(124,92,255,0.18), transparent 70%)",
+              "radial-gradient(55% 45% at 20% 85%, rgba(200,80,10,0.18) 0%, transparent 70%)",
           }}
         />
         <HeroWebGL />
@@ -168,7 +168,7 @@ function Index() {
         <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/50 mb-10">
           / R-M marketing agency
         </p>
-        <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] lg:text-[96px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
+        <h1 className="reveal text-[40px] sm:text-[56px] md:text-[72px] lg:text-[80px] leading-[0.96] tracking-[-0.03em] font-medium text-white max-w-[960px]">
           Strategy and execution for founders{" "}
           <span className="font-light text-white/70">raising in EU and MENA.</span>
         </h1>

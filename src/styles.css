@@ -160,7 +160,11 @@
 
   html,
   body {
-    background-color: var(--rm-surface);
+    background:
+      radial-gradient(ellipse 120% 55% at 50% 100%, rgba(200, 80, 10, 0.28) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 38% at 88% 108%, rgba(165, 50, 0, 0.16) 0%, transparent 55%),
+      var(--rm-surface);
+    background-attachment: fixed;
     color: var(--rm-ink);
     font-family: "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -173,7 +177,7 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
-    background-color: var(--rm-surface);
+    background-color: transparent;
     color: var(--rm-ink);
   }
 
