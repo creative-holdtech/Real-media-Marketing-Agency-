@@ -166,7 +166,7 @@ function Index() {
         />
 
         <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/50 mb-10">
-          R-M marketing agency
+          / R-M marketing agency
         </p>
         <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] lg:text-[96px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
           Strategy and execution for founders{" "}
@@ -251,14 +251,20 @@ function Index() {
           <div className="col-span-12 md:col-span-5 reveal">
             <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">Marketing agency</p>
             <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              Built for teams
+              We don't bring ideas.
               <br />
-              <span className="font-light text-white/60">that ship every week.</span>
+              <span className="font-light text-white/60">We come with a plan.</span>
             </h2>
             <p className="mt-10 text-[15px] text-white/75 leading-relaxed max-w-md">
+<<<<<<< HEAD
               We don't bring ideas. We come with a plan. A team of senior experts who know Fintech,
               AI SaaS, Cybersecurity, and iGaming inside out. 10 practitioners to make your product
               seen, trusted, and bought. No corporate layers. Clear deliverables only.
+=======
+              A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming inside
+              out. 10 practitioners to make your product seen, trusted, and bought. No corporate
+              layers. Clear deliverables only.
+>>>>>>> 2f33b63 (feat: apply homepage text updates from brief)
             </p>
             <p className="mt-4 text-[15px] text-white/60 leading-relaxed max-w-md">
               Decisions in hours, not weeks. Output you can ship the same day.
