@@ -165,7 +165,7 @@ function Index() {
           }}
         />
 
-        <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/50 mb-10">
+        <p className="reveal text-[11px] uppercase tracking-[0.22em] text-white/50 mb-10">
           / R-M marketing agency
         </p>
         <h1 className="reveal text-[40px] sm:text-[56px] md:text-[72px] lg:text-[80px] leading-[0.96] tracking-[-0.03em] font-medium text-white max-w-[960px]">
@@ -245,7 +245,7 @@ function Index() {
       {/* STUDIO — kept editorial: eyebrow + h2 (anchor #1) */}
       <section
         id="about"
-        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-t border-white/10"
+        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10"
       >
         <div className="grid grid-cols-12 gap-6 md:gap-12">
           <div className="col-span-12 md:col-span-5 reveal">
@@ -287,7 +287,7 @@ function Index() {
       </section>
 
       {/* TESTIMONIALS — open with one oversize pulled quote, supporting two below */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-t border-white/10">
+      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10">
         <figure className="max-w-[1100px] reveal">
           <blockquote className="text-[32px] sm:text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.025em] font-light text-white/95">
             <span className="text-rm-accent">“</span>
@@ -319,13 +319,13 @@ function Index() {
 
       {/* ENGAGE — numbered chapters, horizontal split with vertical rule. No card chrome. */}
       <section id="engage" className="border-t border-white/10">
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 pt-24 md:pt-24">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 pt-24">
           <h2 className="text-[40px] md:text-[64px] leading-[0.98] tracking-[-0.03em] font-medium max-w-[20ch] reveal">
             Two ways to work with us. Both end in shipped revenue.
           </h2>
         </div>
 
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 mt-20 md:mt-20 pb-24 md:pb-24 grid grid-cols-1 md:grid-cols-2 md:divide-x divide-white/10">
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 mt-20 pb-24 grid grid-cols-1 md:grid-cols-2 md:divide-x divide-white/10">
           {engagements.map((e, i) => (
             <div
               key={e.name}
@@ -354,10 +354,9 @@ function Index() {
                 {e.items.map((it) => (
                   <li
                     key={it}
-                    className="text-[14px] md:text-[15px] text-white/85 py-4 border-t border-white/10 last:border-b flex gap-4"
+                    className="text-[14px] md:text-[15px] text-white/85 py-4 border-t border-white/10 last:border-b"
                   >
-                    <span className="text-rm-accent shrink-0">—</span>
-                    <span>{it}</span>
+                    {it}
                   </li>
                 ))}
               </ul>
@@ -381,7 +380,7 @@ function Index() {
       {/* CASES — kept editorial: eyebrow + h2 (anchor #2) */}
       <section
         id="cases"
-        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-t border-white/10"
+        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10"
       >
         <div className="flex items-end justify-between mb-16 gap-6">
           <div>
@@ -466,7 +465,7 @@ function Index() {
       {/* JOURNAL — sentence-into-layout, 3-row list, no card chrome */}
       <section
         id="insights"
-        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-t border-white/10"
+        className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10"
       >
         <div className="grid grid-cols-12 gap-6 md:gap-12 mb-12 md:mb-20">
           <h2 className="col-span-12 md:col-span-9 text-[28px] md:text-[44px] leading-[1.15] tracking-[-0.02em] font-light text-white/80 reveal">
@@ -546,7 +545,7 @@ function StatsStrip() {
     <section
       ref={ref}
       aria-label="Key indicators"
-      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-20 md:pt-28 pb-20 md:pb-28"
+      className="px-6 md:px-12 max-w-[1440px] mx-auto pt-20 md:pt-28 pb-20 md:pb-28 border-t border-white/10"
     >
       <div className="grid grid-cols-2 gap-x-6 md:gap-x-16 gap-y-12">
         {bigStats.map((s, i) => (
