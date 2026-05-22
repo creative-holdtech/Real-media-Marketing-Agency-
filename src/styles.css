@@ -145,12 +145,12 @@
 
   :root {
     /* Brand tokens — single source of truth for the dark editorial palette */
-    --rm-surface: #0c0a09; /* warm near-black, tinted slightly toward orange */
-    --rm-surface-raised: #141210; /* card surface */
-    --rm-surface-float: #1c1815; /* floating panels and open overlays */
+    --rm-surface: #0d0c0c; /* near-black, faintly warm */
+    --rm-surface-raised: #141212; /* card surface */
+    --rm-surface-float: #1c1919; /* floating panels and open overlays */
     --rm-ink: #e8e6e1; /* ivory body */
-    --rm-accent: #e85d3a; /* signature orange */
-    --rm-accent-soft: #f0d78c; /* warm secondary */
+    --rm-accent: #c03535; /* signature crimson */
+    --rm-accent-soft: #d4b8a8; /* warm secondary */
     --rm-border-soft: rgba(232, 230, 225, 0.1);
     --rm-border-strong: rgba(232, 230, 225, 0.18);
     --rm-text-body: rgba(232, 230, 225, 0.78);
@@ -158,13 +158,13 @@
     --accent-red: var(--rm-accent);
   }
 
-  html,
+  html {
+    background: var(--rm-surface);
+  }
+
   body {
-    background:
-      radial-gradient(ellipse 120% 55% at 50% 100%, rgba(200, 80, 10, 0.28) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 38% at 88% 108%, rgba(165, 50, 0, 0.16) 0%, transparent 55%),
-      var(--rm-surface);
-    background-attachment: fixed;
+    /* background intentionally on html only — so fixed z-index:-1 blobs are
+       visible above the root canvas but below body's transparent background */
     color: var(--rm-ink);
     font-family: "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -524,6 +524,96 @@ button {
   opacity: 1;
 }
 
+/* ============ Ambient gradient blobs ============ */
+@keyframes rm-blob-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(7vw, -4vh) scale(1.07);
+  }
+  50% {
+    transform: translate(2vw, 9vh) scale(0.94);
+  }
+  75% {
+    transform: translate(-6vw, 4vh) scale(1.04);
+  }
+}
+
+@keyframes rm-blob-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  30% {
+    transform: translate(-9vw, 7vh) scale(0.92);
+  }
+  65% {
+    transform: translate(-4vw, -8vh) scale(1.08);
+  }
+  85% {
+    transform: translate(7vw, 3vh) scale(0.97);
+  }
+}
+
+@keyframes rm-blob-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(-6vw, -5vh) scale(1.05);
+  }
+  75% {
+    transform: translate(5vw, 8vh) scale(0.96);
+  }
+}
+
+.ambient-blobs {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ambient-blob {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ambient-blob-a {
+  width: 50vw;
+  height: 50vw;
+  left: 8%;
+  top: 12%;
+  background: radial-gradient(circle at 55% 45%, rgba(148, 22, 22, 0.30) 0%, transparent 65%);
+  filter: blur(100px);
+  animation: rm-blob-a 36s ease-in-out infinite;
+}
+
+.ambient-blob-b {
+  width: 58vw;
+  height: 58vw;
+  right: -8%;
+  top: -2%;
+  background: radial-gradient(circle at 45% 55%, rgba(175, 172, 165, 0.14) 0%, transparent 65%);
+  filter: blur(110px);
+  animation: rm-blob-b 28s ease-in-out infinite;
+}
+
+.ambient-blob-c {
+  width: 38vw;
+  height: 38vw;
+  left: 40%;
+  bottom: -5%;
+  background: radial-gradient(circle at 50% 50%, rgba(100, 15, 15, 0.15) 0%, transparent 70%);
+  filter: blur(90px);
+  animation: rm-blob-c 44s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -535,7 +625,8 @@ button {
     animation: none !important;
   }
   .marquee-track,
-  .drift {
+  .drift,
+  .ambient-blob {
     animation: none !important;
   }
   * {

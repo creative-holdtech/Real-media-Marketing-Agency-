@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
-import { HeroWebGL } from "@/components/hero-webgl";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
+import TestimonialSection from "@/components/ui/testimonials";
 import { useReveal } from "@/hooks/use-reveal";
-import { cases as caseStudies } from "@/lib/cases";
 import { posts } from "@/lib/posts";
 
 export const Route = createFileRoute("/")({
@@ -23,21 +22,6 @@ const bigStats: BigStat[] = [
   { to: 50, suffix: "+", label: "Projects shipped for funded teams" },
   { prefix: "$", to: 10, suffix: "M+", label: "Capital raised by founders we worked with" },
 ];
-
-const testimonials = caseStudies.slice(0, 3).map((c) => ({
-  quote: c.quote.text,
-  who: c.quote.who,
-  role: c.quote.role,
-  client: c.client,
-}));
-
-const featureQuote = {
-  quote:
-    "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We're happy to recommend them as a fantastic team to work with",
-  who: "Nikita",
-  role: "PR",
-  client: "FinUp",
-};
 
 function useInView<T extends Element>(options?: IntersectionObserverInit) {
   const ref = useRef<T | null>(null);
@@ -131,68 +115,109 @@ const engagements = [
 ];
 
 const insightPosts = posts.slice(0, 3);
-const featuredCases = caseStudies.slice(0, 2).map((c) => ({
-  slug: c.slug,
-  metric: c.primaryMetric.value,
-  label: c.primaryMetric.label,
-  sector: `${c.niche} / ${c.client}`,
-  desc: c.preview,
-}));
+const featuredCases = [
+  {
+    key: "tequila-cpa",
+    metric: "+35%",
+    label: "Brand growth in 6 mo",
+    sector: "CPA Network / Tequila CPA",
+    desc: "We built Tequila CPA Network's brand from the ground up, grew their partner base, and hit all key launch targets.",
+  },
+  {
+    key: "currency",
+    metric: "+30 878",
+    label: "New accounts created in in 6 mo",
+    sector: "Cryptocurrency exchange, / Currency",
+    desc: "We scaled user base across EMEA, Americas, and APAC through 270+ influencer videos across finance, tech, and economics channels.",
+  },
+];
+
+function AmbientBlobs() {
+  return (
+    <div aria-hidden className="ambient-blobs">
+      <div className="ambient-blob ambient-blob-a" />
+      <div className="ambient-blob ambient-blob-b" />
+      <div className="ambient-blob ambient-blob-c" />
+    </div>
+  );
+}
 
 function Index() {
   useReveal();
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <AmbientBlobs />
       <SiteHeader variant="dark" />
 
       {/* HERO */}
-      <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20 overflow-hidden">
+      <section className="relative mx-auto min-h-[min(880px,calc(100svh-1.5rem))] max-w-[1440px] overflow-hidden px-6 pb-14 pt-20 md:px-12 md:pb-20 md:pt-28">
         <div
           aria-hidden
-          className="absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0 -z-20"
           style={{
             background:
-              "radial-gradient(55% 45% at 20% 85%, rgba(200,80,10,0.18) 0%, transparent 70%)",
+              "radial-gradient(82% 88% at 45% 58%, rgba(127,31,29,0.2) 0%, rgba(24,18,18,0.08) 38%, transparent 70%), linear-gradient(180deg, rgba(20,18,18,0.4) 0%, rgba(7,7,7,0.94) 100%)",
           }}
         />
-        <HeroWebGL />
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 opacity-[0.18] mix-blend-overlay pointer-events-none"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-[54%]"
+          style={{
+            background:
+              "radial-gradient(68% 88% at 57% 28%, rgba(205,188,174,0.05) 0%, rgba(18,17,18,0.12) 45%, rgba(0,0,0,0.42) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-10 opacity-[0.2] mix-blend-overlay pointer-events-none"
           style={{
             backgroundImage:
               "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
           }}
         />
 
-        <p className="reveal text-[11px] uppercase tracking-[0.22em] text-white/50 mb-10">
-          / R-M marketing agency
-        </p>
-        <h1 className="reveal text-[40px] sm:text-[56px] md:text-[72px] lg:text-[80px] leading-[0.96] tracking-[-0.03em] font-medium text-white max-w-[960px]">
-          Strategy and execution for founders{" "}
-          <span className="font-light text-white/70">raising in EU and MENA.</span>
-        </h1>
-        <p
-          className="reveal mt-8 max-w-[640px] text-[16px] md:text-[18px] leading-relaxed text-white/80"
-          data-delay="2"
-        >
-          We create market environment where your product becomes the obvious choice. In the last
-          twelve months our clients raised $10M+, shipped 50 launches, and received industry awards.
-        </p>
+        <div className="relative z-10 flex min-h-[calc(min(880px,100svh-1.5rem)-9.5rem)] flex-col justify-end md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)]">
+          <div className="mx-auto flex w-full max-w-[980px] flex-col">
+            <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
+              / R-M marketing agency
+            </p>
+            <h1 className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[62px] lg:text-[70px]">
+              <span className="block max-w-[11ch] text-balance md:ml-[4%]">Strategy and</span>
+              <span className="block max-w-[13ch] text-balance md:ml-[23%]">execution for</span>
+              <span className="block max-w-[14ch] text-balance md:ml-[10%]">founders raising</span>
+              <span className="block max-w-[13ch] text-balance font-light text-white/48 md:ml-[36%]">
+                in EU and MENA.
+              </span>
+            </h1>
+            <p
+              className="reveal mt-7 max-w-[34ch] text-balance text-[16px] font-medium leading-[1.08] tracking-[-0.025em] text-white/92 md:ml-[31%] md:text-[19px]"
+              data-delay="2"
+            >
+              We create market environment where your product becomes the obvious choice.{" "}
+              <span className="font-light text-white/45">
+                In the last twelve months our clients raised $10M+, shipped 50 launches, and received
+                industry awards.
+              </span>
+            </p>
+          </div>
 
-        <div className="reveal mt-12 flex flex-wrap items-center gap-3" data-delay="3">
-          <Link
-            to="/contact"
-            className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white hover:-translate-y-0.5 transition-all duration-300"
+          <div
+            className="reveal mt-10 flex flex-wrap items-center gap-3 md:ml-[43%]"
+            data-delay="3"
           >
-            Start a project →
-          </Link>
-          <Link
-            to="/cases"
-            className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all duration-300"
-          >
-            See the work
-          </Link>
+            <Link
+              to="/contact"
+              className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Start a project →
+            </Link>
+            <Link
+              to="/cases"
+              className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all duration-300"
+            >
+              See the work
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -242,80 +267,75 @@ function Index() {
       {/* STATS */}
       <StatsStrip />
 
-      {/* STUDIO — kept editorial: eyebrow + h2 (anchor #1) */}
+      {/* STUDIO */}
       <section
         id="about"
         className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10"
       >
-        <div className="grid grid-cols-12 gap-6 md:gap-12">
-          <div className="col-span-12 md:col-span-5 reveal">
-            <p className="text-[11px] uppercase tracking-[0.2em] text-white/40 mb-8">Marketing agency</p>
-            <h2 className="text-[36px] md:text-[56px] leading-[1] tracking-[-0.02em] font-medium">
-              We don't bring ideas.
-              <br />
-              <span className="font-light text-white/60">We come with a plan.</span>
+        <div className="relative grid grid-cols-12 gap-x-6 gap-y-12 md:min-h-[620px] md:gap-x-12">
+          <div className="reveal col-span-12 md:col-span-8">
+            <p className="mb-8 w-fit rounded-full border border-white/15 px-4 py-2 text-[10px] uppercase tracking-[0.24em] text-white/45 md:ml-[9%]">
+              Marketing agency
+            </p>
+            <h2 className="text-[40px] font-medium leading-[0.93] tracking-[-0.045em] text-white sm:text-[52px] md:text-[68px] lg:text-[78px]">
+              <span className="block max-w-[9ch]">We don't</span>
+              <span className="block max-w-[10ch] md:ml-[18%]">bring ideas.</span>
+              <span className="block max-w-[11ch] font-light text-white/48 md:ml-[7%]">
+                We come
+              </span>
+              <span className="block max-w-[10ch] font-light text-white/48 md:ml-[31%]">
+                with a plan.
+              </span>
             </h2>
-            <p className="mt-10 text-[15px] text-white/75 leading-relaxed max-w-md">
+          </div>
+
+          <div className="reveal col-span-12 md:absolute md:left-[39%] md:top-[58%] md:w-[34ch]" data-delay="1">
+            <p className="text-[16px] font-medium leading-[1.1] tracking-[-0.025em] text-white/88 md:text-[19px]">
               A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming inside
-              out. 10 practitioners to make your product seen, trusted, and bought. No corporate
-              layers. Clear deliverables only.
+              out.{" "}
+              <span className="font-light text-white/48">
+                10 practitioners to make your product seen, trusted, and bought. No corporate layers.
+                Clear deliverables only.
+              </span>
             </p>
-            <p className="mt-4 text-[15px] text-white/60 leading-relaxed max-w-md">
-              Decisions in hours, not weeks. Output you can ship the same day.
+            <p className="mt-5 max-w-[34ch] text-[14px] leading-[1.35] tracking-[-0.01em] text-white/38">
+              Decisions in hours. Output you can ship the same day.
             </p>
           </div>
-          <div className="col-span-12 md:col-span-7 md:pl-8">
-            <dl className="grid grid-cols-2 gap-x-6 md:gap-x-12 gap-y-10 md:gap-y-14">
-              {[
-                ["Sectors", "Fintech · AI SaaS · Cybersecurity · iGaming"],
-                ["Markets", "EU · UK · MENA · GCC"],
-                ["Our products", "Sprint (from 4 weeks) · Marathon (2+ months)"],
-                ["Reporting", "Pipeline and revenue, weekly"],
-              ].map(([k, v]) => (
-                <div key={k} className="reveal">
-                  <dt className="text-[10px] uppercase tracking-[0.25em] text-white/35 mb-3">
-                    {k}
-                  </dt>
-                  <dd className="text-[16px] md:text-[18px] text-white/85 leading-snug tracking-[-0.01em]">
-                    {v}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+
+          <dl className="reveal col-span-12 grid gap-x-6 gap-y-8 border-t border-white/10 pt-6 sm:grid-cols-2 md:absolute md:right-0 md:top-[8%] md:w-[38%] md:border-t-0 md:pt-0">
+            {[
+              {
+                key: "Sectors",
+                value: "Fintech · AI SaaS · Cybersecurity · iGaming",
+              },
+              {
+                key: "Markets",
+                value: "EU · UK · MENA · GCC",
+              },
+              {
+                key: "Our products",
+                value: "Sprint · Marathon",
+              },
+              {
+                key: "Reporting",
+                value: "Pipeline and revenue, weekly",
+              },
+            ].map((item, i) => (
+              <div key={item.key} className="border-t border-white/10 pt-5" data-delay={String(i + 1)}>
+                <dt className="mb-3 text-[10px] uppercase tracking-[0.28em] text-white/34">
+                  {item.key}
+                </dt>
+                <dd className="text-[17px] leading-[1.06] tracking-[-0.02em] text-white/84 md:text-[20px]">
+                  {item.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
-      {/* TESTIMONIALS — open with one oversize pulled quote, supporting two below */}
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 border-t border-white/10">
-        <figure className="max-w-[1100px] reveal">
-          <blockquote className="text-[32px] sm:text-[44px] md:text-[64px] leading-[1.05] tracking-[-0.025em] font-light text-white/95">
-            <span className="text-rm-accent">“</span>
-            {featureQuote.quote}
-            <span className="text-rm-accent">”</span>
-          </blockquote>
-          <figcaption className="mt-10 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-[12px] uppercase tracking-[0.2em] text-white/45">
-            <span className="text-white/80">{featureQuote.who}</span>
-            <span>·</span>
-            <span>{featureQuote.role}</span>
-            <span>·</span>
-            <span className="text-white/65">{featureQuote.client}</span>
-          </figcaption>
-        </figure>
-
-        <ul className="mt-20 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-          {testimonials.slice(1).map((t, i) => (
-            <li key={t.who + i} className="reveal" data-delay={String(i + 1)}>
-              <p className="text-[18px] md:text-[20px] leading-[1.45] tracking-[-0.01em] text-white/80 font-light">
-                {t.quote}
-              </p>
-              <p className="mt-5 text-[11px] uppercase tracking-[0.22em] text-white/40">
-                <span className="text-white/70">{t.who}</span> · {t.role} · {t.client}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <TestimonialSection />
 
       {/* ENGAGE — numbered chapters, horizontal split with vertical rule. No card chrome. */}
       <section id="engage" className="border-t border-white/10">
@@ -404,9 +424,8 @@ function Index() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {featuredCases.map((c, i) => (
             <Link
-              key={c.slug}
-              to="/cases/$slug"
-              params={{ slug: c.slug }}
+              key={c.key}
+              to="/cases"
               className="group relative flex flex-col rm-card overflow-hidden hover:border-white/25 hover:-translate-y-1 transition-all duration-500 reveal"
               data-delay={String(i + 1)}
             >
@@ -421,8 +440,8 @@ function Index() {
                   style={{
                     background:
                       i === 0
-                        ? "radial-gradient(circle at 30% 40%, #e85d3a66, transparent 60%), radial-gradient(circle at 70% 70%, #4a6b8a55, transparent 60%)"
-                        : "radial-gradient(circle at 70% 30%, #c9a84c66, transparent 60%), radial-gradient(circle at 30% 70%, #5a8a5c55, transparent 60%)",
+                        ? "radial-gradient(circle at 30% 40%, #8a1a1a55, transparent 60%), radial-gradient(circle at 70% 70%, #3a586a55, transparent 60%)"
+                        : "radial-gradient(circle at 70% 30%, #6a6a6a44, transparent 60%), radial-gradient(circle at 30% 70%, #4a7a5055, transparent 60%)",
                   }}
                 />
                 <span className="absolute top-3 right-3 text-[10px] uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-rm-surface/70 backdrop-blur-md border border-white/15 text-white/80">
