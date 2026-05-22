@@ -24,7 +24,6 @@ const bigStats: BigStat[] = [
   { prefix: "$", to: 10, suffix: "M+", label: "Capital raised by founders we worked with" },
 ];
 
-// Real attributed quotes pulled from case studies — no anonymous filler.
 const testimonials = caseStudies.slice(0, 3).map((c) => ({
   quote: c.quote.text,
   who: c.quote.who,
@@ -32,7 +31,13 @@ const testimonials = caseStudies.slice(0, 3).map((c) => ({
   client: c.client,
 }));
 
-const featureQuote = testimonials[0];
+const featureQuote = {
+  quote:
+    "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We're happy to recommend them as a fantastic team to work with",
+  who: "Nikita",
+  role: "PR",
+  client: "FinUp",
+};
 
 function useInView<T extends Element>(options?: IntersectionObserverInit) {
   const ref = useRef<T | null>(null);
@@ -98,12 +103,12 @@ const engagements = [
   {
     numeral: "I",
     name: "Sprint",
-    time: "2–4 weeks",
-    desc: "Four weeks, fixed price. We rewrite the positioning, ship the funnel, and hand you a launch your team can run alone.",
+    time: "From 4 weeks",
+    desc: "Fast start for brands that don't want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
     items: [
-      "Positioning + messaging architecture",
-      "Landing or funnel design + build",
-      "Launch assets and handover",
+      "01 — SETUP: free audit and channel selection (SMM, PR, SEO, Performance, Design, Messaging)",
+      "02 — RUN: weekly updates, monthly reports, on-demand analytics and recommendations",
+      "03 — HANDOVER: final deliverable with a clear roadmap and 100% asset & content ownership",
     ],
     band: "From €18k",
     cta: "Scope a Sprint",
@@ -112,12 +117,12 @@ const engagements = [
   {
     numeral: "II",
     name: "Marathon",
-    time: "6+ months",
-    desc: "An embedded team for 6+ months. Strategy, creative and paid run on one weekly cadence, reported in pipeline — never impressions.",
+    time: "From 6 months",
+    desc: "Strategy followed by execution. For brands launching from scratch, rebranding, or entering new markets. We build your positioning and run your marketing channels.",
     items: [
-      "Weekly strategy + creative cadence",
-      "Performance + organic growth systems",
-      "Pipeline-attributed reporting",
+      "01 — STRATEGY: deep-dive workshop, market analysis, brand positioning, and GTM planning",
+      "02 — EXECUTION: weekly strategy + creative cadence across your chosen channels",
+      "03 — REPORTING: pipeline-attributed reporting, monthly reviews, on-demand analytics",
     ],
     band: "Retainer · scoped per quarter",
     cta: "Plan a Marathon",

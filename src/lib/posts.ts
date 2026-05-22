@@ -23,6 +23,66 @@ export type Post = {
 
 export const posts: Post[] = [
   {
+    slug: "cross-border-fintech-scale",
+    n: "00",
+    category: "Growth Strategy",
+    date: "May 21, 2026",
+    dateISO: "2026-05-21",
+    read: "8 min read",
+    title: "Why cross-border fintechs fail to scale in EU & MENA markets",
+    excerpt:
+      "Regulatory fatigue, trust gaps, and localisation debt. A pattern study of twelve fintechs that entered both regions — and what separated the ones that survived.",
+    image: blog04,
+    author: "R-M Editorial",
+    body: [
+      "Every fintech that enters a second market does so believing the first market taught them everything they need to know. It didn't. The playbook that built your first ten thousand users in Western Europe is precisely the thing that will slow you down in MENA — and the reverse is equally true.",
+      "The teams we've observed across both regions share a common failure mode: they export their positioning wholesale. Same website, same onboarding, same messaging hierarchy. They adjust the language and the currency symbol, and they call it localisation. The market notices immediately, even if the team doesn't.",
+      "Regulatory overhead is the visible problem. Licensing timelines, KYC requirements, and payment rail access vary enormously — and the teams that underestimate this don't fail loudly. They fail slowly, burning runway on compliance while the marketing budget sits unused, waiting for a product that can legally ship.",
+      "The less visible problem is trust. Financial products require a level of institutional credibility that can't be manufactured in a press release. In MENA, this trust is often mediated through local partnerships — entities the market already knows. In EU, it's built through regulatory standing and editorial presence in specific publications. The teams who try to shortcut both end up with neither.",
+      "What we've learned from the teams that scaled both regions is simple: they treated each market as a first market. Not an expansion. A launch. With its own ICP, its own trust architecture, and its own positioning. The operational overhead was significant. The compounding returns were worth it.",
+    ],
+  },
+  {
+    slug: "cybersecurity-trust-building",
+    n: "01",
+    category: "Positioning",
+    date: "May 05, 2026",
+    dateISO: "2026-05-05",
+    read: "6 min read",
+    title: "Building trust in cybersecurity: Why technical features alone won't sell",
+    excerpt:
+      "In a category where every vendor claims best-in-class detection rates, the brands that win are the ones that make buyers feel safe before the demo.",
+    image: blog05,
+    author: "R-M Editorial",
+    body: [
+      "The cybersecurity buyer is the most skeptical buyer in B2B. They have been burned by vendors who overpromised, by platforms that created new attack surfaces, by dashboards that showed activity without producing safety. By the time they reach your website, they are already waiting to be disappointed.",
+      "Most cybersecurity vendors respond to this by adding more proof. More certifications. More analyst mentions. More customer logos. More technical documentation. The problem is that every competitor is doing the same thing, which means the more you prove, the more you look like everyone else.",
+      "The brands that break through are the ones who understand that trust in this category is not built by demonstrating capability. It is built by demonstrating restraint. They don't claim to solve everything. They are specific about what they won't do. They publish things that make the buyer smarter, not things that make the vendor look impressive.",
+      "There is a phrase we use with clients in this space: earn the right to the demo. The demo is where your technical features live. Before the demo, the buyer is not evaluating your technology — they are evaluating whether you understand their situation. If your website, your content, and your outreach all feel like they were written for a different company's buyer, you will not get the call.",
+      "The positioning work in cybersecurity is slow and unsexy. It involves saying fewer things, with more precision, to a smaller audience. It involves choosing one threat vector to own editorially and defending it consistently for twelve months. The teams that do this build a category position that is very hard to compete with. The teams that don't stay in the feature comparison loop indefinitely.",
+    ],
+  },
+  {
+    slug: "b2b-performance-marketing",
+    n: "02",
+    category: "Performance",
+    date: "Apr 29, 2026",
+    dateISO: "2026-04-29",
+    read: "7 min read",
+    title: "B2B performance marketing is broken: How to track pipeline instead of clicks",
+    excerpt:
+      "Clicks, impressions, and MQLs are metrics of activity, not outcomes. Here is what pipeline-attributed reporting actually looks like — and why most teams resist it.",
+    image: blog06,
+    author: "R-M Editorial",
+    body: [
+      "The performance marketing dashboard looks healthy. CTR is up. CPL is down. The weekly report shows green everywhere. And yet the sales team is complaining that leads don't convert, and the CFO is asking why revenue isn't moving. This is not a coincidence. It is a measurement problem.",
+      "B2B performance marketing was built on frameworks borrowed from e-commerce, where the purchase happens online, the attribution is clean, and a click genuinely represents intent. In B2B, none of those things are true. The purchase happens in a conversation, the attribution is disputed, and a click represents curiosity at best.",
+      "The shift to pipeline-attributed reporting is uncomfortable for most marketing teams because it makes performance worse — at first. When you stop counting form fills and start counting deals influenced, the numbers drop. The team looks less productive. The agency looks less impressive. The CFO is briefly less confused and more concerned.",
+      "But the teams that make this shift stop optimising for the wrong thing. They stop bidding on keywords that generate cheap leads from people who will never buy. They stop nurturing contacts who were never prospects. They start concentrating spend on the channels and messages that have traceable lines to revenue — even when those lines take six months to draw.",
+      "The practical starting point is simpler than most vendors make it. You need three things: a CRM that tracks lead source, a sales team willing to log where conversations come from, and a marketing team willing to be evaluated on pipeline contribution rather than traffic. The first two are easy. The third requires a conversation about what marketing is actually for.",
+    ],
+  },
+  {
     slug: "why-scaling-brands-fail",
     n: "00",
     category: "Growth Strategy",

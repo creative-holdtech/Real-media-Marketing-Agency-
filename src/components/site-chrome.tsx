@@ -77,7 +77,7 @@ export function SiteFooter() {
             R—M<span className="text-rm-accent">.</span>
           </div>
           <p className="mt-5 text-[14px] text-white/55 leading-relaxed max-w-xs">
-            Strategic growth partner for ambitious brands operating in competitive industries.
+            R-M – strategic marketing engine for competitive B2B markets.
           </p>
           <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
             <a
@@ -156,10 +156,10 @@ export function SiteFooter() {
 
         <div className="col-span-12 md:col-span-3">
           <div className="text-[11px] uppercase tracking-[0.2em] text-white/30 mb-5">Located</div>
-          <div className="text-[14px] text-white/70">Kyiv — EU — MENA</div>
+          <div className="text-[14px] text-white/70">Warsaw — EU — MENA</div>
           <div className="mt-5 text-[12px] text-white/40 leading-relaxed">
-            Operating across CET / GST timezones for partners in finance, iGaming, performance, and
-            lifestyle.
+            Operating across CET / GST timezones for partners in Fintech · AI SaaS · Cybersecurity ·
+            iGaming
           </div>
         </div>
       </div>
