@@ -256,15 +256,9 @@ function Index() {
               <span className="font-light text-white/60">We come with a plan.</span>
             </h2>
             <p className="mt-10 text-[15px] text-white/75 leading-relaxed max-w-md">
-<<<<<<< HEAD
-              We don't bring ideas. We come with a plan. A team of senior experts who know Fintech,
-              AI SaaS, Cybersecurity, and iGaming inside out. 10 practitioners to make your product
-              seen, trusted, and bought. No corporate layers. Clear deliverables only.
-=======
               A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming inside
               out. 10 practitioners to make your product seen, trusted, and bought. No corporate
               layers. Clear deliverables only.
->>>>>>> 2f33b63 (feat: apply homepage text updates from brief)
             </p>
             <p className="mt-4 text-[15px] text-white/60 leading-relaxed max-w-md">
               Decisions in hours, not weeks. Output you can ship the same day.
