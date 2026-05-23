@@ -178,8 +178,8 @@ function Index() {
 
         <div className="relative z-10 flex min-h-[calc(min(880px,100svh-1.5rem)-9.5rem)] flex-col justify-end md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)]">
           <div className="mx-auto flex w-full max-w-[980px] flex-col">
-            <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
-              / R-M marketing agency
+                  <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
+                    / R-M
             </p>
             <h1 className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[62px] lg:text-[70px]">
               <span className="block max-w-[11ch] text-balance md:ml-[4%]">Strategy and</span>
@@ -530,18 +530,9 @@ function Index() {
         className="relative overflow-hidden border-t border-white/10 px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32"
       >
         <div className="relative mx-auto max-w-[1200px]">
-          {/* Chapter rule */}
-          <div className="reveal flex items-center gap-6 text-[11px] uppercase tracking-[0.24em] text-white/60">
-            <span className="text-white">Journal</span>
-            <span aria-hidden className="h-px flex-1 bg-white/15" />
-            <Link to="/blog" className="hidden whitespace-nowrap text-white/60 hover:text-white md:inline">
-              All articles →
-            </Link>
-          </div>
-
           {/* Headline — italic accent on last word */}
           <h2
-            className="reveal mt-14 max-w-[28ch] font-medium leading-[1.05] tracking-[-0.03em] text-white md:mt-20"
+            className="reveal max-w-[24ch] font-medium leading-[1.05] tracking-[-0.03em] text-white md:pr-40"
             style={{ fontSize: "clamp(30px, 4vw, 56px)" }}
           >
             <span className="font-light text-white/55">This quarter we are writing on </span>
@@ -549,9 +540,14 @@ function Index() {
             <span className="font-light text-white/55">is </span>
             <em className="italic font-medium text-white">theater.</em>
           </h2>
+          <div className="reveal mt-8 flex justify-end">
+            <Link to="/blog" className="text-[12px] uppercase tracking-[0.24em] text-white/60 hover:text-white">
+              All articles →
+            </Link>
+          </div>
 
           {/* Featured + secondary — varied emphasis, magazine spread */}
-          <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-12 md:mt-24 md:gap-x-10">
+          <div className="mt-14 grid grid-cols-12 gap-x-6 gap-y-10 md:mt-16 md:gap-x-10">
             {/* Featured — lead story, cols 1-7 */}
             {insightPosts[0] && (
               <article className="reveal col-span-12 md:col-span-7">
@@ -561,7 +557,7 @@ function Index() {
                   aria-label={`Read article: ${insightPosts[0].title}`}
                   className="group block"
                 >
-                  <figure className="relative aspect-[4/3] overflow-hidden border border-white/12 transition-colors duration-500 group-hover:border-white/25">
+                  <figure className="relative aspect-[4/3] overflow-hidden transition-colors duration-500">
                     <img
                       src={insightPosts[0].image}
                       alt=""
@@ -604,7 +600,7 @@ function Index() {
             )}
 
             {/* Secondary — cols 8-12, stacked compact rows */}
-            <div className="col-span-12 flex flex-col divide-y divide-white/15 border-y border-white/15 md:col-span-5">
+            <div className="col-span-12 flex flex-col divide-y divide-white/15 md:col-span-5">
               {insightPosts.slice(1).map((p, idx) => {
                 const index = idx + 2; // 02, 03
                 return (
@@ -668,7 +664,7 @@ function Index() {
 
       {/* UNIFIED CTA */}
       <UnifiedCTA
-        eyebrow="Tell us what needs fixing"
+        eyebrow="Start the brief"
         title="New launch, a raise,"
         titleAccent="or marketing that doesn't perform."
       />
