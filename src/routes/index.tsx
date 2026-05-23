@@ -176,9 +176,9 @@ function Index() {
       <main id="main">
 
       {/* HERO */}
-      <section className="relative mx-auto min-h-[min(880px,calc(100svh-1.5rem))] max-w-[1440px] overflow-hidden px-6 pb-14 pt-20 md:px-12 md:pb-20 md:pt-28">
+      <section className="relative mx-auto max-w-[1440px] overflow-hidden px-6 pb-14 pt-20 md:min-h-[min(880px,calc(100svh-1.5rem))] md:px-12 md:pb-20 md:pt-28">
 
-        <div className="relative z-10 flex min-h-[calc(min(880px,100svh-1.5rem)-9.5rem)] flex-col justify-end md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)]">
+        <div className="relative z-10 flex flex-col justify-start md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)] md:justify-end">
           <div className="mx-auto flex w-full max-w-[980px] flex-col">
                   <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
                     / R-M
