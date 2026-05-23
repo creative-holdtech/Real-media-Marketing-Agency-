@@ -84,7 +84,7 @@ export const posts: Post[] = [
   },
   {
     slug: "why-scaling-brands-fail",
-    n: "00",
+    n: "03",
     category: "GROWTH STRATEGY",
     date: "MAY 21, 2026",
     dateISO: "2026-05-21",
@@ -107,7 +107,7 @@ export const posts: Post[] = [
   },
   {
     slug: "visibility-vs-authority",
-    n: "01",
+    n: "04",
     category: "POSITIONING",
     date: "MAY 05, 2026",
     dateISO: "2026-05-05",
@@ -127,7 +127,7 @@ export const posts: Post[] = [
   },
   {
     slug: "structured-systems",
-    n: "02",
+    n: "05",
     category: "PERFORMANCE",
     date: "APR 29, 2026",
     dateISO: "2026-04-29",
@@ -147,7 +147,7 @@ export const posts: Post[] = [
   },
   {
     slug: "restraint",
-    n: "03",
+    n: "06",
     category: "Brand",
     date: "Mar 30, 2026",
     dateISO: "2026-03-30",
@@ -167,7 +167,7 @@ export const posts: Post[] = [
   },
   {
     slug: "notes-from-riyadh",
-    n: "04",
+    n: "07",
     category: "Field Notes",
     date: "Mar 11, 2026",
     dateISO: "2026-03-11",
@@ -187,7 +187,7 @@ export const posts: Post[] = [
   },
   {
     slug: "compounding-cost-of-vague-offer",
-    n: "05",
+    n: "08",
     category: "Strategy",
     date: "Feb 22, 2026",
     dateISO: "2026-02-22",
@@ -207,7 +207,7 @@ export const posts: Post[] = [
   },
   {
     slug: "taxonomy-of-trust",
-    n: "06",
+    n: "09",
     category: "Brand",
     date: "Feb 03, 2026",
     dateISO: "2026-02-03",

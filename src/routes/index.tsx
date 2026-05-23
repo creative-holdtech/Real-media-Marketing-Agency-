@@ -23,7 +23,7 @@ const bigStats: BigStat[] = [
   { prefix: "$", to: 10, suffix: "M+", label: "Capital raised by founders we worked with" },
 ];
 
-function useInView<T extends Element>(options?: IntersectionObserverInit) {
+function useInView<T extends Element>(threshold = 0.25) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
@@ -39,11 +39,11 @@ function useInView<T extends Element>(options?: IntersectionObserverInit) {
           }
         }
       },
-      { threshold: 0.25, ...options },
+      { threshold },
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [inView, options]);
+  }, [inView, threshold]);
   return { ref, inView };
 }
 
@@ -141,17 +141,17 @@ const engagements = [
 const insightPosts = posts.slice(0, 3);
 const featuredCases = [
   {
-    key: "tequila-cpa",
+    key: "featured-tequila-cpa-network",
     metric: "+35%",
     label: "Brand growth in 6 mo",
     sector: "CPA Network / Tequila CPA",
     desc: "We built Tequila CPA Network's brand from the ground up, grew their partner base, and hit all key launch targets.",
   },
   {
-    key: "currency",
+    key: "featured-currency-exchange",
     metric: "+30 878",
-    label: "New accounts created in in 6 mo",
-    sector: "Cryptocurrency exchange, / Currency",
+    label: "New accounts created in 6 mo",
+    sector: "Cryptocurrency exchange / Currency",
     desc: "We scaled user base across EMEA, Americas, and APAC through 270+ influencer videos across finance, tech, and economics channels.",
   },
 ];
@@ -170,8 +170,10 @@ function Index() {
   useReveal();
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <a href="#main" className="skip-link">Skip to content</a>
       <AmbientBlobs />
       <SiteHeader variant="dark" />
+      <main id="main">
 
       {/* HERO */}
       <section className="relative mx-auto min-h-[min(880px,calc(100svh-1.5rem))] max-w-[1440px] overflow-hidden px-6 pb-14 pt-20 md:px-12 md:pb-20 md:pt-28">
@@ -545,7 +547,7 @@ function Index() {
                   <figure className="relative aspect-[4/3] overflow-hidden transition-colors duration-500">
                     <img
                       src={insightPosts[0].image}
-                      alt=""
+                      alt={`Cover image for: ${insightPosts[0].title}`}
                       loading="lazy"
                       width={1280}
                       height={960}
@@ -654,6 +656,7 @@ function Index() {
         titleAccent="or marketing that doesn't perform."
       />
 
+      </main>
       <SiteFooter />
     </div>
   );

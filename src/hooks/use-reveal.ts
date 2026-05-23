@@ -9,6 +9,15 @@ export function useReveal() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const revealSelector = ".reveal, .reveal-fade, .reveal-scale";
+
+    // Respect user preference: reveal immediately without will-change or transitions
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      document.querySelectorAll<HTMLElement>(revealSelector).forEach((el) => {
+        el.classList.add("is-visible");
+      });
+      return;
+    }
     const revealed = new WeakSet<HTMLElement>();
     const observed = new WeakSet<HTMLElement>();
 

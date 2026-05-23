@@ -80,7 +80,7 @@ export function MagneticButton({
 }
 
 /* ---------- Tilt card (3D parallax on hover) ---------- */
-export function TiltCard({
+function TiltCard({
   children,
   className,
   max = 8,
@@ -123,7 +123,7 @@ export function TiltCard({
 }
 
 /* ---------- Parallax image (scroll-linked Y translate) ---------- */
-export function ParallaxImage({
+function ParallaxImage({
   src,
   alt,
   className,

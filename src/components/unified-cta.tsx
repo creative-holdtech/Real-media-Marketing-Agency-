@@ -69,7 +69,7 @@ export function UnifiedCTA({
               </MagneticButton>
             ) : (
               <Link
-                to={primaryTo!}
+                to={primaryTo ?? "/audit"}
                 className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 {primaryLabel}
@@ -85,7 +85,7 @@ export function UnifiedCTA({
               </MagneticButton>
             ) : (
               <Link
-                to={secondaryTo!}
+                to={secondaryTo ?? "/cases"}
                 className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
               >
                 {secondaryLabel}

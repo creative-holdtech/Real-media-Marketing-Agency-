@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 import { MobileMenu } from "@/components/mobile-menu";
 
-export const siteNav: { label: string; href?: string; to?: string }[] = [
+const siteNav: { label: string; href?: string; to?: string }[] = [
   { label: "Services", to: "/services" },
   { label: "Cases", to: "/cases" },
   { label: "Products", to: "/products" },
@@ -11,7 +11,7 @@ export const siteNav: { label: string; href?: string; to?: string }[] = [
   { label: "Contact", to: "/contact" },
 ];
 
-export function SiteHeader({ variant: _variant = "light" }: { variant?: "light" | "dark" }) {
+export function SiteHeader({ variant = "dark" }: { variant?: "light" | "dark" }) {
   return (
     <header className="sticky top-0 z-40 px-4 pt-5">
       <nav className="max-w-[1320px] mx-auto h-14 flex items-center rounded-full border border-white/10 bg-rm-surface/70 backdrop-blur-xl pl-5 pr-2 relative">
