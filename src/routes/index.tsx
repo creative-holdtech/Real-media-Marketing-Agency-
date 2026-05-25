@@ -85,7 +85,6 @@ function BigStatValue({ stat, start }: { stat: BigStat; start: boolean }) {
 
 const engagements = [
   {
-    numeral: "I",
     name: "Sprint",
     time: "From 4 weeks",
     desc: "Fast start for brands that don't want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
@@ -106,14 +105,10 @@ const engagements = [
         body: "Final deliverable with a clear roadmap and 100% asset & content ownership",
       },
     ],
-    band: "From €18k",
-    cta: "Scope a Sprint",
-    href: "/contact",
   },
   {
-    numeral: "II",
     name: "Marathon",
-    time: "From 6 months",
+    time: "From 2 months",
     desc: "Strategy followed by execution. For brands launching from scratch, rebranding, or entering new markets. We build your positioning and run your marketing channels.",
     items: [
       {
@@ -124,7 +119,7 @@ const engagements = [
       {
         step: "02",
         label: "Action",
-        body: "Full-scale execution across SMM, PR, SEO, Performance, Design, and active Brand Management",
+        body: "Full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
       },
       {
         step: "03",
@@ -132,13 +127,14 @@ const engagements = [
         body: "Final brand guidelines, operational channels, 100% asset & content ownership",
       },
     ],
-    band: "Retainer · scoped per quarter",
-    cta: "Plan a Marathon",
-    href: "/contact",
   },
 ];
 
 const insightPosts = posts.slice(0, 3);
+
+function formatJournalMeta(category: string, date: string, read: string) {
+  return `${category.toUpperCase()} · ${date.toUpperCase()} · ${read.toUpperCase()}`;
+}
 const featuredCases = [
   {
     key: "featured-tequila-cpa-network",
@@ -272,6 +268,7 @@ function Index() {
         <div className="relative mx-auto max-w-[1200px]">
           {/* Chapter rule */}
           <div className="reveal flex items-center gap-6 text-[11px] uppercase tracking-[0.24em] text-white/60">
+            <span className="text-white">Marketing agency</span>
             <span aria-hidden className="h-px flex-1 bg-white/15" />
           </div>
 
@@ -284,7 +281,7 @@ function Index() {
             <span className="block pl-[12%] font-light text-white/55">bring ideas.</span>
             <span className="block pl-[4%]">We come</span>
             <span className="block pl-[20%] font-light text-white/55">
-              with a <em className="italic font-medium text-white">plan.</em>
+              with a <span className="font-medium text-white">plan.</span>
             </span>
           </h2>
 
@@ -306,8 +303,8 @@ function Index() {
               {[
                 { k: "Sectors", v: "Fintech · AI SaaS · Cybersecurity · iGaming" },
                 { k: "Markets", v: "EU · UK · MENA · GCC" },
-                { k: "Products", v: "Sprint (from 4 weeks) · Marathon (2+ months)" },
-                { k: "Reporting", v: "Pipeline & revenue, weekly" },
+                { k: "Our products", v: "Sprint (from 4 weeks) · Marathon (2+ months)" },
+                { k: "Reporting", v: "Pipeline and revenue, weekly" },
               ].map((item, i) => (
                 <div
                   key={item.k}
@@ -342,7 +339,7 @@ function Index() {
           >
             Two ways to work with us.{" "}
             <span className="text-white/55">
-              Both end in <em className="italic font-medium text-white">shipped revenue.</em>
+              Both end in <span className="font-medium text-white">shipped revenue.</span>
             </span>
           </h2>
 
@@ -354,19 +351,14 @@ function Index() {
                 className={`reveal flex flex-col gap-9 ${i === 1 ? "md:pl-16" : ""}`}
                 data-delay={String(i + 1)}
               >
-                {/* Header — monochrome numeral + name + time */}
-                <header className="flex items-baseline gap-5">
-                  <span className="text-[56px] font-light leading-none tracking-[-0.04em] text-white/30 md:text-[72px]">
-                    {e.numeral}
+                {/* Header — name + time */}
+                <header className="flex flex-col gap-2">
+                  <span className="text-[28px] font-medium leading-none tracking-[-0.02em] text-white md:text-[36px]">
+                    {e.name}
                   </span>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-[28px] font-medium leading-none tracking-[-0.02em] text-white md:text-[36px]">
-                      {e.name}
-                    </span>
-                    <span className="text-[11px] uppercase tracking-[0.24em] text-white/60">
-                      {e.time}
-                    </span>
-                  </div>
+                  <span className="text-[11px] uppercase tracking-[0.24em] text-white/60">
+                    {e.time}
+                  </span>
                 </header>
 
                 {/* Description — constrained reading width */}
@@ -394,18 +386,6 @@ function Index() {
                   ))}
                 </ul>
 
-                {/* Footer — band + CTA, no color */}
-                <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
-                  <span className="text-[11px] uppercase tracking-[0.24em] text-white/60">
-                    {e.band}
-                  </span>
-                  <Link
-                    to="/contact"
-                    className="rm-touch inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-[12px] font-medium uppercase tracking-[0.22em] text-black transition-[background-color,transform] duration-150 ease-out hover:bg-[#efeeea] active:scale-[0.97]"
-                  >
-                    {e.cta} →
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
@@ -420,7 +400,7 @@ function Index() {
         <div className="relative mx-auto max-w-[1200px]">
           {/* Chapter rule */}
           <div className="reveal flex items-center gap-6 text-[11px] uppercase tracking-[0.24em] text-white/60">
-            <span className="text-white">Selected work</span>
+            <span className="text-white">Selected case studies</span>
             <span aria-hidden className="h-px flex-1 bg-white/15" />
             <Link to="/cases" className="hidden whitespace-nowrap text-white/60 hover:text-white md:inline">
               View all cases →
@@ -434,7 +414,7 @@ function Index() {
           >
             Results we{" "}
             <span className="font-light text-white/55">
-              <em className="italic font-medium text-white">deliver.</em>
+              <span className="font-medium text-white">deliver.</span>
             </span>
           </h2>
 
@@ -481,11 +461,8 @@ function Index() {
                         </p>
 
                         <div className="mt-2 flex items-center gap-5">
-                          <span
-                            aria-hidden
-                            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/25 text-[18px] text-white transition-all duration-500 group-hover:border-white group-hover:bg-white group-hover:text-black"
-                          >
-                            →
+                          <span className="text-[11px] uppercase tracking-[0.24em] text-white/60 transition-colors group-hover:text-white">
+                            Read Case →
                           </span>
                         </div>
                       </div>
@@ -519,7 +496,7 @@ function Index() {
             <span className="font-light text-white/55">This quarter we are writing on </span>
             positioning under pressure, pricing in regulated markets, and why agency reporting{" "}
             <span className="font-light text-white/55">is </span>
-            <em className="italic font-medium text-white">theater.</em>
+            <span className="font-medium text-white">theater.</span>
           </h2>
           <div className="reveal mt-8 flex justify-end">
             <Link to="/blog" className="text-[12px] uppercase tracking-[0.24em] text-white/60 hover:text-white">
@@ -547,17 +524,14 @@ function Index() {
                       height={960}
                       className="h-full w-full object-cover grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:grayscale-0"
                     />
-                    <span className="absolute left-5 top-5 text-[10px] uppercase tracking-[0.28em] text-white/70">
-                      ── 01 · Lead story
-                    </span>
                   </figure>
 
-                  <div className="mt-8 flex items-center gap-3 text-[10px] uppercase tracking-[0.24em] text-white/55">
-                    <span>{insightPosts[0].category}</span>
-                    <span aria-hidden>/</span>
-                    <time dateTime={insightPosts[0].dateISO}>{insightPosts[0].date}</time>
-                    <span aria-hidden>/</span>
-                    <span>{insightPosts[0].read}</span>
+                  <div className="mt-8 text-[10px] uppercase tracking-[0.24em] text-white/55">
+                    {formatJournalMeta(
+                      insightPosts[0].category,
+                      insightPosts[0].date,
+                      insightPosts[0].read,
+                    )}
                   </div>
 
                   <h3
@@ -566,71 +540,34 @@ function Index() {
                   >
                     {insightPosts[0].title}
                   </h3>
-
-                  <div className="mt-6 inline-flex items-center gap-3 text-[11px] uppercase tracking-[0.24em] text-white/60 transition-colors group-hover:text-white">
-                    Read article
-                    <span
-                      aria-hidden
-                      className="inline-block transition-transform duration-300 group-hover:translate-x-1.5"
-                    >
-                      →
-                    </span>
-                  </div>
                 </Link>
               </article>
             )}
 
             {/* Secondary — cols 8-12, stacked compact rows */}
             {insightPosts.length > 1 && <div className="col-span-12 flex flex-col divide-y divide-white/15 md:col-span-5">
-              {insightPosts.slice(1).map((p, idx) => {
-                const index = idx + 2; // 02, 03
-                return (
+              {insightPosts.slice(1).map((p) => (
                   <article
                     key={p.slug}
                     className="reveal"
-                    data-delay={String(index)}
                   >
                     <Link
                       to="/blog/$slug"
                       params={{ slug: p.slug }}
                       aria-label={`Read article: ${p.title}`}
-                      className="group grid grid-cols-12 gap-x-4 py-7 transition-colors duration-300 hover:bg-white/[0.025] md:py-9"
+                      className="group block py-7 transition-colors duration-300 hover:bg-white/[0.025] md:py-9"
                     >
-                      {/* Ghost numeral */}
-                      <span
-                        aria-hidden
-                        className="col-span-2 font-light leading-none tracking-[-0.04em] text-white/15 transition-colors duration-500 group-hover:text-white/40"
-                        style={{ fontSize: "clamp(28px, 2.4vw, 40px)" }}
-                      >
-                        {String(index).padStart(2, "0")}
-                      </span>
-
-                      {/* Title + meta */}
-                      <div className="col-span-10 flex flex-col gap-3">
+                      <div className="flex flex-col gap-3">
                         <h3 className="text-[17px] font-medium leading-[1.25] tracking-[-0.015em] text-white md:text-[19px]">
                           {p.title}
                         </h3>
-                        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[10px] uppercase tracking-[0.24em] text-white/50">
-                          <span>{p.category}</span>
-                          <span aria-hidden>/</span>
-                          <time dateTime={p.dateISO}>{p.date}</time>
-                          <span aria-hidden>/</span>
-                          <span>{p.read}</span>
+                        <div className="text-[10px] uppercase tracking-[0.24em] text-white/50">
+                          {formatJournalMeta(p.category, p.date, p.read)}
                         </div>
-                        <span className="mt-2 inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-white/40 transition-colors group-hover:text-white">
-                          Read
-                          <span
-                            aria-hidden
-                            className="inline-block transition-transform duration-300 group-hover:translate-x-1"
-                          >
-                            →
-                          </span>
-                        </span>
                       </div>
                     </Link>
                   </article>
-                );
-              })}
+              ))}
             </div>}
           </div>
 
@@ -645,9 +582,8 @@ function Index() {
 
       {/* UNIFIED CTA */}
       <UnifiedCTA
-        eyebrow=""
-        title="New launch, a raise,"
-        titleAccent="or marketing that doesn't perform."
+        title="Tell us what needs fixing"
+        titleAccent="New launch, a raise, or marketing that doesn't perform."
       />
 
       </main>
