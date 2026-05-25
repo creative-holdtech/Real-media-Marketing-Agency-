@@ -7,17 +7,17 @@ import { useReveal } from "@/hooks/use-reveal";
 export const Route = createFileRoute("/audit")({
   head: () => ({
     meta: [
-      { title: "Free Marketing Audit — Strategy in 3–5 days | R-M" },
+      { title: "Free Marketing Audit — up to 7 days | R—M" },
       {
         name: "description",
         content:
-          "Free, no-strings marketing audit. SMM, PR, SEO or Performance — pick what's most urgent and get a concrete plan in 3–5 days.",
+          "Free marketing audit with hard data and no pitch. Senior experts analyse your pipeline and deliver a prioritised 90-day plan in up to 7 days.",
       },
-      { property: "og:title", content: "Free Marketing Audit — R-M Studio" },
+      { property: "og:title", content: "Free Marketing Audit — R—M" },
       {
         property: "og:description",
         content:
-          "Free, no-strings audit. Concrete recommendations across SMM, PR, SEO and Performance in 3–5 days.",
+          "Free, no-strings audit. Concrete recommendations across six focus areas in up to 7 days.",
       },
     ],
   }),
@@ -27,19 +27,27 @@ export const Route = createFileRoute("/audit")({
 const includes = [
   {
     title: "SMM",
-    body: "Audience quality, narrative consistency, and a 30-day cadence plan tied to inbound.",
+    body: "Audience quality, narrative consistency, 30-day cadence plan tied to inbound.",
   },
   {
     title: "PR",
-    body: "Story-angle audit, target outlet map, and a placement plan for the next quarter.",
+    body: "Authority angles, target media shortlist, placement plan for the next quarter.",
   },
   {
     title: "SEO",
-    body: "Intent map, technical health, and a 3-pillar content roadmap that compounds.",
+    body: "Commercial intent map, technical health check, 3-pillar compounding roadmap.",
   },
   {
     title: "Performance",
-    body: "Attribution audit, channel diagnosis, and a payback-aware budget reshape.",
+    body: "Attribution setup, channel performance audit, payback-aware budget reshape.",
+  },
+  {
+    title: "Design",
+    body: "Visual identity asset check, consistency alignment, product first-impression audit.",
+  },
+  {
+    title: "Marketing",
+    body: "Brand positioning, narrative alignment, end-to-end market communication logic.",
   },
 ];
 
@@ -47,18 +55,27 @@ const steps = [
   {
     n: "01",
     title: "You submit",
-    body: "Three minutes to fill the form below — context, channels, what's stuck.",
+    body: "Three minutes to fill the form below — context, channels, what needs fixing.",
   },
   {
     n: "02",
     title: "We diagnose",
-    body: "Senior operator reviews your situation, talks to one of your team if needed.",
+    body: "Senior expert reviews your setup and talks to your representative if needed.",
   },
   {
     n: "03",
     title: "You get the plan",
-    body: "Concrete, prioritised recommendations in a 6–10 page document. Yours to keep.",
+    body: "Concrete, prioritised recommendations in a 6–10 page document. Ready to execute.",
   },
+];
+
+const focusOptions = [
+  "SMM",
+  "PR",
+  "SEO",
+  "Performance",
+  "Brand & Marketing",
+  "Design",
 ];
 
 function AuditPage() {
@@ -73,7 +90,6 @@ function AuditPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      {/* HERO */}
       <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20">
         <div
           aria-hidden
@@ -84,11 +100,11 @@ function AuditPage() {
           }}
         />
         <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/55 mb-8">
-          Free · No obligation · 3–5 days
+          Free · No obligation · up to 7 days
         </p>
         <h1 className="reveal text-[44px] sm:text-[80px] md:text-[112px] leading-[0.95] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
-          A free marketing audit.{" "}
-          <span className="font-light text-white/55">No fluff. No pitch.</span>
+          Free marketing audit.{" "}
+          <span className="font-light text-white/55">Hard data. No pitch.</span>
         </h1>
 
         <ul
@@ -96,10 +112,10 @@ function AuditPage() {
           data-delay="2"
         >
           {[
-            "A senior operator (not a junior) reviewing your situation",
-            "Concrete diagnosis of what's blocking growth",
+            "Senior experts analysing your current pipeline tracks",
+            "A clear breakdown of what's blocking your growth",
             "Prioritised 90-day action plan, channel by channel",
-            "Yours to keep — even if we never work together",
+            "No strings attached — execute with us or in-house",
           ].map((it) => (
             <li key={it} className="flex gap-3">
               <span className="text-rm-accent">—</span>
@@ -107,43 +123,24 @@ function AuditPage() {
             </li>
           ))}
         </ul>
-
-        <div className="reveal mt-12 flex flex-wrap items-center gap-3" data-delay="3">
-          <a
-            href="#audit-form"
-            className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white transition-colors active:scale-[0.97]"
-          >
-            Request the audit →
-          </a>
-          <a
-            href="#what-included"
-            className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] rounded-full border border-white/20 text-white/85 hover:bg-white/5 transition-colors"
-          >
-            What's included
-          </a>
-        </div>
       </section>
 
-      {/* WHAT'S INCLUDED */}
       <section
         id="what-included"
         className="border-y border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24"
       >
         <div className="reveal max-w-4xl">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-6">
-            What we look at
-          </p>
           <h2 className="text-[40px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
             Pick the channel that's most urgent.{" "}
-            <span className="font-light text-white/45">We diagnose all four if needed.</span>
+            <span className="font-light text-white/45">We diagnose all six if needed.</span>
           </h2>
         </div>
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {includes.map((b, i) => (
             <div
               key={b.title}
               className="reveal rm-card p-7 md:p-8 transition-[border-color] duration-500 hover:border-white/25"
-              data-delay={String((i % 4) + 1)}
+              data-delay={String((i % 6) + 1)}
             >
               <div className="text-[11px] uppercase tracking-[0.28em] text-white/45 mb-5 tabular-nums">
                 0{i + 1}
@@ -157,7 +154,6 @@ function AuditPage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
       <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-b border-white/10">
         <div className="reveal max-w-4xl">
           <p className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-6">How it works</p>
@@ -184,17 +180,13 @@ function AuditPage() {
         </ol>
       </section>
 
-      {/* FORM */}
       <section id="audit-form" className="px-6 md:px-12 max-w-[820px] mx-auto py-24 md:py-36">
         <div className="reveal mb-16 md:mb-20">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-6">
-            Request the audit
-          </p>
           <h2 className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
             Tell us where you're stuck.
           </h2>
           <p className="mt-5 text-[14px] md:text-[15px] text-white/45">
-            Free · No obligation · Result in 3–5 days
+            Free · No strings attached · Result in up to 7 days
           </p>
         </div>
 
@@ -205,7 +197,7 @@ function AuditPage() {
             const interests = picks.length ? picks.join(", ") : "(none selected)";
             const params = new URLSearchParams({
               subject: `Audit request — ${data.get("name") ?? ""} · ${data.get("company") ?? ""}`,
-              body: `Name: ${data.get("name") ?? ""}\nCompany: ${data.get("company") ?? ""}\nEmail: ${data.get("email") ?? ""}\nSite: ${data.get("site") ?? ""}\nInterests: ${interests}\n\nNotes:\n${data.get("notes") ?? ""}`,
+              body: `Name: ${data.get("name") ?? ""}\nCompany: ${data.get("company") ?? ""}\nEmail: ${data.get("email") ?? ""}\nSite: ${data.get("site") ?? ""}\nFocus: ${interests}\n\nNotes:\n${data.get("notes") ?? ""}`,
             }).toString();
             window.location.href = `mailto:hello@r-m.studio?${params}`;
             setSent(true);
@@ -222,10 +214,13 @@ function AuditPage() {
 
           <div className="mt-14">
             <div className="text-[10px] uppercase tracking-[0.3em] text-white/40 mb-5">
-              What are you interested in?
+              What do you want to check first?
+            </div>
+            <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 mb-4">
+              Choose your focus
             </div>
             <div className="flex flex-wrap gap-x-7 gap-y-3">
-              {["SMM", "PR", "SEO", "Performance"].map((k) => {
+              {focusOptions.map((k) => {
                 const active = picks.includes(k);
                 return (
                   <button
@@ -253,7 +248,7 @@ function AuditPage() {
             <textarea
               name="notes"
               rows={2}
-              placeholder="What's the biggest thing stuck right now?"
+              placeholder="Add any extra context or specific goals here"
               className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
             />
           </div>
