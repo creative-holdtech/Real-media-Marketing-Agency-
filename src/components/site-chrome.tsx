@@ -77,7 +77,7 @@ export function SiteFooter() {
             R—M<span className="text-rm-accent">.</span>
           </div>
           <p className="mt-5 text-[14px] text-white/55 leading-relaxed max-w-xs">
-            R-M – strategic marketing engine for competitive B2B markets.
+            Strategic marketing engine for competitive B2B markets.
           </p>
           <div className="mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em] text-white/40">
             <a

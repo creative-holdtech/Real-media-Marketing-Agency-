@@ -21,7 +21,7 @@ export function UnifiedCTA({
   eyebrow,
   title = "Ready to build something that compounds?",
   titleAccent = "Let's start with a free audit.",
-  primaryLabel = "Get a free audit",
+  primaryLabel = "Get free audit",
   primaryTo = "/audit",
   primaryHref,
   secondaryLabel = "See case studies",

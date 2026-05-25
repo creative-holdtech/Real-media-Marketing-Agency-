@@ -123,13 +123,13 @@ const engagements = [
       },
       {
         step: "02",
-        label: "Execution",
-        body: "Weekly strategy + creative cadence across your chosen channels",
+        label: "Action",
+        body: "Full-scale execution across SMM, PR, SEO, Performance, Design, and active Brand Management",
       },
       {
         step: "03",
-        label: "Reporting",
-        body: "Pipeline-attributed reporting, monthly reviews, on-demand analytics",
+        label: "Handover",
+        body: "Final brand guidelines, operational channels, 100% asset & content ownership",
       },
     ],
     band: "Retainer · scoped per quarter",
@@ -181,7 +181,7 @@ function Index() {
         <div className="relative z-10 flex flex-col justify-start md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)] md:justify-end">
           <div className="mx-auto flex w-full max-w-[980px] flex-col">
                   <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
-                    / R-M
+                    R-M marketing agency
             </p>
             <h1 className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[62px] lg:text-[70px]">
               <span className="block max-w-[11ch] text-balance md:ml-[4%]">Strategy and</span>
@@ -289,24 +289,24 @@ function Index() {
           </h2>
 
           {/* Body + meta — aligned 7/5 grid, no gap column */}
-          <div className="mt-16 grid grid-cols-12 gap-x-10 gap-y-12 md:mt-24">
+          <div className="mt-16 grid grid-cols-12 gap-x-0 md:gap-x-10 gap-y-12 md:mt-24">
             <div className="reveal col-span-12 md:col-span-7" data-delay="1">
-              <p className="mt-6 max-w-[58ch] text-[18px] font-medium leading-[1.5] tracking-[-0.015em] text-white">
+              <p className="mt-6 w-full md:max-w-[58ch] text-[18px] font-medium leading-[1.5] tracking-[-0.015em] text-white">
                 A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming
                 inside out.
               </p>
-              <p className="mt-4 max-w-[58ch] text-[16px] leading-[1.65] tracking-[-0.01em] text-white/60">
+              <p className="mt-4 w-full md:max-w-[58ch] text-[16px] leading-[1.65] tracking-[-0.01em] text-white/60">
                 10 practitioners to make your product seen, trusted, and bought. No corporate
                 layers. Clear deliverables only. Decisions in hours, not weeks. Output you can ship
                 the same day.
               </p>
             </div>
 
-            <dl className="reveal col-span-12 md:col-span-5" data-delay="2">
+            <dl className="reveal col-span-12 md:col-span-5 min-w-0" data-delay="2">
               {[
                 { k: "Sectors", v: "Fintech · AI SaaS · Cybersecurity · iGaming" },
                 { k: "Markets", v: "EU · UK · MENA · GCC" },
-                { k: "Products", v: "Sprint · Marathon" },
+                { k: "Products", v: "Sprint (from 4 weeks) · Marathon (2+ months)" },
                 { k: "Reporting", v: "Pipeline & revenue, weekly" },
               ].map((item, i) => (
                 <div
@@ -335,13 +335,6 @@ function Index() {
         className="relative overflow-hidden border-t border-white/10 px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32"
       >
         <div className="relative mx-auto max-w-[1200px]">
-          {/* Chapter rule */}
-          <div className="reveal flex items-center gap-6 text-[11px] uppercase tracking-[0.24em] text-white/60">
-            <span className="text-white">How we work</span>
-            <span aria-hidden className="h-px flex-1 bg-white/15" />
-            <span className="hidden whitespace-nowrap md:inline">Sprint or Marathon</span>
-          </div>
-
           {/* Headline — same scale as About */}
           <h2
             className="reveal mt-14 max-w-[18ch] font-medium leading-[0.95] tracking-[-0.04em] text-white md:mt-20"

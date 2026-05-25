@@ -85,9 +85,6 @@ export default function TestimonialSection({
               <span aria-hidden>·</span>
               <span>{authorRole}</span>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.28em] text-white/25">
-              Founders feedback
-            </span>
           </footer>
         </blockquote>
       </div>
