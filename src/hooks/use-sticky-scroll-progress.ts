@@ -5,34 +5,77 @@ function clamp(min: number, max: number, value: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+/** GSAP power1.out approximation */
+function easeOutQuad(t: number) {
+  return 1 - (1 - t) * (1 - t);
+}
+
 /** GSAP `.builds` desktop timeline — matches Ciridae index bundle */
 const CONTENT_DUR = 0.8;
 const CARD_DUR = 1.3;
 const CARD_STAGGER = 0.15;
-const CARD_START = 0.2; // cards tween at "-=0.6" after content/bg block
+const CARD_START = 0.2;
 
-/** Ciridae `.points`: 250vh scene — animation ~48%, hold ~52% (~78vh) */
-const SCENE_TOTAL_VH = 250;
+const DEFAULT_SCENE_VH = 250;
 const ANIMATION_END_FRAC = 0.48;
+const BG_SCALE_FROM = 1.08;
+const BG_SCALE_TO = 1;
+const CARD_ENTER_MS = 480;
+const CARD_STAGGER_MS = 90;
+const MOBILE_CARD_ENTER_MS = 420;
 
-function sceneScrollablePx() {
-  return (SCENE_TOTAL_VH / 100) * window.innerHeight - window.innerHeight;
+export type CiridaeScrollOptions = {
+  withIntro?: boolean;
+  /** Scene height in vh (default 250; products sprint uses 180) */
+  sceneVh?: number;
+  /** Elements to fade/blur out as glass section scrubs in */
+  linkedExitSelector?: string;
+};
+
+function sceneScrollablePx(sceneVh: number) {
+  return (sceneVh / 100) * window.innerHeight - window.innerHeight;
 }
 
-function timelineDuration(cardCount: number) {
+function timelineDuration(cardCount: number, withIntro: boolean) {
+  if (!withIntro) {
+    return CARD_DUR + Math.max(0, cardCount - 1) * CARD_STAGGER;
+  }
   return CARD_START + CARD_DUR + Math.max(0, cardCount - 1) * CARD_STAGGER;
+}
+
+function setCardVars(
+  section: HTMLElement,
+  cardCount: number,
+  getProgress: (index: number) => number,
+  enterVh: number,
+) {
+  for (let i = 0; i < cardCount; i++) {
+    const eased = easeOutQuad(getProgress(i));
+    const yVh = (1 - eased) * enterVh;
+    section.style.setProperty(`--card-${i}-y`, `${yVh.toFixed(2)}vh`);
+    section.style.setProperty(`--card-${i}-opacity`, eased.toFixed(4));
+    section.style.setProperty(`--card-${i}-blur`, `${((1 - eased) * 4).toFixed(2)}px`);
+  }
+}
+
+function setRestingCards(section: HTMLElement, cardCount: number) {
+  for (let i = 0; i < cardCount; i++) {
+    section.style.setProperty(`--card-${i}-y`, "0vh");
+    section.style.setProperty(`--card-${i}-opacity`, "1");
+    section.style.setProperty(`--card-${i}-blur`, "0px");
+  }
 }
 
 /**
  * Ciridae `.builds` + `.points` scrub:
- * - intro content y: 0 → -100vh (linear)
- * - background scale 1.2 → 1 (linear, parallel)
- * - each `.points_item` y: 100vh → 0, stagger 0.15, duration 1.3, ease power1
+ * - bg scale scrubs with scroll
+ * - cards enter on pin via time-based animation (decoupled from scroll speed) + scroll floor
  */
 export function useCiridaePointsScroll<T extends HTMLElement>(
   cardCount: number,
-  withIntro = false,
+  options: CiridaeScrollOptions = {},
 ) {
+  const { withIntro = false, sceneVh = DEFAULT_SCENE_VH, linkedExitSelector } = options;
   const ref = useRef<T | null>(null);
   const updateRef = useRef<(() => void) | null>(null);
 
@@ -41,20 +84,30 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     if (!section || cardCount === 0) return;
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const desktop = window.matchMedia("(min-width: 992px)").matches;
-    const totalDuration = timelineDuration(cardCount);
+    const desktopMq = window.matchMedia("(min-width: 992px)");
+    const totalDuration = timelineDuration(cardCount, withIntro);
+    const enterVh = withIntro ? 100 : 40;
+    const mobileEnterVh = 24;
+
+    section.style.setProperty("--rm-scene-vh", String(sceneVh));
 
     const applyResting = () => {
       section.style.setProperty("--engage-scroll-p", "1");
-      section.style.setProperty("--intro-y", "-100vh");
-      section.style.setProperty("--bg-scale", "1");
-      for (let i = 0; i < cardCount; i++) {
-        section.style.setProperty(`--card-${i}-y`, "0vh");
-      }
+      section.style.setProperty("--intro-y", withIntro ? "-100vh" : "0vh");
+      section.style.setProperty("--bg-scale", String(BG_SCALE_TO));
+      setRestingCards(section, cardCount);
+      section.classList.remove("rm-glass-points--scrubbing");
     };
 
-    if (reduced || !desktop) {
+    if (reduced) {
       applyResting();
+      if (linkedExitSelector) {
+        document.querySelectorAll<HTMLElement>(linkedExitSelector).forEach((el) => {
+          el.style.opacity = "1";
+          el.style.filter = "none";
+          el.style.transform = "";
+        });
+      }
       updateRef.current = null;
       return;
     }
@@ -63,9 +116,41 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     const previousScrollBehavior = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
 
+    let pinEnteredAt: number | null = null;
+    let mobileEnteredAt: number | null = null;
+    let rafId = 0;
+
+    const linkedEls = linkedExitSelector
+      ? Array.from(document.querySelectorAll<HTMLElement>(linkedExitSelector))
+      : [];
+
+    const updateLinkedExit = (progress: number) => {
+      if (linkedEls.length === 0) return;
+      const exit = clamp(0, 1, progress * 1.8);
+      const opacity = 1 - exit;
+      const blur = exit * 4;
+      const y = -exit * 12;
+      linkedEls.forEach((el) => {
+        el.style.opacity = opacity.toFixed(3);
+        el.style.filter = blur > 0.01 ? `blur(${blur.toFixed(1)}px)` : "none";
+        el.style.transform = y !== 0 ? `translate3d(0, ${y.toFixed(1)}px, 0)` : "";
+      });
+    };
+
+    const timeProgressForCard = (cardIndex: number, elapsedMs: number, staggerMs: number, durMs: number) => {
+      const local = clamp(0, 1, (elapsedMs - cardIndex * staggerMs) / durMs);
+      return easeOutQuad(local);
+    };
+
+    const scrollProgressForCard = (timelineT: number, cardIndex: number) => {
+      const cardT = timelineT - (withIntro ? CARD_START : 0) - cardIndex * CARD_STAGGER;
+      return easeOutQuad(clamp(0, 1, cardT / CARD_DUR));
+    };
+
     const update = () => {
       const rect = section.getBoundingClientRect();
-      const scrollable = sceneScrollablePx();
+      const scrollable = sceneScrollablePx(sceneVh);
+      const isDesktop = desktopMq.matches;
 
       if (scrollable <= 0) {
         applyResting();
@@ -76,24 +161,91 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
       const progress = clamp(0, 1, rawProgress / ANIMATION_END_FRAC);
       const timelineT = progress * totalDuration;
 
+      const isPinned = rect.top <= 0 && rawProgress < 1;
+      section.classList.toggle("rm-glass-points--scrubbing", isPinned || rawProgress > 0 && rawProgress < 1);
+
       section.style.setProperty("--engage-scroll-p", progress.toFixed(4));
+      updateLinkedExit(progress);
 
-      const contentProgress = clamp(0, 1, timelineT / CONTENT_DUR);
-      section.style.setProperty("--intro-y", `${(-contentProgress * 100).toFixed(2)}vh`);
-      section.style.setProperty("--bg-scale", (1.2 - contentProgress * 0.2).toFixed(4));
+      if (withIntro) {
+        const contentProgress = easeOutQuad(clamp(0, 1, timelineT / CONTENT_DUR));
+        section.style.setProperty("--intro-y", `${(-contentProgress * 100).toFixed(2)}vh`);
+        section.style.setProperty(
+          "--bg-scale",
+          (BG_SCALE_FROM - contentProgress * (BG_SCALE_FROM - BG_SCALE_TO)).toFixed(4),
+        );
+      } else {
+        section.style.setProperty("--intro-y", "0vh");
+        const bgProgress = easeOutQuad(progress);
+        section.style.setProperty(
+          "--bg-scale",
+          (BG_SCALE_FROM - bgProgress * (BG_SCALE_FROM - BG_SCALE_TO)).toFixed(4),
+        );
+      }
 
-      for (let i = 0; i < cardCount; i++) {
-        const cardT = timelineT - (CARD_START + i * CARD_STAGGER);
-        const cardProgress = clamp(0, 1, cardT / CARD_DUR);
-        const yVh = (1 - cardProgress) * 100;
-        section.style.setProperty(`--card-${i}-y`, `${yVh.toFixed(2)}vh`);
+      if (!isDesktop) {
+        const inView = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
+        if (inView && mobileEnteredAt === null) {
+          mobileEnteredAt = performance.now();
+        }
+        if (!inView) {
+          mobileEnteredAt = null;
+        }
+
+        const elapsed = mobileEnteredAt ? performance.now() - mobileEnteredAt : 0;
+        const allDone = elapsed > MOBILE_CARD_ENTER_MS + (cardCount - 1) * CARD_STAGGER_MS;
+
+        setCardVars(section, cardCount, (i) => {
+          if (mobileEnteredAt === null) return 0;
+          return timeProgressForCard(i, elapsed, CARD_STAGGER_MS, MOBILE_CARD_ENTER_MS);
+        }, mobileEnterVh);
+
+        section.style.setProperty("--bg-scale", String(BG_SCALE_TO));
+
+        if (inView && !allDone) {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(update);
+        }
+        return;
+      }
+
+      if (isPinned && pinEnteredAt === null) {
+        pinEnteredAt = performance.now();
+      }
+      if (!isPinned && rect.top > 0) {
+        pinEnteredAt = null;
+      }
+
+      const elapsed = pinEnteredAt ? performance.now() - pinEnteredAt : 0;
+      const animComplete = elapsed > CARD_ENTER_MS + (cardCount - 1) * CARD_STAGGER_MS;
+
+      setCardVars(section, cardCount, (i) => {
+        const fromTime = pinEnteredAt
+          ? timeProgressForCard(i, elapsed, CARD_STAGGER_MS, CARD_ENTER_MS)
+          : 0;
+        const fromScroll = scrollProgressForCard(timelineT, i);
+        return Math.max(fromTime, fromScroll);
+      }, enterVh);
+
+      if (isPinned && !animComplete) {
+        cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(update);
+      }
+
+      if (rawProgress >= 1) {
+        setRestingCards(section, cardCount);
+        section.classList.remove("rm-glass-points--scrubbing");
       }
     };
 
     updateRef.current = update;
     update();
 
-    const onResize = () => update();
+    const onResize = () => {
+      pinEnteredAt = null;
+      mobileEnteredAt = null;
+      update();
+    };
     const onLoadingEnd = () => update();
 
     window.addEventListener("resize", onResize, { passive: true });
@@ -104,18 +256,27 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     resizeObserver.observe(section);
 
     return () => {
+      cancelAnimationFrame(rafId);
       root.style.scrollBehavior = previousScrollBehavior;
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", update);
       window.removeEventListener("rm:loading-end", onLoadingEnd);
       resizeObserver.disconnect();
+      section.classList.remove("rm-glass-points--scrubbing");
+      if (linkedExitSelector) {
+        document.querySelectorAll<HTMLElement>(linkedExitSelector).forEach((el) => {
+          el.style.opacity = "";
+          el.style.filter = "";
+          el.style.transform = "";
+        });
+      }
       updateRef.current = null;
     };
-  }, [cardCount, withIntro]);
+  }, [cardCount, withIntro, sceneVh, linkedExitSelector]);
 
   useLenis(() => {
     updateRef.current?.();
-  }, [cardCount, withIntro]);
+  }, [cardCount, withIntro, sceneVh, linkedExitSelector]);
 
   return ref;
 }

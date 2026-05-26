@@ -290,8 +290,9 @@ function Index() {
       </section>
 
       <TestimonialSection />
+      </main>
 
-      {/* ENGAGE — Ciridae-style glass cards over sticky background */}
+      {/* ENGAGE — Ciridae `.points`: direct page child, sticky bg + glass cards */}
       <GlassPointsSection
         id="engage"
         cards={engagements.map((e, i) => ({
@@ -391,7 +392,6 @@ function Index() {
         secondaryLabel="See case studies"
       />
 
-      </main>
       <SiteFooter />
     </div>
   );

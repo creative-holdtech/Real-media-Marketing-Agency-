@@ -113,7 +113,7 @@ function ProductsPage() {
           </div>
 
           <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16">
-            <div className="col-span-12 md:col-span-7 reveal" data-delay="1">
+            <div className="col-span-12 md:col-span-7 reveal rm-glass-handoff" data-delay="1">
               <h2
                 className="font-medium leading-[0.97] tracking-[-0.04em] text-white"
                 style={{ fontSize: "clamp(2.2rem, 5vw, 5.5rem)" }}
@@ -137,6 +137,8 @@ function ProductsPage() {
       </section>
 
       <GlassPointsSection
+        sceneVh={180}
+        linkedExitSelector="#sprint .rm-glass-handoff"
         cards={sprintDeliverables.map((d, i) => ({
           index: String(i + 1).padStart(2, "0"),
           title: d.title.toUpperCase(),
@@ -184,6 +186,7 @@ function ProductsPage() {
       </section>
 
       <GlassPointsSection
+        mode="inline"
         cards={marathonDeliverables.map((d, i) => ({
           index: String(i + 1).padStart(2, "0"),
           title: d.title.toUpperCase(),
@@ -214,7 +217,7 @@ function ProductsPage() {
             </div>
           </div>
 
-          <div className="col-span-12 md:col-span-8 reveal" data-delay="2">
+          <div className="col-span-12 md:col-span-8">
             <div className="rm-card-floating overflow-hidden">
               <table className="w-full text-left border-collapse">
                 <thead>
@@ -234,7 +237,13 @@ function ProductsPage() {
                   {comparisonRows.map((row, i) => (
                     <tr
                       key={row.label}
-                      className={i < comparisonRows.length - 1 ? "border-b border-white/[0.05]" : ""}
+                      className={[
+                        "reveal rm-table-row",
+                        i < comparisonRows.length - 1 ? "border-b border-white/[0.05]" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      data-delay={String(Math.min(i + 1, 5))}
                     >
                       <td className="p-5 md:p-6 text-[11px] uppercase tracking-[0.24em] text-white/45">
                         {row.label}

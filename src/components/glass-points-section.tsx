@@ -31,6 +31,10 @@ type GlassPointsSectionProps = {
   mode?: "sticky" | "inline";
   footer?: ReactNode;
   layout?: "engage" | "insights";
+  /** Sticky scene height in vh (default 250) */
+  sceneVh?: number;
+  /** Selector for copy blocks that fade out as cards enter */
+  linkedExitSelector?: string;
 };
 
 const DEFAULT_BG = engageBg;
@@ -67,13 +71,16 @@ export function GlassPointsSection({
   mode = "sticky",
   footer,
   layout = "engage",
+  sceneVh,
+  linkedExitSelector,
 }: GlassPointsSectionProps) {
   const isSticky = mode === "sticky";
   const isInsights = layout === "insights";
-  const sectionRef = useCiridaePointsScroll<HTMLElement>(
-    isSticky ? cards.length : 0,
-    isSticky && !!headline,
-  );
+  const sectionRef = useCiridaePointsScroll<HTMLElement>(isSticky ? cards.length : 0, {
+    withIntro: isSticky && !!headline,
+    sceneVh,
+    linkedExitSelector,
+  });
   const countClass =
     cards.length === 2 ? "rm-glass-points--count-2" : "rm-glass-points--count-3";
 
@@ -143,6 +150,7 @@ export function GlassPointsSection({
         countClass,
         isSticky ? "rm-glass-points--sticky" : "rm-glass-points--inline",
         isInsights ? "rm-glass-points--insights" : "",
+        sceneVh && sceneVh !== 250 ? "rm-glass-points--scene-short" : "",
       ]
         .filter(Boolean)
         .join(" ")}

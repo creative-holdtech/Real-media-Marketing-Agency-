@@ -157,6 +157,11 @@
     --rm-text-body: rgba(232, 230, 225, 0.78);
     --rm-text-muted: rgba(232, 230, 225, 0.58);
     --accent-red: var(--rm-accent);
+    --rm-header-offset: 4.75rem;
+    --rm-motion-fast: 160ms;
+    --rm-motion-enter: 550ms;
+    --rm-scene-vh: 250;
+    --rm-bg-scale-from: 1.08;
   }
 
   html {
@@ -381,8 +386,9 @@ button {
   opacity: 0;
   transform: translate3d(0, 8px, 0);
   transition:
-    opacity 550ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity var(--rm-motion-enter, 550ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform var(--rm-motion-enter, 550ms) cubic-bezier(0.22, 1, 0.36, 1),
+    filter var(--rm-motion-enter, 550ms) cubic-bezier(0.22, 1, 0.36, 1);
   /* will-change added/removed dynamically by useReveal hook to avoid
      holding GPU layers on every element from page load. */
 }
@@ -425,6 +431,15 @@ button {
 }
 .reveal[data-delay="5"].is-visible {
   transition-delay: 400ms;
+}
+
+/* Comparison table — row stagger on products */
+.rm-table-row.reveal {
+  transform: translate3d(0, 6px, 0);
+}
+
+.rm-table-row.reveal.is-visible {
+  transform: translate3d(0, 0, 0);
 }
 
 /* Niche glyph — line draw-in on hover (target shapes inside the animatable group) */
@@ -1136,20 +1151,38 @@ html.rm-is-loading .rm-hero-atmosphere {
 }
 
 /* ============ Ciridae `.points` — glass cards over sticky background ============ */
-:root {
-  --rm-header-offset: 4.75rem;
+@property --bg-scale {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1.08;
+}
+
+/* Copy blocks that hand off into glass scroll sections */
+.rm-glass-handoff {
+  transition:
+    opacity 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 400ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .rm-glass-points {
   --engage-scroll-p: 0;
   --engage-hero-height: 44vh;
+  --rm-scene-vh: 250;
   position: relative;
   isolation: isolate;
 }
 
+/* Ciridae `.builds` — headline block above pure `.points` glass section */
+.rm-insights-builds {
+  position: relative;
+  z-index: 1;
+  padding: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vh, 3rem);
+  background: var(--rm-page, #0a0a0a);
+}
+
 .rm-glass-points--sticky .rm-glass-points__scene {
-  /* Ciridae `.points` — 250vh; trailing ~52% is end hold (ANIMATION_END_FRAC 0.48 in hook) */
-  height: 250vh;
+  height: calc(var(--rm-scene-vh, 250) * 1vh);
 }
 
 .rm-glass-points__intro {
@@ -1161,7 +1194,6 @@ html.rm-is-loading .rm-hero-atmosphere {
   justify-content: center;
   padding: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vw, 4rem);
   transform: translateY(var(--intro-y, 0vh));
-  will-change: transform;
   pointer-events: none;
 }
 
@@ -1215,15 +1247,12 @@ html.rm-is-loading .rm-hero-atmosphere {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: translate(-50%, -50%) scale(var(--bg-scale, 1.2));
-  will-change: transform;
+  transform: translate(-50%, -50%) scale(var(--bg-scale, var(--rm-bg-scale-from, 1.08)));
 }
 
 .rm-glass-points__content {
   position: relative;
   z-index: 2;
-  flex: 1;
-  align-self: center;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.25rem;
@@ -1266,24 +1295,41 @@ html.rm-is-loading .rm-hero-atmosphere {
   -webkit-backdrop-filter: blur(50px);
   backdrop-filter: blur(50px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  will-change: transform, opacity;
+}
+
+.rm-glass-points--scrubbing .rm-points-card {
+  will-change: transform, opacity, filter;
+}
+
+.rm-glass-points--scrubbing .rm-glass-points__bg {
+  will-change: transform;
 }
 
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(1) .rm-points-card {
-  --card-enter-y: var(--card-0-y, 100vh);
+  --card-enter-y: var(--card-0-y, 40vh);
+  --card-enter-opacity: var(--card-0-opacity, 0);
+  --card-enter-blur: var(--card-0-blur, 4px);
+  --card-rest-y: 0rem;
 }
 
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(2) .rm-points-card {
-  --card-enter-y: var(--card-1-y, 100vh);
+  --card-enter-y: var(--card-1-y, 40vh);
+  --card-enter-opacity: var(--card-1-opacity, 0);
+  --card-enter-blur: var(--card-1-blur, 4px);
+  --card-rest-y: 2.5rem;
 }
 
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(3) .rm-points-card {
-  --card-enter-y: var(--card-2-y, 100vh);
+  --card-enter-y: var(--card-2-y, 40vh);
+  --card-enter-opacity: var(--card-2-opacity, 0);
+  --card-enter-blur: var(--card-2-blur, 4px);
+  --card-rest-y: 5rem;
 }
 
 .rm-glass-points--sticky .rm-points-card {
-  opacity: 1;
-  transform: translateY(var(--card-enter-y, 100vh));
+  opacity: var(--card-enter-opacity, 1);
+  filter: blur(var(--card-enter-blur, 0px));
+  transform: translateY(calc(var(--card-enter-y, 0vh) + var(--card-rest-y, 0rem)));
 }
 
 .rm-points-card__top {
@@ -1357,6 +1403,15 @@ html.rm-is-loading .rm-hero-atmosphere {
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.9);
   text-wrap: balance;
+}
+
+/* Engage cards with step lists need more vertical room than the Ciridae aspect ratio */
+.rm-points-card:has(.rm-points-card__steps) {
+  aspect-ratio: auto;
+  min-height: clamp(26rem, 52vh, 36rem);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
 
 .rm-points-card__steps {
@@ -1643,6 +1698,13 @@ a.block:focus-visible .rm-points-card__read {
 
   .rm-glass-points--sticky .rm-points-card {
     opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+
+  .rm-glass-handoff {
+    opacity: 1 !important;
+    filter: none !important;
     transform: none !important;
   }
 }
