@@ -172,11 +172,11 @@ function Index() {
       <AmbientBlobs />
       <PagePreloader />
 
-      <HeroAtmosphere imageSrc={heroBg}>
-        <SiteHeader variant="dark" overlay />
+      <SiteHeader variant="dark" overlay />
 
+      <HeroAtmosphere imageSrc={heroBg}>
       {/* HERO */}
-      <section className="relative z-10 flex flex-1 items-center">
+      <section className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]">
         <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-14 pt-4 md:px-12 md:pb-20 md:pt-8">
           <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
             <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">

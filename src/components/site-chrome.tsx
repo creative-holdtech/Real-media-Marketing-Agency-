@@ -22,8 +22,8 @@ export function SiteHeader({
   return (
     <header
       className={[
-        "sticky top-0 z-40 px-4 pt-5",
-        overlay ? "bg-transparent" : "",
+        "sticky top-0 z-50 px-4 pt-5",
+        overlay ? "bg-transparent" : "bg-rm-page/80 backdrop-blur-md",
       ].join(" ")}
     >
       <nav className="max-w-[1320px] mx-auto h-14 flex items-center rounded-full border border-white/[0.08] bg-rm-surface/40 backdrop-blur-xl pl-5 pr-2 relative">
