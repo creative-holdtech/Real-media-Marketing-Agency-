@@ -42,35 +42,37 @@ export function UnifiedCTA({
             "radial-gradient(70% 60% at 50% 50%, rgba(232,93,58,0.22), transparent 70%), var(--rm-surface)",
         }}
       />
-      <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-28 md:py-36 text-center">
+      <div className="mx-auto max-w-[40rem] px-6 py-28 text-center md:px-12 md:py-36">
         {eyebrow ? (
           <Reveal duration={0.5}>
-            <p className="text-[11px] uppercase tracking-[0.28em] text-white/45 mb-8">{eyebrow}</p>
+            <p className="mb-8 text-[11px] uppercase tracking-[0.28em] text-white/45">{eyebrow}</p>
           </Reveal>
         ) : null}
         <Reveal duration={0.5}>
           <h2
             id="unified-cta-heading"
-            className="mx-auto max-w-5xl text-[44px] sm:text-[72px] md:text-[104px] leading-[0.98] tracking-[-0.04em] font-medium text-white"
+            className="mx-auto w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[58px] lg:text-[64px]"
           >
-            {title}{" "}
-            {titleAccent ? <span className="font-light text-white/55">{titleAccent}</span> : null}
+            <span className="block text-balance">{title}</span>
+            {titleAccent ? (
+              <span className="mt-1 block text-balance font-light text-white/48">{titleAccent}</span>
+            ) : null}
           </h2>
         </Reveal>
         <Reveal delay={0.1} duration={0.5}>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             {primaryHref ? (
               <MagneticButton
                 href={primaryHref}
                 strength={8}
-                className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                className="inline-flex rm-touch items-center rounded-full bg-white px-6 py-3.5 text-[13px] font-medium text-black transition-[background-color,transform] duration-150 ease-out hover:-translate-y-0.5 hover:bg-[#efeeea]"
               >
                 {primaryLabel}
               </MagneticButton>
             ) : (
               <Link
                 to={primaryTo ?? "/audit"}
-                className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                className="inline-flex rm-touch items-center rounded-full bg-white px-6 py-3.5 text-[13px] font-medium text-black transition-[background-color,transform] duration-150 ease-out hover:-translate-y-0.5 hover:bg-[#efeeea]"
               >
                 {primaryLabel}
               </Link>
@@ -79,14 +81,14 @@ export function UnifiedCTA({
               <MagneticButton
                 href={secondaryHref}
                 strength={6}
-                className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                className="inline-flex rm-touch items-center rounded-full border border-white/20 px-6 py-3.5 text-[13px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white"
               >
                 {secondaryLabel}
               </MagneticButton>
             ) : (
               <Link
                 to={secondaryTo ?? "/cases"}
-                className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                className="inline-flex rm-touch items-center rounded-full border border-white/20 px-6 py-3.5 text-[13px] text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white"
               >
                 {secondaryLabel}
               </Link>

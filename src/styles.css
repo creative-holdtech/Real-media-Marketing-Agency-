@@ -623,7 +623,7 @@ button {
   display: none;
 }
 
-/* ============ Trust + stats — DreamLab-style one screen ============ */
+/* ============ Trust + stats — one screen, clear hierarchy ============ */
 .rm-trust-stats {
   min-height: 100svh;
 }
@@ -632,23 +632,78 @@ button {
   display: flex;
   min-height: 100svh;
   flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  padding-top: clamp(2rem, 5vh, 3.5rem);
-  padding-bottom: clamp(2.5rem, 7vh, 4.5rem);
+  padding-block: clamp(3rem, 8vh, 5rem);
+}
+
+.rm-trust-stats__marquee-wrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 0;
+  padding-block: clamp(2rem, 6vh, 4rem);
+}
+
+.rm-trust-stats__kicker {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  text-align: center;
 }
 
 .rm-trust-stats__marquee {
-  flex-shrink: 0;
+  width: 100%;
+}
+
+.rm-trust-stats__marquee .marquee-track {
+  gap: clamp(2rem, 5vw, 3.5rem);
+}
+
+.rm-trust-stats__marquee .marquee-track span {
+  font-size: clamp(1.125rem, 2.4vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: #fff;
 }
 
 .rm-trust-stats__spacer {
-  flex: 1 1 auto;
-  min-height: 3rem;
+  display: none;
 }
 
 .rm-trust-stats__stats {
+  display: grid;
   flex-shrink: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 5rem);
   align-items: end;
+  padding-top: clamp(2rem, 5vh, 3rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rm-trust-stats__stat-value {
+  font-size: clamp(2.75rem, 11vw, 5.5rem);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: #efeee9;
+}
+
+.rm-trust-stats__stat-label {
+  margin-top: 0.75rem;
+  max-width: 16ch;
+  font-size: 11px;
+  line-height: 1.45;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 @media (min-width: 768px) {
@@ -657,9 +712,17 @@ button {
     min-height: min(88svh, 920px);
   }
 
-  .rm-trust-stats__inner {
-    padding-top: clamp(2.5rem, 6vh, 4rem);
-    padding-bottom: clamp(3rem, 8vh, 5rem);
+  .rm-trust-stats__marquee-wrap {
+    gap: 1.5rem;
+  }
+
+  .rm-trust-stats__stat-value {
+    font-size: clamp(4rem, 9vw, 7.5rem);
+  }
+
+  .rm-trust-stats__stat-label {
+    margin-top: 1rem;
+    max-width: 18ch;
   }
 }
 

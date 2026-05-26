@@ -58,8 +58,8 @@ export default function TestimonialSection({
         ];
 
   return (
-    <section className="relative overflow-hidden px-6 py-24 md:px-12 md:py-32">
-      <div className="mx-auto grid max-w-[1440px] grid-cols-12 gap-x-6 gap-y-12 md:gap-x-12">
+    <section className="relative overflow-hidden px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-12 gap-x-6 gap-y-12 md:gap-x-12">
         <div className="reveal col-span-12 md:col-span-3" />
 
         <blockquote className="reveal col-span-12 md:col-span-9" data-delay="1">

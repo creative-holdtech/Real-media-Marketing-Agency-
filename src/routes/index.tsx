@@ -234,14 +234,14 @@ function Index() {
         className="relative overflow-hidden px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32"
       >
         <div className="relative mx-auto max-w-[1200px]">
-          <p className="reveal text-[11px] uppercase tracking-[0.24em] text-white">
+          <p className="reveal text-[11px] uppercase tracking-[0.24em] text-white/45">
             Marketing agency
           </p>
 
           {/* Ladder headline — contained, percent-based cascade */}
           <h2
             className="reveal mt-14 font-medium leading-[0.92] tracking-[-0.04em] text-white md:mt-20"
-            style={{ fontSize: "clamp(40px, 6vw, 88px)" }}
+            style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
           >
             <span className="block">We don't</span>
             <span className="block pl-[12%] font-light text-white/55">bring ideas.</span>
@@ -312,74 +312,66 @@ function Index() {
         }))}
       />
 
-      {/* CASES — editorial table-of-contents, metric IS the visual */}
+      {/* CASES — metric-led index with clear hierarchy */}
       <section
         id="cases"
         className="relative overflow-hidden px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32"
       >
         <div className="relative mx-auto max-w-[1200px]">
-          <div className="reveal flex flex-wrap items-center justify-between gap-4 text-[11px] uppercase tracking-[0.24em] text-white/60">
-            <span className="text-white">Selected case studies</span>
-            <Link to="/cases" className="whitespace-nowrap text-white/60 hover:text-white">
-              View all cases →
-            </Link>
-          </div>
+          <header className="reveal max-w-[16ch]">
+            <p className="text-[11px] uppercase tracking-[0.24em] text-white/45">
+              Selected case studies
+            </p>
+            <h2
+              className="mt-4 font-medium leading-[0.95] tracking-[-0.04em] text-white"
+              style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
+            >
+              <span className="block">Results we</span>
+              <span className="block text-white/50">deliver.</span>
+            </h2>
+          </header>
 
-          {/* Headline — italic accent */}
-          <h2
-            className="reveal mt-14 max-w-[14ch] font-medium leading-[0.95] tracking-[-0.04em] text-white md:mt-20"
-            style={{ fontSize: "clamp(36px, 5vw, 72px)" }}
-          >
-            Results we{" "}
-            <span className="font-light text-white/55">
-              <span className="font-medium text-white">deliver.</span>
-            </span>
-          </h2>
-
-          {/* Case index — magazine spread per row */}
-          <ul className="mt-16 md:mt-24">
+          <ul className="mt-12 flex flex-col md:mt-16">
             {featuredCases.map((c, i) => {
               const industry = c.sector.split("/")[0]?.trim() ?? c.sector;
               return (
-                <li key={c.key} className="reveal py-2" data-delay={String(i + 1)}>
+                <li
+                  key={c.key}
+                  className="reveal border-t border-white/10 py-12 first:border-t-0 first:pt-0 md:py-16"
+                  data-delay={String(i + 1)}
+                >
                   <Link
                     to="/cases"
                     aria-label={`View case: ${c.sector}`}
-                    className="group block py-10 transition-colors duration-300 hover:bg-white/[0.025] md:py-16"
+                    className="group block"
                   >
-                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[10px] uppercase tracking-[0.28em] text-white/55">
-                      <span className="font-medium tabular-nums text-white">
+                    <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] uppercase tracking-[0.24em] text-white/45">
+                      <span className="tabular-nums text-white/60">
                         {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="whitespace-nowrap">{industry}</span>
-                    </div>
+                      <span>{industry}</span>
+                    </p>
 
-                    {/* Main row — metric anchor + client/desc/CTA */}
-                    <div className="mt-10 grid grid-cols-12 items-start gap-x-6 gap-y-8 md:mt-14 md:gap-x-10">
-                      {/* Metric — dominant visual */}
-                      <div className="col-span-12 flex flex-col md:col-span-7">
-                        <span
-                          className="whitespace-nowrap font-medium leading-[0.85] tracking-[-0.045em] tabular-nums text-white"
-                          style={{ fontSize: "clamp(64px, 10vw, 144px)" }}
+                    <div className="mt-6 grid grid-cols-12 items-start gap-x-8 gap-y-6 md:mt-8 md:gap-x-12">
+                      <div className="col-span-12 md:col-span-7">
+                        <p
+                          className="font-medium leading-[0.88] tracking-[-0.04em] tabular-nums text-white"
+                          style={{ fontSize: "clamp(3.5rem, 9vw, 7.5rem)" }}
                         >
                           {c.metric}
-                        </span>
-                        <span className="mt-4 text-[11px] uppercase tracking-[0.24em] text-white/60">
+                        </p>
+                        <p className="mt-3 text-[11px] uppercase tracking-[0.24em] text-white/45">
                           {c.label}
-                        </span>
+                        </p>
                       </div>
 
-                      {/* Description + CTA circle */}
-                      <div className="col-span-12 flex flex-col gap-6 md:col-span-5 md:pt-2">
-                        <p className="max-w-[46ch] text-[15px] leading-[1.6] tracking-[-0.01em] text-white/65 md:text-[16px]">
+                      <div className="col-span-12 flex flex-col gap-4 md:col-span-5 md:gap-5">
+                        <p className="max-w-[45ch] text-[15px] leading-[1.65] text-white/60 md:text-base">
                           {c.desc}
                         </p>
-
-                        <div className="mt-2 flex items-center gap-5">
-                          <span className="text-[11px] uppercase tracking-[0.24em] text-white/60 transition-colors group-hover:text-white">
-                            Read Case →
-                          </span>
-                        </div>
+                        <span className="text-[11px] uppercase tracking-[0.24em] text-white/45 transition-colors group-hover:text-white/75">
+                          Read case →
+                        </span>
                       </div>
                     </div>
                   </Link>
@@ -388,9 +380,11 @@ function Index() {
             })}
           </ul>
 
-          {/* Mobile fallback link */}
-          <div className="reveal mt-12 md:hidden" data-delay="3">
-            <Link to="/cases" className="text-[12px] uppercase tracking-[0.24em] text-white/60 hover:text-white">
+          <div className="reveal mt-12 flex justify-center border-t border-white/10 pt-8 md:mt-16 md:pt-10" data-delay="3">
+            <Link
+              to="/cases"
+              className="inline-flex rm-touch items-center rounded-full border border-white/20 px-6 py-3.5 text-[13px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white"
+            >
               View all cases →
             </Link>
           </div>
@@ -406,18 +400,13 @@ function Index() {
           {/* Headline — italic accent on last word */}
           <h2
             className="reveal max-w-[24ch] font-medium leading-[1.05] tracking-[-0.03em] text-white md:pr-40"
-            style={{ fontSize: "clamp(30px, 4vw, 56px)" }}
+            style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
           >
             <span className="font-light text-white/55">This quarter we are writing on </span>
             positioning under pressure, pricing in regulated markets, and why agency reporting{" "}
             <span className="font-light text-white/55">is </span>
             <span className="font-medium text-white">theater.</span>
           </h2>
-          <div className="reveal mt-8 flex justify-end">
-            <Link to="/blog" className="text-[12px] uppercase tracking-[0.24em] text-white/60 hover:text-white">
-              All articles →
-            </Link>
-          </div>
 
           {/* Featured + secondary — varied emphasis, magazine spread */}
           <div className="mt-14 grid grid-cols-12 gap-x-6 gap-y-10 md:mt-16 md:gap-x-10">
@@ -441,7 +430,7 @@ function Index() {
                     />
                   </figure>
 
-                  <div className="mt-8 text-[10px] uppercase tracking-[0.24em] text-white/55">
+                  <div className="mt-8 text-[11px] uppercase tracking-[0.24em] text-white/45">
                     {formatJournalMeta(
                       insightPosts[0].category,
                       insightPosts[0].date,
@@ -476,7 +465,7 @@ function Index() {
                         <h3 className="text-[17px] font-medium leading-[1.25] tracking-[-0.015em] text-white md:text-[19px]">
                           {p.title}
                         </h3>
-                        <div className="text-[10px] uppercase tracking-[0.24em] text-white/50">
+                        <div className="text-[11px] uppercase tracking-[0.24em] text-white/45">
                           {formatJournalMeta(p.category, p.date, p.read)}
                         </div>
                       </div>
@@ -486,9 +475,11 @@ function Index() {
             </div>}
           </div>
 
-          {/* Mobile fallback link */}
-          <div className="reveal mt-12 md:hidden">
-            <Link to="/blog" className="text-[12px] uppercase tracking-[0.24em] text-white/60 hover:text-white">
+          <div className="reveal mt-12 flex justify-center border-t border-white/10 pt-8 md:mt-16 md:pt-10">
+            <Link
+              to="/blog"
+              className="inline-flex rm-touch items-center rounded-full border border-white/20 px-6 py-3.5 text-[13px] font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-white"
+            >
               All articles →
             </Link>
           </div>
@@ -524,49 +515,45 @@ function TrustStatsScreen() {
     <section
       ref={ref}
       aria-label="Trusted partners and key results"
-      className="rm-trust-stats"
+      className="rm-trust-stats px-6 sm:px-10 md:px-20 lg:px-32"
     >
-      <div className="rm-trust-stats__inner mx-auto max-w-[1440px] px-6 md:px-12">
-        <div className="rm-trust-stats__marquee">
-          <div
-            className="marquee relative w-full overflow-hidden"
-            style={{
-              maskImage:
-                "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
-              WebkitMaskImage:
-                "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
-            }}
-          >
-            <div className="marquee-track flex w-max items-center gap-10 md:gap-14">
-              {Array.from({ length: 2 }).flatMap((_, dup) =>
-                trustBrands.map((b) => (
-                  <span
-                    key={`${dup}-${b}`}
-                    aria-hidden={dup === 1}
-                    className="whitespace-nowrap text-[13px] font-medium tracking-tight text-white/40 transition-colors hover:text-white/80 md:text-[15px]"
-                  >
-                    {b}
-                  </span>
-                )),
-              )}
+      <div className="rm-trust-stats__inner mx-auto w-full max-w-[1200px]">
+        <div className="rm-trust-stats__marquee-wrap">
+          <p className="rm-trust-stats__kicker reveal">Trusted by teams at</p>
+          <div className="rm-trust-stats__marquee reveal" data-delay="1">
+            <div
+              className="marquee relative w-full overflow-hidden"
+              style={{
+                maskImage:
+                  "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%)",
+              }}
+            >
+              <div className="marquee-track flex w-max items-center">
+                {Array.from({ length: 2 }).flatMap((_, dup) =>
+                  trustBrands.map((b) => (
+                    <span
+                      key={`${dup}-${b}`}
+                      aria-hidden={dup === 1}
+                      className="whitespace-nowrap"
+                    >
+                      {b}
+                    </span>
+                  )),
+                )}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="rm-trust-stats__spacer" aria-hidden />
-
-        <div className="rm-trust-stats__stats grid grid-cols-2 gap-x-8 gap-y-10 md:gap-x-20 md:gap-y-12">
+        <div className="rm-trust-stats__stats">
           {bigStats.map((s, i) => (
-            <div key={s.label} className="reveal" data-delay={String(i + 1)}>
-              <div
-                className="font-medium leading-[0.9] tracking-[-0.045em] text-white"
-                style={{ fontSize: "clamp(64px, 14vw, 180px)" }}
-              >
+            <div key={s.label} className="reveal" data-delay={String(i + 2)}>
+              <p className="rm-trust-stats__stat-value">
                 <BigStatValue stat={s} start={inView} />
-              </div>
-              <p className="mt-4 max-w-[22ch] text-[13px] leading-snug text-white/50 md:mt-5 md:text-[15px]">
-                {s.label}
               </p>
+              <p className="rm-trust-stats__stat-label">{s.label}</p>
             </div>
           ))}
         </div>
