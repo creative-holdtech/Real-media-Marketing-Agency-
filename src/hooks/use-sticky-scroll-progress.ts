@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useLenis } from "lenis/react";
 
 function clamp(min: number, max: number, value: number) {
   return Math.min(max, Math.max(min, value));
@@ -33,6 +34,7 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
   withIntro = false,
 ) {
   const ref = useRef<T | null>(null);
+  const updateRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     const section = ref.current;
@@ -53,6 +55,7 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
 
     if (reduced || !desktop) {
       applyResting();
+      updateRef.current = null;
       return;
     }
 
@@ -60,9 +63,7 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     const previousScrollBehavior = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
 
-    let frame = 0;
     const update = () => {
-      frame = 0;
       const rect = section.getBoundingClientRect();
       const scrollable = sceneScrollablePx();
 
@@ -71,16 +72,13 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
         return;
       }
 
-      // Ciridae: timeline finishes ~58% through scene scroll; rest is pinned hold
       const rawProgress = clamp(0, 1, -rect.top / scrollable);
       const progress = clamp(0, 1, rawProgress / ANIMATION_END_FRAC);
       const timelineT = progress * totalDuration;
 
       section.style.setProperty("--engage-scroll-p", progress.toFixed(4));
 
-      const contentProgress = withIntro
-        ? clamp(0, 1, timelineT / CONTENT_DUR)
-        : clamp(0, 1, timelineT / CONTENT_DUR);
+      const contentProgress = clamp(0, 1, timelineT / CONTENT_DUR);
       section.style.setProperty("--intro-y", `${(-contentProgress * 100).toFixed(2)}vh`);
       section.style.setProperty("--bg-scale", (1.2 - contentProgress * 0.2).toFixed(4));
 
@@ -92,21 +90,21 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
       }
     };
 
-    const onScroll = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(update);
-    };
-
+    updateRef.current = update;
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+
+    const onResize = () => update();
+    window.addEventListener("resize", onResize);
 
     return () => {
       root.style.scrollBehavior = previousScrollBehavior;
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", onResize);
+      updateRef.current = null;
     };
+  }, [cardCount, withIntro]);
+
+  useLenis(() => {
+    updateRef.current?.();
   }, [cardCount, withIntro]);
 
   return ref;

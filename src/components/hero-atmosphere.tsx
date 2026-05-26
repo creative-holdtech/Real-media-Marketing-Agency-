@@ -3,7 +3,6 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
 } from "motion/react";
 
@@ -22,8 +21,6 @@ export function HeroAtmosphere({ imageSrc, children }: HeroAtmosphereProps) {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const scale = useTransform(scrollYProgress, [0, 1], [1.08, 1.16]);
-  const sy = useSpring(y, { stiffness: 85, damping: 26, mass: 0.35 });
-  const ss = useSpring(scale, { stiffness: 85, damping: 26, mass: 0.35 });
 
   return (
     <div
@@ -37,7 +34,7 @@ export function HeroAtmosphere({ imageSrc, children }: HeroAtmosphereProps) {
           fetchPriority="high"
           decoding="async"
           className="rm-hero-atmosphere__bg-img"
-          style={reduce ? undefined : { y: sy, scale: ss }}
+          style={reduce ? undefined : { y, scale }}
         />
       </div>
       {children}
