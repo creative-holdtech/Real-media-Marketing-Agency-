@@ -226,7 +226,6 @@ function ProductsPage() {
       <section className="px-6 md:px-16 max-w-[1440px] mx-auto py-24 md:py-32">
         <div className="reveal grid grid-cols-12 gap-8 md:gap-16 items-start">
           <div className="col-span-12 md:col-span-4">
-            <p className="rm-eyebrow mb-6">Quick comparison</p>
             <h2
               className="font-medium leading-[1.02] tracking-[-0.035em] text-white"
               style={{ fontSize: "clamp(1.9rem, 3.2vw, 3.2rem)" }}

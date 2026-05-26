@@ -27,11 +27,11 @@ export const Route = createFileRoute("/audit")({
 const includes = [
   {
     title: "SMM",
-    body: "Audience quality, narrative consistency, 30-day cadence plan tied to inbound.",
+    body: "Audience quality, narrative consistency, and a 30-day cadence plan tied to inbound.",
   },
   {
     title: "PR",
-    body: "Authority angles, target media shortlist, placement plan for the next quarter.",
+    body: "Story-angle audit, target outlet map, and a placement plan for the next quarter.",
   },
   {
     title: "SEO",
@@ -214,7 +214,7 @@ function AuditPage() {
 
           <div className="mt-14">
             <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 mb-4">
-              Choose your focus
+              Choose your focus:
             </div>
             <div className="flex flex-wrap gap-x-7 gap-y-3">
               {focusOptions.map((k) => {
@@ -250,10 +250,7 @@ function AuditPage() {
             />
           </div>
 
-          <div className="mt-16 flex flex-wrap items-center justify-between gap-4">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-white/35">
-              Reply within 1 business day
-            </p>
+          <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
             <button
               type="submit"
               className="inline-flex rm-touch items-center gap-2 px-8 text-[12px] uppercase tracking-[0.2em] rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white transition-[background-color,transform] duration-150 active:scale-[0.97]"
