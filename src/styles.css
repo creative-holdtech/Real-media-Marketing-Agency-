@@ -1222,6 +1222,16 @@ html.rm-is-loading {
   width: min(980px, calc(100% - 2.5rem));
 }
 
+.rm-glass-points__actions {
+  position: relative;
+  z-index: 2;
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 /* `.points_item` — cards enter from below, rest with vertical stagger only */
 .rm-points-card {
   aspect-ratio: 453 / 595;
@@ -1445,6 +1455,20 @@ html.rm-is-loading {
   gap: 1.25rem;
 }
 
+.rm-glass-points__bg-parent::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    var(--rm-surface, #000) 0%,
+    rgba(0, 0, 0, 0.72) 22%,
+    transparent 52%
+  );
+}
+
 .rm-glass-points--insights .rm-points-card {
   justify-content: flex-start;
 }
@@ -1491,8 +1515,15 @@ a.block:focus-visible .rm-points-card__read {
     position: relative;
     height: auto;
     display: block;
-    padding-bottom: 2rem;
+    padding-bottom: 3rem;
     overflow: visible;
+  }
+
+  .rm-glass-points__actions {
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem 0 0;
+    box-sizing: border-box;
   }
 
   .rm-glass-points__head {
@@ -1501,10 +1532,6 @@ a.block:focus-visible .rm-points-card__read {
   }
 
   /* Ciridae mobile: only bg is sticky; cards flow in `.points_content` */
-  .rm-glass-points--insights .rm-glass-points__bg-parent {
-    background: var(--rm-page, #0a0a0a);
-  }
-
   .rm-glass-points--sticky .rm-glass-points__bg-parent {
     position: sticky;
     top: var(--rm-header-offset);

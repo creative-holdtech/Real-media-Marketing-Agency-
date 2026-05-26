@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import insightsBg from "@/assets/insights-bg.png";
 import { GlassPointsSection } from "@/components/glass-points-section";
 import type { Post } from "@/lib/posts";
 
@@ -28,6 +29,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
     <GlassPointsSection
       id="insights"
       layout="insights"
+      backgroundImage={insightsBg}
       headline={
         <>
           This quarter we are writing on positioning under pressure, pricing in regulated markets, and{" "}

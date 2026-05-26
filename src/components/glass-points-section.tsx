@@ -153,16 +153,14 @@ export function GlassPointsSection({
       >
         <div className="rm-glass-points__sticky">
           <div className="rm-glass-points__bg-parent" aria-hidden>
-            {!isInsights ? (
-              <img
-                className="rm-glass-points__bg"
-                src={backgroundImage}
-                alt=""
-                loading={isSticky ? "eager" : "lazy"}
-                fetchPriority={isSticky ? "high" : "auto"}
-                decoding="async"
-              />
-            ) : null}
+            <img
+              className="rm-glass-points__bg"
+              src={backgroundImage}
+              alt=""
+              loading={isSticky ? "eager" : "lazy"}
+              fetchPriority={isSticky ? "high" : "auto"}
+              decoding="async"
+            />
           </div>
 
           {headline ? (
@@ -191,18 +189,16 @@ export function GlassPointsSection({
                 )}
               </div>
             ))}
+            {footer ? (
+              <div className="rm-glass-points__actions">
+                {footer}
+              </div>
+            ) : null}
             {isSticky ? <div className="rm-glass-points__scroll-tail" aria-hidden /> : null}
           </div>
         </div>
       </div>
     </section>
-    {footer ? (
-      <div className="rm-glass-points__footer px-6 pb-12 sm:px-10 md:px-20 md:pb-16 lg:px-32">
-        <div className="mx-auto flex max-w-[1200px] justify-center border-t border-white/10 pt-8 md:pt-10">
-          {footer}
-        </div>
-      </div>
-    ) : null}
     </>
   );
 }
