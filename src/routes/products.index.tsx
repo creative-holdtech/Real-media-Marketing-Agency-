@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { GlassPointsSection } from "@/components/glass-points-section";
 import { useReveal } from "@/hooks/use-reveal";
 
 export const Route = createFileRoute("/products/")({
@@ -151,37 +152,14 @@ function ProductsPage() {
             </div>
           </div>
 
-          <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-5" data-delay="3">
-            {sprintDeliverables.map((d, i) => (
-              <div
-                key={d.title}
-                className="rm-card p-8 flex flex-col gap-7 hover:border-white/20 hover:-translate-y-0.5 transition-[transform,border-color] duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                style={{ transitionDelay: `${i * 55}ms` }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-lg grid place-items-center text-[12px] font-semibold tracking-[0.04em] shrink-0"
-                    style={{
-                      background: `${ORANGE}18`,
-                      border: `1px solid ${ORANGE}45`,
-                      color: ORANGE,
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div className="h-px flex-1 opacity-20" style={{ background: ORANGE }} />
-                </div>
-                <div>
-                  <h3 className="text-[18px] md:text-[20px] font-medium tracking-[-0.02em] text-white leading-tight mb-3">
-                    {d.title}
-                  </h3>
-                  <p className="text-[14px] leading-relaxed" style={{ color: "rgba(232,230,225,0.52)" }}>
-                    {d.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GlassPointsSection
+            mode="inline"
+            cards={sprintDeliverables.map((d, i) => ({
+              index: String(i + 1).padStart(2, "0"),
+              title: d.title.toUpperCase(),
+              body: d.body,
+            }))}
+          />
         </div>
       </section>
 
@@ -234,37 +212,14 @@ function ProductsPage() {
             </div>
           </div>
 
-          <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-5" data-delay="3">
-            {marathonDeliverables.map((d, i) => (
-              <div
-                key={d.title}
-                className="rm-card p-8 flex flex-col gap-7 hover:border-white/20 hover:-translate-y-0.5 transition-[transform,border-color] duration-500"
-                style={{ transitionDelay: `${i * 55}ms` }}
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-8 h-8 rounded-lg grid place-items-center text-[12px] font-semibold tracking-[0.04em] shrink-0"
-                    style={{
-                      background: `${PURPLE}18`,
-                      border: `1px solid ${PURPLE}45`,
-                      color: PURPLE,
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div className="h-px flex-1 opacity-20" style={{ background: PURPLE }} />
-                </div>
-                <div>
-                  <h3 className="text-[18px] md:text-[20px] font-medium tracking-[-0.02em] text-white leading-tight mb-3">
-                    {d.title}
-                  </h3>
-                  <p className="text-[14px] leading-relaxed" style={{ color: "rgba(232,230,225,0.52)" }}>
-                    {d.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <GlassPointsSection
+            mode="inline"
+            cards={marathonDeliverables.map((d, i) => ({
+              index: String(i + 1).padStart(2, "0"),
+              title: d.title.toUpperCase(),
+              body: d.body,
+            }))}
+          />
         </div>
       </section>
 

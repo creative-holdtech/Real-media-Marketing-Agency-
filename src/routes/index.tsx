@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { GlassPointsSection } from "@/components/glass-points-section";
 import { UnifiedCTA } from "@/components/unified-cta";
 import TestimonialSection from "@/components/ui/testimonials";
 import { useReveal } from "@/hooks/use-reveal";
@@ -92,17 +93,17 @@ const engagements = [
       {
         step: "01",
         label: "Setup",
-        body: "Free audit and channel selection (SMM, PR, SEO, Performance, Design, Messaging)",
+        body: "free audit and channel selection (SMM, PR, SEO, Performance, Design, Messaging)",
       },
       {
         step: "02",
         label: "Run",
-        body: "Weekly updates, monthly reports, on-demand analytics and recommendations",
+        body: "weekly updates, monthly reports, on-demand analytics and recommendations",
       },
       {
         step: "03",
         label: "Handover",
-        body: "Final deliverable with a clear roadmap and 100% asset & content ownership",
+        body: "final deliverable with a clear roadmap and 100% asset & content ownership",
       },
     ],
   },
@@ -114,17 +115,17 @@ const engagements = [
       {
         step: "01",
         label: "Strategy",
-        body: "Deep-dive workshop, market analysis, brand positioning, and GTM planning",
+        body: "deep-dive workshop, market analysis, brand positioning, and GTM planning",
       },
       {
         step: "02",
-        label: "Action",
-        body: "Full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
+        label: "Execution",
+        body: "full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
       },
       {
         step: "03",
         label: "Handover",
-        body: "Final brand guidelines, operational channels, 100% asset & content ownership",
+        body: "final brand guidelines, operational channels, 100% asset & content ownership",
       },
     ],
   },
@@ -326,71 +327,25 @@ function Index() {
 
       <TestimonialSection />
 
-      {/* ENGAGE — matches About container/rhythm, monochrome */}
-      <section
+      {/* ENGAGE — Ciridae-style glass cards over sticky background */}
+      <GlassPointsSection
         id="engage"
-        className="relative overflow-hidden border-t border-white/10 px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32"
-      >
-        <div className="relative mx-auto max-w-[1200px]">
-          {/* Headline — same scale as About */}
-          <h2
-            className="reveal mt-14 max-w-[18ch] font-medium leading-[0.95] tracking-[-0.04em] text-white md:mt-20"
-            style={{ fontSize: "clamp(36px, 5vw, 72px)" }}
-          >
+        headline={
+          <>
             Two ways to work with us.{" "}
             <span className="text-white/55">
               Both end in <span className="font-medium text-white">shipped revenue.</span>
             </span>
-          </h2>
-
-          {/* Two cards split by vertical rule */}
-          <div className="mt-16 grid grid-cols-1 gap-y-12 md:mt-24 md:grid-cols-2 md:gap-x-16 md:divide-x md:divide-white/15">
-            {engagements.map((e, i) => (
-              <div
-                key={e.name}
-                className={`reveal flex flex-col gap-9 ${i === 1 ? "md:pl-16" : ""}`}
-                data-delay={String(i + 1)}
-              >
-                {/* Header — name + time */}
-                <header className="flex flex-col gap-2">
-                  <span className="text-[28px] font-medium leading-none tracking-[-0.02em] text-white md:text-[36px]">
-                    {e.name}
-                  </span>
-                  <span className="text-[11px] uppercase tracking-[0.24em] text-white/60">
-                    {e.time}
-                  </span>
-                </header>
-
-                {/* Description — constrained reading width */}
-                <p className="max-w-[44ch] text-[16px] leading-[1.55] tracking-[-0.01em] text-white/65 md:text-[17px]">
-                  {e.desc}
-                </p>
-
-                {/* Items — step / label / body grid */}
-                <ul>
-                  {e.items.map((it) => (
-                    <li
-                      key={it.step}
-                      className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 border-t border-white/15 py-4 last:border-b sm:grid-cols-[2rem_5rem_1fr]"
-                    >
-                      <span className="text-[11px] uppercase tracking-[0.24em] text-white/40 sm:self-baseline">
-                        {it.step}
-                      </span>
-                      <span className="col-start-2 text-[11px] uppercase tracking-[0.24em] text-white/60 sm:col-start-2 sm:self-baseline">
-                        {it.label}
-                      </span>
-                      <span className="col-span-2 text-[14px] leading-[1.45] tracking-[-0.01em] text-white sm:col-span-1 sm:col-start-3 md:text-[15px]">
-                        {it.body}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          </>
+        }
+        cards={engagements.map((e, i) => ({
+          index: String(i + 1).padStart(2, "0"),
+          title: e.name.toUpperCase(),
+          subtitle: e.time,
+          description: e.desc,
+          steps: e.items,
+        }))}
+      />
 
       {/* CASES — editorial table-of-contents, metric IS the visual */}
       <section

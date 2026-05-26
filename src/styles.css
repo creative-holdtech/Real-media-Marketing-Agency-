@@ -176,7 +176,8 @@
     min-height: 100vh;
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden;
+    /* clip (not hidden) — hidden forces overflow-y:auto and breaks position:sticky */
+    overflow-x: clip;
     background-color: transparent;
     color: var(--rm-ink);
   }
@@ -615,6 +616,351 @@ button {
 .ambient-blob-b,
 .ambient-blob-c {
   display: none;
+}
+
+/* ============ Ciridae `.points` — glass cards over sticky background ============ */
+.rm-glass-points {
+  --engage-scroll-p: 0;
+  position: relative;
+  isolation: isolate;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rm-glass-points--sticky .rm-glass-points__scene {
+  /* Ciridae `.points` — 250vh; trailing ~52% is end hold (ANIMATION_END_FRAC 0.48 in hook) */
+  height: 250vh;
+}
+
+.rm-glass-points__intro {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vw, 4rem);
+  transform: translateY(var(--intro-y, 0vh));
+  will-change: transform;
+  pointer-events: none;
+}
+
+.rm-glass-points--inline .rm-glass-points__intro {
+  position: relative;
+  inset: auto;
+  transform: none;
+  padding: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vh, 3rem);
+  pointer-events: auto;
+}
+
+.rm-glass-points__head {
+  max-width: 18ch;
+  margin: 0 auto;
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  color: #efeee9;
+  text-align: center;
+}
+
+.rm-glass-points__scene {
+  position: relative;
+}
+
+.rm-glass-points__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: clip;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rm-glass-points__bg-parent {
+  position: absolute;
+  inset: 0 -1.25rem;
+  z-index: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(#000 0% 70%, #0000 100%);
+  mask-image: linear-gradient(#000 0% 70%, #0000 100%);
+}
+
+.rm-glass-points__bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate(-50%, -50%) scale(var(--bg-scale, 1.2));
+  will-change: transform;
+}
+
+.rm-glass-points__content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  width: min(1120px, calc(100% - 2.5rem));
+  margin-inline: auto;
+  align-items: start;
+}
+
+.rm-glass-points--count-2 .rm-glass-points__content {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  width: min(980px, calc(100% - 2.5rem));
+}
+
+/* `.points_item` — cards enter from below, rest with vertical stagger only */
+.rm-points-card {
+  aspect-ratio: 453 / 595;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 1.25rem;
+  border-radius: 10px;
+  color: #fff;
+  background-color: rgba(173, 173, 173, 0.2);
+  -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  will-change: transform, opacity;
+}
+
+.rm-glass-points--sticky .rm-points-card:nth-child(1) {
+  --card-enter-y: var(--card-0-y, 100vh);
+}
+
+.rm-glass-points--sticky .rm-points-card:nth-child(2) {
+  --card-enter-y: var(--card-1-y, 100vh);
+}
+
+.rm-glass-points--sticky .rm-points-card:nth-child(3) {
+  --card-enter-y: var(--card-2-y, 100vh);
+}
+
+.rm-glass-points--sticky .rm-points-card {
+  opacity: 1;
+  transform: translateY(var(--card-enter-y, 100vh));
+}
+
+.rm-points-card__top {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+
+.rm-points-card__tag {
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+}
+
+.rm-points-card__tag span {
+  font-size: 11px;
+  line-height: 1.1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.rm-points-card__title {
+  margin: 0;
+  max-width: 12ch;
+  font-size: clamp(1rem, 1.45vw, 1.25rem);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.rm-points-card__duration {
+  margin: 0.65rem 0 0;
+  font-size: clamp(0.72rem, 0.95vw, 0.8125rem);
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.72);
+  text-wrap: balance;
+}
+
+.rm-points-card__logo {
+  width: clamp(5rem, 14vw, 7.75rem);
+  color: rgba(255, 255, 255, 0.95);
+  filter: drop-shadow(0 0 22px rgba(255, 255, 255, 0.35));
+}
+
+.rm-points-card__logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.rm-points-card__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: min(22.75rem, 100%);
+  text-align: left;
+}
+
+.rm-points-card__desc {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1.05vw, 0.875rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  text-wrap: balance;
+}
+
+.rm-points-card__steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+}
+
+.rm-points-card__step {
+  margin: 0;
+}
+
+.rm-points-card__step-label {
+  margin: 0 0 0.25rem;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.48);
+}
+
+.rm-points-card__step-body {
+  margin: 0;
+  font-size: clamp(0.75rem, 0.95vw, 0.8125rem);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  text-wrap: balance;
+}
+
+.rm-points-card__bottom p:not(.rm-points-card__desc) {
+  margin: 0;
+  font-size: clamp(0.78rem, 1vw, 0.875rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+  text-wrap: balance;
+}
+
+/* Inline mode — products deliverables */
+.rm-glass-points--inline {
+  height: auto;
+}
+
+.rm-glass-points--inline.rm-glass-points--sticky {
+  height: auto;
+}
+
+.rm-glass-points--inline .rm-glass-points__scene {
+  padding: 0 clamp(1.5rem, 4vw, 4rem) clamp(2rem, 5vw, 3rem);
+}
+
+.rm-glass-points--inline .rm-glass-points__sticky {
+  position: relative;
+  height: auto;
+  min-height: clamp(34rem, 68vh, 42rem);
+  overflow: visible;
+}
+
+.rm-glass-points--inline .rm-glass-points__content {
+  transform: none;
+}
+
+.rm-glass-points--inline .rm-points-card {
+  opacity: 1;
+  transform: translateY(var(--card-rest-y, 0rem));
+}
+
+.rm-glass-points--inline .rm-points-card:nth-child(1) {
+  --card-rest-y: 0rem;
+}
+
+.rm-glass-points--inline .rm-points-card:nth-child(2) {
+  --card-rest-y: 2.5rem;
+}
+
+.rm-glass-points--inline .rm-points-card:nth-child(3) {
+  --card-rest-y: 5rem;
+}
+
+@media (max-width: 991px) {
+  .rm-glass-points--sticky .rm-glass-points__scene {
+    height: auto;
+  }
+
+  .rm-glass-points--sticky .rm-glass-points__intro {
+    position: relative;
+    inset: auto;
+    transform: none !important;
+    padding: 2.5rem 1rem 1.5rem;
+    pointer-events: auto;
+    background: var(--rm-page, #0a0a0a);
+  }
+
+  .rm-glass-points__head {
+    max-width: none;
+    font-size: clamp(1.75rem, 8vw, 2.5rem);
+  }
+
+  .rm-glass-points__sticky {
+    position: relative;
+    height: auto;
+    display: block;
+    padding-bottom: 3rem;
+  }
+
+  .rm-glass-points__bg-parent {
+    position: sticky;
+    top: 0;
+    height: 42vh;
+    margin-inline: -0.625rem;
+  }
+
+  .rm-glass-points__content,
+  .rm-glass-points--count-2 .rm-glass-points__content,
+  .rm-glass-points--count-3 .rm-glass-points__content {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1.5rem 1rem 0;
+    transform: none;
+    width: auto;
+  }
+
+  .rm-points-card,
+  .rm-points-card:nth-child(n) {
+    transform: none !important;
+    opacity: 1 !important;
+    aspect-ratio: auto;
+    min-height: 26rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-glass-points__bg {
+    transform: translate(-50%, -50%) scale(1) !important;
+  }
+
+  .rm-glass-points--sticky .rm-points-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
