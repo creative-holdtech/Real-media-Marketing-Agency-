@@ -311,10 +311,12 @@
   .rm-btn-primary {
     background-color: #fff;
     color: #000;
+    box-shadow: inset 0 -2px 0 0 transparent;
   }
 
   .rm-btn-primary:hover {
     background-color: #efeeea;
+    box-shadow: inset 0 -2px 0 0 var(--rm-accent);
   }
 
   .rm-btn-secondary {
@@ -416,6 +418,23 @@ button {
   transform: scale(1);
 }
 
+/* Progressive enhancement: visible without JS */
+@media (scripting: none) {
+  .reveal,
+  .reveal-fade,
+  .reveal-scale {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .rm-glass-points .rm-points-card {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: translateY(var(--card-rest-y, 0rem)) !important;
+  }
+}
+
 /* Stagger helpers */
 .reveal[data-delay="1"].is-visible {
   transition-delay: 80ms;
@@ -440,6 +459,91 @@ button {
 
 .rm-table-row.reveal.is-visible {
   transform: translate3d(0, 0, 0);
+}
+
+/* Products comparison table card */
+.rm-comparison-card {
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Products comparison — stacked rows on narrow viewports only */
+@media (max-width: 639px) {
+  .rm-comparison-card {
+    overflow: visible;
+  }
+
+  .rm-comparison-table {
+    display: block;
+    width: 100%;
+  }
+
+  .rm-comparison-table thead {
+    display: none;
+  }
+
+  .rm-comparison-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .rm-comparison-table tbody tr {
+    display: block;
+    padding: 1.25rem 1.25rem;
+  }
+
+  .rm-comparison-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .rm-comparison-table tbody td,
+  .rm-comparison-table tbody th[scope="row"] {
+    display: block;
+    width: 100%;
+    padding: 0.35rem 0;
+    border: 0;
+    font-weight: inherit;
+  }
+
+  .rm-comparison-table tbody td:first-child,
+  .rm-comparison-table tbody th[scope="row"] {
+    padding-bottom: 0.75rem;
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .rm-comparison-table tbody td[data-col] {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .rm-comparison-table tbody td[data-col]::before {
+    content: attr(data-col);
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+/* Primary hero CTA — subtle accent ring without changing copy */
+.rm-hero-copy a.rounded-full.bg-white {
+  box-shadow: 0 0 0 1px rgba(192, 53, 53, 0.28);
+}
+
+.rm-hero-copy a.rounded-full.bg-white:hover {
+  box-shadow: 0 0 0 1px rgba(192, 53, 53, 0.45);
 }
 
 /* Niche glyph — line draw-in on hover (target shapes inside the animatable group) */
@@ -670,7 +774,7 @@ button {
   font-size: clamp(1.125rem, 2.4vw, 1.5rem);
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .rm-trust-stats__diagram {
@@ -1181,6 +1285,10 @@ html.rm-is-loading .rm-hero-atmosphere {
   background: var(--rm-page, #0a0a0a);
 }
 
+.rm-insights-builds .rm-glass-points__head {
+  max-width: 18ch;
+}
+
 .rm-glass-points--sticky .rm-glass-points__scene {
   height: calc(var(--rm-scene-vh, 250) * 1vh);
 }
@@ -1298,7 +1406,7 @@ html.rm-is-loading .rm-hero-atmosphere {
 }
 
 .rm-glass-points--scrubbing .rm-points-card {
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 .rm-glass-points--scrubbing .rm-glass-points__bg {
@@ -1308,27 +1416,23 @@ html.rm-is-loading .rm-hero-atmosphere {
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(1) .rm-points-card {
   --card-enter-y: var(--card-0-y, 40vh);
   --card-enter-opacity: var(--card-0-opacity, 0);
-  --card-enter-blur: var(--card-0-blur, 4px);
   --card-rest-y: 0rem;
 }
 
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(2) .rm-points-card {
   --card-enter-y: var(--card-1-y, 40vh);
   --card-enter-opacity: var(--card-1-opacity, 0);
-  --card-enter-blur: var(--card-1-blur, 4px);
   --card-rest-y: 2.5rem;
 }
 
 .rm-glass-points--sticky .rm-points-card-flow:nth-child(3) .rm-points-card {
   --card-enter-y: var(--card-2-y, 40vh);
   --card-enter-opacity: var(--card-2-opacity, 0);
-  --card-enter-blur: var(--card-2-blur, 4px);
   --card-rest-y: 5rem;
 }
 
 .rm-glass-points--sticky .rm-points-card {
   opacity: var(--card-enter-opacity, 1);
-  filter: blur(var(--card-enter-blur, 0px));
   transform: translateY(calc(var(--card-enter-y, 0vh) + var(--card-rest-y, 0rem)));
 }
 
@@ -1454,6 +1558,7 @@ html.rm-is-loading .rm-hero-atmosphere {
 /* Inline mode — products deliverables */
 .rm-glass-points--inline {
   height: auto;
+  overflow-x: clip;
 }
 
 .rm-glass-points--inline.rm-glass-points--sticky {
@@ -1464,11 +1569,16 @@ html.rm-is-loading .rm-hero-atmosphere {
   padding: 0 clamp(1.5rem, 4vw, 4rem) clamp(2rem, 5vw, 3rem);
 }
 
+.rm-glass-points--inline .rm-glass-points__bg-parent {
+  inset: 0;
+  overflow: hidden;
+}
+
 .rm-glass-points--inline .rm-glass-points__sticky {
   position: relative;
   height: auto;
   min-height: clamp(34rem, 68vh, 42rem);
-  overflow: visible;
+  overflow: clip;
 }
 
 .rm-glass-points--inline .rm-glass-points__content {
@@ -1476,20 +1586,47 @@ html.rm-is-loading .rm-hero-atmosphere {
 }
 
 .rm-glass-points--inline .rm-points-card {
-  opacity: 1;
-  transform: translateY(var(--card-rest-y, 0rem));
+  opacity: var(--card-enter-opacity, 1);
+  transform: translateY(calc(var(--card-enter-y, 24vh) + var(--card-rest-y, 0rem)));
+}
+
+.rm-glass-points--inline .rm-points-card__bottom {
+  text-align: center;
+  align-items: center;
+}
+
+.rm-glass-points--inline .rm-points-card__desc {
+  text-align: center;
 }
 
 .rm-glass-points--inline .rm-points-card-flow:nth-child(1) .rm-points-card {
+  --card-enter-y: var(--card-0-y, 24vh);
+  --card-enter-opacity: var(--card-0-opacity, 1);
   --card-rest-y: 0rem;
 }
 
 .rm-glass-points--inline .rm-points-card-flow:nth-child(2) .rm-points-card {
+  --card-enter-y: var(--card-1-y, 24vh);
+  --card-enter-opacity: var(--card-1-opacity, 1);
   --card-rest-y: 2.5rem;
 }
 
 .rm-glass-points--inline .rm-points-card-flow:nth-child(3) .rm-points-card {
+  --card-enter-y: var(--card-2-y, 24vh);
+  --card-enter-opacity: var(--card-2-opacity, 1);
   --card-rest-y: 5rem;
+}
+
+@media (min-width: 992px) {
+  .rm-glass-points--inline .rm-glass-points__sticky {
+    min-height: clamp(36rem, 72vh, 44rem);
+    padding-bottom: 5rem;
+  }
+
+  .rm-glass-points--inline .rm-points-card {
+    opacity: 1;
+    transform: translateY(var(--card-rest-y, 0rem));
+  }
 }
 
 /* Insights — blog card copy inside shared glass shell */
@@ -1606,6 +1743,10 @@ a.block:focus-visible .rm-points-card__read {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
   }
 
+  .rm-insights-builds .rm-glass-points__head {
+    max-width: min(18ch, 100%);
+  }
+
   /* Ciridae mobile: only bg is sticky; cards flow in `.points_content` */
   .rm-glass-points--sticky .rm-glass-points__bg-parent {
     position: sticky;
@@ -1673,8 +1814,6 @@ a.block:focus-visible .rm-points-card__read {
   /* Ciridae `.points_item` — aspect-ratio card, static stack (~12px gap) */
   .rm-points-card,
   .rm-points-card:nth-child(n) {
-    transform: none !important;
-    opacity: 1 !important;
     aspect-ratio: 453 / 595;
     min-height: auto;
     height: auto;
@@ -1683,6 +1822,63 @@ a.block:focus-visible .rm-points-card__read {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+  }
+
+  .rm-glass-points--sticky .rm-points-card,
+  .rm-glass-points--sticky .rm-points-card:nth-child(n) {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .rm-glass-points--count-2 .rm-points-card,
+  .rm-glass-points--count-2 .rm-points-card:has(.rm-points-card__steps) {
+    aspect-ratio: auto;
+    max-height: min(72vh, 36rem);
+    overflow-y: auto;
+  }
+
+  .rm-glass-points--inline .rm-glass-points__sticky {
+    min-height: auto;
+    padding-bottom: 1rem;
+  }
+
+  .rm-glass-points--inline .rm-glass-points__content {
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .rm-glass-points--inline .rm-points-card {
+    aspect-ratio: auto;
+    max-height: min(52vh, 26rem);
+    min-height: 0;
+    padding: 1.5rem 1.125rem;
+    -webkit-backdrop-filter: blur(22px);
+    backdrop-filter: blur(22px);
+  }
+
+  .rm-glass-points--inline .rm-glass-points__scene {
+    padding-inline: 0;
+    padding-bottom: clamp(2rem, 5vw, 3rem);
+  }
+
+  .rm-glass-points--inline .rm-glass-points__bg-parent {
+    position: sticky;
+    top: var(--rm-header-offset);
+    height: var(--engage-hero-height);
+    width: 100%;
+    inset: 0;
+    margin-inline: 0;
+    overflow: hidden;
+    z-index: 1;
+    -webkit-mask-image: linear-gradient(#000 0% 78%, #0000 100%);
+    mask-image: linear-gradient(#000 0% 78%, #0000 100%);
+  }
+
+  .rm-glass-points--inline .rm-points-card-flow:nth-child(2) .rm-points-card,
+  .rm-glass-points--inline .rm-points-card-flow:nth-child(3) .rm-points-card {
+    --card-rest-y: 0rem;
   }
 
   .rm-glass-points--insights .rm-points-card__headline {
@@ -1698,8 +1894,12 @@ a.block:focus-visible .rm-points-card__read {
 
   .rm-glass-points--sticky .rm-points-card {
     opacity: 1 !important;
-    filter: none !important;
     transform: none !important;
+  }
+
+  .rm-glass-points--inline .rm-points-card {
+    opacity: 1 !important;
+    transform: translateY(var(--card-rest-y, 0rem)) !important;
   }
 
   .rm-glass-handoff {

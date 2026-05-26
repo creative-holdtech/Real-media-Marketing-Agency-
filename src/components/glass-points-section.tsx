@@ -76,10 +76,11 @@ export function GlassPointsSection({
 }: GlassPointsSectionProps) {
   const isSticky = mode === "sticky";
   const isInsights = layout === "insights";
-  const sectionRef = useCiridaePointsScroll<HTMLElement>(isSticky ? cards.length : 0, {
+  const sectionRef = useCiridaePointsScroll<HTMLElement>(cards.length, {
     withIntro: isSticky && !!headline,
     sceneVh,
     linkedExitSelector,
+    enterOnly: !isSticky,
   });
   const countClass =
     cards.length === 2 ? "rm-glass-points--count-2" : "rm-glass-points--count-3";
@@ -150,15 +151,11 @@ export function GlassPointsSection({
         countClass,
         isSticky ? "rm-glass-points--sticky" : "rm-glass-points--inline",
         isInsights ? "rm-glass-points--insights" : "",
-        sceneVh && sceneVh !== 250 ? "rm-glass-points--scene-short" : "",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div
-        ref={isSticky ? sectionRef : undefined}
-        className="rm-glass-points__scene"
-      >
+      <div ref={sectionRef} className="rm-glass-points__scene">
         <div className="rm-glass-points__sticky">
           <div className="rm-glass-points__bg-parent" aria-hidden>
             <img

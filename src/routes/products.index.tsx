@@ -66,8 +66,12 @@ function ProductsPage() {
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <SiteHeader variant="dark" />
 
+      <main id="main">
       <section className="relative flex min-h-[min(720px,92svh)] flex-col items-center justify-center border-b border-white/10">
         <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-14 pt-8 md:px-12 md:pb-20 md:pt-12">
           <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
@@ -81,7 +85,7 @@ function ProductsPage() {
               <span className="block text-balance">Choose the level</span>
               <span className="block text-balance">
                 of support you need{" "}
-                <span className="font-light text-white/48">right now.</span>
+                <span className="font-light text-white/55">right now.</span>
               </span>
             </h1>
             <p
@@ -89,7 +93,7 @@ function ProductsPage() {
               data-delay="2"
             >
               Both formats are built around your growth.{" "}
-              <span className="font-light text-white/45">
+              <span className="font-light text-white/55">
                 One moves faster, the other goes deeper. Same quality, different scope.
               </span>
             </p>
@@ -102,18 +106,18 @@ function ProductsPage() {
         className="relative border-b border-white/10"
         style={{ scrollMarginTop: "80px" }}
       >
-        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
+        <div className="mx-auto max-w-[1440px] px-6 pt-20 pb-16 sm:px-10 md:px-20 lg:px-32">
           <div className="reveal flex flex-wrap items-center gap-4 pb-16 border-b border-white/[0.08]">
             <span className="rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
               Sprint
             </span>
-            <span className="text-[11px] uppercase tracking-[0.24em] text-white/45">
+            <span className="text-[11px] uppercase tracking-[0.24em] text-white/55">
               from 4 weeks · tactical retainer
             </span>
           </div>
 
           <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16">
-            <div className="col-span-12 md:col-span-7 reveal rm-glass-handoff" data-delay="1">
+            <div className="col-span-12 md:col-span-7 reveal" data-delay="1">
               <h2
                 className="font-medium leading-[0.97] tracking-[-0.04em] text-white"
                 style={{ fontSize: "clamp(2.2rem, 5vw, 5.5rem)" }}
@@ -127,7 +131,7 @@ function ProductsPage() {
                 your workflow, deploy target channel mix, and move fast. You get weekly deliverables
                 and clear data within a flexible monthly setup.
               </p>
-              <p className="text-[15px] leading-relaxed" style={{ color: "rgba(232,230,225,0.45)" }}>
+              <p className="text-[15px] font-light leading-relaxed text-white/55">
                 Best suited for early-stage founders, growth leads preparing for a raise, and teams
                 with solid traction looking for a breakthrough.
               </p>
@@ -137,8 +141,7 @@ function ProductsPage() {
       </section>
 
       <GlassPointsSection
-        sceneVh={180}
-        linkedExitSelector="#sprint .rm-glass-handoff"
+        mode="inline"
         cards={sprintDeliverables.map((d, i) => ({
           index: String(i + 1).padStart(2, "0"),
           title: d.title.toUpperCase(),
@@ -151,12 +154,12 @@ function ProductsPage() {
         className="relative border-b border-white/10"
         style={{ scrollMarginTop: "80px" }}
       >
-        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
+        <div className="mx-auto max-w-[1440px] px-6 pt-20 pb-16 sm:px-10 md:px-20 lg:px-32">
           <div className="reveal flex flex-wrap items-center gap-4 pb-16 border-b border-white/[0.08]">
             <span className="rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
               Marathon
             </span>
-            <span className="text-[11px] uppercase tracking-[0.24em] text-white/45">
+            <span className="text-[11px] uppercase tracking-[0.24em] text-white/55">
               from 2 months · strategic partnership
             </span>
           </div>
@@ -176,7 +179,7 @@ function ProductsPage() {
                 department to take over the entire function — from core strategy and positioning to
                 long-term multi-channel execution.
               </p>
-              <p className="text-[15px] leading-relaxed" style={{ color: "rgba(232,230,225,0.45)" }}>
+              <p className="text-[15px] font-light leading-relaxed text-white/55">
                 Built for Series A+ companies, ambitious scale-ups, and teams focusing on long-term
                 growth as a board-level priority.
               </p>
@@ -194,7 +197,7 @@ function ProductsPage() {
         }))}
       />
 
-      <section className="px-6 md:px-16 max-w-[1440px] mx-auto py-24 md:py-32">
+      <section className="mx-auto max-w-[1440px] px-6 py-24 sm:px-10 md:px-20 md:py-32 lg:px-32">
         <div className="reveal grid grid-cols-12 gap-8 md:gap-16 items-start">
           <div className="col-span-12 md:col-span-4">
             <h2
@@ -202,33 +205,46 @@ function ProductsPage() {
               style={{ fontSize: "clamp(1.9rem, 3.2vw, 3.2rem)" }}
             >
               Not sure which one fits?{" "}
-              <span className="font-light" style={{ color: "rgba(232,230,225,0.45)" }}>
-                Let's figure it out together.
-              </span>
+              <span className="font-light text-white/55">Let's figure it out together.</span>
             </h2>
             <p className="mt-8 rm-copy-lead max-w-[40ch]">
               Book a 30-minute call. We'll ask you three questions and tell you exactly which format
               makes sense — or why neither does.
             </p>
             <div className="mt-10">
-              <Link to="/contact" className="rm-btn rm-btn-primary px-8 text-[13px]">
+              <Link
+                to="/contact"
+                className="inline-flex rm-touch items-center rounded-full bg-white px-6 py-3.5 text-[13px] font-medium text-black transition-[background-color,transform] duration-150 ease-out hover:-translate-y-0.5 hover:bg-[#efeeea]"
+              >
                 Book a call →
               </Link>
             </div>
           </div>
 
-          <div className="col-span-12 md:col-span-8">
-            <div className="rm-card-floating overflow-hidden">
-              <table className="w-full text-left border-collapse">
+          <div className="col-span-12 min-w-0 md:col-span-8">
+            <div className="rm-card-floating rm-comparison-card">
+              <table className="rm-comparison-table w-full border-collapse text-left">
+                <caption className="sr-only">
+                  Comparison of Sprint and Marathon engagement formats
+                </caption>
                 <thead>
                   <tr className="border-b border-white/[0.07]">
-                    <th className="p-5 md:p-6 text-[11px] uppercase tracking-[0.24em] text-white/45 font-normal w-[35%]">
-                      &nbsp;
+                    <th
+                      scope="col"
+                      className="w-[35%] p-5 text-[11px] font-normal uppercase tracking-[0.24em] text-white/55 md:p-6"
+                    >
+                      <span className="sr-only">Feature</span>
                     </th>
-                    <th className="p-5 md:p-6 text-[11px] uppercase tracking-[0.24em] text-white/65 font-medium">
+                    <th
+                      scope="col"
+                      className="p-5 text-[11px] font-medium uppercase tracking-[0.24em] text-white/65 md:p-6"
+                    >
                       Sprint
                     </th>
-                    <th className="p-5 md:p-6 text-[11px] uppercase tracking-[0.24em] text-white/65 font-medium">
+                    <th
+                      scope="col"
+                      className="p-5 text-[11px] font-medium uppercase tracking-[0.24em] text-white/65 md:p-6"
+                    >
                       Marathon
                     </th>
                   </tr>
@@ -245,13 +261,22 @@ function ProductsPage() {
                         .join(" ")}
                       data-delay={String(Math.min(i + 1, 5))}
                     >
-                      <td className="p-5 md:p-6 text-[11px] uppercase tracking-[0.24em] text-white/45">
+                      <th
+                        scope="row"
+                        className="p-5 text-[11px] font-normal uppercase tracking-[0.24em] text-white/55 md:p-6"
+                      >
                         {row.label}
-                      </td>
-                      <td className="p-5 md:p-6 text-[13px] md:text-[14px] text-white/75">
+                      </th>
+                      <td
+                        className="p-5 md:p-6 text-[13px] md:text-[14px] text-white/75"
+                        data-col="Sprint"
+                      >
                         {row.sprint}
                       </td>
-                      <td className="p-5 md:p-6 text-[13px] md:text-[14px] text-white/75">
+                      <td
+                        className="p-5 md:p-6 text-[13px] md:text-[14px] text-white/75"
+                        data-col="Marathon"
+                      >
                         {row.marathon}
                       </td>
                     </tr>
@@ -262,6 +287,7 @@ function ProductsPage() {
           </div>
         </div>
       </section>
+      </main>
 
       <SiteFooter />
     </div>

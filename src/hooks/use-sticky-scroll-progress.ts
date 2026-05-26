@@ -30,6 +30,8 @@ export type CiridaeScrollOptions = {
   sceneVh?: number;
   /** Elements to fade/blur out as glass section scrubs in */
   linkedExitSelector?: string;
+  /** Inline deliverables: in-view card enter only, no pin/scrub scene */
+  enterOnly?: boolean;
 };
 
 function sceneScrollablePx(sceneVh: number) {
@@ -54,7 +56,7 @@ function setCardVars(
     const yVh = (1 - eased) * enterVh;
     section.style.setProperty(`--card-${i}-y`, `${yVh.toFixed(2)}vh`);
     section.style.setProperty(`--card-${i}-opacity`, eased.toFixed(4));
-    section.style.setProperty(`--card-${i}-blur`, `${((1 - eased) * 4).toFixed(2)}px`);
+    section.style.setProperty(`--card-${i}-blur`, "0px");
   }
 }
 
@@ -66,6 +68,16 @@ function setRestingCards(section: HTMLElement, cardCount: number) {
   }
 }
 
+function timeProgressForCard(
+  cardIndex: number,
+  elapsedMs: number,
+  staggerMs: number,
+  durMs: number,
+) {
+  const local = clamp(0, 1, (elapsedMs - cardIndex * staggerMs) / durMs);
+  return easeOutQuad(local);
+}
+
 /**
  * Ciridae `.builds` + `.points` scrub:
  * - bg scale scrubs with scroll
@@ -75,7 +87,8 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
   cardCount: number,
   options: CiridaeScrollOptions = {},
 ) {
-  const { withIntro = false, sceneVh = DEFAULT_SCENE_VH, linkedExitSelector } = options;
+  const { withIntro = false, sceneVh = DEFAULT_SCENE_VH, linkedExitSelector, enterOnly = false } =
+    options;
   const ref = useRef<T | null>(null);
   const updateRef = useRef<(() => void) | null>(null);
 
@@ -89,7 +102,9 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     const enterVh = withIntro ? 100 : 40;
     const mobileEnterVh = 24;
 
-    section.style.setProperty("--rm-scene-vh", String(sceneVh));
+    if (!enterOnly) {
+      section.style.setProperty("--rm-scene-vh", String(sceneVh));
+    }
 
     const applyResting = () => {
       section.style.setProperty("--engage-scroll-p", "1");
@@ -118,7 +133,88 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
 
     let pinEnteredAt: number | null = null;
     let mobileEnteredAt: number | null = null;
+    let enterOnlyStartedAt: number | null = null;
     let rafId = 0;
+
+    if (enterOnly) {
+      section.style.setProperty("--bg-scale", String(BG_SCALE_TO));
+
+      const applyEnterOnlyDesktop = () => {
+        setRestingCards(section, cardCount);
+        section.classList.remove("rm-glass-points--scrubbing");
+      };
+
+      const updateEnterOnlyMobile = () => {
+        const rect = section.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight * 0.85 && rect.bottom > 0;
+
+        if (inView && enterOnlyStartedAt === null) {
+          enterOnlyStartedAt = performance.now();
+        }
+
+        const elapsed = enterOnlyStartedAt ? performance.now() - enterOnlyStartedAt : 0;
+        const allDone = elapsed > MOBILE_CARD_ENTER_MS + (cardCount - 1) * CARD_STAGGER_MS;
+
+        setCardVars(section, cardCount, (i) => {
+          if (enterOnlyStartedAt === null) return 0;
+          return timeProgressForCard(i, elapsed, CARD_STAGGER_MS, MOBILE_CARD_ENTER_MS);
+        }, mobileEnterVh);
+
+        section.classList.toggle("rm-glass-points--scrubbing", inView && !allDone);
+
+        if (allDone) {
+          setRestingCards(section, cardCount);
+          section.classList.remove("rm-glass-points--scrubbing");
+          return;
+        }
+
+        if (inView) {
+          cancelAnimationFrame(rafId);
+          rafId = requestAnimationFrame(updateEnterOnlyMobile);
+        }
+      };
+
+      const updateEnterOnly = () => {
+        if (desktopMq.matches) {
+          cancelAnimationFrame(rafId);
+          enterOnlyStartedAt = null;
+          applyEnterOnlyDesktop();
+          return;
+        }
+
+        setCardVars(section, cardCount, () => 0, mobileEnterVh);
+        updateEnterOnlyMobile();
+      };
+
+      updateRef.current = updateEnterOnly;
+      updateEnterOnly();
+
+      const onResizeEnterOnly = () => {
+        enterOnlyStartedAt = null;
+        updateEnterOnly();
+      };
+      const onLoadingEndEnterOnly = () => updateEnterOnly();
+
+      window.addEventListener("resize", onResizeEnterOnly, { passive: true });
+      window.addEventListener("scroll", updateEnterOnly, { passive: true });
+      window.addEventListener("rm:loading-end", onLoadingEndEnterOnly);
+      desktopMq.addEventListener("change", onResizeEnterOnly);
+
+      const resizeObserverEnterOnly = new ResizeObserver(() => updateEnterOnly());
+      resizeObserverEnterOnly.observe(section);
+
+      return () => {
+        cancelAnimationFrame(rafId);
+        root.style.scrollBehavior = previousScrollBehavior;
+        window.removeEventListener("resize", onResizeEnterOnly);
+        window.removeEventListener("scroll", updateEnterOnly);
+        window.removeEventListener("rm:loading-end", onLoadingEndEnterOnly);
+        desktopMq.removeEventListener("change", onResizeEnterOnly);
+        resizeObserverEnterOnly.disconnect();
+        section.classList.remove("rm-glass-points--scrubbing");
+        updateRef.current = null;
+      };
+    }
 
     const linkedEls = linkedExitSelector
       ? Array.from(document.querySelectorAll<HTMLElement>(linkedExitSelector))
@@ -135,11 +231,6 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
         el.style.filter = blur > 0.01 ? `blur(${blur.toFixed(1)}px)` : "none";
         el.style.transform = y !== 0 ? `translate3d(0, ${y.toFixed(1)}px, 0)` : "";
       });
-    };
-
-    const timeProgressForCard = (cardIndex: number, elapsedMs: number, staggerMs: number, durMs: number) => {
-      const local = clamp(0, 1, (elapsedMs - cardIndex * staggerMs) / durMs);
-      return easeOutQuad(local);
     };
 
     const scrollProgressForCard = (timelineT: number, cardIndex: number) => {
@@ -272,11 +363,11 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
       }
       updateRef.current = null;
     };
-  }, [cardCount, withIntro, sceneVh, linkedExitSelector]);
+  }, [cardCount, withIntro, sceneVh, linkedExitSelector, enterOnly]);
 
   useLenis(() => {
     updateRef.current?.();
-  }, [cardCount, withIntro, sceneVh, linkedExitSelector]);
+  }, [cardCount, withIntro, sceneVh, linkedExitSelector, enterOnly]);
 
   return ref;
 }
