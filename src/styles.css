@@ -618,6 +618,202 @@ button {
   display: none;
 }
 
+/* ============ Home hero atmosphere ============ */
+.rm-hero-atmosphere {
+  position: relative;
+  isolation: isolate;
+}
+
+.rm-hero-atmosphere__bg {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.rm-hero-atmosphere__bg-img {
+  position: absolute;
+  top: -8%;
+  left: 0;
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center 38%;
+  will-change: transform;
+}
+
+.rm-hero-atmosphere__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 10, 10, 0.06) 0%, rgba(10, 10, 10, 0.14) 32%, rgba(10, 10, 10, 0.78) 100%),
+    radial-gradient(ellipse 90% 80% at 50% 38%, transparent 0%, rgba(10, 10, 10, 0.28) 100%);
+}
+
+html.rm-is-loading .rm-hero-copy {
+  opacity: 0;
+}
+
+html:not(.rm-is-loading) .rm-hero-copy {
+  animation: rm-hero-copy-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@keyframes rm-hero-copy-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============ Page preloader ============ */
+html.rm-is-loading {
+  overflow: hidden;
+}
+
+.rm-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  pointer-events: all;
+}
+
+.rm-preloader--out {
+  pointer-events: none;
+}
+
+.rm-preloader__veil {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+}
+
+.rm-preloader--active .rm-preloader__veil {
+  animation: rm-preloader-veil-out 0.85s cubic-bezier(0.87, 0, 0.13, 1) 2s forwards;
+}
+
+.rm-preloader--out .rm-preloader__veil {
+  opacity: 0;
+}
+
+@keyframes rm-preloader-veil-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.rm-preloader__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.rm-preloader__logo {
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: #fff;
+  opacity: 0;
+  filter: blur(16px);
+  animation: rm-preloader-logo-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.rm-preloader--out .rm-preloader__logo {
+  animation: rm-preloader-logo-out 0.5s ease forwards;
+}
+
+@keyframes rm-preloader-logo-in {
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes rm-preloader-logo-out {
+  to {
+    opacity: 0;
+    filter: blur(12px);
+  }
+}
+
+.rm-preloader__tagline {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.rm-preloader__char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: rm-preloader-char-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.rm-preloader__char--space {
+  width: 0.35em;
+}
+
+.rm-preloader__char:nth-child(1) { animation-delay: 0.55s; }
+.rm-preloader__char:nth-child(2) { animation-delay: 0.6s; }
+.rm-preloader__char:nth-child(3) { animation-delay: 0.65s; }
+.rm-preloader__char:nth-child(4) { animation-delay: 0.7s; }
+.rm-preloader__char:nth-child(5) { animation-delay: 0.75s; }
+.rm-preloader__char:nth-child(6) { animation-delay: 0.8s; }
+.rm-preloader__char:nth-child(7) { animation-delay: 0.85s; }
+.rm-preloader__char:nth-child(8) { animation-delay: 0.9s; }
+.rm-preloader__char:nth-child(10) { animation-delay: 1.05s; }
+.rm-preloader__char:nth-child(12) { animation-delay: 1.2s; }
+.rm-preloader__char:nth-child(13) { animation-delay: 1.25s; }
+.rm-preloader__char:nth-child(14) { animation-delay: 1.3s; }
+.rm-preloader__char:nth-child(15) { animation-delay: 1.35s; }
+.rm-preloader__char:nth-child(16) { animation-delay: 1.4s; }
+.rm-preloader__char:nth-child(17) { animation-delay: 1.45s; }
+.rm-preloader__char:nth-child(18) { animation-delay: 1.5s; }
+.rm-preloader__char:nth-child(19) { animation-delay: 1.55s; }
+.rm-preloader__char:nth-child(20) { animation-delay: 1.6s; }
+.rm-preloader__char:nth-child(21) { animation-delay: 1.65s; }
+
+@keyframes rm-preloader-char-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-preloader,
+  html.rm-is-loading {
+    display: none;
+  }
+
+  html.rm-is-loading {
+    overflow: auto;
+  }
+
+  .rm-hero-copy {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .rm-hero-atmosphere__bg-img {
+    will-change: auto;
+  }
+}
+
 /* ============ Ciridae `.points` — glass cards over sticky background ============ */
 :root {
   --rm-header-offset: 4.75rem;
@@ -905,9 +1101,12 @@ button {
 }
 
 @media (max-width: 991px) {
-  /* overflow-x:clip on .rm-page breaks position:sticky for engage cards */
-  .rm-page {
-    overflow-x: visible;
+  html {
+    scroll-behavior: auto;
+  }
+
+  .rm-glass-points {
+    overflow-x: clip;
   }
 
   .rm-glass-points--sticky .rm-glass-points__scene {
@@ -932,19 +1131,20 @@ button {
     position: relative;
     height: auto;
     display: block;
-    padding-bottom: 3rem;
-    overflow: visible;
+    padding-bottom: 2rem;
+    overflow: clip;
   }
 
   .rm-glass-points--sticky .rm-glass-points__scene {
-    overflow: visible;
+    overflow: clip;
   }
 
   .rm-glass-points__bg-parent {
-    position: sticky;
-    top: 0;
+    position: relative;
+    top: auto;
     height: 42vh;
-    margin-inline: -0.625rem;
+    margin-inline: 0;
+    overflow: hidden;
   }
 
   .rm-glass-points__content,
@@ -954,9 +1154,11 @@ button {
     flex-direction: column;
     grid-template-columns: unset;
     gap: 0.75rem;
-    padding: 1.5rem 1rem 40vh;
+    padding: 1.5rem 1rem 2rem;
     transform: none;
-    width: auto;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .rm-glass-points--sticky .rm-points-card {
@@ -972,17 +1174,9 @@ button {
     min-height: 26rem;
     position: static;
     align-self: stretch;
-  }
-
-  .rm-points-card--pinned {
-    position: fixed !important;
-    z-index: 35;
-    margin: 0;
-  }
-
-  .rm-points-card__placeholder {
     width: 100%;
-    pointer-events: none;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .rm-glass-points__content {

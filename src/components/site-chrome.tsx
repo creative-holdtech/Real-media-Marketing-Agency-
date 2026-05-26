@@ -11,10 +11,22 @@ const siteNav: { label: string; href?: string; to?: string }[] = [
   { label: "Contact", to: "/contact" },
 ];
 
-export function SiteHeader({ variant = "dark" }: { variant?: "light" | "dark" }) {
+export function SiteHeader({
+  variant = "dark",
+  overlay = false,
+}: {
+  variant?: "light" | "dark";
+  /** Homepage hero — no bar behind the floating nav pill */
+  overlay?: boolean;
+}) {
   return (
-    <header className="sticky top-0 z-40 px-4 pt-5">
-      <nav className="max-w-[1320px] mx-auto h-14 flex items-center rounded-full border border-white/10 bg-rm-surface/70 backdrop-blur-xl pl-5 pr-2 relative">
+    <header
+      className={[
+        "sticky top-0 z-40 px-4 pt-5",
+        overlay ? "bg-transparent" : "",
+      ].join(" ")}
+    >
+      <nav className="max-w-[1320px] mx-auto h-14 flex items-center rounded-full border border-white/[0.08] bg-rm-surface/40 backdrop-blur-xl pl-5 pr-2 relative">
 
         {/* Logo — anchored left */}
         <Link

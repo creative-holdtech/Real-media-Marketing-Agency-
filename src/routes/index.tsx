@@ -3,10 +3,13 @@ import { useEffect, useRef, useState } from "react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { GlassPointsSection } from "@/components/glass-points-section";
+import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import { PagePreloader } from "@/components/page-preloader";
 import { UnifiedCTA } from "@/components/unified-cta";
 import TestimonialSection from "@/components/ui/testimonials";
 import { useReveal } from "@/hooks/use-reveal";
 import { posts } from "@/lib/posts";
+import heroBg from "@/assets/hero-bg.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -169,27 +172,26 @@ function Index() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">Skip to content</a>
       <AmbientBlobs />
-      <SiteHeader variant="dark" />
-      <main id="main">
+      <PagePreloader />
+
+      <HeroAtmosphere imageSrc={heroBg}>
+        <SiteHeader variant="dark" overlay />
 
       {/* HERO */}
-      <section className="relative mx-auto max-w-[1440px] overflow-hidden px-6 pb-14 pt-20 md:min-h-[min(880px,calc(100svh-1.5rem))] md:px-12 md:pb-20 md:pt-28">
-
-        <div className="relative z-10 flex flex-col justify-start md:min-h-[calc(min(880px,100svh-1.5rem)-12rem)] md:justify-end">
-          <div className="mx-auto flex w-full max-w-[980px] flex-col">
-                  <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65 md:ml-[43%]">
-                    R-M marketing agency
+      <section className="relative z-10 flex flex-1 items-center">
+        <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-14 pt-4 md:px-12 md:pb-20 md:pt-8">
+          <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
+            <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
+              R-M marketing agency
             </p>
-            <h1 className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[62px] lg:text-[70px]">
-              <span className="block max-w-[11ch] text-balance md:ml-[4%]">Strategy and</span>
-              <span className="block max-w-[13ch] text-balance md:ml-[23%]">execution for</span>
-              <span className="block max-w-[14ch] text-balance md:ml-[10%]">founders raising</span>
-              <span className="block max-w-[13ch] text-balance font-light text-white/48 md:ml-[36%]">
-                in EU and MENA.
-              </span>
+            <h1 className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[58px] lg:text-[64px]">
+              <span className="block text-balance">Strategy and</span>
+              <span className="block text-balance">execution for</span>
+              <span className="block text-balance">founders raising</span>
+              <span className="block text-balance font-light text-white/48">in EU and MENA.</span>
             </h1>
             <p
-              className="reveal mt-7 max-w-[34ch] text-balance text-[16px] font-medium leading-[1.45] tracking-[-0.025em] text-white/92 md:ml-[31%] md:text-[19px]"
+              className="reveal mt-7 max-w-[34ch] text-balance text-[16px] font-medium leading-[1.45] tracking-[-0.025em] text-white/92 md:text-[18px]"
               data-delay="2"
             >
               We create market environment where your product becomes the obvious choice.{" "}
@@ -198,27 +200,30 @@ function Index() {
                 industry awards.
               </span>
             </p>
-          </div>
 
-          <div
-            className="reveal mt-10 flex flex-wrap items-center gap-3 md:ml-[43%]"
-            data-delay="3"
-          >
-            <Link
-              to="/contact"
-              className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] hover:-translate-y-0.5 transition-[background-color,transform] duration-150 ease-out"
+            <div
+              className="reveal mt-10 flex flex-wrap items-center justify-center gap-3"
+              data-delay="3"
             >
-              Start a project →
-            </Link>
-            <Link
-              to="/cases"
-              className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all duration-300"
-            >
-              See the work
-            </Link>
+              <Link
+                to="/contact"
+                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] hover:-translate-y-0.5 transition-[background-color,transform] duration-150 ease-out"
+              >
+                Start a project →
+              </Link>
+              <Link
+                to="/cases"
+                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all duration-300"
+              >
+                See the work
+              </Link>
+            </div>
           </div>
         </div>
       </section>
+      </HeroAtmosphere>
+
+      <main id="main">
 
       {/* TRUSTED BY */}
       <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-12 md:py-16 border-t border-white/10">
