@@ -1262,15 +1262,15 @@ html.rm-is-loading .rm-hero-atmosphere {
   will-change: transform, opacity;
 }
 
-.rm-glass-points--sticky .rm-points-card:nth-child(1) {
+.rm-glass-points--sticky .rm-points-card-flow:nth-child(1) .rm-points-card {
   --card-enter-y: var(--card-0-y, 100vh);
 }
 
-.rm-glass-points--sticky .rm-points-card:nth-child(2) {
+.rm-glass-points--sticky .rm-points-card-flow:nth-child(2) .rm-points-card {
   --card-enter-y: var(--card-1-y, 100vh);
 }
 
-.rm-glass-points--sticky .rm-points-card:nth-child(3) {
+.rm-glass-points--sticky .rm-points-card-flow:nth-child(3) .rm-points-card {
   --card-enter-y: var(--card-2-y, 100vh);
 }
 
@@ -1418,15 +1418,15 @@ html.rm-is-loading .rm-hero-atmosphere {
   transform: translateY(var(--card-rest-y, 0rem));
 }
 
-.rm-glass-points--inline .rm-points-card:nth-child(1) {
+.rm-glass-points--inline .rm-points-card-flow:nth-child(1) .rm-points-card {
   --card-rest-y: 0rem;
 }
 
-.rm-glass-points--inline .rm-points-card:nth-child(2) {
+.rm-glass-points--inline .rm-points-card-flow:nth-child(2) .rm-points-card {
   --card-rest-y: 2.5rem;
 }
 
-.rm-glass-points--inline .rm-points-card:nth-child(3) {
+.rm-glass-points--inline .rm-points-card-flow:nth-child(3) .rm-points-card {
   --card-rest-y: 5rem;
 }
 

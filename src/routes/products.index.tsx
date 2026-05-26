@@ -117,7 +117,7 @@ function ProductsPage() {
           }}
         />
 
-        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-20">
+        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
           <div className="reveal flex flex-wrap items-baseline gap-5 pb-16 border-b border-white/[0.08]">
             <span
               className="text-[11px] uppercase tracking-[0.28em] px-3.5 py-1.5 rounded-full border font-medium"
@@ -130,7 +130,7 @@ function ProductsPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16 mb-20">
+          <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16">
             <div className="col-span-12 md:col-span-7 reveal" data-delay="1">
               <h2
                 className="font-medium leading-[0.97] tracking-[-0.04em] text-white"
@@ -151,16 +151,15 @@ function ProductsPage() {
               </p>
             </div>
           </div>
-
-          <GlassPointsSection
-            mode="inline"
-            cards={sprintDeliverables.map((d, i) => ({
-              index: String(i + 1).padStart(2, "0"),
-              title: d.title.toUpperCase(),
-              body: d.body,
-            }))}
-          />
         </div>
+
+        <GlassPointsSection
+          cards={sprintDeliverables.map((d, i) => ({
+            index: String(i + 1).padStart(2, "0"),
+            title: d.title.toUpperCase(),
+            body: d.body,
+          }))}
+        />
       </section>
 
       <section
@@ -177,7 +176,7 @@ function ProductsPage() {
           }}
         />
 
-        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-20">
+        <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
           <div className="reveal flex flex-wrap items-baseline gap-5 pb-16 border-b border-white/[0.07]">
             <span
               className="text-[11px] uppercase tracking-[0.28em] px-3.5 py-1.5 rounded-full border font-medium"
@@ -190,7 +189,7 @@ function ProductsPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16 mb-20">
+          <div className="grid grid-cols-12 gap-8 md:gap-16 items-start pt-16">
             <div className="col-span-12 md:col-span-7 reveal" data-delay="1">
               <h2
                 className="font-medium leading-[0.97] tracking-[-0.04em] text-white"
@@ -211,16 +210,15 @@ function ProductsPage() {
               </p>
             </div>
           </div>
-
-          <GlassPointsSection
-            mode="inline"
-            cards={marathonDeliverables.map((d, i) => ({
-              index: String(i + 1).padStart(2, "0"),
-              title: d.title.toUpperCase(),
-              body: d.body,
-            }))}
-          />
         </div>
+
+        <GlassPointsSection
+          cards={marathonDeliverables.map((d, i) => ({
+            index: String(i + 1).padStart(2, "0"),
+            title: d.title.toUpperCase(),
+            body: d.body,
+          }))}
+        />
       </section>
 
       <section className="px-6 md:px-16 max-w-[1440px] mx-auto py-24 md:py-32">
