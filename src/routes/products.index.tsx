@@ -23,9 +23,6 @@ export const Route = createFileRoute("/products/")({
   component: ProductsPage,
 });
 
-const ORANGE = "#e85d3a";
-const PURPLE = "#7c5cff";
-
 const sprintDeliverables = [
   {
     title: "Positioning audit & fix",
@@ -71,35 +68,33 @@ function ProductsPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section className="relative min-h-[70vh] flex flex-col justify-center px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-20 border-b border-white/10">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(60% 70% at 10% 20%, rgba(232,93,58,0.14), transparent 65%), radial-gradient(45% 55% at 90% 80%, rgba(124,92,255,0.10), transparent 65%)",
-          }}
-        />
-
-        <p className="reveal mb-10 text-[11px] uppercase tracking-[0.24em] text-white/45">
-          Products
-        </p>
-
-        <h1
-          className="reveal font-medium leading-[0.96] tracking-[-0.04em] text-white max-w-[22ch]"
-          style={{ fontSize: "clamp(2.8rem, 7.5vw, 7.5rem)" }}
-          data-delay="1"
-        >
-          Choose the level of support{" "}
-          <span className="font-light" style={{ color: "rgba(232,230,225,0.45)" }}>
-            you need right now.
-          </span>
-        </h1>
-
-        <p className="reveal mt-8 max-w-[50ch] rm-copy-lead" data-delay="2">
-          Both formats are built around your growth. One moves faster, the other goes deeper.
-          Same quality, different scope.
-        </p>
+      <section className="relative flex min-h-[min(720px,92svh)] flex-col items-center justify-center border-b border-white/10">
+        <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-14 pt-8 md:px-12 md:pb-20 md:pt-12">
+          <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
+            <p className="reveal mb-8 w-fit rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
+              Products
+            </p>
+            <h1
+              className="reveal w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[58px] lg:text-[64px]"
+              data-delay="1"
+            >
+              <span className="block text-balance">Choose the level</span>
+              <span className="block text-balance">
+                of support you need{" "}
+                <span className="font-light text-white/48">right now.</span>
+              </span>
+            </h1>
+            <p
+              className="reveal mt-7 max-w-[34ch] text-balance text-[16px] font-medium leading-[1.45] tracking-[-0.025em] text-white/92 md:text-[18px]"
+              data-delay="2"
+            >
+              Both formats are built around your growth.{" "}
+              <span className="font-light text-white/45">
+                One moves faster, the other goes deeper. Same quality, different scope.
+              </span>
+            </p>
+          </div>
+        </div>
       </section>
 
       <section
@@ -107,15 +102,6 @@ function ProductsPage() {
         className="relative border-b border-white/10"
         style={{ scrollMarginTop: "80px" }}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(55% 65% at 85% 15%, rgba(232,93,58,0.10), transparent 60%)",
-          }}
-        />
-
         <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
           <div className="reveal flex flex-wrap items-center gap-4 pb-16 border-b border-white/[0.08]">
             <span className="rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
@@ -148,32 +134,23 @@ function ProductsPage() {
             </div>
           </div>
         </div>
-
-        <GlassPointsSection
-          cards={sprintDeliverables.map((d, i) => ({
-            index: String(i + 1).padStart(2, "0"),
-            title: d.title.toUpperCase(),
-            body: d.body,
-          }))}
-        />
       </section>
+
+      <GlassPointsSection
+        cards={sprintDeliverables.map((d, i) => ({
+          index: String(i + 1).padStart(2, "0"),
+          title: d.title.toUpperCase(),
+          body: d.body,
+        }))}
+      />
 
       <section
         id="marathon"
         className="relative border-b border-white/10"
-        style={{ scrollMarginTop: "80px", background: "var(--rm-surface-raised)" }}
+        style={{ scrollMarginTop: "80px" }}
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(55% 65% at 10% 75%, rgba(124,92,255,0.10), transparent 60%)",
-          }}
-        />
-
         <div className="px-6 md:px-16 max-w-[1440px] mx-auto pt-20 pb-16">
-          <div className="reveal flex flex-wrap items-center gap-4 pb-16 border-b border-white/[0.07]">
+          <div className="reveal flex flex-wrap items-center gap-4 pb-16 border-b border-white/[0.08]">
             <span className="rounded-full border border-white/20 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/65">
               Marathon
             </span>
@@ -204,15 +181,15 @@ function ProductsPage() {
             </div>
           </div>
         </div>
-
-        <GlassPointsSection
-          cards={marathonDeliverables.map((d, i) => ({
-            index: String(i + 1).padStart(2, "0"),
-            title: d.title.toUpperCase(),
-            body: d.body,
-          }))}
-        />
       </section>
+
+      <GlassPointsSection
+        cards={marathonDeliverables.map((d, i) => ({
+          index: String(i + 1).padStart(2, "0"),
+          title: d.title.toUpperCase(),
+          body: d.body,
+        }))}
+      />
 
       <section className="px-6 md:px-16 max-w-[1440px] mx-auto py-24 md:py-32">
         <div className="reveal grid grid-cols-12 gap-8 md:gap-16 items-start">

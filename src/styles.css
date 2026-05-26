@@ -1222,6 +1222,8 @@ html.rm-is-loading .rm-hero-atmosphere {
 .rm-glass-points__content {
   position: relative;
   z-index: 2;
+  flex: 1;
+  align-self: center;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.25rem;
@@ -1243,6 +1245,11 @@ html.rm-is-loading .rm-hero-atmosphere {
   display: flex;
   justify-content: center;
   padding-top: 2rem;
+}
+
+/* Mobile-only — desktop scroll room comes from 250vh scene, not in-viewport tail */
+.rm-glass-points__scroll-tail {
+  display: none;
 }
 
 /* `.points_item` — cards enter from below, rest with vertical stagger only */
@@ -1596,6 +1603,8 @@ a.block:focus-visible .rm-points-card__read {
   }
 
   .rm-glass-points__scroll-tail {
+    display: block;
+    grid-column: 1 / -1;
     flex-shrink: 0;
     height: min(30vh, 14rem);
     pointer-events: none;

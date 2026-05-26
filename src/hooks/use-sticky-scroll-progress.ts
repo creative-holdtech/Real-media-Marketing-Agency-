@@ -94,11 +94,21 @@ export function useCiridaePointsScroll<T extends HTMLElement>(
     update();
 
     const onResize = () => update();
-    window.addEventListener("resize", onResize);
+    const onLoadingEnd = () => update();
+
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("rm:loading-end", onLoadingEnd);
+
+    const resizeObserver = new ResizeObserver(() => update());
+    resizeObserver.observe(section);
 
     return () => {
       root.style.scrollBehavior = previousScrollBehavior;
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("rm:loading-end", onLoadingEnd);
+      resizeObserver.disconnect();
       updateRef.current = null;
     };
   }, [cardCount, withIntro]);
