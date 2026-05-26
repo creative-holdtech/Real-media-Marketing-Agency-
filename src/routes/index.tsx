@@ -6,6 +6,7 @@ import { GlassPointsSection } from "@/components/glass-points-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { InsightsHeroSection } from "@/components/insights-hero-section";
 import { PagePreloader } from "@/components/page-preloader";
+import { TrustStatsDiagram } from "@/components/trust-stats-diagram";
 import { UnifiedCTA } from "@/components/unified-cta";
 import TestimonialSection from "@/components/ui/testimonials";
 import { useReveal } from "@/hooks/use-reveal";
@@ -414,7 +415,7 @@ function TrustStatsScreen() {
     <section
       ref={ref}
       aria-label="Trusted partners and key results"
-      className="rm-trust-stats px-6 sm:px-10 md:px-20 lg:px-32"
+      className="rm-trust-stats px-0 sm:px-10 md:px-20 lg:px-32"
     >
       <div className="rm-trust-stats__inner mx-auto w-full max-w-[1200px]">
         <div className="rm-trust-stats__marquee-wrap">
@@ -445,15 +446,13 @@ function TrustStatsScreen() {
           </div>
         </div>
 
-        <div className="rm-trust-stats__stats">
-          {bigStats.map((s, i) => (
-            <div key={s.label} className="reveal" data-delay={String(i + 2)}>
-              <p className="rm-trust-stats__stat-value">
-                <BigStatValue stat={s} start={inView} />
-              </p>
-              <p className="rm-trust-stats__stat-label">{s.label}</p>
-            </div>
-          ))}
+        <div className="rm-trust-stats__diagram reveal" data-delay="2">
+          <TrustStatsDiagram
+            topValue={<BigStatValue stat={bigStats[0]} start={inView} />}
+            topCopy="Projects shipped for funded teams"
+            bottomValue={<BigStatValue stat={bigStats[1]} start={inView} />}
+            bottomCopy="Capital raised by founders we worked with"
+          />
         </div>
       </div>
     </section>
