@@ -1,5 +1,12 @@
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
-import { useRef } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { useMemo, useRef, useState } from "react";
 
 type TextRevealProps = {
   text: string;
@@ -8,7 +15,17 @@ type TextRevealProps = {
   revealColor?: string;
 };
 
-function RevealWord({
+const CHUNK_SIZE = 3;
+
+function chunkWords(words: string[], size: number) {
+  const chunks: string[] = [];
+  for (let i = 0; i < words.length; i += size) {
+    chunks.push(words.slice(i, i + size).join(" "));
+  }
+  return chunks;
+}
+
+function RevealChunk({
   children,
   progress,
   range,
@@ -37,14 +54,19 @@ export function TextReveal({
 }: TextRevealProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
+  const [complete, setComplete] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.92", "start 0.35"],
   });
 
-  const words = text.trim().split(/\s+/);
+  const chunks = useMemo(() => chunkWords(text.trim().split(/\s+/), CHUNK_SIZE), [text]);
 
-  if (reduce) {
+  useMotionValueEvent(scrollYProgress, "change", (value) => {
+    if (value >= 0.98) setComplete(true);
+  });
+
+  if (reduce || complete) {
     return (
       <p className={className} style={{ color: revealColor }}>
         {text}
@@ -54,19 +76,19 @@ export function TextReveal({
 
   return (
     <p ref={ref} className={className}>
-      {words.map((word, index) => {
-        const start = index / words.length;
-        const end = Math.min(1, (index + 1.5) / words.length);
+      {chunks.map((chunk, index) => {
+        const start = index / chunks.length;
+        const end = Math.min(1, (index + 1.2) / chunks.length);
         return (
-          <RevealWord
-            key={`${word}-${index}`}
+          <RevealChunk
+            key={`${chunk}-${index}`}
             progress={scrollYProgress}
             range={[start, end]}
             baseColor={baseColor}
             revealColor={revealColor}
           >
-            {word}
-          </RevealWord>
+            {chunk}
+          </RevealChunk>
         );
       })}
     </p>

@@ -3,10 +3,15 @@ import { Link } from "@tanstack/react-router";
 import {
   FramerPrimaryButton,
   FramerTag,
+  sectionActionRow,
   sectionContainer,
+  sectionContentGrid,
+  sectionGridSpacer,
   sectionHeaderContent,
   sectionHeaderGrid,
   sectionHeadline,
+  interactiveWhiteCard,
+  pricingCardSurface,
   sectionShell,
   textCardBody,
   textMeta,
@@ -70,7 +75,7 @@ function CaseProgressBar({ value, footerRight }: { value: number; footerRight: s
       <div className="border-b border-neutral-200" />
 
       <div className="flex justify-end">
-        <span className="text-sm font-medium text-neutral-500 transition-colors group-hover:text-neutral-800">
+        <span className="text-sm font-medium text-neutral-500 transition-colors group-hover:text-neutral-800 group-focus-visible:text-neutral-800">
           {footerRight}
         </span>
       </div>
@@ -99,7 +104,7 @@ function CaseBentoCard({
     <Link
       to={to}
       aria-label={`${tag}. ${metric} ${label}. ${title}`}
-      className="group flex h-full flex-col gap-6 rounded-3xl bg-white p-6 transition-shadow hover:ring-1 hover:ring-neutral-200 md:p-8"
+      className={`group flex h-full flex-col gap-6 p-6 md:p-8 ${pricingCardSurface} ${interactiveWhiteCard}`}
     >
       <div className="flex flex-col gap-4">
         <InnerTag>{tag}</InnerTag>
@@ -135,16 +140,18 @@ export function CasesSection() {
           </div>
         </div>
 
-        <div className="reveal grid grid-cols-1 gap-2 md:grid-cols-3 md:items-stretch md:gap-2" data-delay="2">
-          <div className="hidden md:block" />
+        <div className="flex flex-col gap-6 md:gap-8">
+          <div className={`reveal ${sectionContentGrid}`} data-delay="2">
+            <div className={sectionGridSpacer} />
 
-          {featuredCases.map((item) => (
-            <CaseBentoCard key={item.key} {...item} />
-          ))}
-        </div>
+            {featuredCases.map((item) => (
+              <CaseBentoCard key={item.key} {...item} />
+            ))}
+          </div>
 
-        <div className="reveal flex justify-end" data-delay="3">
-          <FramerPrimaryButton to="/cases">View all cases →</FramerPrimaryButton>
+          <div className={`reveal ${sectionActionRow}`} data-delay="3">
+            <FramerPrimaryButton to="/cases">View all cases →</FramerPrimaryButton>
+          </div>
         </div>
       </div>
     </section>

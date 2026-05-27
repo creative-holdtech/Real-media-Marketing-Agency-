@@ -1,101 +1,79 @@
-import { sectionContainer, sectionShell } from "@/components/framer-section";
+import { Link } from "@tanstack/react-router";
 
-const engagements = [
-  {
-    name: "Sprint",
-    time: "From 4 weeks",
-    intro: [
-      "Fast start for brands that don't want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
-    ],
-    steps: [
-      "01 — SETUP: free audit and channel selection (SMM, PR, SEO, Performance, Design, Messaging)",
-      "02 — RUN: weekly updates, monthly reports, on-demand analytics and recommendations",
-      "03 — HANDOVER: final deliverable with a clear roadmap and 100% asset & content ownership",
-    ],
-  },
-  {
-    name: "Marathon",
-    time: "From 2 months",
-    intro: [
-      "Strategy followed by execution. For brands launching from scratch, rebranding, or entering new markets. We build your positioning and run your marketing channels.",
-    ],
-    steps: [
-      "01 — STRATEGY: deep-dive workshop, market analysis, brand positioning, and GTM planning",
-      "02 — ACTION: full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
-      "03 — HANDOVER: final brand guidelines, operational channels, 100% asset & content ownership",
-    ],
-  },
-] as const;
+import {
+  pricingCardSurface,
+  sectionContainer,
+  sectionShell,
+  textCardBody,
+  textMeta,
+} from "@/components/framer-section";
+import { homepageEngagements, type Engagement, type EngagementStep } from "@/lib/engagements";
 
-function parseStep(step: string) {
-  const match = step.match(/^(\d{2})\s—\s([^:]+):\s*(.+)$/);
-  if (!match) {
-    return { code: "", title: step, body: "" };
-  }
+const ctaPrimary =
+  "inline-flex rm-touch items-center rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold tracking-[-0.04em] text-[#efeee9] transition-[background-color,transform] duration-150 ease-out hover:-translate-y-0.5 hover:bg-neutral-800 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/30 focus-visible:ring-offset-2 focus-visible:ring-offset-[#efeee9]";
 
-  return {
-    code: match[1],
-    title: match[2].trim(),
-    body: match[3].trim(),
-  };
-}
+const ctaSecondary =
+  "inline-flex rm-touch items-center text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/15 focus-visible:ring-offset-2 focus-visible:ring-offset-[#efeee9] rounded-full px-1";
 
-function PricingStep({ step }: { step: string }) {
-  const { code, title, body } = parseStep(step);
-
+function PricingStep({ step, showAuditLink }: { step: EngagementStep; showAuditLink?: boolean }) {
   return (
     <div className="flex flex-col gap-1">
-      <p className="text-xs font-medium uppercase tracking-[0.08em] text-neutral-400">
-        {code ? `${code} — ${title}` : title}
+      <p className={`uppercase ${textMeta}`}>
+        {step.code} — {step.title}:
       </p>
-      {body ? <p className="text-sm leading-relaxed text-neutral-600">{body}</p> : null}
+      <p className={textCardBody}>
+        {showAuditLink ? (
+          <>
+            <Link
+              to="/audit"
+              className="font-medium text-neutral-800 underline decoration-neutral-300 underline-offset-2 transition-colors hover:text-neutral-950 hover:decoration-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/15 focus-visible:ring-offset-2 focus-visible:ring-offset-[#efeee9] rounded-sm"
+            >
+              Free audit
+            </Link>
+            {step.body.replace(/^Free audit/i, "")}
+          </>
+        ) : (
+          step.body
+        )}
+      </p>
     </div>
   );
 }
 
-function PricingCard({
-  name,
-  time,
-  intro,
-  steps,
-  index,
-}: {
-  name: string;
-  time: string;
-  intro: readonly string[];
-  steps: readonly string[];
-  index: number;
-}) {
+function PricingCard({ engagement }: { engagement: Engagement }) {
   return (
-    <article className="flex min-h-[420px] flex-col overflow-hidden rounded-3xl bg-white md:min-h-[440px]">
-      <div className="flex flex-col gap-6 border-b border-neutral-200 p-6 md:p-8">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex flex-col gap-2">
-            <p className="text-xs font-medium uppercase tracking-[0.08em] text-neutral-500">{name}</p>
-            <p className="text-xl font-semibold leading-snug tracking-[-0.03em] text-neutral-900 md:text-2xl">
-              {time}
-            </p>
-          </div>
-          <span
-            aria-hidden
-            className="text-2xl font-semibold leading-none tracking-[-0.04em] text-neutral-200 tabular-nums"
-          >
-            {String(index + 1).padStart(2, "0")}
-          </span>
+    <article className={`flex flex-col overflow-hidden ${pricingCardSurface}`}>
+      <div className="flex flex-col gap-6 border-b border-neutral-300/80 p-6 md:p-8">
+        <div className="flex flex-col gap-2">
+          <p className={`uppercase ${textMeta}`}>{engagement.name}</p>
+          <p className="text-xl font-semibold leading-snug tracking-[-0.03em] text-neutral-900 md:text-2xl">
+            {engagement.time}
+          </p>
         </div>
-        <div className="flex max-w-prose flex-col gap-4">
-          {intro.map((paragraph) => (
-            <p key={paragraph} className="text-sm leading-relaxed text-neutral-600 md:text-base">
-              {paragraph}
-            </p>
-          ))}
-        </div>
+        <p className={`max-w-prose ${textCardBody}`}>{engagement.intro}</p>
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-6 md:p-8">
-        {steps.map((step) => (
-          <PricingStep key={step} step={step} />
+        {engagement.steps.map((step) => (
+          <PricingStep
+            key={`${engagement.id}-${step.code}`}
+            step={step}
+            showAuditLink={engagement.id === "sprint" && step.code === "01"}
+          />
         ))}
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-300/80 p-6 md:p-8">
+        <Link to="/products" className={ctaSecondary}>
+          Compare formats →
+        </Link>
+        <Link
+          to="/contact"
+          search={{ engagement: engagement.id }}
+          className={ctaPrimary}
+        >
+          {engagement.ctaLabel}
+        </Link>
       </div>
     </article>
   );
@@ -103,11 +81,14 @@ function PricingCard({
 
 export function ServicesSection() {
   return (
-    <section id="engage" aria-label="Pricing" className={sectionShell}>
+    <section id="engage" aria-labelledby="engage-heading" className={sectionShell}>
+      <h2 id="engage-heading" className="sr-only">
+        Engagement formats
+      </h2>
       <div className={sectionContainer}>
-        <div className="reveal grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-2">
-          {engagements.map((e, i) => (
-            <PricingCard key={e.name} {...e} index={i} />
+        <div className="reveal grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-2" data-delay="1">
+          {homepageEngagements.map((engagement) => (
+            <PricingCard key={engagement.id} engagement={engagement} />
           ))}
         </div>
       </div>

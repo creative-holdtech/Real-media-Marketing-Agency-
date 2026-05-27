@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "rm-preloader-seen";
 /** Logo + tagline finish ~1.7s; hold, then exit as one layer */
-const SHOW_MS = 2500;
+const SHOW_MS = 2000;
 const EXIT_MS = 700;
 
 export function PagePreloader() {

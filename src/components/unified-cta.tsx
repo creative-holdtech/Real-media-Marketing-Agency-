@@ -17,8 +17,8 @@ type CTAProps = {
 
 export function UnifiedCTA({
   eyebrow,
-  title = "Tell us what needs fixing",
-  titleAccent = "New launch, a raise, or marketing that doesn't perform.",
+  title = "Tell us what's stuck",
+  titleAccent = "Bring us a launch, a raise, or a stalled funnel.",
   primaryLabel = "Get free audit",
   primaryTo = "/audit",
   primaryHref,

@@ -1,12 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useReducedMotion,
-  type MotionValue,
-} from "motion/react";
+import { useState } from "react";
+import { motion } from "motion/react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
@@ -27,7 +21,7 @@ export const Route = createFileRoute("/about")({
       {
         name: "description",
         content:
-          "R-M is a senior strategy and brand studio for founders shipping in AI, Fintech, Web3 and lifestyle. Four operators. No juniors.",
+          "R-M is a strategic marketing agency for founders in Fintech, AI SaaS, Cybersecurity, and iGaming. Ten senior experts. No outsourcing.",
       },
       { property: "og:title", content: "About — R-M Studio" },
       {
@@ -113,9 +107,26 @@ const verticals = [
 ];
 
 const numbers = [
-  { value: "€280M+", label: "Capital raised by founder teams we positioned, across seed to Series B." },
-  { value: "47", label: "End-to-end brands shipped since 2019." },
-  { value: "92%", label: "Retention on year two and beyond." },
+  {
+    value: "€10M",
+    label: "Raised by founder teams we positioned and packaged.",
+    tag: "Capital raised 2025—2026",
+  },
+  {
+    value: "50",
+    label: "End-to-end identity + GTM, since 2025.",
+    tag: "Projects shipped",
+  },
+  {
+    value: "92%",
+    label: "On year and beyond.",
+    tag: "Retention",
+  },
+  {
+    value: "2y",
+    label: "Independent.",
+    tag: "Operating",
+  },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -180,14 +191,7 @@ function AboutPage() {
         <TeamSection />
 
         {/* ===== CTA ===== */}
-        <UnifiedCTA
-          eyebrow="The conversation starts here"
-          title="Let's build something"
-          titleAccent="that compounds."
-          primaryLabel="Book a call"
-          primaryTo="/contact"
-          secondaryLabel="See case studies"
-        />
+        <UnifiedCTA />
       </main>
 
       <SiteFooter />
@@ -206,35 +210,40 @@ function HeroSection() {
     >
       <div className="max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5 items-end">
-          <div className="md:col-span-1" />
+          <div className="md:col-span-1">
+            <Tag>R—M marketing agency · est. 2025</Tag>
+          </div>
           <div className="md:col-span-2 flex flex-col gap-8">
             <div>
               <h1
                 id="page-title"
                 className="reveal text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-white"
               >
-                A small studio
+                Strategic partnership
                 <br />
-                <span className="text-white/40 font-normal">for founders who actually ship.</span>
+                <span className="text-white/40 font-normal">for founders who build to scale</span>
               </h1>
             </div>
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
-              <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]" data-delay="1">
-                Senior strategy, brand and growth for operators in AI, Fintech, Web3 and lifestyle.
-                Four people. No juniors, no subcontractors.
+              <p
+                className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]"
+                data-delay="1"
+              >
+                A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts.
+                No outsourcing.
               </p>
               <div className="reveal flex items-center gap-3 flex-wrap" data-delay="2">
                 <Link
-                  to="/contact"
+                  to="/audit"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-black bg-white rounded-full px-6 py-3 hover:bg-white/85 transition-colors duration-200"
                 >
-                  Book an audit →
+                  Book free audit →
                 </Link>
                 <a
                   href="#verticals"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-3 hover:bg-white/10 transition-colors duration-200"
                 >
-                  See the verticals
+                  Our core areas
                 </a>
               </div>
             </div>
@@ -269,17 +278,20 @@ function NumbersSection() {
               id="numbers-heading"
               className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
             >
-              Seven years.{" "}
+              Ten years.{" "}
               <span className="text-white/40 font-normal">Compounded across founder teams.</span>
             </h2>
-            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]" data-delay="1">
-              Five numbers that describe the studio better than any deck slide.
+            <p
+              className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]"
+              data-delay="1"
+            >
+              Numbers that describe the agency better than any deck slide.
             </p>
           </div>
         </div>
 
         {/* Number tiles — white cards on dark bg */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-1">
           {numbers.map((n, i) => (
             <motion.div
               key={n.value}
@@ -290,7 +302,7 @@ function NumbersSection() {
               className="bg-white rounded-2xl p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
             >
               <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
-                {i === 0 ? "Capital raised" : i === 1 ? "Brands shipped" : "Retention"}
+                {n.tag}
               </span>
               <div>
                 <div className="text-[56px] md:text-[72px] font-semibold tracking-[-0.05em] leading-[0.9] text-neutral-900">
@@ -312,23 +324,8 @@ function NumbersSection() {
 /*  MANIFESTO                                                          */
 /* ================================================================== */
 function ManifestoSection() {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.85", "end 0.55"],
-  });
-
-  const words = [
-    "We", "are", "not", "an", "agency.", "We", "are", "four", "operators", "with", "scar",
-    "tissue,", "compounding", "the", "same", "playbook", "across", "ambitious", "founders",
-    "—", "quietly,", "without", "the", "theatre,", "for", "the", "kind", "of", "outcomes",
-    "that", "show", "up", "on", "the", "cap", "table.",
-  ];
-
   return (
     <section
-      ref={ref}
       aria-labelledby="manifesto-heading"
       className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
     >
@@ -336,48 +333,18 @@ function ManifestoSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
           <div>
             <Tag>The position</Tag>
-            <h2 id="manifesto-heading" className="sr-only">Manifesto</h2>
+            <h2 id="manifesto-heading" className="sr-only">
+              Manifesto
+            </h2>
           </div>
           <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.05em] text-white">
-            {words.map((w, i) => (
-              <ManifestoWord
-                key={i}
-                word={w}
-                index={i}
-                total={words.length}
-                scrollYProgress={scrollYProgress}
-                reduce={reduce}
-              />
-            ))}
+            We&apos;re not a hands-off vendor. But an extension of your team, wired into market
+            context. We killed the generic agency layers to ship execution focused on the outcomes
+            that show up on your cap table.
           </p>
         </div>
       </div>
     </section>
-  );
-}
-
-function ManifestoWord({
-  word,
-  index,
-  total,
-  scrollYProgress,
-  reduce,
-}: {
-  word: string;
-  index: number;
-  total: number;
-  scrollYProgress: MotionValue<number>;
-  reduce: boolean | null;
-}) {
-  const start = index / total;
-  const end = Math.min(1, start + 1.4 / total);
-  const opacity = useTransform(scrollYProgress, [start, end], [0.15, 1]);
-  const color = useTransform(scrollYProgress, [start, end], ["rgba(255,255,255,0.15)", "rgba(255,255,255,1)"]);
-
-  return (
-    <motion.span style={reduce ? undefined : { color }} className="inline-block mr-[0.25em]">
-      {word}
-    </motion.span>
   );
 }
 

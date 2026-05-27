@@ -27,11 +27,11 @@ export const Route = createFileRoute("/audit")({
 const includes = [
   {
     title: "SMM",
-    body: "Audience quality, narrative consistency, and a 30-day cadence plan tied to inbound.",
+    body: "Audience quality, narrative consistency, 30-day cadence plan tied to inbound.",
   },
   {
     title: "PR",
-    body: "Story-angle audit, target outlet map, and a placement plan for the next quarter.",
+    body: "Authority angles, target media shortlist, placement plan for the next quarter.",
   },
   {
     title: "SEO",
@@ -183,7 +183,7 @@ function AuditPage() {
       <section id="audit-form" className="px-6 md:px-12 max-w-[820px] mx-auto py-24 md:py-36">
         <div className="reveal mb-16 md:mb-20">
           <h2 className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            What do you want to check first?
+            What are you interested in?
           </h2>
           <p className="mt-5 text-[14px] md:text-[15px] text-white/45">
             Free · No strings attached · Result in up to 7 days
@@ -199,7 +199,7 @@ function AuditPage() {
               subject: `Audit request — ${data.get("name") ?? ""} · ${data.get("company") ?? ""}`,
               body: `Name: ${data.get("name") ?? ""}\nCompany: ${data.get("company") ?? ""}\nEmail: ${data.get("email") ?? ""}\nSite: ${data.get("site") ?? ""}\nFocus: ${interests}\n\nNotes:\n${data.get("notes") ?? ""}`,
             }).toString();
-            window.location.href = `mailto:hello@r-m.studio?${params}`;
+            window.location.href = `mailto:info@realmedia.ink?${params}`;
             setSent(true);
           }}
           className="reveal"

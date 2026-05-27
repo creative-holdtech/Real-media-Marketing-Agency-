@@ -2,7 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
-import { sectionHeadline } from "@/components/framer-section";
+import { sectionGridSpacer, sectionHeadline } from "@/components/framer-section";
 
 type TestimonialSectionProps = {
   quote?: string;
@@ -47,8 +47,8 @@ export default function TestimonialSection({
       <QuoteBackground />
 
       <div className="relative z-[1] mx-auto flex w-full max-w-[1280px] flex-col gap-8 md:gap-10">
-        <div className="reveal grid grid-cols-1 items-start gap-8 md:grid-cols-3 md:gap-5">
-          <div className="hidden md:block" aria-hidden />
+        <div className="reveal grid grid-cols-1 items-start gap-8 md:grid-cols-3 md:gap-2.5">
+          <div className={sectionGridSpacer} aria-hidden />
 
           <div className="flex flex-col gap-10 md:col-span-2 md:gap-12">
             <div
@@ -60,14 +60,14 @@ export default function TestimonialSection({
 
             <blockquote className="m-0 max-w-prose border-0 p-0">
               <p className={`text-balance ${sectionHeadline} leading-[1.2] text-white`}>
-                “{quote}
+                “{quote}”
               </p>
             </blockquote>
           </div>
         </div>
 
-        <div className="reveal grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5" data-delay="1">
-          <div className="hidden md:block" aria-hidden />
+        <div className="reveal grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-2.5" data-delay="1">
+          <div className={sectionGridSpacer} aria-hidden />
 
           <footer className="flex flex-col gap-1 md:col-span-2">
             <cite className="not-italic text-lg font-medium leading-relaxed tracking-[-0.02em] text-white md:text-xl">

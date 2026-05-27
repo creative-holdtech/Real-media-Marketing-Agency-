@@ -190,16 +190,16 @@ export function MobileMenu() {
           <div className="space-y-1">
             <div className="text-[9px] uppercase tracking-[0.24em] text-white/25">Write</div>
             <a
-              href="mailto:hello@r-m.studio"
+              href="mailto:info@realmedia.ink"
               onClick={close}
               className="block text-white/70 hover:text-white transition-colors normal-case tracking-normal"
             >
-              hello@r-m.studio
+              info@realmedia.ink
             </a>
           </div>
           <div className="space-y-1">
             <div className="text-[9px] uppercase tracking-[0.24em] text-white/25">Located</div>
-            <div className="text-white/70 normal-case tracking-normal">Kyiv · EU · MENA</div>
+            <div className="text-white/70 normal-case tracking-normal">Warsaw · EU · MENA</div>
           </div>
         </div>
 

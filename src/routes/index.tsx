@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
@@ -5,15 +6,22 @@ import { AboutSection } from "@/components/about-section";
 import { CasesSection } from "@/components/cases-section";
 import { ServicesSection } from "@/components/services-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
-import { InsightsHeroSection } from "@/components/insights-hero-section";
 import { PagePreloader } from "@/components/page-preloader";
-import { UnifiedCTA } from "@/components/unified-cta";
+import { SectionShellSkeleton } from "@/components/section-shell-skeleton";
 import TestimonialSection from "@/components/ui/testimonials";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { posts } from "@/lib/posts";
 import heroBg from "@/assets/hero-bg.png";
 
+const InsightsHeroSection = lazy(() =>
+  import("@/components/insights-hero-section").then((m) => ({ default: m.InsightsHeroSection })),
+);
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    links: [{ rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
+  }),
   component: Index,
 });
 
@@ -73,13 +81,13 @@ function Index() {
             >
               <Link
                 to="/contact"
-                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] hover:-translate-y-0.5 transition-[background-color,transform] duration-150 ease-out"
+                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full bg-white text-black font-medium hover:bg-[#efeeea] hover:-translate-y-0.5 active:scale-[0.98] transition-[background-color,transform] duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#efeeea] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
               >
                 Start a project →
               </Link>
               <Link
                 to="/cases"
-                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 transition-all duration-300"
+                className="inline-flex rm-touch items-center text-[13px] px-6 py-3.5 rounded-full border border-white/20 text-white hover:border-white hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#efeeea] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
               >
                 See the work
               </Link>
@@ -93,13 +101,29 @@ function Index() {
 
       <AboutSection />
 
-      <TestimonialSection />
+      <div className="rm-defer-paint">
+        <TestimonialSection />
+      </div>
 
-      <ServicesSection />
+      <div className="rm-defer-paint">
+        <ServicesSection />
+      </div>
 
-      <CasesSection />
+      <div className="rm-defer-paint">
+        <CasesSection />
+      </div>
 
-      <InsightsHeroSection posts={insightPosts} />
+      <Suspense
+        fallback={
+          <div className="rm-defer-paint">
+            <SectionShellSkeleton blocks={2} minBlockHeight="320px" />
+          </div>
+        }
+      >
+        <div className="rm-defer-paint">
+          <InsightsHeroSection posts={insightPosts} />
+        </div>
+      </Suspense>
 
       <UnifiedCTA />
       </main>

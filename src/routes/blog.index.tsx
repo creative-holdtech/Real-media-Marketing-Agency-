@@ -58,14 +58,16 @@ function BlogPage() {
   const filtered = filterSource.filter((p) => active === "All" || p.category === active);
 
   const tickerWords = [
-    "Blog",
+    "Brand systems",
     "Strategy",
     "Positioning",
     "Performance",
-    "Brand systems",
+    "SEO",
+    "PR",
+    "SMM",
+    "Design",
     "Field notes",
     "EU · MENA",
-    "Since 2019",
   ];
 
   return (
@@ -111,9 +113,9 @@ function BlogPage() {
           <div className="grid grid-cols-12 gap-6 md:gap-12 items-end">
             <div className="col-span-12 md:col-span-3 reveal">
               <p className="text-[11px] uppercase tracking-[0.25em] text-white/40">
-                Blog — Vol. 14 · 2026
+                Blog — season · 2026
               </p>
-              <p className="mt-4 text-[12px] text-white/30">Issue №14</p>
+              <p className="mt-4 text-[12px] text-white/30">Issued by marketing geeks</p>
             </div>
             <div className="col-span-12 md:col-span-9">
               <h1

@@ -4,7 +4,10 @@ import {
   FramerTag,
   bodyCopy,
   bodyCopyStrong,
+  pricingCardSurface,
   sectionContainer,
+  sectionContentGrid,
+  sectionGridSpacer,
   sectionHeaderContent,
   sectionHeaderGrid,
   sectionHeadline,
@@ -12,6 +15,7 @@ import {
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
 import { TrustStatsDiagram } from "@/components/trust-stats-diagram";
+import { usePauseWhenOffscreen } from "@/hooks/use-pause-when-offscreen";
 
 const metaCards = [
   {
@@ -129,7 +133,7 @@ function Tag({ children }: { children: string }) {
 function MetaCard({ label, value, className }: { label: string; value: string; className?: string }) {
   return (
     <article
-      className={`flex min-h-[200px] flex-col justify-between overflow-hidden rounded-xl bg-white p-6 md:min-h-[220px] ${className ?? ""}`}
+      className={`flex min-h-[200px] flex-col justify-between overflow-hidden p-6 md:min-h-[220px] ${pricingCardSurface} ${className ?? ""}`}
     >
       <p className="text-balance text-[clamp(1.5rem,2.5vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.06em] text-black">
         {label}
@@ -144,47 +148,45 @@ function MetaCard({ label, value, className }: { label: string; value: string; c
 
 export function AboutSection() {
   const { ref, inView } = useInView<HTMLElement>();
+  const { ref: marqueeRef, paused: marqueePaused } = usePauseWhenOffscreen<HTMLDivElement>();
 
   return (
     <section ref={ref} id="studio" aria-label="Studio overview">
       <div className="rm-trust-stats border-b border-white/10 bg-[#0a0a0a] px-5 md:px-10">
         <div className="rm-trust-stats__inner mx-auto w-full max-w-[1280px]">
-          <div className="rm-trust-stats__marquee-band reveal">
-            <div className="rm-trust-stats__marquee-wrap w-full">
-              <div className="rm-trust-stats__marquee">
-                <div
-                  className="marquee relative w-full overflow-hidden"
-                  style={{
-                    maskImage:
-                      "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
-                    WebkitMaskImage:
-                      "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
-                  }}
-                >
-                  <div className="marquee-track flex w-max items-center">
-                    {Array.from({ length: 2 }).flatMap((_, dup) =>
-                      trustBrands.flatMap((b) => [
-                        <span
-                          key={`${dup}-${b}`}
-                          aria-hidden={dup === 1}
-                          className="rm-trust-stats__marquee-brand whitespace-nowrap"
-                        >
-                          {b}
-                        </span>,
-                        <span
-                          key={`${dup}-${b}-dot`}
-                          aria-hidden
-                          className="rm-trust-stats__marquee-dot"
-                        />,
-                      ]),
-                    )}
-                  </div>
-                </div>
+          <div className="rm-trust-stats__marquee reveal">
+            <div
+              ref={marqueeRef}
+              className={[
+                "marquee relative w-full overflow-hidden",
+                marqueePaused ? "marquee--paused" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+              style={{
+                maskImage:
+                  "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%)",
+              }}
+            >
+              <div className="marquee-track flex w-max items-center">
+                {Array.from({ length: 2 }).flatMap((_, dup) =>
+                  trustBrands.map((b) => (
+                    <span
+                      key={`${dup}-${b}`}
+                      aria-hidden={dup === 1}
+                      className="rm-trust-stats__marquee-brand whitespace-nowrap"
+                    >
+                      {b}
+                    </span>
+                  )),
+                )}
               </div>
             </div>
           </div>
 
-          <div className="rm-trust-stats__diagram w-full reveal" data-delay="1">
+          <div className="rm-trust-stats__diagram reveal" data-delay="1">
             <TrustStatsDiagram
               stats={[
                 {
@@ -212,43 +214,44 @@ export function AboutSection() {
 
       <div className={sectionShell}>
         <div className={sectionContainer}>
-        <div className={sectionHeaderGrid}>
-          <div className="reveal" data-delay="1">
-            <Tag>Marketing agency</Tag>
-          </div>
+          <div className={sectionHeaderGrid}>
+            <div className="reveal" data-delay="1">
+              <Tag>Marketing agency</Tag>
+            </div>
 
-          <div className={`${sectionHeaderContent} flex flex-col gap-10`} data-delay="2">
-            <TextReveal
-              text="We don't bring ideas. We come with a plan."
-              className={`w-full ${sectionHeadline}`}
-            />
+            <div className={`${sectionHeaderContent} flex flex-col gap-8 md:gap-10`} data-delay="2">
+              <h2 className="sr-only">We don&apos;t bring ideas. We come with a plan.</h2>
+              <TextReveal
+                text="We don't bring ideas. We come with a plan."
+                className={`w-full ${sectionHeadline}`}
+              />
 
-            <div className="flex max-w-[60%] flex-col gap-5">
-              <p className={bodyCopyStrong}>
-                A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming
-                inside out.
-              </p>
-              <p className={bodyCopy}>
-                10 practitioners to make your product seen, trusted, and bought.
-              </p>
-              <p className={bodyCopy}>No corporate layers. Clear deliverables only.</p>
-              <p className={bodyCopy}>
-                Decisions in hours, not weeks. Output you can ship the same day.
-              </p>
+              <div className="flex max-w-prose flex-col gap-4 md:gap-5">
+                <p className={bodyCopyStrong}>
+                  A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming
+                  inside out.
+                </p>
+                <p className={bodyCopy}>
+                  10 practitioners to make your product seen, trusted, and bought.
+                </p>
+                <p className={bodyCopy}>No corporate layers. Clear deliverables only.</p>
+                <p className={bodyCopy}>
+                  Decisions in hours, not weeks. Output you can ship the same day.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          className="reveal grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-3 md:gap-2"
-          data-delay="3"
-        >
-          <div className="hidden md:col-start-1 md:row-span-2 md:row-start-1 md:block" aria-hidden />
+          <div className={`reveal ${sectionContentGrid} sm:grid-cols-2`} data-delay="3">
+            <div
+              className={`${sectionGridSpacer} md:col-start-1 md:row-span-2 md:row-start-1`}
+              aria-hidden
+            />
 
-          {metaCards.map((card) => (
-            <MetaCard key={card.label} {...card} />
-          ))}
-        </div>
+            {metaCards.map((card) => (
+              <MetaCard key={card.label} {...card} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

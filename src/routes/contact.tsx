@@ -5,8 +5,16 @@ import type { LucideIcon } from "lucide-react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
+import { engagementPrefillMessage } from "@/lib/engagements";
 
 export const Route = createFileRoute("/contact")({
+  validateSearch: (search: Record<string, unknown>) => {
+    const engagement = search.engagement;
+    if (engagement === "sprint" || engagement === "marathon") {
+      return { engagement };
+    }
+    return {};
+  },
   head: () => ({
     meta: [
       { title: "Contact — Let's talk | R—M" },
@@ -49,7 +57,9 @@ const socialLinks: {
 
 function ContactPage() {
   useReveal();
+  const { engagement } = Route.useSearch();
   const [sent, setSent] = useState(false);
+  const messagePrefill = engagementPrefillMessage(engagement);
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
@@ -135,9 +145,12 @@ function ContactPage() {
               onSubmit={(e) => {
                 e.preventDefault();
                 const data = new FormData(e.currentTarget);
+                const engagementLine = engagement
+                  ? `Engagement: ${engagement}\n`
+                  : "";
                 const params = new URLSearchParams({
                   subject: `Contact — ${data.get("name") ?? ""} · ${data.get("company") ?? ""}`,
-                  body: `Name: ${data.get("name") ?? ""}\nCompany: ${data.get("company") ?? ""}\nEmail: ${data.get("email") ?? ""}\n\nMessage:\n${data.get("message") ?? ""}`,
+                  body: `Name: ${data.get("name") ?? ""}\nCompany: ${data.get("company") ?? ""}\nEmail: ${data.get("email") ?? ""}\n${engagementLine}\nMessage:\n${data.get("message") ?? ""}`,
                 }).toString();
                 window.location.href = `mailto:info@realmedia.ink?${params}`;
                 setSent(true);
@@ -156,9 +169,11 @@ function ContactPage() {
                   Message
                 </label>
                 <textarea
+                  key={engagement ?? "default"}
                   name="message"
                   rows={4}
                   required
+                  defaultValue={messagePrefill}
                   placeholder="Tell us what you are building and where you are stuck."
                   className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
                 />

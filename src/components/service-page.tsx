@@ -71,7 +71,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
               <Link to="/audit" className="rm-btn rm-btn-primary">
-                Get a free audit
+                Get free audit
               </Link>
               <a href="#pillars" className="rm-btn rm-btn-secondary">
                 How we work

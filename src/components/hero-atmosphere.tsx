@@ -45,6 +45,8 @@ export function HeroAtmosphere({
         <motion.img
           src={imageSrc}
           alt=""
+          width={1024}
+          height={571}
           fetchPriority="high"
           decoding="async"
           className="rm-hero-atmosphere__bg-img"
