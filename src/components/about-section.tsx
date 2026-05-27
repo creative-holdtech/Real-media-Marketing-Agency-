@@ -140,10 +140,14 @@ function MetaCard({
   className?: string;
 }) {
   return (
-    <SurfaceCard className={`min-h-[200px] justify-between md:min-h-[220px] ${className ?? ""}`}>
-      <CardContent className={cn("flex h-full flex-col justify-between gap-6", surfaceCardPadding)}>
+    <SurfaceCard interactive className={`min-h-[220px] md:min-h-[240px] ${className ?? ""}`}>
+      <CardContent className={cn("flex h-full flex-col justify-between gap-0", surfaceCardPadding)}>
         <p className={textLabel}>{label}</p>
-        <p className={cn("max-w-prose whitespace-pre-line", textValue)}>{value}</p>
+        <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
+          <p className="whitespace-pre-line text-lg font-normal leading-snug text-[var(--rm-ink)] md:text-xl md:leading-[1.35]">
+            {value}
+          </p>
+        </div>
       </CardContent>
     </SurfaceCard>
   );
@@ -224,26 +228,35 @@ export function AboutSection() {
               className={sectionHeadline}
             />
 
-            <div className={cn(sectionInnerStack, "mt-6 md:mt-8")}>
-              <p className={bodyCopyStrong}>
+            <div className={cn(sectionInnerStack, "mt-6 md:mt-10")}>
+              <p className={cn(bodyCopyStrong, "border-l-2 border-white/20 pl-4 md:pl-5")}>
                 A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming
                 inside out.
               </p>
-              <p className={bodyCopy}>
-                10 practitioners to make your product seen, trusted, and bought.
-              </p>
-              <p className={bodyCopy}>No corporate layers. Clear deliverables only.</p>
-              <p className={bodyCopy}>
-                Decisions in hours, not weeks. Output you can ship the same day.
-              </p>
+              <ul className="flex flex-col gap-3 pt-1">
+                {[
+                  "10 practitioners to make your product seen, trusted, and bought.",
+                  "No corporate layers. Clear deliverables only.",
+                  "Decisions in hours, not weeks. Output you can ship the same day.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span className="mt-[0.3em] shrink-0 text-sm text-white/30">—</span>
+                    <span className={bodyCopy}>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </SectionHeader>
 
           <div className={`reveal ${sectionContentGrid} sm:grid-cols-2`} data-delay="1">
             <div
-              className={`${sectionGridSpacer} md:col-start-1 md:row-span-2 md:row-start-1`}
+              className="hidden md:flex md:col-start-1 md:row-span-2 md:row-start-1 md:items-end md:pb-2"
               aria-hidden
-            />
+            >
+              <span className="select-none text-[clamp(5rem,8vw,8rem)] font-bold leading-none tracking-[-0.06em] text-white/[0.05] pointer-events-none">
+                02
+              </span>
+            </div>
 
             {metaCards.map((card) => (
               <MetaCard key={card.label} {...card} />
