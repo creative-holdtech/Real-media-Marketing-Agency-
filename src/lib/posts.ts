@@ -2,9 +2,9 @@ import blogFeatured from "@/assets/blog-featured.jpg";
 import blog01 from "@/assets/blog-01.jpg";
 import blog02 from "@/assets/blog-02.jpg";
 import blog03 from "@/assets/blog-03.jpg";
-import blog04 from "@/assets/blog-04.jpg";
-import blog05 from "@/assets/blog-05.jpg";
-import blog06 from "@/assets/blog-06.jpg";
+import blog04 from "@/assets/blog-04.png";
+import blog05 from "@/assets/blog-05.png";
+import blog06 from "@/assets/blog-06.png";
 
 export type Post = {
   slug: string;
