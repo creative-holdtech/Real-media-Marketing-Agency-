@@ -2,10 +2,12 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 export const sectionShell =
-  "border-b border-white/10 bg-[#0a0a0a] px-5 py-16 md:px-10 md:py-[120px]";
-export const sectionContainer = "mx-auto flex w-full max-w-[1520px] flex-col gap-12 md:gap-16";
-export const sectionHeaderGrid = "grid grid-cols-1 items-start gap-8 md:grid-cols-3 md:gap-2.5";
+  "border-b border-white/10 bg-[#0a0a0a] px-5 py-14 md:px-10 md:py-20";
+export const sectionContainer = "mx-auto flex w-full max-w-[1280px] flex-col gap-10 md:gap-12";
+export const sectionHeaderGrid = "grid grid-cols-1 items-start gap-6 md:grid-cols-3 md:gap-2.5";
 export const sectionHeaderContent = "reveal md:col-span-2 md:max-w-[64%]";
+export const sectionHeadline =
+  "text-[clamp(1.625rem,2.6vw,2.375rem)] font-semibold leading-[1.12] tracking-[-0.06em]";
 export const bodyCopy =
   "text-[18px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 md:text-[20px]";
 export const bodyCopyStrong =

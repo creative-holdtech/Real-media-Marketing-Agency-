@@ -8,6 +8,7 @@ import {
   sectionContainer,
   sectionHeaderContent,
   sectionHeaderGrid,
+  sectionHeadline,
   sectionShell,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
@@ -206,7 +207,7 @@ export function AboutSection() {
           <div className={`${sectionHeaderContent} flex flex-col gap-10`} data-delay="2">
             <TextReveal
               text="We don't bring ideas. We come with a plan."
-              className="w-full text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[110%] tracking-[-0.06em]"
+              className={`w-full ${sectionHeadline}`}
             />
 
             <div className="flex max-w-[60%] flex-col gap-5">

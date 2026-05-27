@@ -6,6 +6,7 @@ import {
   sectionContainer,
   sectionHeaderContent,
   sectionHeaderGrid,
+  sectionHeadline,
   sectionShell,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
@@ -102,21 +103,21 @@ function CaseBentoCard({
   return (
     <Link
       to={to}
-      className="group flex aspect-[0.77] min-h-[420px] flex-col justify-between gap-6 overflow-hidden rounded-3xl bg-white px-6 pb-6 pt-8 md:min-h-[478px]"
+      className="group flex min-h-[340px] flex-col justify-between gap-5 overflow-hidden rounded-3xl bg-white px-5 pb-5 pt-6 md:min-h-[400px] md:px-6 md:pb-6 md:pt-7"
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 md:gap-5">
         <InnerTag>{tag}</InnerTag>
-        <p className="text-[24px] font-semibold leading-[1.3] tracking-[-0.04em] text-neutral-900">
+        <p className="text-[18px] font-semibold leading-[1.35] tracking-[-0.04em] text-neutral-900 md:text-[20px]">
           {title}
         </p>
       </div>
 
-      <div className="flex flex-col items-center gap-12">
+      <div className="flex flex-col items-center gap-8 md:gap-10">
         <div className="flex w-full flex-col items-center text-center">
-          <p className="text-[18px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-500 md:text-[20px]">
+          <p className="text-[16px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-500 md:text-[18px]">
             {label}
           </p>
-          <p className="mt-1 text-[32px] font-semibold leading-[1.3] tracking-[-0.04em] text-neutral-900 tabular-nums">
+          <p className="mt-1 text-[26px] font-semibold leading-[1.3] tracking-[-0.04em] text-neutral-900 tabular-nums md:text-[28px]">
             {metric}
           </p>
         </div>
@@ -130,7 +131,7 @@ function CaseBentoCard({
 export function CasesSection() {
   return (
     <section id="cases" aria-labelledby="cases-heading" className={sectionShell}>
-      <div className={`${sectionContainer} gap-16 md:gap-20`}>
+      <div className={sectionContainer}>
         <div className={sectionHeaderGrid}>
           <div className="reveal">
             <FramerTag>Selected case studies</FramerTag>
@@ -142,7 +143,7 @@ export function CasesSection() {
             </h2>
             <TextReveal
               text="Results we deliver."
-              className="w-[92%] text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[110%] tracking-[-0.06em]"
+              className={`w-[92%] ${sectionHeadline}`}
             />
           </div>
         </div>

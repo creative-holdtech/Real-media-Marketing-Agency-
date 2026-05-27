@@ -6,6 +6,7 @@ import {
   PlusIcon,
   sectionContainer,
   sectionHeaderGrid,
+  sectionHeadline,
   sectionShell,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
@@ -28,7 +29,7 @@ function BlogTile({ post }: { post: Post }) {
       params={{ slug: post.slug }}
       className="group flex flex-col gap-4"
     >
-      <div className="aspect-[0.793] overflow-hidden rounded-3xl bg-white/5">
+      <div className="aspect-[4/5] max-h-[280px] overflow-hidden rounded-3xl bg-white/5 md:max-h-[320px]">
         <img
           src={post.image}
           alt=""
@@ -39,7 +40,7 @@ function BlogTile({ post }: { post: Post }) {
         <p className="text-xs font-medium tracking-[-0.04em] text-white/45">
           {post.category.toUpperCase()} · {post.date.toUpperCase()} · {post.read.toUpperCase()}
         </p>
-        <h3 className="text-[20px] font-semibold leading-[1.4] tracking-[-0.04em] text-white md:text-[22px]">
+        <h3 className="text-[18px] font-semibold leading-[1.4] tracking-[-0.04em] text-white md:text-[20px]">
           {post.title}
         </h3>
       </div>
@@ -54,7 +55,7 @@ function BlogListItem({ post }: { post: Post }) {
       params={{ slug: post.slug }}
       className="group block py-2 md:py-0"
     >
-      <h3 className="text-[20px] font-semibold leading-[1.35] tracking-[-0.04em] text-white transition-colors group-hover:text-white/80 md:text-[22px]">
+      <h3 className="text-[18px] font-semibold leading-[1.35] tracking-[-0.04em] text-white transition-colors group-hover:text-white/80 md:text-[20px]">
         {post.title}
       </h3>
       <p className="mt-3 text-xs font-medium tracking-[-0.04em] text-white/45">
@@ -84,7 +85,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
           <div className="reveal md:col-span-2 md:max-w-[64%]" data-delay="1">
             <TextReveal
               text="This quarter we are writing on positioning under pressure, pricing in regulated markets, and why agency reporting is theater."
-              className="w-[92%] text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[110%] tracking-[-0.06em]"
+              className={`w-[92%] max-w-prose ${sectionHeadline} leading-[1.2]`}
             />
           </div>
         </div>

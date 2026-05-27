@@ -2,6 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from "motion/react"
 import { useRef } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
+import { sectionHeadline } from "@/components/framer-section";
 
 type TestimonialSectionProps = {
   quote?: string;
@@ -41,11 +42,11 @@ export default function TestimonialSection({
   return (
     <section
       aria-label="Client testimonial"
-      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden border-b border-white/10 px-5 py-16 md:px-10 md:py-20"
+      className="relative flex min-h-[min(720px,85svh)] flex-col justify-end overflow-hidden border-b border-white/10 px-5 py-16 md:px-10 md:py-20"
     >
       <QuoteBackground />
 
-      <div className="relative z-[1] mx-auto flex w-full max-w-[1520px] flex-col gap-10 md:gap-12">
+      <div className="relative z-[1] mx-auto flex w-full max-w-[1280px] flex-col gap-8 md:gap-10">
         <div className="reveal grid grid-cols-1 items-start gap-8 md:grid-cols-3 md:gap-5">
           <div className="hidden md:block" aria-hidden />
 
@@ -57,8 +58,8 @@ export default function TestimonialSection({
               F
             </div>
 
-            <blockquote className="m-0 border-0 p-0">
-              <p className="text-balance text-[clamp(1.75rem,4.5vw,3rem)] font-semibold leading-[1em] tracking-[-0.05em] text-white md:text-[48px]">
+            <blockquote className="m-0 max-w-prose border-0 p-0">
+              <p className={`text-balance ${sectionHeadline} leading-[1.2] text-white`}>
                 “{quote}
               </p>
             </blockquote>
@@ -69,7 +70,7 @@ export default function TestimonialSection({
           <div className="hidden md:block" aria-hidden />
 
           <footer className="flex flex-col gap-1 md:col-span-2">
-            <cite className="not-italic text-[22px] font-medium leading-[1.3] tracking-[-0.04em] text-white md:text-[28px]">
+            <cite className="not-italic text-lg font-medium leading-relaxed tracking-[-0.02em] text-white md:text-xl">
               {authorName}
             </cite>
           </footer>
