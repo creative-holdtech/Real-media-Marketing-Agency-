@@ -28,11 +28,10 @@ function BlogTile({ post }: { post: Post }) {
       params={{ slug: post.slug }}
       className="group flex flex-col gap-4"
     >
-      <div className="aspect-[4/5] max-h-[280px] overflow-hidden rounded-3xl bg-white/5 md:max-h-[320px]">
-        <img
-          src={post.image}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+      <div className="aspect-[4/5] max-h-[280px] overflow-hidden rounded-3xl bg-[#0c0c0c] ring-1 ring-inset ring-white/[0.06] md:max-h-[320px]">
+        <div
+          aria-hidden
+          className="h-full w-full bg-gradient-to-br from-white/[0.05] via-[#0a0a0a] to-black transition-transform duration-500 group-hover:scale-[1.03]"
         />
       </div>
       <div className="flex flex-col gap-2">

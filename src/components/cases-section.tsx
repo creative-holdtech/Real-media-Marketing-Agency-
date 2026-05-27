@@ -136,13 +136,15 @@ export function CasesSection() {
         </div>
 
         <div className="reveal grid grid-cols-1 gap-2 md:grid-cols-3 md:items-stretch md:gap-2" data-delay="2">
-          <div className="flex flex-col justify-end md:max-w-[280px]">
-            <FramerPrimaryButton to="/cases">View all cases →</FramerPrimaryButton>
-          </div>
+          <div className="hidden md:block" />
 
           {featuredCases.map((item) => (
             <CaseBentoCard key={item.key} {...item} />
           ))}
+        </div>
+
+        <div className="reveal flex justify-end" data-delay="3">
+          <FramerPrimaryButton to="/cases">View all cases →</FramerPrimaryButton>
         </div>
       </div>
     </section>

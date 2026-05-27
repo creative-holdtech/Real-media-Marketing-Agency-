@@ -1,33 +1,32 @@
 import type { ReactNode } from "react";
 
-import { bodyCopy, sectionHeadline, sectionHeaderGrid } from "@/components/framer-section";
+import { bodyCopy, sectionHeaderGrid } from "@/components/framer-section";
 
-type TrustStatsDiagramProps = {
-  topValue: ReactNode;
-  topCopy: ReactNode;
-  bottomValue: ReactNode;
-  bottomCopy: ReactNode;
+type TrustStat = {
+  value: ReactNode;
+  copy: ReactNode;
 };
 
-export function TrustStatsDiagram({
-  topValue,
-  topCopy,
-  bottomValue,
-  bottomCopy,
-}: TrustStatsDiagramProps) {
+type TrustStatsDiagramProps = {
+  stats: readonly TrustStat[];
+};
+
+export function TrustStatsDiagram({ stats }: TrustStatsDiagramProps) {
   return (
-    <div className={`${sectionHeaderGrid} w-full`}>
+    <div className={`${sectionHeaderGrid} w-full md:gap-2`}>
       <div className="hidden md:block" aria-hidden="true" />
 
-      <div className="flex flex-col gap-2 text-left">
-        <p className={`${sectionHeadline} text-white tabular-nums`}>{topValue}</p>
-        <p className={`max-w-[22ch] text-balance ${bodyCopy}`}>{topCopy}</p>
-      </div>
-
-      <div className="flex flex-col gap-2 text-left">
-        <p className={`${sectionHeadline} text-white tabular-nums`}>{bottomValue}</p>
-        <p className={`max-w-[22ch] text-balance ${bodyCopy}`}>{bottomCopy}</p>
-      </div>
+      {stats.map((stat, index) => (
+        <div
+          key={index}
+          className={`rm-trust-stats__stat flex flex-col gap-3 text-left ${
+            index > 0 ? "md:border-l md:border-white/10 md:pl-8" : ""
+          }`}
+        >
+          <p className="rm-trust-stats__stat-value">{stat.value}</p>
+          <p className={`max-w-[20ch] text-balance ${bodyCopy}`}>{stat.copy}</p>
+        </div>
+      ))}
     </div>
   );
 }

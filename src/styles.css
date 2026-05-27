@@ -744,17 +744,42 @@ button {
 
 /* ============ Trust + stats — brand marquee + metrics ============ */
 .rm-trust-stats {
-  min-height: auto;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+.rm-trust-stats::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 0%, rgba(255, 255, 255, 0.05), transparent 68%),
+    radial-gradient(ellipse 55% 45% at 82% 100%, rgba(255, 255, 255, 0.035), transparent 72%);
 }
 
 .rm-trust-stats__inner {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  gap: clamp(1.75rem, 5vh, 3rem);
+  gap: clamp(1.25rem, 4vh, 2rem);
   width: 100%;
-  padding-block: clamp(2.5rem, 7vh, 4rem);
+  padding-block: clamp(1.25rem, 4vh, 2.5rem) clamp(2rem, 6vh, 4rem);
+}
+
+.rm-trust-stats__marquee-band {
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  border-block: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.025);
+  padding-block: clamp(0.5rem, 1.2vh, 0.75rem);
 }
 
 .rm-trust-stats__marquee-wrap {
@@ -767,32 +792,58 @@ button {
 }
 
 .rm-trust-stats__marquee .marquee-track {
-  gap: clamp(2rem, 5vw, 3.5rem);
+  gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 
-.rm-trust-stats__marquee .marquee-track span {
-  font-size: clamp(1.125rem, 2.4vw, 1.5rem);
+.rm-trust-stats__marquee-brand {
+  font-size: clamp(0.9375rem, 1.8vw, 1.25rem);
   font-weight: 500;
   letter-spacing: -0.02em;
-  color: rgba(255, 255, 255, 0.82);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.rm-trust-stats__marquee-dot {
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
 }
 
 .rm-trust-stats__diagram {
   width: 100%;
+  margin-top: auto;
+  padding-top: clamp(1.25rem, 3vh, 2rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rm-trust-stats__stat-value {
+  font-size: clamp(2.75rem, 8vw, 5.5rem);
+  font-weight: 600;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  color: #efeee9;
 }
 
 @media (max-width: 767px) {
   .rm-trust-stats__inner {
-    gap: 2rem;
-    padding-block: 2rem 2.5rem;
+    gap: clamp(1rem, 3vh, 1.5rem);
+    padding-block: clamp(1rem, 3vh, 1.5rem) clamp(1.5rem, 5vh, 2.5rem);
   }
 
   .rm-trust-stats__marquee-wrap {
-    padding-inline: 1.5rem;
+    padding-inline: 0;
   }
 
-  .rm-trust-stats__marquee .marquee-track span {
-    color: rgba(255, 255, 255, 0.82);
+  .rm-trust-stats__stat + .rm-trust-stats__stat {
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .rm-trust-stats__stat-value {
+    font-size: clamp(2.25rem, 12vw, 3.25rem);
   }
 }
 
