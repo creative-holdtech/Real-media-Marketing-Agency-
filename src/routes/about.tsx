@@ -148,15 +148,6 @@ function Tag({ children }: { children: string }) {
 function AboutPage() {
   useReveal();
 
-  const tickerWords = [
-    "Senior operators only",
-    "Strategy + brand",
-    "AI · Fintech · Web3 · Lifestyle",
-    "Kyiv · Berlin · Dubai · Lisbon",
-    "Est. 2025",
-    "Quiet · Clarity · Compounding",
-  ];
-
   return (
     <div className="rm-page bg-[#0a0a0a] text-white selection:bg-white selection:text-black">
       <a href="#main" className="skip-link">
@@ -165,21 +156,6 @@ function AboutPage() {
       <SiteHeader variant="dark" />
 
       <main id="main">
-        {/* ===== TICKER ===== */}
-        <div
-          className="marquee overflow-hidden border-b border-white/10 pt-24 md:pt-28"
-          aria-hidden
-        >
-          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-white/40">
-            {[...tickerWords, ...tickerWords, ...tickerWords].map((w, i) => (
-              <span key={i} className="flex items-center gap-12">
-                {w}
-                <span className="inline-block w-1 h-1 rounded-full bg-white/25" />
-              </span>
-            ))}
-          </div>
-        </div>
-
         {/* ===== HERO ===== */}
         <HeroSection />
 
