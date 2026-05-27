@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const insightPosts = posts.slice(0, 3);
+const insightPosts = posts;
 
 function AmbientBlobs() {
   return (

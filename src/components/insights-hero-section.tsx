@@ -52,7 +52,7 @@ function BlogListItem({ post }: { post: Post }) {
     <Link
       to="/blog/$slug"
       params={{ slug: post.slug }}
-      className="group block border-t border-white/10 py-8 first:border-t-0 first:pt-0"
+      className="group block py-2 md:py-0"
     >
       <h3 className="text-[20px] font-semibold leading-[1.35] tracking-[-0.04em] text-white transition-colors group-hover:text-white/80 md:text-[22px]">
         {post.title}
@@ -89,14 +89,12 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
           </div>
         </div>
 
-        <div className="reveal grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-3" data-delay="2">
-          <div className="flex flex-col justify-between gap-8 py-4 md:max-w-[360px] md:gap-8 md:pb-16 md:pt-4">
+        <div className="reveal grid grid-cols-1 gap-3 md:grid-cols-3 md:items-stretch md:gap-3" data-delay="2">
+          <div className="flex flex-col py-4 md:max-w-[360px] md:pt-4">
             <div className="flex w-[80%] items-start justify-between">
               <PlusIcon />
               <PlusIcon />
             </div>
-
-            <FramerPrimaryButton to="/blog">All articles →</FramerPrimaryButton>
           </div>
 
           <BlogTile post={firstPost} />
@@ -104,8 +102,15 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
         </div>
 
         {thirdPost ? (
-          <div className="reveal md:col-start-2 md:col-span-2" data-delay="3">
+          <div
+            className="reveal grid grid-cols-1 gap-6 border-t border-white/10 pt-8 md:grid-cols-3 md:items-end md:gap-3 md:border-t-0 md:pt-0"
+            data-delay="3"
+          >
+            <div className="hidden md:block" />
             <BlogListItem post={thirdPost} />
+            <div className="flex md:justify-end">
+              <FramerPrimaryButton to="/blog">All articles →</FramerPrimaryButton>
+            </div>
           </div>
         ) : null}
       </div>

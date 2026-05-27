@@ -3,8 +3,6 @@ import { Link } from "@tanstack/react-router";
 import {
   FramerPrimaryButton,
   FramerTag,
-  PlusIcon,
-  PlusRow,
   sectionContainer,
   sectionHeaderContent,
   sectionHeaderGrid,
@@ -138,27 +136,19 @@ export function CasesSection() {
             <FramerTag>Selected case studies</FramerTag>
           </div>
 
-          <div className={`${sectionHeaderContent} flex flex-col gap-10 md:gap-14`} data-delay="1">
-            <div className="flex flex-col gap-3">
-              <h2 id="cases-heading" className="sr-only">
-                Selected case studies
-              </h2>
-              <TextReveal
-                text="Results we deliver."
-                className="w-[92%] text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[110%] tracking-[-0.06em]"
-              />
-            </div>
-            <PlusRow className="opacity-80" />
+          <div className={sectionHeaderContent} data-delay="1">
+            <h2 id="cases-heading" className="sr-only">
+              Selected case studies
+            </h2>
+            <TextReveal
+              text="Results we deliver."
+              className="w-[92%] text-[clamp(2rem,4.5vw,3.5rem)] font-semibold leading-[110%] tracking-[-0.06em]"
+            />
           </div>
         </div>
 
-        <div className="reveal grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-3" data-delay="2">
-          <div className="flex flex-col justify-between gap-8 py-4 md:max-w-[360px] md:gap-8 md:pb-16 md:pt-4">
-            <div className="flex w-[80%] items-start justify-between">
-              <PlusIcon />
-              <PlusIcon />
-            </div>
-
+        <div className="reveal grid grid-cols-1 gap-3 md:grid-cols-3 md:items-stretch md:gap-3" data-delay="2">
+          <div className="flex flex-col justify-end md:max-w-[360px]">
             <FramerPrimaryButton to="/cases">View all cases →</FramerPrimaryButton>
           </div>
 
