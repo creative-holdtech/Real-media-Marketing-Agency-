@@ -123,7 +123,7 @@ const numbers = [
 /* ------------------------------------------------------------------ */
 function Tag({ children }: { children: string }) {
   return (
-    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-neutral-500 border border-neutral-300 rounded-full px-4 py-1.5">
+    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/50 border border-white/20 rounded-full px-4 py-1.5">
       {children}
     </span>
   );
@@ -145,7 +145,7 @@ function AboutPage() {
   ];
 
   return (
-    <div className="rm-page bg-[#f1f1f1] text-neutral-900 selection:bg-neutral-900 selection:text-white">
+    <div className="rm-page bg-[#0a0a0a] text-white selection:bg-white selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -153,12 +153,12 @@ function AboutPage() {
 
       <main id="main">
         {/* ===== TICKER ===== */}
-        <div className="marquee overflow-hidden border-b border-neutral-200 pt-24 md:pt-28" aria-hidden>
-          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-neutral-400">
+        <div className="marquee overflow-hidden border-b border-white/10 pt-24 md:pt-28" aria-hidden>
+          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-white/40">
             {[...tickerWords, ...tickerWords, ...tickerWords].map((w, i) => (
               <span key={i} className="flex items-center gap-12">
                 {w}
-                <span className="inline-block w-1 h-1 rounded-full bg-neutral-300" />
+                <span className="inline-block w-1 h-1 rounded-full bg-white/25" />
               </span>
             ))}
           </div>
@@ -202,7 +202,7 @@ function HeroSection() {
   return (
     <section
       aria-labelledby="page-title"
-      className="border-b border-neutral-300 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
+      className="border-b border-white/10 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
     >
       <div className="max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5 items-end">
@@ -211,28 +211,28 @@ function HeroSection() {
             <div>
               <h1
                 id="page-title"
-                className="reveal text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-neutral-900"
+                className="reveal text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-white"
               >
                 A small studio
                 <br />
-                <span className="text-neutral-400 font-normal">for founders who actually ship.</span>
+                <span className="text-white/40 font-normal">for founders who actually ship.</span>
               </h1>
             </div>
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
-              <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[480px]" data-delay="1">
+              <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]" data-delay="1">
                 Senior strategy, brand and growth for operators in AI, Fintech, Web3 and lifestyle.
                 Four people. No juniors, no subcontractors.
               </p>
               <div className="reveal flex items-center gap-3 flex-wrap" data-delay="2">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-neutral-900 rounded-full px-6 py-3 hover:bg-neutral-700 transition-colors duration-200"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-black bg-white rounded-full px-6 py-3 hover:bg-white/85 transition-colors duration-200"
                 >
                   Book an audit →
                 </Link>
                 <a
                   href="#verticals"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-900 border border-neutral-900 rounded-full px-6 py-3 hover:bg-neutral-900 hover:text-white transition-colors duration-200"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-3 hover:bg-white/10 transition-colors duration-200"
                 >
                   See the verticals
                 </a>
@@ -258,9 +258,8 @@ function HeroSection() {
 /* ================================================================== */
 function NumbersSection() {
   return (
-    <section aria-labelledby="numbers-heading" className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40">
+    <section aria-labelledby="numbers-heading" className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40">
       <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
-        {/* Tag + heading */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
           <div>
             <Tag>By the numbers</Tag>
@@ -268,18 +267,18 @@ function NumbersSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="numbers-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[18ch]"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
             >
               Seven years.{" "}
-              <span className="text-neutral-400 font-normal">Compounded across founder teams.</span>
+              <span className="text-white/40 font-normal">Compounded across founder teams.</span>
             </h2>
-            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]" data-delay="1">
               Five numbers that describe the studio better than any deck slide.
             </p>
           </div>
         </div>
 
-        {/* Number tiles */}
+        {/* Number tiles — white cards on dark bg */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-1">
           {numbers.map((n, i) => (
             <motion.div
@@ -288,7 +287,7 @@ function NumbersSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-8%" }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
-              className="bg-white rounded-2xl border border-neutral-200 p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
+              className="bg-white rounded-2xl p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
             >
               <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
                 {i === 0 ? "Capital raised" : i === 1 ? "Brands shipped" : "Retention"}
@@ -331,7 +330,7 @@ function ManifestoSection() {
     <section
       ref={ref}
       aria-labelledby="manifesto-heading"
-      className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40"
+      className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
     >
       <div className="max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
@@ -339,7 +338,7 @@ function ManifestoSection() {
             <Tag>The position</Tag>
             <h2 id="manifesto-heading" className="sr-only">Manifesto</h2>
           </div>
-          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.05em] text-neutral-900">
+          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.05em] text-white">
             {words.map((w, i) => (
               <ManifestoWord
                 key={i}
@@ -373,7 +372,7 @@ function ManifestoWord({
   const start = index / total;
   const end = Math.min(1, start + 1.4 / total);
   const opacity = useTransform(scrollYProgress, [start, end], [0.15, 1]);
-  const color = useTransform(scrollYProgress, [start, end], ["rgb(212,212,212)", "rgb(23,23,23)"]);
+  const color = useTransform(scrollYProgress, [start, end], ["rgba(255,255,255,0.15)", "rgba(255,255,255,1)"]);
 
   return (
     <motion.span style={reduce ? undefined : { color }} className="inline-block mr-[0.25em]">
@@ -392,7 +391,7 @@ function VerticalsSection() {
     <section
       id="verticals"
       aria-labelledby="verticals-heading"
-      className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40"
+      className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
     >
       <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
@@ -402,19 +401,19 @@ function VerticalsSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="verticals-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[18ch]"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
             >
               Four rooms{" "}
-              <span className="text-neutral-400 font-normal">we already know.</span>
+              <span className="text-white/40 font-normal">we already know.</span>
             </h2>
-            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]" data-delay="1">
               We don't chase categories. We go deep where our work compounds.
             </p>
           </div>
         </div>
 
         {/* Desktop accordion */}
-        <div className="hidden md:flex h-[520px] gap-2 rounded-2xl overflow-hidden border border-neutral-200">
+        <div className="hidden md:flex h-[520px] gap-2 rounded-2xl overflow-hidden border border-white/10">
           {verticals.map((v, i) => {
             const isActive = i === active;
             return (
@@ -479,7 +478,7 @@ function VerticalsSection() {
         {/* Mobile */}
         <div className="md:hidden grid grid-cols-1 gap-3">
           {verticals.map((v) => (
-            <div key={v.n} className="relative h-[300px] overflow-hidden rounded-2xl border border-neutral-200">
+            <div key={v.n} className="relative h-[300px] overflow-hidden rounded-2xl border border-white/10">
               <img src={v.img} alt="" className="absolute inset-0 w-full h-full object-cover saturate-[0.4] brightness-90" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10" />
               <div className="absolute inset-0 p-6 flex flex-col justify-between">
@@ -502,7 +501,7 @@ function VerticalsSection() {
 /* ================================================================== */
 function TeamSection() {
   return (
-    <section aria-labelledby="team-heading" className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40">
+    <section aria-labelledby="team-heading" className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40">
       <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
           <div>
@@ -511,11 +510,11 @@ function TeamSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="team-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[20ch]"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[20ch]"
             >
               The people who ship the work.
             </h2>
-            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]" data-delay="1">
               Three senior operators. Every engagement is led, not delegated.
             </p>
           </div>
@@ -529,24 +528,26 @@ function TeamSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-8%" }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
-              className="group"
+              className="group bg-white rounded-2xl overflow-hidden"
             >
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-200 mb-5">
+              <div className="aspect-[4/5] overflow-hidden bg-neutral-100">
                 <img
                   src={person.photo}
                   alt={`${person.name}, ${person.role}`}
                   className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
                 />
               </div>
-              <p className="text-[15px] leading-[1.6] text-neutral-500 mb-4 max-w-[38ch]">
-                {person.blurb}
-              </p>
-              <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
-                {person.name}
-              </h3>
-              <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-neutral-400">
-                {person.role}
-              </p>
+              <div className="p-6">
+                <p className="text-[15px] leading-[1.6] text-neutral-500 mb-4 max-w-[38ch]">
+                  {person.blurb}
+                </p>
+                <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
+                  {person.name}
+                </h3>
+                <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-neutral-400">
+                  {person.role}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
