@@ -1,3 +1,8 @@
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { useRef } from "react";
+
+import quoteBg from "@/assets/engage-bg.jpg";
+
 type TestimonialSectionProps = {
   quote?: string;
   authorName?: string;
@@ -7,85 +12,73 @@ type TestimonialSectionProps = {
 const defaultQuote =
   "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We're happy to recommend them as a fantastic team to work with";
 
-const brokenQuoteLines = [
-  {
-    text: "Working with Real Media",
-    className: "md:ml-0",
-  },
-  {
-    text: "has been an excellent",
-    className: "font-light text-white/68 md:ml-[7%]",
-  },
-  {
-    text: "experience for Finup.",
-    className: "md:ml-[2%]",
-  },
-  {
-    text: "They are reliable, creative,",
-    className: "font-light text-white/68 md:ml-[11%]",
-  },
-  {
-    text: "and always professional",
-    className: "md:ml-[5%]",
-  },
-  {
-    text: "in their approach.",
-    className: "font-light text-white/68 md:ml-[14%]",
-  },
-  {
-    text: "We're happy to recommend them",
-    className: "md:ml-[8%]",
-  },
-  {
-    text: "as a fantastic team to work with",
-    className: "font-light text-white/68 md:ml-[16%]",
-  },
-];
+function QuoteBackground() {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+
+  return (
+    <div ref={ref} aria-hidden className="absolute inset-0 overflow-hidden">
+      <motion.img
+        src={quoteBg}
+        alt=""
+        loading="lazy"
+        style={reduce ? undefined : { y, scale: 1.12 }}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-[rgb(10,10,10)]/40" />
+    </div>
+  );
+}
 
 export default function TestimonialSection({
   quote = defaultQuote,
   authorName = "Nikita PR",
   authorRole = "FinUp",
 }: TestimonialSectionProps) {
-  const lines =
-    quote === defaultQuote
-      ? brokenQuoteLines
-      : [
-          {
-            text: quote,
-            className: "",
-          },
-        ];
-
   return (
-    <section className="relative overflow-hidden px-6 py-20 sm:px-10 md:px-20 md:py-28 lg:px-32">
-      <div className="mx-auto grid max-w-[1200px] grid-cols-12 gap-x-6 gap-y-12 md:gap-x-12">
-        <blockquote className="reveal col-span-12 md:col-span-9 md:col-start-4" data-delay="1">
-          <p className="text-[28px] font-medium leading-[1.01] tracking-[-0.03em] text-white sm:text-[38px] md:text-[46px] lg:text-[54px]">
-            <span className="sr-only">{quote}</span>
-            <span aria-hidden className="inline">
-              {lines.map((line, index) => (
-                <span
-                  key={line.text}
-                  className={`block max-w-[30ch] text-balance ${line.className}`}
-                >
-                  {index === 0 && <span className="mr-2 text-rm-accent">"</span>}
-                  {line.text}
-                  {index === lines.length - 1 && <span className="ml-1 text-rm-accent">"</span>}
-                </span>
-              ))}
-            </span>
-          </p>
+    <section
+      aria-label="Client testimonial"
+      className="relative flex min-h-[100dvh] flex-col justify-end overflow-hidden px-6 py-16 sm:px-10 md:px-10 md:py-20"
+    >
+      <QuoteBackground />
 
-          <footer className="mt-12 flex flex-col gap-1.5 md:mt-16">
-            <cite className="not-italic text-[11px] font-medium uppercase tracking-[0.24em] text-white/85">
+      <div className="relative z-[1] mx-auto flex w-full max-w-[1520px] flex-col gap-10 md:gap-12">
+        <div className="reveal grid grid-cols-1 items-start gap-8 md:grid-cols-3 md:gap-5">
+          <div className="hidden md:block" aria-hidden />
+
+          <div className="flex flex-col gap-10 md:col-span-2 md:gap-12">
+            <div
+              className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white/10 text-sm font-semibold tracking-[-0.04em] text-white backdrop-blur-sm"
+              aria-hidden
+            >
+              F
+            </div>
+
+            <blockquote className="m-0 border-0 p-0">
+              <p className="text-balance text-[clamp(1.75rem,4.5vw,3rem)] font-semibold leading-[1em] tracking-[-0.05em] text-white md:text-[48px]">
+                “{quote}
+              </p>
+            </blockquote>
+          </div>
+        </div>
+
+        <div className="reveal grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5" data-delay="1">
+          <div className="hidden md:block" aria-hidden />
+
+          <footer className="flex flex-col gap-1 md:col-span-2">
+            <cite className="not-italic text-[22px] font-medium leading-[1.3] tracking-[-0.04em] text-white md:text-[28px]">
               {authorName}
             </cite>
-            <span className="text-[11px] uppercase tracking-[0.24em] text-white/40">
+            <p className="text-[18px] font-medium leading-[1.3] tracking-[-0.04em] text-white/80 md:text-[20px]">
               {authorRole}
-            </span>
+            </p>
           </footer>
-        </blockquote>
+        </div>
       </div>
     </section>
   );
