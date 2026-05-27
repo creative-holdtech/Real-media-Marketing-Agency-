@@ -80,7 +80,7 @@ export function MagneticButton({
 }
 
 /* ---------- Tilt card (3D parallax on hover) ---------- */
-function TiltCard({
+export function TiltCard({
   children,
   className,
   max = 8,

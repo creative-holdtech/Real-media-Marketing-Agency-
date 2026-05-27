@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useRef, useState } from "react";
+import { motion, useMotionTemplate, useMotionValue, useSpring, useTransform } from "motion/react";
 
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
+import { Reveal, TiltCard } from "@/components/motion-bits";
 import { useReveal } from "@/hooks/use-reveal";
 
 import teamRm from "@/assets/team-rm.jpg";
@@ -11,6 +12,10 @@ import teamAl from "@/assets/team-al.jpg";
 import teamSk from "@/assets/team-sk.jpg";
 import teamJd from "@/assets/team-jd.jpg";
 import heroBloom from "@/assets/hero-bloom.jpg";
+import nicheAi from "@/assets/niche-ai.jpg";
+import nicheFintech from "@/assets/niche-fintech.jpg";
+import nicheHospitality from "@/assets/niche-hospitality.jpg";
+import nicheB2b from "@/assets/niche-b2b.jpg";
 
 const teamPhotos = [teamRm, teamAl, teamSk, teamJd];
 
@@ -86,25 +91,25 @@ const verticals = [
     n: "01",
     title: "AI SaaS",
     body: "Positioning, pricing models, launch execution for AI-native software to capture early category authority.",
-    img: "https://picsum.photos/seed/rm-vertical-ai-2/1200/1600",
+    img: nicheAi,
   },
   {
     n: "02",
     title: "Fintech + Web3",
     body: "Brand architecture, positioning, growth infrastructure for regulated finance and web3 protocols to secure user conviction.",
-    img: "https://picsum.photos/seed/rm-vertical-fintech-7/1200/1600",
+    img: nicheFintech,
   },
   {
     n: "03",
     title: "Cybersecurity",
     body: "Positioning, category strategy, demand generation for DevSecOps and security tools to scale enterprise pipeline.",
-    img: "https://picsum.photos/seed/rm-vertical-cyber-11/1200/1600",
+    img: nicheHospitality,
   },
   {
     n: "04",
     title: "iGaming",
     body: "Brand architecture, acquisition strategy, retention infrastructure for entertainment and gaming platforms to maximize user LTV.",
-    img: "https://picsum.photos/seed/rm-vertical-igaming-22/1200/1600",
+    img: nicheB2b,
   },
 ];
 
@@ -130,6 +135,39 @@ const numbers = [
     tag: "Operating",
   },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  SPLIT REVEAL                                                       */
+/* ------------------------------------------------------------------ */
+function SplitReveal({
+  children,
+  className,
+  delay = 0,
+  wordDelay = 0.045,
+}: {
+  children: string;
+  className?: string;
+  delay?: number;
+  wordDelay?: number;
+}) {
+  const words = children.split(" ");
+  return (
+    <span className={className} aria-label={children}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          initial={{ opacity: 0, y: "0.4em", filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: "0em", filter: "blur(0px)" }}
+          viewport={{ once: true, margin: "0px 0px -6% 0px" }}
+          transition={{ duration: 0.65, delay: delay + i * wordDelay, ease: [0.22, 1, 0.36, 1] }}
+          className="inline-block"
+        >
+          {word}&nbsp;
+        </motion.span>
+      ))}
+    </span>
+  );
+}
 
 /* ------------------------------------------------------------------ */
 /*  TAG                                                                */
@@ -187,56 +225,107 @@ function AboutPage() {
 /*  HERO                                                               */
 /* ================================================================== */
 function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const springX = useSpring(mouseX, { stiffness: 50, damping: 22 });
+  const springY = useSpring(mouseY, { stiffness: 50, damping: 22 });
+  const imgRef = useRef<HTMLDivElement>(null);
+  const imgMouseX = useMotionValue(0);
+  const imgMouseY = useMotionValue(0);
+  const imgSpringX = useSpring(imgMouseX, { stiffness: 40, damping: 20 });
+  const imgSpringY = useSpring(imgMouseY, { stiffness: 40, damping: 20 });
+  const imgRotateX = useTransform(imgSpringY, v => -v * 0.5);
+  const imgRotateY = useTransform(imgSpringX, v => v * 0.5);
+  const spotlight = useMotionTemplate`radial-gradient(700px circle at ${springX}px ${springY}px, rgba(215,170,80,0.1) 0%, transparent 70%)`;
+
+  function onMouseMove(e: React.MouseEvent<HTMLElement>) {
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+
+    const imgRect = imgRef.current?.getBoundingClientRect();
+    if (imgRect) {
+      imgMouseX.set(((e.clientX - imgRect.left) / imgRect.width - 0.5) * 12);
+      imgMouseY.set(((e.clientY - imgRect.top) / imgRect.height - 0.5) * 8);
+    }
+  }
+
   return (
     <section
+      ref={sectionRef}
+      onMouseMove={onMouseMove}
       aria-labelledby="page-title"
-      className="border-b border-white/10 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
+      className="relative overflow-hidden border-b border-white/10 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
     >
-      <div className="max-w-[1520px] mx-auto">
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-10"
+        style={{ background: spotlight }}
+      />
+      <div className="relative z-20 max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5 items-end">
           <div className="md:col-span-1">
-            <Tag>R—M marketing agency · est. 2025</Tag>
+            <Reveal>
+              <Tag>R—M marketing agency · est. 2025</Tag>
+            </Reveal>
           </div>
           <div className="md:col-span-2 flex flex-col gap-8">
-            <div>
-              <h1
-                id="page-title"
-                className="reveal text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-white"
-              >
-                Strategic partnership
-                <br />
-                <span className="text-white/40 font-normal">for founders who build to scale</span>
-              </h1>
-            </div>
+            <h1
+              id="page-title"
+              className="text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-white"
+            >
+              <SplitReveal wordDelay={0.05}>Strategic partnership</SplitReveal>
+              <br />
+              <span className="font-normal text-white/40">
+                <SplitReveal delay={0.25} wordDelay={0.04}>for founders who build to scale</SplitReveal>
+              </span>
+            </h1>
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
-              <p
-                className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]"
-                data-delay="1"
-              >
-                A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts.
-                No outsourcing.
-              </p>
-              <div className="reveal flex items-center gap-3 flex-wrap" data-delay="2">
-                <Link
-                  to="/audit"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-black bg-white rounded-full px-6 py-3 hover:bg-white/85 transition-colors duration-200"
-                >
-                  Book free audit →
-                </Link>
-                <a
-                  href="#verticals"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-3 hover:bg-white/10 transition-colors duration-200"
-                >
-                  Our core areas
-                </a>
-              </div>
+              <Reveal delay={0.4}>
+                <p className="text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]">
+                  A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts.
+                  No outsourcing.
+                </p>
+              </Reveal>
+              <Reveal delay={0.55}>
+                <div className="flex items-center gap-3 flex-wrap">
+                  <Link
+                    to="/audit"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-black bg-white rounded-full px-6 py-3 hover:bg-white/85 transition-colors duration-200"
+                  >
+                    Book free audit →
+                  </Link>
+                  <a
+                    href="#verticals"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-3 hover:bg-white/10 transition-colors duration-200"
+                  >
+                    Our core areas
+                  </a>
+                </div>
+              </Reveal>
             </div>
           </div>
         </div>
 
-        <div className="mt-20 md:mt-28 w-full h-[480px] md:h-[640px] rounded-2xl overflow-hidden">
-          <img src={heroBloom} alt="" className="w-full h-full object-cover" />
-        </div>
+        <Reveal delay={0.3} y={24}>
+          <div
+            ref={imgRef}
+            className="mt-20 md:mt-28 w-full h-[480px] md:h-[640px] rounded-2xl overflow-hidden"
+            style={{ perspective: 1000 }}
+          >
+            <motion.img
+              src={heroBloom}
+              alt=""
+              className="w-full h-full object-cover"
+              style={{
+                rotateX: imgRotateX,
+                rotateY: imgRotateY,
+                scale: 1.04,
+              }}
+            />
+          </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -306,6 +395,12 @@ function NumbersSection() {
 /* ================================================================== */
 /*  MANIFESTO                                                          */
 /* ================================================================== */
+const manifestoLines = [
+  "We're not a hands-off vendor.",
+  "But an extension of your team, wired into market context.",
+  "We killed the generic agency layers to ship execution focused on the outcomes that show up on your cap table.",
+];
+
 function ManifestoSection() {
   return (
     <section
@@ -320,10 +415,19 @@ function ManifestoSection() {
               Manifesto
             </h2>
           </div>
-          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.05em] text-white">
-            We&apos;re not a hands-off vendor. But an extension of your team, wired into market
-            context. We killed the generic agency layers to ship execution focused on the outcomes
-            that show up on your cap table.
+          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.2] tracking-[-0.05em] text-white">
+            {manifestoLines.map((line, i) => (
+              <motion.span
+                key={i}
+                className={`block ${i > 0 ? "mt-4" : ""} ${i === manifestoLines.length - 1 ? "text-white/45 font-normal" : ""}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -6% 0px" }}
+                transition={{ duration: 0.7, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {line}
+              </motion.span>
+            ))}
           </p>
         </div>
       </div>
@@ -351,16 +455,15 @@ function VerticalsSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="verticals-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
+              className="text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
             >
-              Four spaces <span className="text-white/40 font-normal">we lock into.</span>
+              <SplitReveal wordDelay={0.06}>Four spaces we lock into.</SplitReveal>
             </h2>
-            <p
-              className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]"
-              data-delay="1"
-            >
-              We go deep where our work compounds.
-            </p>
+            <Reveal delay={0.2}>
+              <p className="text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]">
+                We go deep where our work compounds.
+              </p>
+            </Reveal>
           </div>
         </div>
 
@@ -484,47 +587,56 @@ function TeamSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="team-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[20ch]"
+              className="text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[20ch]"
             >
-              The people who ship the work.
+              <SplitReveal wordDelay={0.06}>The people who ship the work.</SplitReveal>
             </h2>
-            <p
-              className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]"
-              data-delay="1"
-            >
-              Three senior operators. Every engagement is led, not delegated.
-            </p>
+            <Reveal delay={0.2}>
+              <p className="text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/55 max-w-[48ch]">
+                Ten senior operators. Every engagement is led, not delegated.
+              </p>
+            </Reveal>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-3">
-          {team.slice(0, 3).map((person, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-3">
+          {team.map((person, i) => (
             <motion.div
               key={person.initials}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-8%" }}
-              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
-              className="group bg-white rounded-2xl overflow-hidden"
+              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <div className="aspect-[4/5] overflow-hidden bg-neutral-100">
-                <img
-                  src={person.photo}
-                  alt={`${person.name}, ${person.role}`}
-                  className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
-                />
-              </div>
-              <div className="p-6">
-                <p className="text-[15px] leading-[1.6] text-neutral-500 mb-4 max-w-[38ch]">
-                  {person.blurb}
-                </p>
-                <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
-                  {person.name}
-                </h3>
-                <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-neutral-400">
-                  {person.role}
-                </p>
-              </div>
+              <TiltCard max={6} className="group bg-white rounded-2xl overflow-hidden h-full">
+                <div className="flex flex-col md:flex-row">
+                  <div className="w-full md:w-[200px] flex-shrink-0 aspect-[4/3] md:aspect-auto md:h-[280px] overflow-hidden bg-neutral-100">
+                    <img
+                      src={person.photo}
+                      alt={`${person.name}, ${person.role}`}
+                      className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700"
+                    />
+                  </div>
+                  <div className="p-7 flex flex-col justify-between flex-1">
+                    <div>
+                      <p className="text-[13px] uppercase tracking-[0.18em] text-neutral-400 mb-3">
+                        {person.city} · {person.spec}
+                      </p>
+                      <p className="text-[15px] leading-[1.65] text-neutral-500 max-w-[38ch]">
+                        {person.blurb}
+                      </p>
+                    </div>
+                    <div className="mt-6 pt-5 border-t border-neutral-100">
+                      <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
+                        {person.name}
+                      </h3>
+                      <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-neutral-400">
+                        {person.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </TiltCard>
             </motion.div>
           ))}
         </div>
