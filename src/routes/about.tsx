@@ -1,11 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useTransform,
-  useSpring,
   useReducedMotion,
   type MotionValue,
 } from "motion/react";
@@ -13,7 +11,6 @@ import {
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
-import { ScrollProgressBar, MagneticButton } from "@/components/motion-bits";
 
 import teamRm from "@/assets/team-rm.jpg";
 import teamAl from "@/assets/team-al.jpg";
@@ -45,7 +42,7 @@ export const Route = createFileRoute("/about")({
 });
 
 /* ------------------------------------------------------------------ */
-/*  TEAM                                                               */
+/*  DATA                                                               */
 /* ------------------------------------------------------------------ */
 const team = [
   {
@@ -54,6 +51,9 @@ const team = [
     role: "Founder · Strategy",
     spec: "Positioning · GTM",
     city: "Kyiv",
+    blurb:
+      "Founder-led strategy and positioning. Twelve years turning ambiguous markets into sharp, defensible narratives.",
+    photo: teamRm,
   },
   {
     initials: "AL",
@@ -61,6 +61,9 @@ const team = [
     role: "Creative Director",
     spec: "Brand systems",
     city: "Berlin",
+    blurb:
+      "Brand systems with operational teeth. Identity, art direction and motion built to scale across every surface.",
+    photo: teamAl,
   },
   {
     initials: "SK",
@@ -68,6 +71,8 @@ const team = [
     role: "Performance Lead",
     spec: "Paid · Lifecycle",
     city: "Dubai",
+    blurb: "Designs the marks, type and motion that make the work unmistakable in feed, deck and product.",
+    photo: teamSk,
   },
   {
     initials: "JD",
@@ -75,12 +80,11 @@ const team = [
     role: "Brand Designer",
     spec: "Identity · Motion",
     city: "Lisbon",
+    blurb: "Designs the marks, type and motion that make the work unmistakable in feed, deck and product.",
+    photo: teamJd,
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  VERTICALS — horizontal accordion                                   */
-/* ------------------------------------------------------------------ */
 const verticals = [
   {
     n: "01",
@@ -108,31 +112,22 @@ const verticals = [
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  TESTIMONIALS                                                       */
-/* ------------------------------------------------------------------ */
-const testimonials = [
-  {
-    quote:
-      "They rewrote our positioning in a week, and our next investor call was 40 minutes shorter. The deck did the work for us.",
-    name: "Anna Kowalski",
-    role: "Founder, Lendlayer",
-    avatar: "https://picsum.photos/seed/rm-test-1/300/300",
-  },
-  {
-    quote: "Six months in, CAC down 31%, brand search up 4×. Quiet, surgical work that compounds.",
-    name: "Daniel Osei",
-    role: "CEO, Quorum AI",
-    avatar: "https://picsum.photos/seed/rm-test-2/300/300",
-  },
-  {
-    quote:
-      "Senior operators on every call. No theatre, no decks of decks — just decisions and shipping.",
-    name: "Inès Marchetti",
-    role: "Partner, Atlas Capital",
-    avatar: "https://picsum.photos/seed/rm-test-3/300/300",
-  },
+const numbers = [
+  { value: "€280M+", label: "Capital raised by founder teams we positioned, across seed to Series B." },
+  { value: "47", label: "End-to-end brands shipped since 2019." },
+  { value: "92%", label: "Retention on year two and beyond." },
 ];
+
+/* ------------------------------------------------------------------ */
+/*  TAG                                                                */
+/* ------------------------------------------------------------------ */
+function Tag({ children }: { children: string }) {
+  return (
+    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-neutral-500 border border-neutral-300 rounded-full px-4 py-1.5">
+      {children}
+    </span>
+  );
+}
 
 /* ================================================================== */
 /*  PAGE                                                               */
@@ -150,43 +145,49 @@ function AboutPage() {
   ];
 
   return (
-    <div className="rm-page selection:bg-[#efeeea] selection:text-black">
+    <div className="rm-page bg-[#f1f1f1] text-neutral-900 selection:bg-neutral-900 selection:text-white">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <ScrollProgressBar />
       <SiteHeader variant="dark" />
 
       <main id="main">
-        {/* ============= TICKER ============= */}
-        <div className="marquee overflow-hidden border-b border-white/5 pt-24 md:pt-28" aria-hidden>
-          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-white/55">
+        {/* ===== TICKER ===== */}
+        <div className="marquee overflow-hidden border-b border-neutral-200 pt-24 md:pt-28" aria-hidden>
+          <div className="marquee-track flex gap-12 whitespace-nowrap py-4 text-[11px] uppercase tracking-[0.28em] text-neutral-400">
             {[...tickerWords, ...tickerWords, ...tickerWords].map((w, i) => (
               <span key={i} className="flex items-center gap-12">
                 {w}
-                <span className="inline-block w-1 h-1 rounded-full bg-white/25" />
+                <span className="inline-block w-1 h-1 rounded-full bg-neutral-300" />
               </span>
             ))}
           </div>
         </div>
 
-        {/* ============= ATTENTION — ASYMMETRIC HERO ============= */}
-        <HeroAsymmetric />
+        {/* ===== HERO ===== */}
+        <HeroSection />
 
-        {/* ============= INTEREST — NUMBERS BENTO ============= */}
-        <NumbersBento />
+        {/* ===== NUMBERS ===== */}
+        <NumbersSection />
 
-        {/* ============= DESIRE — MANIFESTO (scrub-reveal) ============= */}
-        <ManifestoScrub />
+        {/* ===== MANIFESTO ===== */}
+        <ManifestoSection />
 
-        {/* ============= INTEREST — VERTICALS (horizontal accordion) ============= */}
-        <VerticalsAccordion />
+        {/* ===== VERTICALS ===== */}
+        <VerticalsSection />
 
-        {/* ============= DESIRE — TEAM BENTO ============= */}
-        <TeamBento />
+        {/* ===== TEAM ===== */}
+        <TeamSection />
 
-        {/* ============= ACTION — CTA ============= */}
-        <CTASection />
+        {/* ===== CTA ===== */}
+        <UnifiedCTA
+          eyebrow="The conversation starts here"
+          title="Let's build something"
+          titleAccent="that compounds."
+          primaryLabel="Book a call"
+          primaryTo="/contact"
+          secondaryLabel="See case studies"
+        />
       </main>
 
       <SiteFooter />
@@ -195,87 +196,57 @@ function AboutPage() {
 }
 
 /* ================================================================== */
-/*  HERO — Artistic Asymmetry                                          */
+/*  HERO                                                               */
 /* ================================================================== */
-function HeroAsymmetric() {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
-  const sy = useSpring(y, { stiffness: 90, damping: 22, mass: 0.4 });
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.25]);
-
+function HeroSection() {
   return (
     <section
-      ref={ref}
       aria-labelledby="page-title"
-      className="relative isolate overflow-hidden min-h-[92vh] flex flex-col justify-center pt-20 md:pt-28 pb-32 md:pb-48"
+      className="border-b border-neutral-300 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
     >
-      {/* Atmospheric background */}
-      <div aria-hidden className="absolute inset-0 -z-10">
-        <img
-          src={heroBloom}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-[0.25] grayscale contrast-125"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 70% at 30% 40%, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.9) 65%, #0a0a0a 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 mix-blend-overlay opacity-50"
-          style={{
-            background:
-              "radial-gradient(circle at 25% 35%, rgba(255,59,26,0.16), transparent 50%), radial-gradient(circle at 80% 65%, rgba(80,140,220,0.14), transparent 55%)",
-          }}
-        />
-      </div>
-
-      <div className="relative px-6 md:px-12 max-w-[1360px] mx-auto w-full">
-        <div className="grid grid-cols-12 gap-6 items-end">
-          {/* LEFT: massive headline, offset, asymmetric */}
-          <div className="col-span-12 lg:col-span-8 relative z-10">
-            <div className="reveal-fade rm-eyebrow tabular-nums mb-8 md:mb-12">
-              R—M Studio · est. 2019
-            </div>
-
-            <h1 id="page-title" className="reveal rm-title-hero max-w-[18ch]">
-              A small studio
-              <br />
-              for founders{" "}
-              <span className="font-light text-white/55 inline">who actually ship.</span>
-            </h1>
-
-            <p className="reveal rm-copy-lead mt-10 max-w-[520px]" data-delay="1">
-              Senior strategy, brand and growth for operators in AI, Fintech, Web3 and lifestyle.
-              Four people. No juniors, no subcontractors.
-            </p>
-
-            <div
-              className="reveal mt-12 flex flex-wrap items-center gap-x-4 gap-y-3"
-              data-delay="2"
-            >
-              <MagneticButton href="/audit" className="rm-btn rm-btn-primary will-change-transform">
-                Book an audit
-                <span aria-hidden>→</span>
-              </MagneticButton>
-              <MagneticButton
-                href="#verticals"
-                strength={10}
-                className="rm-btn rm-btn-secondary will-change-transform"
+      <div className="max-w-[1520px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-5 items-end">
+          <div className="md:col-span-1" />
+          <div className="md:col-span-2 flex flex-col gap-8">
+            <div>
+              <h1
+                id="page-title"
+                className="reveal text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-neutral-900"
               >
-                See the verticals
-              </MagneticButton>
+                A small studio
+                <br />
+                <span className="text-neutral-400 font-normal">for founders who actually ship.</span>
+              </h1>
+            </div>
+            <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
+              <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[480px]" data-delay="1">
+                Senior strategy, brand and growth for operators in AI, Fintech, Web3 and lifestyle.
+                Four people. No juniors, no subcontractors.
+              </p>
+              <div className="reveal flex items-center gap-3 flex-wrap" data-delay="2">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-white bg-neutral-900 rounded-full px-6 py-3 hover:bg-neutral-700 transition-colors duration-200"
+                >
+                  Book an audit →
+                </Link>
+                <a
+                  href="#verticals"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-900 border border-neutral-900 rounded-full px-6 py-3 hover:bg-neutral-900 hover:text-white transition-colors duration-200"
+                >
+                  See the verticals
+                </a>
+              </div>
             </div>
           </div>
+        </div>
 
+        <div className="mt-20 md:mt-28 w-full h-[480px] md:h-[640px] rounded-2xl overflow-hidden">
+          <img
+            src={heroBloom}
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
     </section>
@@ -283,9 +254,65 @@ function HeroAsymmetric() {
 }
 
 /* ================================================================== */
-/*  MANIFESTO — scrub-reveal paragraph                                 */
+/*  NUMBERS                                                            */
 /* ================================================================== */
-function ManifestoScrub() {
+function NumbersSection() {
+  return (
+    <section aria-labelledby="numbers-heading" className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40">
+      <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
+        {/* Tag + heading */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+          <div>
+            <Tag>By the numbers</Tag>
+          </div>
+          <div className="md:col-span-2 flex flex-col gap-10">
+            <h2
+              id="numbers-heading"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[18ch]"
+            >
+              Seven years.{" "}
+              <span className="text-neutral-400 font-normal">Compounded across founder teams.</span>
+            </h2>
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+              Five numbers that describe the studio better than any deck slide.
+            </p>
+          </div>
+        </div>
+
+        {/* Number tiles */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-1">
+          {numbers.map((n, i) => (
+            <motion.div
+              key={n.value}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
+              className="bg-white rounded-2xl border border-neutral-200 p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
+            >
+              <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+                {i === 0 ? "Capital raised" : i === 1 ? "Brands shipped" : "Retention"}
+              </span>
+              <div>
+                <div className="text-[56px] md:text-[72px] font-semibold tracking-[-0.05em] leading-[0.9] text-neutral-900">
+                  {n.value}
+                </div>
+                <p className="mt-4 text-[14px] leading-[1.6] text-neutral-500 max-w-[32ch]">
+                  {n.label}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================== */
+/*  MANIFESTO                                                          */
+/* ================================================================== */
+function ManifestoSection() {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -294,69 +321,25 @@ function ManifestoScrub() {
   });
 
   const words = [
-    "We",
-    "are",
-    "not",
-    "an",
-    "agency.",
-    "We",
-    "are",
-    "four",
-    "operators",
-    "with",
-    "scar",
-    "tissue,",
-    "compounding",
-    "the",
-    "same",
-    "playbook",
-    "across",
-    "ambitious",
-    "founders",
-    "—",
-    "quietly,",
-    "without",
-    "the",
-    "theatre,",
-    "for",
-    "the",
-    "kind",
-    "of",
-    "outcomes",
-    "that",
-    "show",
-    "up",
-    "on",
-    "the",
-    "cap",
-    "table.",
+    "We", "are", "not", "an", "agency.", "We", "are", "four", "operators", "with", "scar",
+    "tissue,", "compounding", "the", "same", "playbook", "across", "ambitious", "founders",
+    "—", "quietly,", "without", "the", "theatre,", "for", "the", "kind", "of", "outcomes",
+    "that", "show", "up", "on", "the", "cap", "table.",
   ];
 
   return (
     <section
       ref={ref}
       aria-labelledby="manifesto-heading"
-      className="bg-rm-surface text-white border-t border-white/10 relative"
+      className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40"
     >
-      <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-32 md:py-48">
-        <div className="grid grid-cols-12 gap-6 items-start">
-          <div className="col-span-12 md:col-span-3">
-            <div className="text-[10px] uppercase tracking-[0.32em] text-white/40 tabular-nums">
-              The position
-            </div>
-            <h2 id="manifesto-heading" className="sr-only">
-              Manifesto
-            </h2>
+      <div className="max-w-[1520px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+          <div>
+            <Tag>The position</Tag>
+            <h2 id="manifesto-heading" className="sr-only">Manifesto</h2>
           </div>
-
-          <p
-            className="col-span-12 md:col-span-9 font-medium tracking-[-0.025em] text-white leading-[1.12]"
-            style={{
-              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-              fontWeight: 400,
-              fontSize: "clamp(1.75rem, 3.8vw, 3.5rem)",
-            }}
-          >
+          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.15] tracking-[-0.05em] text-neutral-900">
             {words.map((w, i) => (
               <ManifestoWord
                 key={i}
@@ -389,175 +372,49 @@ function ManifestoWord({
 }) {
   const start = index / total;
   const end = Math.min(1, start + 1.4 / total);
-  const opacity = useTransform(scrollYProgress, [start, end], [0.12, 1]);
+  const opacity = useTransform(scrollYProgress, [start, end], [0.15, 1]);
+  const color = useTransform(scrollYProgress, [start, end], ["rgb(212,212,212)", "rgb(23,23,23)"]);
 
   return (
-    <motion.span style={reduce ? undefined : { opacity }} className="inline-block mr-[0.25em]">
+    <motion.span style={reduce ? undefined : { color }} className="inline-block mr-[0.25em]">
       {word}
     </motion.span>
   );
 }
 
 /* ================================================================== */
-/*  NUMBERS — gapless bento                                            */
+/*  VERTICALS                                                          */
 /* ================================================================== */
-function NumbersBento() {
-  return (
-    <section aria-labelledby="numbers-heading" className="border-t border-white/10 bg-rm-surface">
-      <div className="px-6 md:px-12 max-w-[1320px] mx-auto py-32 md:py-48">
-        <h2 id="numbers-heading" className="sr-only">
-          By the numbers
-        </h2>
-
-        <div className="grid grid-cols-12 gap-5 mb-16 md:mb-20 reveal-fade items-end">
-          <div className="col-span-12 md:col-span-9">
-            <p
-              className="font-medium text-white tracking-[-0.035em] leading-[0.96]"
-              style={{
-                fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                fontWeight: 400,
-                fontSize: "clamp(2.5rem, 6vw, 5rem)",
-              }}
-            >
-              Seven years.{" "}
-              <span
-                className="font-light text-white/45"
-                style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
-              >
-                Compounded across founder teams.
-              </span>
-            </p>
-          </div>
-          <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] rm-muted md:pb-3">
-            Five numbers that describe the studio better than any deck slide.
-          </p>
-        </div>
-
-        {/* Gapless bento — 4 cols x 2 rows = 8 cells. Pieces: 2x2 + 2x1 + 1x1 + 1x1 = 8 */}
-        <div className="grid grid-cols-2 md:grid-cols-4 md:grid-rows-2 gap-3 md:gap-4 [grid-auto-flow:dense] md:auto-rows-[minmax(180px,1fr)]">
-          {/* Hero metric — capital raised — full width on mobile, 2x2 on desktop */}
-          <div className="reveal group relative overflow-hidden rounded-2xl bg-gradient-to-br from-white/[0.07] to-white/[0.02] border border-white/10 col-span-2 md:col-span-2 md:row-span-2 p-7 md:p-10 flex flex-col justify-between">
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <span className="text-[10px] uppercase tracking-[0.28em] text-white/45 whitespace-nowrap">
-                Capital raised
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.28em] text-white/30 tabular-nums whitespace-nowrap">
-                2019—2026
-              </span>
-            </div>
-            <div>
-              <div
-                className="font-medium tracking-[-0.05em] text-white tabular-nums leading-[0.86]"
-                style={{ fontSize: "clamp(56px, 14vw, 200px)" }}
-              >
-                €280<span className="text-white/30">M</span>
-              </div>
-              <p className="mt-5 max-w-[36ch] text-[13px] leading-[1.6] rm-muted">
-                Raised by founder teams we positioned and packaged — across seed, Series A and
-                Series B.
-              </p>
-            </div>
-          </div>
-
-          {/* Brands shipped — 2x1 wide */}
-          <NumberCell
-            label="Brands shipped"
-            value="47"
-            caption="End-to-end identity + GTM, since 2019."
-            wide
-            delay="1"
-          />
-
-          {/* Retention — 1x1 */}
-          <NumberCell
-            label="Retention"
-            value="92"
-            suffix="%"
-            caption="On year two and beyond."
-            delay="2"
-          />
-
-          {/* Operating — 1x1 */}
-          <NumberCell label="Operating" value="7" suffix="y" caption="Independent." delay="3" />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function NumberCell({
-  label,
-  value,
-  suffix,
-  caption,
-  wide,
-  delay,
-}: {
-  label: string;
-  value: string;
-  suffix?: string;
-  caption: string;
-  wide?: boolean;
-  delay: string;
-}) {
-  return (
-    <div
-      className={`reveal group relative overflow-hidden rounded-2xl bg-white/[0.05] border border-white/[0.08] p-6 md:p-8 flex flex-col justify-between ${wide ? "col-span-2 md:col-span-2 md:row-span-1" : "col-span-1 md:col-span-1 md:row-span-1"}`}
-      data-delay={delay}
-    >
-      <span className="text-[10px] uppercase tracking-[0.32em] text-white/45">{label}</span>
-      <div>
-        <div
-          className="font-medium tracking-[-0.04em] text-white tabular-nums leading-[0.92]"
-          style={{ fontSize: wide ? "clamp(64px, 9vw, 132px)" : "clamp(52px, 6vw, 84px)" }}
-        >
-          {value}
-          {suffix && <span className="text-white/30">{suffix}</span>}
-        </div>
-        <p className="mt-4 text-[12px] leading-[1.55] rm-muted">{caption}</p>
-      </div>
-    </div>
-  );
-}
-
-/* ================================================================== */
-/*  VERTICALS — horizontal accordion                                   */
-/* ================================================================== */
-function VerticalsAccordion() {
+function VerticalsSection() {
   const [active, setActive] = useState(0);
 
   return (
     <section
       id="verticals"
       aria-labelledby="verticals-heading"
-      className="bg-rm-surface text-white border-t border-white/10"
+      className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40"
     >
-      <div className="px-6 md:px-12 max-w-[1360px] mx-auto py-32 md:py-48">
-        <div className="grid grid-cols-12 gap-5 mb-16 md:mb-24 reveal-fade items-end">
-          <h2
-            id="verticals-heading"
-            className="col-span-12 md:col-span-9 font-medium text-white tracking-[-0.04em] leading-[0.95]"
-            style={{
-              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-              fontWeight: 400,
-              fontSize: "clamp(2.5rem, 7vw, 6rem)",
-            }}
-          >
-            Four rooms{" "}
-            <span
-              className="font-light text-white/45"
-              style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
+      <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+          <div>
+            <Tag>Verticals</Tag>
+          </div>
+          <div className="md:col-span-2 flex flex-col gap-10">
+            <h2
+              id="verticals-heading"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[18ch]"
             >
-              we already know.
-            </span>
-          </h2>
-          <p className="col-span-12 md:col-span-3 text-[14px] md:text-[15px] leading-[1.65] rm-body md:pb-3">
-            We don't chase categories. We go deep where our work compounds.
-          </p>
+              Four rooms{" "}
+              <span className="text-neutral-400 font-normal">we already know.</span>
+            </h2>
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+              We don't chase categories. We go deep where our work compounds.
+            </p>
+          </div>
         </div>
 
-        {/* Horizontal accordion — vertical slices that expand on hover/focus */}
-        <div className="hidden md:flex h-[560px] gap-2 rounded-2xl overflow-hidden border border-white/10">
+        {/* Desktop accordion */}
+        <div className="hidden md:flex h-[520px] gap-2 rounded-2xl overflow-hidden border border-neutral-200">
           {verticals.map((v, i) => {
             const isActive = i === active;
             return (
@@ -580,8 +437,8 @@ function VerticalsAccordion() {
                   style={{
                     transition: "transform 700ms cubic-bezier(0.23,1,0.32,1), filter 500ms ease",
                     filter: isActive
-                      ? "saturate(0.85) brightness(0.85)"
-                      : "saturate(0.25) brightness(0.45)",
+                      ? "saturate(0.9) brightness(0.85)"
+                      : "saturate(0.15) brightness(0.6)",
                     transform: isActive ? "scale(1.02)" : "scale(1.08)",
                   }}
                 />
@@ -589,53 +446,29 @@ function VerticalsAccordion() {
                   className="absolute inset-0"
                   style={{
                     background: isActive
-                      ? "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.75) 100%)"
-                      : "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%)",
+                      ? "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.65) 100%)"
+                      : "linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%)",
                   }}
                 />
-
-                {/* Vertical label (closed state) */}
                 <div
-                  className="absolute inset-0 flex items-end p-6 transition-opacity duration-300 ease-out"
+                  className="absolute inset-0 flex items-end p-6 transition-opacity duration-300"
                   style={{ opacity: isActive ? 0 : 1 }}
                 >
                   <div className="-rotate-90 origin-bottom-left translate-y-[-10px] whitespace-nowrap">
-                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/55 tabular-nums">
-                      {v.n}
-                    </span>
-                    <span className="ml-4 text-[18px] font-medium tracking-[-0.01em] text-white">
-                      {v.title}
-                    </span>
+                    <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 tabular-nums">{v.n}</span>
+                    <span className="ml-4 text-[18px] font-semibold tracking-[-0.02em] text-white">{v.title}</span>
                   </div>
                 </div>
-
-                {/* Open state */}
                 <div
-                  className="absolute inset-0 flex flex-col justify-between p-8 md:p-10 transition-opacity duration-300 delay-150 ease-out"
+                  className="absolute inset-0 flex flex-col justify-between p-8 md:p-10 transition-opacity duration-300 delay-150"
                   style={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? "auto" : "none" }}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">
-                      {v.n} · Vertical
-                    </span>
-                    <span className="text-[10px] uppercase tracking-[0.28em] text-white/55">
-                      Open engagements
-                    </span>
-                  </div>
+                  <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">{v.n} · Vertical</span>
                   <div>
-                    <h3
-                      className="font-medium text-white tracking-[-0.02em] leading-[1.02]"
-                      style={{
-                        fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                        fontWeight: 400,
-                        fontSize: "clamp(2rem, 3.6vw, 3.25rem)",
-                      }}
-                    >
+                    <h3 className="text-[32px] md:text-[40px] font-semibold tracking-[-0.04em] leading-[1.1] text-white">
                       {v.title}
                     </h3>
-                    <p className="mt-4 max-w-[44ch] text-[14px] md:text-[15px] leading-[1.65] text-white/80">
-                      {v.body}
-                    </p>
+                    <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.65] text-white/80">{v.body}</p>
                   </div>
                 </div>
               </button>
@@ -643,34 +476,16 @@ function VerticalsAccordion() {
           })}
         </div>
 
-        {/* Mobile: simple stacked cards */}
+        {/* Mobile */}
         <div className="md:hidden grid grid-cols-1 gap-3">
           {verticals.map((v) => (
-            <div
-              key={v.n}
-              className="relative h-[320px] overflow-hidden rounded-2xl border border-white/10"
-            >
-              <img
-                src={v.img}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover saturate-[0.5] brightness-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 to-black/10" />
+            <div key={v.n} className="relative h-[300px] overflow-hidden rounded-2xl border border-neutral-200">
+              <img src={v.img} alt="" className="absolute inset-0 w-full h-full object-cover saturate-[0.4] brightness-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10" />
               <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">
-                  {v.n} · Vertical
-                </span>
+                <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">{v.n} · Vertical</span>
                 <div>
-                  <h3
-                    className="text-white font-medium tracking-[-0.02em] leading-[1.02]"
-                    style={{
-                      fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                      fontWeight: 400,
-                      fontSize: "1.75rem",
-                    }}
-                  >
-                    {v.title}
-                  </h3>
+                  <h3 className="text-white text-[24px] font-semibold tracking-[-0.03em] leading-[1.1]">{v.title}</h3>
                   <p className="mt-3 text-[13px] leading-[1.6] text-white/80">{v.body}</p>
                 </div>
               </div>
@@ -683,286 +498,59 @@ function VerticalsAccordion() {
 }
 
 /* ================================================================== */
-/*  TEAM — gapless bento                                               */
+/*  TEAM                                                               */
 /* ================================================================== */
-function TeamBento() {
-  const featured = [
-    {
-      person: team[0],
-      bg: "#1c1410",
-      blurb:
-        "Founder-led strategy and positioning. Twelve years turning ambiguous markets into sharp, defensible narratives.",
-    },
-    {
-      person: team[1],
-      bg: "#111110",
-      blurb:
-        "Brand systems with operational teeth. Identity, art direction and motion built to scale across every surface.",
-    },
-    {
-      person: team[3],
-      bg: "#18130f",
-      blurb:
-        "Designs the marks, type and motion that make the work unmistakable in feed, deck and product.",
-    },
-  ];
-
-  const containerVariants = {
-    hidden: {},
-    show: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
-  };
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const } },
-  };
-
+function TeamSection() {
   return (
-    <section
-      aria-labelledby="team-heading"
-      className="bg-rm-surface text-white border-t border-white/10 relative overflow-hidden"
-    >
-      <div className="relative max-w-[1320px] mx-auto px-6 md:px-12 py-32 md:py-48">
-        {/* Heading — matches page typography */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 md:mb-24"
-        >
-          <h2
-            id="team-heading"
-            className="font-medium text-white tracking-[-0.035em] leading-[0.95] max-w-[14ch]"
-            style={{
-              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-              fontWeight: 500,
-              fontSize: "clamp(2.75rem, 7vw, 6rem)",
-            }}
-          >
-            The people who ship the work.
-          </h2>
-          <p
-            className="max-w-[34ch] rm-muted leading-[1.55]"
-            style={{
-              fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-              fontSize: "clamp(0.95rem, 1.1vw, 1.05rem)",
-            }}
-          >
-            Three senior operators. Every engagement is led, not delegated.
-          </p>
-        </motion.div>
-
-        {/* Cards — horizontal 3-up with staggered reveal */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-10%" }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8"
-        >
-          {featured.map((item) => (
-            <motion.div
-              key={item.person.initials}
-              variants={itemVariants}
-              className="group flex flex-col"
+    <section aria-labelledby="team-heading" className="border-b border-neutral-300 px-5 md:px-10 py-24 md:py-40">
+      <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
+          <div>
+            <Tag>Team</Tag>
+          </div>
+          <div className="md:col-span-2 flex flex-col gap-10">
+            <h2
+              id="team-heading"
+              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-neutral-900 max-w-[20ch]"
             >
-              <div
-                className="relative aspect-[4/5] rm-media-card transition-[border-color] duration-500 group-hover:border-white/25"
-                style={{ backgroundColor: item.bg }}
-              >
-                <img
-                  src={teamPhotos[team.indexOf(item.person)]}
-                  alt={`${item.person.name}, ${item.person.role}`}
-                  className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-95 transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:scale-[1.06] will-change-transform"
-                />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/5 rounded-3xl pointer-events-none" />
-              </div>
+              The people who ship the work.
+            </h2>
+            <p className="reveal text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-neutral-600 max-w-[48ch]" data-delay="1">
+              Three senior operators. Every engagement is led, not delegated.
+            </p>
+          </div>
+        </div>
 
-              <div className="mt-6 md:mt-7 flex flex-col gap-4">
-                <p
-                  className="rm-body leading-[1.55] max-w-[40ch]"
-                  style={{
-                    fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                    fontSize: "clamp(0.9rem, 1vw, 0.98rem)",
-                  }}
-                >
-                  {item.blurb}
-                </p>
-                <div>
-                  <h3
-                    className="text-white font-medium tracking-[-0.02em] leading-[1.05]"
-                    style={{
-                      fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                      fontWeight: 500,
-                      fontSize: "clamp(1.4rem, 2vw, 1.75rem)",
-                    }}
-                  >
-                    {item.person.name}
-                  </h3>
-                  <p
-                    className="mt-2 text-white/45"
-                    style={{
-                      fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                      fontSize: "12px",
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {item.person.role}
-                  </p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-3">
+          {team.slice(0, 3).map((person, i) => (
+            <motion.div
+              key={person.initials}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
+              className="group"
+            >
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden bg-neutral-200 mb-5">
+                <img
+                  src={person.photo}
+                  alt={`${person.name}, ${person.role}`}
+                  className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                />
               </div>
+              <p className="text-[15px] leading-[1.6] text-neutral-500 mb-4 max-w-[38ch]">
+                {person.blurb}
+              </p>
+              <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
+                {person.name}
+              </h3>
+              <p className="mt-1 text-[12px] uppercase tracking-[0.18em] text-neutral-400">
+                {person.role}
+              </p>
             </motion.div>
           ))}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-/* ================================================================== */
-/*  TESTIMONIALS — overlapping portraits carousel                      */
-/* ================================================================== */
-function TestimonialCarousel() {
-  const [i, setI] = useState(0);
-  const t = testimonials[i];
-  const next = () => setI((p) => (p + 1) % testimonials.length);
-  const prev = () => setI((p) => (p - 1 + testimonials.length) % testimonials.length);
-
-  return (
-    <section
-      aria-labelledby="testimonials-heading"
-      className="bg-rm-surface text-white border-t border-white/10 relative overflow-hidden"
-    >
-      <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-32 md:py-48">
-        <h2 id="testimonials-heading" className="sr-only">
-          Founder testimonials
-        </h2>
-
-        <div className="grid grid-cols-12 gap-8 items-center">
-          {/* Overlapping portrait stack */}
-          <div className="col-span-12 md:col-span-4 relative h-[280px] md:h-[360px]">
-            {testimonials.map((tt, idx) => {
-              const offset = (idx - i + testimonials.length) % testimonials.length;
-              const isFront = offset === 0;
-              return (
-                <motion.div
-                  key={idx}
-                  animate={{
-                    transform: `translate3d(${offset * 28}px, ${offset * 14}px, 0) scale(${1 - offset * 0.06})`,
-                    opacity: offset > 2 ? 0 : 1 - offset * 0.25,
-                    zIndex: 10 - offset,
-                  }}
-                  transition={{ type: "spring", duration: 0.55, bounce: 0.18 }}
-                  className="absolute top-0 left-0 w-[220px] md:w-[280px] aspect-[4/5] rm-media-card shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)] will-change-transform"
-                >
-                  <img
-                    src={tt.avatar}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover saturate-[0.5] brightness-95"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
-                  {isFront && (
-                    <div className="absolute bottom-5 left-5 right-5">
-                      <p className="text-[13px] font-medium text-white tracking-[-0.01em]">
-                        {tt.name}
-                      </p>
-                      <p className="text-[11px] text-white/60 mt-0.5">{tt.role}</p>
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-
-          {/* Quote */}
-          <div className="col-span-12 md:col-span-8">
-            <div className="text-[10px] uppercase tracking-[0.32em] text-white/40 tabular-nums mb-6">
-              {String(i + 1).padStart(2, "0")} / {String(testimonials.length).padStart(2, "0")} ·
-              Founders
-            </div>
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.blockquote
-                key={i}
-                initial={{ opacity: 0, filter: "blur(2px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(2px)" }}
-                transition={{ duration: 0.32, ease: [0.23, 1, 0.32, 1] }}
-                className="font-medium text-white tracking-[-0.02em] leading-[1.18]"
-                style={{
-                  fontFamily: '"Bricolage Grotesque", system-ui, sans-serif',
-                  fontWeight: 400,
-                  fontSize: "clamp(1.5rem, 3vw, 2.75rem)",
-                }}
-              >
-                <span
-                  className="not-italic"
-                  style={{ fontFamily: '"Bricolage Grotesque", system-ui, sans-serif' }}
-                >
-                  "{t.quote}"
-                </span>
-              </motion.blockquote>
-            </AnimatePresence>
-
-            <div className="mt-10 flex items-center gap-4">
-              <button
-                type="button"
-                onClick={prev}
-                aria-label="Previous testimonial"
-                className="w-11 h-11 rounded-full border border-white/15 text-white hover:bg-white/5 active:scale-[0.94] transition-[transform,background-color] duration-150 ease-out flex items-center justify-center will-change-transform"
-              >
-                ←
-              </button>
-              <button
-                type="button"
-                onClick={next}
-                aria-label="Next testimonial"
-                className="w-11 h-11 rounded-full border border-white/15 text-white hover:bg-white/5 active:scale-[0.94] transition-[transform,background-color] duration-150 ease-out flex items-center justify-center will-change-transform"
-              >
-                →
-              </button>
-              <div className="ml-4 flex gap-2 items-center">
-                {testimonials.map((_, idx) => {
-                  const isActive = idx === i;
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setI(idx)}
-                      aria-label={`Show testimonial ${idx + 1}`}
-                      className="h-1 w-10 rounded-full overflow-hidden bg-white/15"
-                    >
-                      <span
-                        aria-hidden
-                        className="block h-full w-full bg-white origin-left will-change-transform"
-                        style={{
-                          transform: `scaleX(${isActive ? 1 : 0.4})`,
-                          opacity: isActive ? 1 : 0.35,
-                          transition:
-                            "transform 280ms cubic-bezier(0.23,1,0.32,1), opacity 200ms ease",
-                        }}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
-  );
-}
-
-/* ================================================================== */
-/*  CTA                                                                */
-/* ================================================================== */
-function CTASection() {
-  return (
-    <UnifiedCTA
-      eyebrow="The conversation starts here"
-      title="Let's build something"
-      titleAccent="that compounds."
-    />
   );
 }
