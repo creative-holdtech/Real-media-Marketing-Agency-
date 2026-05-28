@@ -598,6 +598,16 @@ button {
   text-overflow: ellipsis;
 }
 
+@media (max-width: 640px) {
+  .rm-mode-btn__meta {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: initial;
+    line-height: 1.4;
+    letter-spacing: 0.16em;
+  }
+}
+
 .rm-mode-btn__bar {
   position: absolute;
   bottom: -1px;
