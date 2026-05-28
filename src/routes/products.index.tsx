@@ -423,7 +423,7 @@ function ProductsPage() {
           {/* Headline + lead */}
           <section className="border-b border-white/[0.06] bg-[#000]">
             <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
-              <div className="grid grid-cols-12 gap-8 md:gap-16 items-start">
+              <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <TextReveal
                     text={data.headline}
