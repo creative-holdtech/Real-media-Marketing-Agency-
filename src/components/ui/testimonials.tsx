@@ -1,17 +1,19 @@
+import type { ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
-import { sectionContainer } from "@/components/framer-section";
+import { FramerTag, sectionContainer } from "@/components/framer-section";
+import { cn } from "@/lib/utils";
 
-type TestimonialSectionProps = {
-  quote?: string;
-  authorName?: string;
-  authorRole?: string;
-};
+export const quoteStatementClass =
+  "text-balance font-semibold text-[var(--rm-ink)]";
 
-const defaultQuote =
-  "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We’re happy to recommend them as a fantastic team to work with";
+export const quoteStatementStyle = {
+  fontSize: "clamp(1.35rem, 2.6vw, 2.1rem)",
+  lineHeight: 1.22,
+  letterSpacing: "-0.035em",
+} as const;
 
 function QuoteBackground() {
   const reduce = useReducedMotion();
@@ -31,15 +33,63 @@ function QuoteBackground() {
         style={reduce ? undefined : { y, scale: 1.12 }}
         className="absolute inset-0 h-full w-full object-cover"
       />
-      {/* base dimmer */}
       <div className="absolute inset-0 bg-[rgb(10,10,10)]/50" />
-      {/* top gradient — blends into the section above */}
       <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#0a0a0a] to-transparent" />
-      {/* bottom gradient — blends into the section below */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0a0a0a] to-transparent" />
     </div>
   );
 }
+
+/** Full-bleed quote block with parallax image + edge gradients (home testimonial shell). */
+export function QuoteGradientSection({
+  ariaLabel,
+  ariaLabelledBy,
+  children,
+  className,
+}: {
+  ariaLabel?: string;
+  ariaLabelledBy?: string;
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <section
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      className={cn(
+        "relative flex min-h-[min(680px,80svh)] flex-col justify-center overflow-hidden border-b border-white/[0.06] px-6 py-24 md:px-10 md:py-32",
+        className,
+      )}
+    >
+      <QuoteBackground />
+      <div className={cn("relative z-[1]", sectionContainer)}>{children}</div>
+    </section>
+  );
+}
+
+export function QuoteMark({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "select-none font-semibold leading-none text-white/10",
+        className,
+      )}
+      style={{ fontSize: "clamp(6rem, 10vw, 10rem)", lineHeight: 1, letterSpacing: "-0.05em" }}
+    >
+      "
+    </span>
+  );
+}
+
+type TestimonialSectionProps = {
+  quote?: string;
+  authorName?: string;
+  authorRole?: string;
+};
+
+const defaultQuote =
+  "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We’re happy to recommend them as a fantastic team to work with";
 
 export default function TestimonialSection({
   quote = defaultQuote,
@@ -47,52 +97,91 @@ export default function TestimonialSection({
   authorRole = "PR  FinUp",
 }: TestimonialSectionProps) {
   return (
-    <section
-      aria-label="Client testimonial"
-      className="relative flex min-h-[min(680px,80svh)] flex-col justify-center overflow-hidden border-b border-white/[0.06] px-6 py-24 md:px-10 md:py-32"
-    >
-      <QuoteBackground />
+    <QuoteGradientSection aria-label="Client testimonial">
+      <div className="flex max-w-3xl flex-col gap-10 md:gap-12">
+        <QuoteMark />
 
-      <div className={`relative z-[1] ${sectionContainer}`}>
-        <div className="flex max-w-3xl flex-col gap-10 md:gap-12">
+        <blockquote className="reveal -mt-6 m-0 border-0 p-0 md:-mt-8">
+          <p className={quoteStatementClass} style={quoteStatementStyle}>
+            {quote}
+          </p>
 
-          {/* decorative opening quote */}
-          <span
-            aria-hidden
-            className="select-none font-semibold leading-none text-white/10"
-            style={{ fontSize: "clamp(6rem, 10vw, 10rem)", lineHeight: 1, letterSpacing: "-0.05em" }}
-          >
-            "
-          </span>
-
-          <blockquote className="reveal -mt-6 m-0 border-0 p-0 md:-mt-8">
-            <p
-              className="text-balance font-semibold text-[var(--rm-ink)]"
-              style={{
-                fontSize: "clamp(1.35rem, 2.6vw, 2.1rem)",
-                lineHeight: 1.22,
-                letterSpacing: "-0.035em",
-              }}
-            >
-              {quote}
-            </p>
-
-            <footer className="mt-10 flex items-center gap-4 md:mt-12">
-              {/* thin rule */}
-              <div className="h-px w-10 shrink-0 bg-white/25" aria-hidden />
-              <div className="flex flex-col gap-0.5">
-                <cite className="not-italic text-sm font-semibold tracking-wide text-[var(--rm-ink)]">
-                  {authorName}
-                </cite>
-                <span className="text-xs uppercase tracking-[0.1em] text-[var(--rm-text-muted)]">
-                  {authorRole}
-                </span>
-              </div>
-            </footer>
-          </blockquote>
-
-        </div>
+          <footer className="mt-10 flex items-center gap-4 md:mt-12">
+            <div className="h-px w-10 shrink-0 bg-white/25" aria-hidden />
+            <div className="flex flex-col gap-0.5">
+              <cite className="not-italic text-sm font-semibold tracking-wide text-[var(--rm-ink)]">
+                {authorName}
+              </cite>
+              <span className="text-xs uppercase tracking-[0.1em] text-[var(--rm-text-muted)]">
+                {authorRole}
+              </span>
+            </div>
+          </footer>
+        </blockquote>
       </div>
-    </section>
+    </QuoteGradientSection>
+  );
+}
+
+type ManifestoQuoteSectionProps = {
+  tag: string;
+  titleId: string;
+  srTitle: string;
+  thesis: string;
+  bullets: readonly string[];
+};
+
+/** About manifesto — same gradient quote treatment as home testimonial. */
+export function ManifestoQuoteSection({
+  tag,
+  titleId,
+  srTitle,
+  thesis,
+  bullets,
+}: ManifestoQuoteSectionProps) {
+  return (
+    <QuoteGradientSection ariaLabelledBy={titleId}>
+      <div className="flex max-w-3xl flex-col gap-10 md:gap-12">
+        <p className="reveal w-fit">
+          <FramerTag>{tag}</FramerTag>
+        </p>
+
+        <QuoteMark />
+
+        <blockquote className="reveal -mt-6 m-0 border-0 p-0 md:-mt-8">
+          <p
+            id={titleId}
+            className={quoteStatementClass}
+            style={quoteStatementStyle}
+            aria-label={srTitle}
+          >
+            {thesis}
+          </p>
+
+          <ul className="mt-10 flex flex-col gap-4 md:mt-12">
+            {bullets.map((item, index) => (
+              <li
+                key={item}
+                className="reveal flex items-start gap-3"
+                data-delay={String(index + 1)}
+              >
+                <span className="mt-[0.35em] shrink-0 text-sm text-white/30" aria-hidden>
+                  —
+                </span>
+                <span
+                  className="text-pretty text-[var(--rm-text-muted)]"
+                  style={{
+                    fontSize: "clamp(0.95rem, 1.35vw, 1.05rem)",
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </blockquote>
+      </div>
+    </QuoteGradientSection>
   );
 }

@@ -7,6 +7,7 @@ import {
   bodyCopy,
   bodyCopyStrong,
   FramerTag,
+  pageHeroContainer,
 } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
@@ -60,7 +61,7 @@ function Index() {
       <HeroAtmosphere imageSrc={heroBg} underHeader>
         {/* HERO */}
         <section className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]">
-          <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8">
+          <div className={pageHeroContainer}>
             <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
               <p className="reveal mb-8 w-fit">
                 <FramerTag>R-M marketing agency</FramerTag>

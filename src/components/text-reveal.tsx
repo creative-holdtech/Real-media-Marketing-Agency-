@@ -13,6 +13,9 @@ type TextRevealProps = {
   className?: string;
   baseColor?: string;
   revealColor?: string;
+  /** When set, used as the visible heading id for `aria-labelledby` on the section. */
+  id?: string;
+  ariaLabel?: string;
 };
 
 const CHUNK_SIZE = 3;
@@ -51,6 +54,8 @@ export function TextReveal({
   className,
   baseColor = "rgb(153, 153, 153)",
   revealColor = "rgb(255, 255, 255)",
+  id,
+  ariaLabel,
 }: TextRevealProps) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
@@ -68,14 +73,19 @@ export function TextReveal({
 
   if (reduce || complete) {
     return (
-      <p className={className} style={{ color: revealColor }}>
+      <p
+        id={id}
+        className={className}
+        style={{ color: revealColor }}
+        aria-label={ariaLabel}
+      >
         {text}
       </p>
     );
   }
 
   return (
-    <p ref={ref} className={className}>
+    <p id={id} ref={ref} className={className} aria-label={ariaLabel}>
       {chunks.map((chunk, index) => {
         const start = index / chunks.length;
         const end = Math.min(1, (index + 1.2) / chunks.length);
