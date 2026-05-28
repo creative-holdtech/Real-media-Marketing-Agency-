@@ -20,7 +20,7 @@ export const homepageEngagements: Engagement[] = [
     name: "Sprint",
     time: "From 4 weeks",
     intro:
-      "Fast start for brands that don't want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
+      "Fast start for brands that don’t want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
     steps: [
       {
         code: "01",

@@ -258,7 +258,7 @@ function HeroSection() {
       ref={sectionRef}
       onMouseMove={onMouseMove}
       aria-labelledby="page-title"
-      className="relative overflow-hidden border-b border-white/10 px-5 md:px-10 pt-[200px] pb-20 md:pt-[280px] md:pb-28"
+      className="relative overflow-hidden border-b border-white/10 px-5 md:px-10 pt-8 pb-16 md:pt-16 md:pb-24"
     >
       <motion.div
         className="pointer-events-none absolute inset-0 z-10"
@@ -274,7 +274,7 @@ function HeroSection() {
           <div className="md:col-span-2 flex flex-col gap-8">
             <h1
               id="page-title"
-              className="text-[56px] md:text-[104px] font-bold leading-[1.0] tracking-[-0.03em] text-white"
+              className="text-[35px] sm:text-[48px] md:text-[58px] lg:text-[64px] font-medium leading-[0.94] tracking-[-0.045em] text-white"
             >
               <SplitReveal wordDelay={0.05}>Strategic partnership</SplitReveal>
               <br />
@@ -347,7 +347,7 @@ function NumbersSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="numbers-heading"
-              className="text-[36px] md:text-[52px] font-bold leading-[1.05] tracking-[-0.03em] text-white max-w-[18ch]"
+              className="text-[28px] md:text-[40px] font-medium leading-[1.1] tracking-[-0.03em] text-white max-w-[20ch]"
             >
               Ten years. Compounded across founder teams.
             </h2>
@@ -375,7 +375,7 @@ function NumbersSection() {
                 {n.tag}
               </span>
               <div>
-                <div className="text-[52px] md:text-[68px] font-bold tracking-[-0.04em] leading-[0.95] text-neutral-900">
+                <div className="text-[44px] md:text-[56px] font-medium tracking-[-0.04em] leading-[0.95] text-neutral-900">
                   <SlotCounter value={n.value} />
                 </div>
                 <p className="mt-4 text-[14px] leading-[1.6] text-neutral-500 max-w-[32ch]">
@@ -413,7 +413,7 @@ function ManifestoSection() {
               Manifesto
             </h2>
           </div>
-          <p className="md:col-span-2 text-[26px] md:text-[44px] font-normal leading-[1.3] tracking-[-0.02em] text-white">
+          <p className="md:col-span-2 text-[22px] md:text-[36px] font-normal leading-[1.4] tracking-[-0.02em] text-white/80">
             {manifestoLines.map((line, i) => (
               <motion.span
                 key={i}
@@ -453,7 +453,7 @@ function VerticalsSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="verticals-heading"
-              className="text-[36px] md:text-[52px] font-bold leading-[1.05] tracking-[-0.03em] text-white max-w-[18ch]"
+              className="text-[28px] md:text-[40px] font-medium leading-[1.1] tracking-[-0.03em] text-white max-w-[20ch]"
             >
               <SplitReveal wordDelay={0.06}>Four spaces we lock into.</SplitReveal>
             </h2>
@@ -510,7 +510,7 @@ function VerticalsSection() {
                     <span className="text-[11px] uppercase tracking-[0.32em] text-white/60 tabular-nums">
                       {v.n}
                     </span>
-                    <span className="ml-4 text-[18px] font-semibold tracking-[-0.02em] text-white">
+                    <span className="ml-4 text-[16px] font-medium tracking-[-0.01em] text-white">
                       {v.title}
                     </span>
                   </div>
@@ -523,7 +523,7 @@ function VerticalsSection() {
                     {v.n} · Vertical
                   </span>
                   <div>
-                    <h3 className="text-[30px] md:text-[38px] font-bold tracking-[-0.03em] leading-[1.1] text-white">
+                    <h3 className="text-[24px] md:text-[32px] font-medium tracking-[-0.03em] leading-[1.1] text-white">
                       {v.title}
                     </h3>
                     <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.65] text-white/80">
@@ -554,7 +554,7 @@ function VerticalsSection() {
                   {v.n} · Vertical
                 </span>
                 <div>
-                  <h3 className="text-white text-[22px] font-bold tracking-[-0.02em] leading-[1.1]">
+                  <h3 className="text-white text-[20px] font-medium tracking-[-0.02em] leading-[1.1]">
                     {v.title}
                   </h3>
                   <p className="mt-3 text-[13px] leading-[1.6] text-white/80">{v.body}</p>
@@ -585,7 +585,7 @@ function TeamSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="team-heading"
-              className="text-[36px] md:text-[52px] font-bold leading-[1.05] tracking-[-0.03em] text-white max-w-[20ch]"
+              className="text-[28px] md:text-[40px] font-medium leading-[1.1] tracking-[-0.03em] text-white max-w-[22ch]"
             >
               <SplitReveal wordDelay={0.06}>The people who ship the work.</SplitReveal>
             </h2>
@@ -625,7 +625,7 @@ function TeamSection() {
                       </p>
                     </div>
                     <div className="mt-6 pt-5 border-t border-neutral-100">
-                      <h3 className="text-[22px] font-semibold tracking-[-0.04em] leading-[1.1] text-neutral-900">
+                      <h3 className="text-[20px] font-medium tracking-[-0.03em] leading-[1.1] text-neutral-900">
                         {person.name}
                       </h3>
                       <p className="mt-1 text-[10px] font-normal uppercase tracking-[0.22em] text-neutral-400">

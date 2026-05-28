@@ -23,10 +23,10 @@ const featuredCases = [
   {
     cardKey: "featured-currency-exchange",
     to: "/cases" as const,
-    tag: "Cryptocurrency exchange / Currency",
+    tag: "Cryptocurrency exchange, / Currency",
     title:
       "We scaled user base across EMEA, Americas, and APAC through 270+ influencer videos across finance, tech, and economics channels.",
-    label: "New accounts created in 6 mo",
+    label: "New  accounts created in  in 6 mo",
     metric: "+30 878",
   },
 ] as const;

@@ -138,7 +138,7 @@ export function ServicesSection() {
               className="font-semibold text-[var(--rm-ink)]"
               style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)", lineHeight: 1.1, letterSpacing: "-0.04em" }}
             >
-              Two ways to work with us
+              Two ways to work with us. Both end in shipped revenue.
             </h2>
           </div>
         </div>

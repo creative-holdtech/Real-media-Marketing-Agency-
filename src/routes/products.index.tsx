@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   motion,
@@ -7,8 +7,10 @@ import {
   useSpring,
   useReducedMotion,
 } from "motion/react";
+import { Player } from "@remotion/player";
+import { ProductsComposition } from "@/components/products-composition";
 
-import { btnPrimary, bodyCopy } from "@/components/framer-section";
+import { btnPrimary, bodyCopy, FramerTag } from "@/components/framer-section";
 
 function PinFrame({ children, className, active }: { children: React.ReactNode; className?: string; active?: boolean }) {
   return (
@@ -46,9 +48,10 @@ const modes = {
     tag: "Sprint",
     meta: "from 4 weeks · tactical retainer",
     headline: "High-impact marketing for fast raises and tight deadlines.",
-    lead: "Sprint is a focused engagement with a clear scope and hard deadline. We embed into your workflow, deploy target channel mix, and move fast. You get weekly deliverables and clear data within a flexible monthly setup. Best suited for early-stage founders, growth leads preparing for a raise, and teams with solid traction looking for a breakthrough.",
+    lead:
+      "Sprint is a focused engagement with a clear scope and hard deadline. We embed into your workflow, deploy target channel mix, and move fast. You get weekly deliverables and clear data within a flexible monthly setup. Best suited for early-stage founders, growth leads preparing for a raise, and teams with solid traction looking for a breakthrough.",
     cta: "Scope a Sprint →",
-    duration: "4+",
+    duration: "4 + weeks",
     format: "Tactical retainer",
     bestFor: "A defined challenge",
     cadence: "Daily check-ins",
@@ -70,14 +73,15 @@ const modes = {
   },
   marathon: {
     tag: "Marathon",
-    meta: "from 2 months · strategic partnership",
+    meta: "from 2 months strategic partnership",
     headline: "For founders building a category beyond a product.",
-    lead: "Marathon is a foundational growth ecosystem. We replace the need for an in-house department to take over the entire function — from core strategy and positioning to long-term multi-channel execution. Built for Series A+ companies, ambitious scale-ups, and teams focusing on long-term growth as a board-level priority.",
+    lead:
+      "Marathon is a foundational growth ecosystem. We replace the need for an in-house department to take over the entire function — from core strategy and positioning to long-term multi-channel execution. Built for Series A+ companies, ambitious scale-ups, and teams focusing on long-term growth as a board-level priority.",
     cta: "Start a Marathon →",
-    duration: "2+",
+    duration: "2 + months",
     format: "Strategic partnership",
     bestFor: "Full brand build or market entry",
-    cadence: "Weekly / Monthly strategy sessions",
+    cadence: "Weekly / Monthly sessions",
     output: "Brand / GTM strategy",
     deliverables: [
       {
@@ -90,7 +94,7 @@ const modes = {
       },
       {
         title: "Embedded Strategic Support",
-        body: "Continuous C-level support for your launches, fundraises, and pivots. We operate inside your context, working alongside your core team.",
+        body: "Continuous C-level support for your launches, fundraises, and pivots. We operate inside your context, working  alongside your core team.",
       },
     ],
   },
@@ -132,22 +136,16 @@ function SplitModeSwitcher({
     offset: ["start 0.9", "start 0.1"],
   });
 
-  // Clamp slide distance to viewport width — prevents >20% jump on narrow screens
-  const xOffset = useMemo(
-    () => typeof window !== "undefined" ? Math.round(Math.min(80, window.innerWidth * 0.13)) : 80,
-    []
-  );
-
   const raw = useSpring(scrollYProgress, { stiffness: 120, damping: 22, mass: 0.4 });
 
   // Full transform strings — GPU-composited, not rAF/main-thread like x/y shorthands
   const sprintTransform = useTransform(
     raw, [0, 1],
-    reduce ? ["translateX(0px)", "translateX(0px)"] : [`translateX(-${xOffset}px)`, "translateX(0px)"]
+    reduce ? ["translateX(0px)", "translateX(0px)"] : ["translateX(-80px)", "translateX(0px)"]
   );
   const marathonTransform = useTransform(
     raw, [0, 1],
-    reduce ? ["translateX(0px)", "translateX(0px)"] : [`translateX(${xOffset}px)`, "translateX(0px)"]
+    reduce ? ["translateX(0px)", "translateX(0px)"] : ["translateX(80px)", "translateX(0px)"]
   );
   const opacity   = useTransform(raw, [0, 1], [0, 1]);
   const barScaleX = useTransform(raw, [0.2, 0.9], reduce ? [1, 1] : [0, 1]);
@@ -238,6 +236,7 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
             </div>
             <dl className="flex flex-col gap-3 border-t border-white/[0.07] pt-6">
               {[
+                { label: "Duration", value: d.duration },
                 { label: "Format", value: d.format },
                 { label: "Best for", value: d.bestFor },
                 { label: "Cadence", value: d.cadence },
@@ -330,6 +329,7 @@ function HeroHeadline() {
 
 function ProductsPage() {
   useReveal();
+  const reduce = useReducedMotion();
   const [mode, setMode] = useState<Mode>("sprint");
   const switcherRef = useRef<HTMLDivElement>(null);
   const [isSticky, setIsSticky] = useState(false);
@@ -372,21 +372,19 @@ function ProductsPage() {
         >
           <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8">
             <div className="mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
+              <p className="mb-8 w-fit">
+                <FramerTag>Products</FramerTag>
+              </p>
               <HeroHeadline />
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                className={cn("mt-6 max-w-[34ch] text-balance text-center", bodyCopy)}
-              >
-                Both formats are built around your growth. One moves faster, the other goes deeper. Same quality, different scope.
-              </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.15, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                className="mt-10"
+                className="mt-8 flex max-w-[38ch] flex-col items-center gap-8"
               >
+                <p className="text-balance text-center text-base leading-relaxed text-white/58 md:text-lg">
+                  Both formats are built around your growth. One moves faster, the other goes deeper. Same quality, different scope.
+                </p>
                 <button
                   onClick={() => document.getElementById("format")?.scrollIntoView({ behavior: "smooth" })}
                   className={btnPrimary}
@@ -404,18 +402,49 @@ function ProductsPage() {
         <div
           ref={switcherRef}
           id="format"
-          className="border-b border-white/10 bg-[#000]"
-          style={{ scrollMarginTop: "var(--rm-header-offset)" }}
+          className="border-b border-white/10 bg-[#000] overflow-hidden"
+          style={{ scrollMarginTop: "80px" }}
         >
-          <div className="mx-auto max-w-[1440px] px-6 md:px-12 overflow-hidden">
-            <SplitModeSwitcher
-              active={mode}
-              onChange={handleModeChange}
-              sectionRef={switcherRef}
-            />
+          <span className="rm-select-label">Select your format</span>
+          <div className="mx-auto max-w-[1440px] px-6 md:px-12">
+            <PinFrame>
+              <SplitModeSwitcher
+                active={mode}
+                onChange={handleModeChange}
+                sectionRef={switcherRef}
+              />
+            </PinFrame>
           </div>
         </div>
 
+        {/* Remotion cinematic scene */}
+        <div className="relative w-full bg-[#000] border-b border-white/[0.06] overflow-hidden">
+          <Player
+            key={mode}
+            component={ProductsComposition}
+            inputProps={{ mode }}
+            durationInFrames={120}
+            compositionWidth={1440}
+            compositionHeight={420}
+            fps={60}
+            initialFrame={reduce ? 96 : 0}
+            style={{
+              width: "100%",
+              height: "auto",
+              aspectRatio: "1440/420",
+              display: "block",
+              opacity: 1,
+            }}
+            playbackRate={1}
+            loop={false}
+            autoPlay={!reduce}
+            controls={false}
+            clickToPlay={false}
+            numberOfSharedAudioTags={0}
+            noSuspense
+            acknowledgeRemotionLicense
+          />
+        </div>
 
         {/* Mode content */}
         <div className="rm-mode-panel" key={mode}>
@@ -423,7 +452,7 @@ function ProductsPage() {
           {/* Headline + lead */}
           <section className="border-b border-white/[0.06] bg-[#000]">
             <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
-              <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
+              <div className="grid grid-cols-12 gap-8 md:gap-16 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <TextReveal
                     text={data.headline}

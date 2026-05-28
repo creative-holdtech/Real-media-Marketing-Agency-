@@ -17,7 +17,7 @@ function fadeIn(frame: number, start: number, end: number) {
   return interpolate(frame, [start, end], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.inOut(Easing.cubic),
+    easing: Easing.out(Easing.cubic),
   });
 }
 
@@ -58,7 +58,7 @@ function SprintScene({ frame, fps }: { frame: number; fps: number }) {
               background: `linear-gradient(90deg, rgba(255,255,255,${l.opacity * 2.5}), rgba(255,255,255,0))`,
               transformOrigin: "0 50%",
               transform: `rotate(${l.angle}deg) scaleX(${progress})`,
-              opacity: l.opacity * 3,
+              opacity: Math.min(1, l.opacity * 3),
             }}
           />
         );

@@ -11,7 +11,7 @@ type TestimonialSectionProps = {
 };
 
 const defaultQuote =
-  "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We're happy to recommend them as a fantastic team to work with";
+  "Working with Real Media has been an excellent experience for Finup. They are reliable, creative, and always professional in their approach. We’re happy to recommend them as a fantastic team to work with";
 
 function QuoteBackground() {
   const reduce = useReducedMotion();
@@ -44,7 +44,7 @@ function QuoteBackground() {
 export default function TestimonialSection({
   quote = defaultQuote,
   authorName = "Nikita",
-  authorRole = "PR Lead · FinUp",
+  authorRole = "PR  FinUp",
 }: TestimonialSectionProps) {
   return (
     <section
