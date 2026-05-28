@@ -7,6 +7,7 @@ import {
   sectionContentGrid,
   sectionGridSpacer,
   sectionHeadline,
+  sectionHeadlineLead,
   sectionInnerStack,
   sectionShell,
   SectionHeader,
@@ -71,17 +72,25 @@ export function MarketingSectionIntro({
   srTitle?: string;
   lead?: ReactNode;
 }) {
+  const headline = (
+    <TextReveal
+      id={titleId}
+      text={title}
+      className={sectionHeadline}
+      ariaLabel={srTitle}
+    />
+  );
+
   return (
     <SectionHeader tag={tag}>
-      <TextReveal
-        id={titleId}
-        text={title}
-        className={sectionHeadline}
-        ariaLabel={srTitle}
-      />
       {lead ? (
-        <div className={cn(sectionInnerStack, "mt-6 w-full md:mt-10")}>{lead}</div>
-      ) : null}
+        <div className={sectionHeadlineLead}>
+          {headline}
+          {lead}
+        </div>
+      ) : (
+        headline
+      )}
     </SectionHeader>
   );
 }
@@ -174,4 +183,4 @@ export function MarketingTagColumn({
   );
 }
 
-export { bodyCopy, sectionInnerStack };
+export { bodyCopy, sectionHeadlineLead, sectionInnerStack };

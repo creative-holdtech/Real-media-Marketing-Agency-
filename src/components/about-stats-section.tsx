@@ -1,11 +1,14 @@
-import { bodyCopy, sectionContainer, sectionShell } from "@/components/framer-section";
-import { cn } from "@/lib/utils";
 import {
-  ChapterSpacer,
-  MarketingContentGrid,
-  MarketingSectionIntro,
-} from "@/components/marketing-section";
+  bodyCopy,
+  sectionContainer,
+  sectionHeadline,
+  sectionHeadlineLead,
+  sectionShell,
+  SectionHeader,
+} from "@/components/framer-section";
+import { MarketingContentGrid } from "@/components/marketing-section";
 import { MetaCard } from "@/components/meta-card";
+import { cn } from "@/lib/utils";
 
 const metricCards = [
   {
@@ -34,21 +37,25 @@ export function AboutStatsSection() {
   return (
     <section id="numbers" aria-labelledby="numbers-heading" className={sectionShell}>
       <div className={sectionContainer}>
-        <MarketingSectionIntro
-          tag="By the numbers"
-          title="Ten years. Compounded across founder teams."
-          titleId="numbers-heading"
-          lead={
+        <SectionHeader tag="By the numbers">
+          <div className={sectionHeadlineLead}>
+            <p id="numbers-heading" className={cn(sectionHeadline, "reveal whitespace-pre-line")}>
+              {"Ten years.\nCompounded across founder teams."}
+            </p>
             <p className={cn(bodyCopy, "reveal")} data-delay="1">
               Numbers that describe the agency better than any deck slide.
             </p>
-          }
-        />
+          </div>
+        </SectionHeader>
 
         <MarketingContentGrid>
-          <ChapterSpacer chapter="01" />
           {metricCards.map((card) => (
-            <MetaCard key={card.label} label={card.label} value={card.value} className={card.className} />
+            <MetaCard
+              key={card.label}
+              label={card.label}
+              value={card.value}
+              className={card.className}
+            />
           ))}
         </MarketingContentGrid>
       </div>

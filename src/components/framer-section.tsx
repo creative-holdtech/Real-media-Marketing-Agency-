@@ -13,6 +13,8 @@ export const pageHeroContainer =
   "relative mx-auto w-full max-w-[1440px] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8";
 export const sectionGap = "gap-6 md:gap-8";
 export const sectionInnerStack = "flex flex-col gap-4 md:gap-6";
+/** Title → body spacing (matches Engage panel: gap-3) */
+export const sectionHeadlineLead = "flex w-full flex-col gap-3";
 export const sectionHeaderGrid = `grid grid-cols-1 items-start ${sectionGap} md:grid-cols-3`;
 export const sectionHeaderContent =
   "reveal flex flex-col items-start md:col-span-2 md:max-w-prose";

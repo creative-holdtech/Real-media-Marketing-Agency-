@@ -23,13 +23,9 @@ import {
   FramerTag,
   pageHeroContainer,
   sectionGap,
-  sectionHeaderContent,
   sectionHeaderGrid,
   sectionHeadline,
-  sectionInnerStack,
-  surfaceCardTitle,
-  textCardBody,
-  textMeta,
+  sectionHeadlineLead,
 } from "@/components/framer-section";
 import { SurfaceCard } from "@/components/surface-card";
 import { TextReveal } from "@/components/text-reveal";
@@ -245,12 +241,25 @@ function VerticalsSection() {
   return (
     <MarketingSection id="verticals" ariaLabelledBy="verticals-heading">
       <div className={cn(sectionHeaderGrid, "md:items-stretch")}>
-        <MarketingTagColumn tag="Spaces" chapter="03" chapterAtBottom>
+        <MarketingTagColumn tag="Spaces" />
+        <div className={cn("md:col-span-2", sectionHeadlineLead)}>
+          <h2 id="verticals-heading" className="sr-only">
+            Verticals
+          </h2>
+          <TextReveal text="Four spaces we lock into." className={sectionHeadline} />
+          <p className={cn(bodyCopy, "reveal")} data-delay="1">
+            We go deep where our work compounds.
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8">
+        <div className="flex md:flex-col md:items-start md:pt-2">
           <div
             ref={listRef}
             role="tablist"
             aria-label="Verticals"
-            className="hidden flex-1 flex-col gap-1 md:flex"
+            className="relative flex w-full max-w-full gap-2 overflow-x-auto rounded-full border border-white/[0.14] p-1 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-col md:overflow-visible md:rounded-2xl md:gap-1 [&::-webkit-scrollbar]:hidden"
           >
             {verticals.map((v, index) => {
               const selected = index === active;
@@ -266,39 +275,39 @@ function VerticalsSection() {
                   onClick={() => setActive(index)}
                   onKeyDown={(e) => onKeyDown(e, index)}
                   className={cn(
-                    "rounded-lg border px-4 py-3 text-left transition-colors duration-200",
+                    "relative z-10 shrink-0 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rm-accent focus-visible:ring-offset-2 focus-visible:ring-offset-rm-surface-raised",
-                    selected
-                      ? "border-[var(--rm-border-strong)] bg-[var(--rm-surface-float)] text-[var(--rm-ink)]"
-                      : "border-transparent text-[var(--rm-text-muted)] hover:border-[var(--rm-border-soft)] hover:bg-white/[0.03] hover:text-[var(--rm-ink)]",
+                    "md:w-full md:rounded-xl md:px-4 md:py-3 md:text-left",
                   )}
+                  style={{
+                    color: selected ? "var(--rm-ink)" : "var(--rm-text-muted)",
+                  }}
                 >
-                  <span className={cn("block", textMeta)}>{v.n}</span>
-                  <span className="mt-1.5 block text-sm font-medium tracking-[-0.02em]">
-                    {v.title}
-                  </span>
+                  {!reduce && selected ? (
+                    <motion.span
+                      layoutId="verticals-tab-bg"
+                      className="absolute inset-0 rounded-full bg-white/[0.08] md:rounded-xl"
+                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                    />
+                  ) : selected ? (
+                    <span
+                      className="absolute inset-0 rounded-full bg-white/[0.08] md:rounded-xl"
+                      aria-hidden
+                    />
+                  ) : null}
+                  <span className="relative whitespace-nowrap md:whitespace-normal">{v.title}</span>
                 </button>
               );
             })}
           </div>
-        </MarketingTagColumn>
+        </div>
 
-        <div className={cn("flex flex-col md:col-span-2 md:h-full", "gap-8 md:gap-12")}>
-          <div className={sectionInnerStack}>
-            <h2 id="verticals-heading" className="sr-only">
-              Verticals
-            </h2>
-            <TextReveal text="Four spaces we lock into." className={sectionHeadline} />
-            <p className={cn(bodyCopy, "reveal")} data-delay="1">
-              We go deep where our work compounds.
-            </p>
-          </div>
-
+        <div className="md:col-span-2">
           <div
             role="tabpanel"
             id={`${panelId}-panel`}
             aria-labelledby={`${panelId}-tab-${sector.n}`}
-            className="relative hidden min-h-[360px] overflow-hidden rounded-2xl border border-[var(--rm-border-soft)] md:block"
+            className="relative min-h-[280px] overflow-hidden rounded-2xl border border-[var(--rm-border-soft)] md:min-h-[360px]"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -318,10 +327,7 @@ function VerticalsSection() {
                   decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
-                <div className="absolute inset-0 flex flex-col justify-between p-6 md:p-8">
-                  <span className={cn(textMeta, "text-white/60")}>
-                    {sector.n} · Vertical
-                  </span>
+                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
                   <div>
                     <h3 className={cn(sectionHeadline, "max-w-none text-white")}>
                       {sector.title}
@@ -335,34 +341,6 @@ function VerticalsSection() {
             </AnimatePresence>
           </div>
         </div>
-      </div>
-
-      <div className="flex gap-3 overflow-x-auto pb-1 md:hidden snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {verticals.map((v) => (
-            <article
-              key={v.n}
-              className="relative h-[280px] w-[82vw] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-2xl border border-[var(--rm-border-soft)]"
-            >
-              <img
-                src={v.img}
-                alt=""
-                aria-hidden
-                className="absolute inset-0 h-full w-full object-cover saturate-[0.4] brightness-90"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-between p-5">
-                <span className={cn(textMeta, "text-white/60")}>
-                  {v.n} · Vertical
-                </span>
-                <div>
-                  <h3 className={cn(surfaceCardTitle, "text-white")}>{v.title}</h3>
-                  <p className={cn(textCardBody, "mt-3 text-white/75")}>{v.body}</p>
-                </div>
-              </div>
-            </article>
-          ))}
       </div>
     </MarketingSection>
   );
