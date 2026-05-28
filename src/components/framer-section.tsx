@@ -57,20 +57,22 @@ export const interactiveWhiteCard = interactiveSurfaceCard;
 
 /* ——— Buttons ——— */
 const btnBase =
-  "inline-flex rm-touch cursor-pointer items-center justify-center rounded-full text-[13px] transition-[background-color,border-color,color,transform] duration-200 ease-out focus-visible:outline-none active:scale-[0.97]";
+  "inline-flex rm-touch cursor-pointer items-center justify-center rounded-full text-sm transition-[background-color,border-color,color,transform] duration-200 ease-out focus-visible:outline-none motion-safe:hover:-translate-y-0.5 active:scale-[0.98]";
 export const btnPrimary = cn(
   btnBase,
-  "w-fit bg-white px-5 py-2 font-medium tracking-[-0.02em] text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-[#efeeea] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)]",
+  "w-fit bg-white px-6 py-3 font-semibold tracking-[-0.04em] text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-[#efeeea] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)]",
 );
 export const btnPrimarySm = cn(
   btnBase,
-  "bg-white px-5 py-2 font-medium tracking-[-0.02em] text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)]",
+  "bg-white px-5 py-2.5 font-semibold tracking-[-0.04em] text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)]",
 );
-export const btnOutline =
-  "inline-flex rm-touch cursor-pointer items-center gap-1 text-[13px] font-light text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline-none";
+export const btnOutline = cn(
+  btnBase,
+  "border border-[var(--rm-border-strong)] px-6 py-3 font-medium text-[var(--rm-ink)] hover:border-white focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)]",
+);
 export const btnGhostLink = cn(
   btnBase,
-  "min-h-11 px-2 font-medium text-[var(--rm-text-muted)] hover:bg-transparent hover:text-[var(--rm-ink)] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)] active:scale-100",
+  "min-h-11 px-2 font-medium text-[var(--rm-text-muted)] hover:bg-transparent hover:text-[var(--rm-ink)] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)] motion-safe:hover:translate-y-0 active:scale-100",
 );
 
 export function FramerTag({ children, className }: { children: string; className?: string }) {

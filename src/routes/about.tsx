@@ -258,7 +258,7 @@ function HeroSection() {
       ref={sectionRef}
       onMouseMove={onMouseMove}
       aria-labelledby="page-title"
-      className="rm-about-route-hero relative overflow-hidden border-b border-white/10 px-5 md:px-10 pt-8 pb-16 md:pt-16 md:pb-24"
+      className="relative overflow-hidden border-b border-white/10 px-5 md:px-10 pt-8 pb-16 md:pt-16 md:pb-24"
     >
       <motion.div
         className="pointer-events-none absolute inset-0 z-10"
@@ -282,22 +282,22 @@ function HeroSection() {
             </h1>
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
               <Reveal delay={0.4}>
-                <p className="text-[20px] font-light leading-[1.4] tracking-[-0.02em] text-white/60 max-w-[480px]">
+                <p className="text-[20px] font-medium leading-[1.3] tracking-[-0.04em] text-white/60 max-w-[480px]">
                   A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts.
                   No outsourcing.
                 </p>
               </Reveal>
               <Reveal delay={0.55}>
-                <div className="flex items-center gap-5 flex-wrap">
+                <div className="flex items-center gap-3 flex-wrap">
                   <Link
                     to="/audit"
-                    className="inline-flex rm-touch cursor-pointer items-center justify-center rounded-full text-[13px] transition-[background-color,border-color,color,transform] duration-200 ease-out focus-visible:outline-none active:scale-[0.97] w-fit bg-white px-5 py-2 font-medium tracking-[-0.02em] text-black hover:bg-[#efeeea]"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-black bg-white rounded-full px-6 py-3 hover:bg-white/85 transition-colors duration-200"
                   >
                     Book free audit →
                   </Link>
                   <a
                     href="#verticals"
-                    className="inline-flex rm-touch cursor-pointer items-center gap-1 text-[13px] font-light text-white/50 hover:text-white transition-colors duration-200 focus-visible:outline-none"
+                    className="inline-flex items-center gap-2 text-sm font-semibold text-white border border-white/30 rounded-full px-6 py-3 hover:bg-white/10 transition-colors duration-200"
                   >
                     Our core areas
                   </a>
@@ -310,7 +310,7 @@ function HeroSection() {
         <Reveal delay={0.3} y={24}>
           <div
             ref={imgRef}
-            className="rm-about-route-hero__media mt-14 md:mt-20 w-full h-[360px] md:h-[520px] overflow-hidden"
+            className="mt-20 md:mt-28 w-full h-[480px] md:h-[640px] rounded-2xl overflow-hidden"
             style={{ perspective: 1000 }}
           >
             <motion.img
@@ -337,7 +337,7 @@ function NumbersSection() {
   return (
     <section
       aria-labelledby="numbers-heading"
-      className="rm-about-route-numbers border-b border-white/10 px-5 md:px-10 py-24 md:py-36"
+      className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
     >
       <div className="max-w-[1520px] mx-auto flex flex-col gap-16 md:gap-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
@@ -360,7 +360,8 @@ function NumbersSection() {
           </div>
         </div>
 
-        <div className="rm-about-route-number-grid">
+        {/* Number tiles — white cards on dark bg */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-1">
           {numbers.map((n, i) => (
             <motion.div
               key={n.value}
@@ -368,16 +369,16 @@ function NumbersSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-8%" }}
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
-              className="rm-about-route-number"
+              className="bg-white rounded-2xl p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
             >
-              <span>
+              <span className="text-[10px] font-normal tracking-[0.22em] uppercase text-neutral-400">
                 {n.tag}
               </span>
               <div>
-                <div className="rm-about-route-number__value">
+                <div className="text-[44px] md:text-[56px] font-medium tracking-[-0.04em] leading-[0.95] text-neutral-900">
                   <SlotCounter value={n.value} />
                 </div>
-                <p>
+                <p className="mt-4 text-[14px] leading-[1.6] text-neutral-500 max-w-[32ch]">
                   {n.label}
                 </p>
               </div>
@@ -402,7 +403,7 @@ function ManifestoSection() {
   return (
     <section
       aria-labelledby="manifesto-heading"
-      className="rm-about-route-manifesto border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
+      className="border-b border-white/10 px-5 md:px-10 py-24 md:py-40"
     >
       <div className="max-w-[1520px] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-5 items-start">
@@ -412,7 +413,7 @@ function ManifestoSection() {
               Manifesto
             </h2>
           </div>
-          <p className="md:col-span-2 text-[28px] md:text-[58px] font-medium leading-[1.02] tracking-[-0.055em] text-white/88">
+          <p className="md:col-span-2 text-[22px] md:text-[36px] font-normal leading-[1.4] tracking-[-0.02em] text-white/80">
             {manifestoLines.map((line, i) => (
               <motion.span
                 key={i}

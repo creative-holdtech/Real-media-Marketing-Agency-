@@ -554,27 +554,6 @@ button {
   gap: 0;
 }
 
-.rm-products-choice {
-  position: relative;
-  padding: clamp(1.25rem, 3vw, 2.25rem) 0;
-  background:
-    linear-gradient(90deg, rgba(192, 53, 53, 0.11), transparent 36%, rgba(212, 184, 168, 0.08) 64%, transparent),
-    #000;
-}
-
-.rm-products-choice::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, transparent calc(50% - 1px), rgba(255, 255, 255, 0.16) calc(50% - 1px), rgba(255, 255, 255, 0.16) 50%, transparent 50%),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0 1px, transparent 1px 12.5%);
-  opacity: 0.42;
-  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
-}
-
 .rm-mode-btn {
   position: relative;
   display: flex;
@@ -585,9 +564,9 @@ button {
   padding: clamp(1.5rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2.5rem);
   text-align: left;
   border: none;
-  background: rgba(255, 255, 255, 0.018);
+  background: transparent;
   cursor: pointer;
-  transition: opacity 0.25s ease, background-color 0.25s ease;
+  transition: opacity 0.25s ease;
   border-right: 1px solid rgba(255,255,255,0.06);
 }
 
@@ -643,10 +622,6 @@ button {
 
 .rm-mode-btn--active .rm-mode-btn__label {
   color: #fff;
-}
-
-.rm-mode-switcher--split .rm-mode-btn--active {
-  background: rgba(255, 255, 255, 0.055);
 }
 
 .rm-mode-btn--active .rm-mode-btn__meta {
@@ -729,26 +704,6 @@ button {
   font-size: clamp(2.4rem, 5vw, 5.5rem) !important;
 }
 
-.rm-products-narrative {
-  position: relative;
-}
-
-.rm-products-narrative::before {
-  content: "";
-  position: absolute;
-  top: -1.5rem;
-  bottom: -1.5rem;
-  left: calc(58.333% + 1.95rem);
-  width: 1px;
-  background: linear-gradient(180deg, transparent, rgba(255,255,255,0.16), transparent);
-}
-
-@media (max-width: 767px) {
-  .rm-products-narrative::before {
-    display: none;
-  }
-}
-
 /* Mode panel transition */
 .rm-mode-panel {
   animation: rm-panel-in 0.44s cubic-bezier(0.22,1,0.36,1) both;
@@ -809,140 +764,6 @@ button {
 
 .rm-compare-card--active {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 8px 32px rgba(0,0,0,0.4);
-}
-
-.rm-products-compare-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0;
-  border-block: 1px solid rgba(255,255,255,0.1);
-}
-
-@media (min-width: 768px) {
-  .rm-products-compare-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.rm-products-compare-card {
-  position: relative;
-  display: flex;
-  min-height: clamp(25rem, 42vw, 34rem);
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: clamp(1.75rem, 4vw, 3.5rem);
-  text-align: left;
-  cursor: pointer;
-  border: 0;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.028), transparent),
-    #000;
-  color: #fff;
-  transition:
-    background-color 180ms ease-out,
-    opacity 180ms ease-out,
-    transform 180ms ease-out;
-}
-
-@media (min-width: 768px) {
-  .rm-products-compare-card {
-    border-bottom: 0;
-    border-right: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .rm-products-compare-card:last-child {
-    border-right: 0;
-  }
-}
-
-.rm-products-compare-card:not(.rm-products-compare-card--active) {
-  opacity: 0.54;
-}
-
-.rm-products-compare-card:hover,
-.rm-products-compare-card--active {
-  opacity: 1;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.06), transparent 38%),
-    linear-gradient(135deg, rgba(192,53,53,0.12), transparent 42%),
-    #000;
-}
-
-.rm-products-compare-card__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-.rm-products-compare-card__head span {
-  font-size: clamp(2.75rem, 8vw, 7.5rem);
-  font-weight: 500;
-  line-height: 0.85;
-  letter-spacing: -0.06em;
-  color: rgba(255,255,255,0.94);
-}
-
-.rm-products-compare-card__head strong {
-  font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 500;
-  line-height: 0.82;
-  letter-spacing: -0.065em;
-  color: rgba(255,255,255,0.24);
-}
-
-.rm-products-compare-card__list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.rm-products-compare-card__list div {
-  display: grid;
-  grid-template-columns: minmax(6rem, 0.85fr) minmax(0, 1.15fr);
-  gap: 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,0.075);
-  padding: 0.85rem 0;
-}
-
-.rm-products-compare-card__list dt {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.34);
-}
-
-.rm-products-compare-card__list dd {
-  margin: 0;
-  text-align: right;
-  font-size: clamp(0.9rem, 1.25vw, 1.05rem);
-  line-height: 1.35;
-  color: rgba(255,255,255,0.74);
-}
-
-.rm-products-compare-card__cta {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.58);
-}
-
-@media (max-width: 520px) {
-  .rm-products-compare-card__head {
-    flex-direction: column;
-  }
-
-  .rm-products-compare-card__list div {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-  }
-
-  .rm-products-compare-card__list dd {
-    text-align: left;
-  }
 }
 
 /* Fix: inline glass-points blank gap */
@@ -1197,147 +1018,6 @@ button {
   letter-spacing: -0.06em;
   font-variant-numeric: tabular-nums;
   color: #efeee9;
-}
-
-.rm-about-manifesto {
-  background:
-    linear-gradient(180deg, #080808, #0a0a0a 38%, #000),
-    var(--rm-surface-raised);
-}
-
-.rm-about-statement {
-  position: relative;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.25rem;
-  border-block: 1px solid rgba(255,255,255,0.1);
-  padding: clamp(2rem, 5vw, 4.5rem) 0;
-}
-
-@media (min-width: 768px) {
-  .rm-about-statement {
-    grid-template-columns: minmax(8rem, 1fr) minmax(0, 2fr);
-  }
-}
-
-.rm-about-statement__mark {
-  font-size: clamp(5rem, 14vw, 11rem);
-  font-weight: 500;
-  line-height: 0.8;
-  letter-spacing: -0.08em;
-  color: rgba(192, 53, 53, 0.62);
-}
-
-.rm-about-statement p {
-  margin: 0;
-  max-width: 11ch;
-  font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 500;
-  line-height: 0.9;
-  letter-spacing: -0.065em;
-  color: var(--rm-ink);
-}
-
-.rm-about-proof-grid {
-  align-items: stretch;
-}
-
-.rm-about-proof-item {
-  display: flex;
-  min-height: clamp(10rem, 18vw, 14rem);
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  padding: 1.25rem 0 0;
-}
-
-.rm-about-proof-item p:last-child {
-  max-width: 18ch;
-}
-
-.rm-about-route-hero {
-  min-height: min(100svh, 940px);
-}
-
-.rm-about-route-hero__media {
-  border-radius: 0;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.rm-about-route-numbers {
-  background:
-    linear-gradient(180deg, #000, #090909),
-    #000;
-}
-
-.rm-about-route-number-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  border-top: 1px solid rgba(255,255,255,0.12);
-}
-
-@media (min-width: 768px) {
-  .rm-about-route-number-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.rm-about-route-number {
-  display: flex;
-  min-height: clamp(14rem, 22vw, 20rem);
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 2rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding: clamp(1.25rem, 3vw, 2.25rem) 0;
-}
-
-@media (min-width: 768px) {
-  .rm-about-route-number {
-    border-right: 1px solid rgba(255,255,255,0.08);
-    padding-inline: clamp(1rem, 2vw, 1.75rem);
-  }
-
-  .rm-about-route-number:first-child {
-    padding-left: 0;
-  }
-
-  .rm-about-route-number:last-child {
-    border-right: 0;
-    padding-right: 0;
-  }
-}
-
-.rm-about-route-number > span {
-  font-size: 10px;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: rgba(255,255,255,0.36);
-}
-
-.rm-about-route-number__value {
-  font-size: clamp(3.75rem, 8vw, 7.5rem);
-  font-weight: 500;
-  line-height: 0.86;
-  letter-spacing: -0.07em;
-  color: var(--rm-ink);
-}
-
-.rm-about-route-number p {
-  margin-top: 1rem;
-  max-width: 24ch;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(232,230,225,0.56);
-}
-
-.rm-about-route-manifesto {
-  background:
-    linear-gradient(90deg, rgba(192,53,53,0.13), transparent 32%),
-    #000;
 }
 
 @media (max-width: 767px) {
