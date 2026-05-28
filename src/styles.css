@@ -162,6 +162,10 @@
     --rm-motion-enter: 550ms;
     --rm-scene-vh: 250;
     --rm-bg-scale-from: 1.08;
+
+    /* Typography system */
+    --font-display: 'Syne', system-ui, sans-serif;
+    --font-mono-data: 'Geist Mono', 'Space Mono', ui-monospace, monospace;
   }
 
   html {
@@ -176,6 +180,10 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+/* Font utility classes */
+.font-display { font-family: var(--font-display); }
+.font-mono-data { font-family: var(--font-mono-data); letter-spacing: -0.01em; }
 
 @layer components {
   .rm-page {

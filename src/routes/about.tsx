@@ -174,7 +174,7 @@ function SplitReveal({
 /* ------------------------------------------------------------------ */
 function Tag({ children }: { children: string }) {
   return (
-    <span className="inline-block text-xs font-semibold tracking-widest uppercase text-white/50 border border-white/20 rounded-full px-4 py-1.5">
+    <span className="font-mono-data inline-block text-[11px] font-medium tracking-[0.2em] uppercase text-white/50 border border-white/20 rounded-full px-4 py-1.5">
       {children}
     </span>
   );
@@ -273,12 +273,13 @@ function HeroSection() {
           <div className="md:col-span-2 flex flex-col gap-8">
             <h1
               id="page-title"
-              className="text-[64px] md:text-[120px] font-semibold leading-[1.05] tracking-[-0.04em] text-white"
+              className="font-display text-[60px] md:text-[112px] leading-[1.0] tracking-[-0.03em] text-white"
             >
-              <SplitReveal wordDelay={0.05}>Strategic partnership</SplitReveal>
-              <br />
-              <span className="font-normal text-white/40">
-                <SplitReveal delay={0.25} wordDelay={0.04}>for founders who build to scale</SplitReveal>
+              <span className="block font-extrabold">
+                <SplitReveal wordDelay={0.05}>Strategic partnership</SplitReveal>
+              </span>
+              <span className="block font-normal text-white/35 text-[52px] md:text-[88px] mt-2 tracking-[-0.01em]">
+                <SplitReveal delay={0.3} wordDelay={0.04}>for founders who build to scale</SplitReveal>
               </span>
             </h1>
             <div className="flex flex-col md:flex-row items-start md:items-end gap-8 md:gap-16">
@@ -348,7 +349,7 @@ function NumbersSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="numbers-heading"
-              className="reveal text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
+              className="font-display text-[36px] md:text-[52px] font-bold leading-[1.1] tracking-[-0.04em] text-white max-w-[18ch]"
             >
               Ten years.{" "}
               <span className="text-white/40 font-normal">Compounded across founder teams.</span>
@@ -373,11 +374,11 @@ function NumbersSection() {
               transition={{ duration: 0.5, delay: i * 0.1, ease: [0.25, 0, 0, 1] }}
               className="bg-white rounded-2xl p-8 md:p-10 flex flex-col justify-between min-h-[260px] md:min-h-[280px]"
             >
-              <span className="text-xs font-semibold tracking-widest uppercase text-neutral-400">
+              <span className="font-mono-data text-[10px] font-medium tracking-[0.15em] uppercase text-neutral-400">
                 {n.tag}
               </span>
               <div>
-                <div className="text-[56px] md:text-[72px] font-semibold tracking-[-0.05em] leading-[0.9] text-neutral-900">
+                <div className="font-mono-data text-[52px] md:text-[68px] font-medium tracking-[-0.04em] leading-[0.95] text-neutral-900">
                   {n.value}
                 </div>
                 <p className="mt-4 text-[14px] leading-[1.6] text-neutral-500 max-w-[32ch]">
@@ -415,11 +416,11 @@ function ManifestoSection() {
               Manifesto
             </h2>
           </div>
-          <p className="md:col-span-2 text-[28px] md:text-[48px] font-semibold leading-[1.2] tracking-[-0.05em] text-white">
+          <p className="font-display md:col-span-2 text-[26px] md:text-[44px] leading-[1.2] tracking-[-0.04em] text-white">
             {manifestoLines.map((line, i) => (
               <motion.span
                 key={i}
-                className={`block ${i > 0 ? "mt-4" : ""} ${i === manifestoLines.length - 1 ? "text-white/45 font-normal" : ""}`}
+                className={`block ${i > 0 ? "mt-5" : ""} ${i === 0 ? "font-extrabold" : i === 1 ? "font-normal text-white/70" : "font-normal text-white/40"}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "0px 0px -6% 0px" }}
@@ -455,7 +456,7 @@ function VerticalsSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="verticals-heading"
-              className="text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[18ch]"
+              className="font-display text-[36px] md:text-[52px] font-bold leading-[1.1] tracking-[-0.04em] text-white max-w-[18ch]"
             >
               <SplitReveal wordDelay={0.06}>Four spaces we lock into.</SplitReveal>
             </h2>
@@ -521,11 +522,11 @@ function VerticalsSection() {
                   className="absolute inset-0 flex flex-col justify-between p-8 md:p-10 transition-opacity duration-300 delay-150"
                   style={{ opacity: isActive ? 1 : 0, pointerEvents: isActive ? "auto" : "none" }}
                 >
-                  <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">
+                  <span className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-white/65 tabular-nums">
                     {v.n} · Vertical
                   </span>
                   <div>
-                    <h3 className="text-[32px] md:text-[40px] font-semibold tracking-[-0.04em] leading-[1.1] text-white">
+                    <h3 className="font-display text-[30px] md:text-[38px] font-bold tracking-[-0.03em] leading-[1.1] text-white">
                       {v.title}
                     </h3>
                     <p className="mt-4 max-w-[44ch] text-[15px] leading-[1.65] text-white/80">
@@ -552,11 +553,11 @@ function VerticalsSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/10" />
               <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                <span className="text-[10px] uppercase tracking-[0.32em] text-white/65 tabular-nums">
+                <span className="font-mono-data text-[10px] uppercase tracking-[0.2em] text-white/65 tabular-nums">
                   {v.n} · Vertical
                 </span>
                 <div>
-                  <h3 className="text-white text-[24px] font-semibold tracking-[-0.03em] leading-[1.1]">
+                  <h3 className="font-display text-white text-[22px] font-bold tracking-[-0.02em] leading-[1.1]">
                     {v.title}
                   </h3>
                   <p className="mt-3 text-[13px] leading-[1.6] text-white/80">{v.body}</p>
@@ -587,7 +588,7 @@ function TeamSection() {
           <div className="md:col-span-2 flex flex-col gap-10">
             <h2
               id="team-heading"
-              className="text-[36px] md:text-[56px] font-semibold leading-[110%] tracking-[-0.06em] text-white max-w-[20ch]"
+              className="font-display text-[36px] md:text-[52px] font-bold leading-[1.1] tracking-[-0.04em] text-white max-w-[20ch]"
             >
               <SplitReveal wordDelay={0.06}>The people who ship the work.</SplitReveal>
             </h2>
