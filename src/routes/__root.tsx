@@ -9,9 +9,11 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { NavProvider } from "../components/nav-context";
 import { HubSpotTracking } from "../components/hubspot-tracking";
 import { SmoothScrollProvider } from "../components/smooth-scroll-provider";
 import { PageTransitionCurtain } from "../components/page-transition";
+import { fetchNavigation } from "../lib/payload/navigation";
 
 function NotFoundComponent() {
   return (
@@ -71,6 +73,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async () => ({
+    navigation: await fetchNavigation(),
+  }),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -118,13 +123,16 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { navigation } = Route.useLoaderData();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <SmoothScrollProvider>
-        <Outlet />
-        <PageTransitionCurtain />
-      </SmoothScrollProvider>
+      <NavProvider items={navigation}>
+        <SmoothScrollProvider>
+          <Outlet />
+          <PageTransitionCurtain />
+        </SmoothScrollProvider>
+      </NavProvider>
     </QueryClientProvider>
   );
 }

@@ -18,23 +18,26 @@ import { MarketingSection } from "@/components/marketing-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
-import { archive, getPost, posts } from "@/lib/posts";
+import { getPost as getCmsPost } from "@/lib/payload/posts";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const post = getPost(params.slug);
+  loader: async ({ params }) => {
+    const post = await getCmsPost(params.slug);
     if (!post) throw notFound();
-    return { post };
+    const allPosts = await import("@/lib/payload/posts").then((m) => m.getPosts());
+    return { post, allPosts };
   },
   head: ({ loaderData }) => {
     const post = loaderData?.post;
     if (!post) return { meta: [{ title: "Article — R-M" }] };
+    const title = post.metaTitle ?? `${post.title} — R-M`;
+    const description = post.metaDescription ?? post.excerpt;
     return {
       meta: [
-        { title: `${post.title} — R-M` },
-        { name: "description", content: post.excerpt },
+        { title },
+        { name: "description", content: description },
         { property: "og:title", content: post.title },
-        { property: "og:description", content: post.excerpt },
+        { property: "og:description", content: description },
         { property: "og:image", content: post.image },
         { property: "og:type", content: "article" },
         { name: "twitter:card", content: "summary_large_image" },
@@ -88,12 +91,18 @@ function buildSections(body: string[]): Section[] {
 
 function ArticlePage() {
   useReveal();
-  const { post } = Route.useLoaderData();
+  const { post, allPosts } = Route.useLoaderData();
   const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [activeId, setActiveId] = useState("s-1");
 
-  const sections = useMemo(() => buildSections(post.body), [post.body]);
+  const sections = useMemo(
+    () =>
+      post.sections?.length
+        ? post.sections
+        : buildSections(post.body),
+    [post.body, post.sections],
+  );
 
   useEffect(() => {
     const onScroll = () => {
@@ -118,9 +127,9 @@ function ArticlePage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [sections]);
 
-  const currentIndex = posts.findIndex((p) => p.slug === post.slug);
-  const next = posts[(currentIndex + 1) % posts.length];
-  const related = archive.filter((p) => p.slug !== post.slug).slice(0, 2);
+  const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+  const next = allPosts[(currentIndex + 1) % allPosts.length];
+  const related = allPosts.filter((p) => p.slug !== post.slug && !p.featured).slice(0, 2);
 
   const copyLink = async () => {
     if (typeof window === "undefined") return;
@@ -258,7 +267,7 @@ function ArticlePage() {
                       <div className="relative aspect-[16/10] bg-[var(--rm-surface-float)]">
                         <img
                           src={post.image}
-                          alt=""
+                          alt={post.imageAlt ?? post.title}
                           width={1280}
                           height={800}
                           className="h-full w-full object-cover"

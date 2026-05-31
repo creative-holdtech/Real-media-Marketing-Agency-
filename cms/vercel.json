@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run ci",
+  "crons": [
+    {
+      "path": "/api/jobs/run",
+      "schedule": "* * * * *"
+    }
+  ]
+}

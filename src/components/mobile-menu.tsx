@@ -2,16 +2,10 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-const items: { label: string; to: string; sub: string }[] = [
-  { label: "Services", to: "/services", sub: "What we do" },
-  { label: "Cases", to: "/cases", sub: "Selected work" },
-  { label: "Products", to: "/products", sub: "Sprint & Marathon" },
-  { label: "About", to: "/about", sub: "The studio" },
-  { label: "Blog", to: "/blog", sub: "Notes & essays" },
-  { label: "Contact", to: "/contact", sub: "Start a project" },
-];
+import { useSiteNav } from "@/components/nav-context";
 
 export function MobileMenu() {
+  const items = useSiteNav();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -129,6 +123,7 @@ export function MobileMenu() {
                 transition: `opacity 480ms cubic-bezier(0.22,1,0.36,1) ${80 + i * 60}ms, transform 480ms cubic-bezier(0.22,1,0.36,1) ${80 + i * 60}ms`,
               }}
             >
+              {item.to ? (
               <Link
                 to={item.to}
                 onClick={close}
@@ -151,7 +146,7 @@ export function MobileMenu() {
                     {item.label}
                   </span>
                   <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
-                    {item.sub}
+                    {item.sub ?? ""}
                   </span>
                 </span>
 
@@ -164,6 +159,40 @@ export function MobileMenu() {
                   →
                 </span>
               </Link>
+              ) : (
+              <a
+                href={item.href}
+                onClick={close}
+                className="group flex items-center justify-between gap-4 py-[18px]"
+              >
+                <span
+                  className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
+                  style={{ width: "2ch" }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="flex-1 flex flex-col gap-0.5 min-w-0">
+                  <span
+                    className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
+                    style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
+                  >
+                    {item.label}
+                  </span>
+                  {item.sub ? (
+                    <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
+                      {item.sub}
+                    </span>
+                  ) : null}
+                </span>
+                <span
+                  aria-hidden
+                  className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
+                  style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
+                >
+                  →
+                </span>
+              </a>
+              )}
             </li>
           ))}
         </ul>

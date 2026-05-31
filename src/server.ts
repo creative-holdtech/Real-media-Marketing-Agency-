@@ -2,6 +2,8 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { fetchRedirects, matchRedirect } from "./lib/payload/redirects";
+import { fetchRobotsTxt } from "./lib/payload/site-settings";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -69,6 +71,25 @@ async function normalizeCatastrophicSsrResponse(response: Response): Promise<Res
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      const url = new URL(request.url);
+
+      if (url.pathname === "/robots.txt") {
+        const body = await fetchRobotsTxt();
+        return new Response(body, {
+          headers: { "content-type": "text/plain; charset=utf-8" },
+        });
+      }
+
+      const redirects = await fetchRedirects();
+      const redirect = matchRedirect(url.pathname, redirects);
+      if (redirect) {
+        const status = redirect.type === "302" ? 302 : 301;
+        return Response.redirect(
+          redirect.to.startsWith("http") ? redirect.to : `${url.origin}${redirect.to}`,
+          status,
+        );
+      }
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);

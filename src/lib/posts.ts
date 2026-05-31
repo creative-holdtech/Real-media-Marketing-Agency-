@@ -5,6 +5,12 @@ import blog04 from "@/assets/blog-04.jpg";
 import blog05 from "@/assets/blog-05.jpg";
 import blog06 from "@/assets/blog-06.jpg";
 
+export type PostSection = {
+  id: string;
+  label: string;
+  paragraphs: string[];
+};
+
 export type Post = {
   slug: string;
   /** Filter bucket — Strategy, Positioning, Performance, Brand systems */
@@ -17,9 +23,14 @@ export type Post = {
   title: string;
   excerpt: string;
   image: string;
+  imageAlt?: string;
   author: string;
   featured?: boolean;
   body: string[];
+  /** CMS sections with explicit headings (preferred over auto-split body) */
+  sections?: PostSection[];
+  metaTitle?: string;
+  metaDescription?: string;
 };
 
 /** Six articles from PDF right column (first spread + later blog pages). */

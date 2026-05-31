@@ -1,17 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
 import { MobileMenu } from "@/components/mobile-menu";
+import { useSiteNav } from "@/components/nav-context";
 import { triggerPageTransition } from "@/components/page-transition";
 import { cn } from "@/lib/utils";
-
-const siteNav: { label: string; href?: string; to?: string }[] = [
-  { label: "Services", to: "/services" },
-  { label: "Cases", to: "/cases" },
-  { label: "Products", to: "/products" },
-  { label: "About", to: "/about" },
-  { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
-];
 
 export function SiteHeader({
   variant = "dark",
@@ -22,6 +14,7 @@ export function SiteHeader({
   overlay?: boolean;
 }) {
   const light = variant === "light";
+  const siteNav = useSiteNav();
 
   return (
     <header

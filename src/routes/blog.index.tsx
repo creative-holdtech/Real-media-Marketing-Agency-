@@ -20,18 +20,43 @@ import { UnifiedCTA } from "@/components/unified-cta";
 import { blogFilters, blogIndex, blogMeta } from "@/content/blog";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
-import { archive, featured, posts, type Post } from "@/lib/posts";
+import type { Post } from "@/lib/posts";
+import {
+  getArchivePosts,
+  getFeaturedPost,
+  getPosts,
+} from "@/lib/payload/posts";
+import { fetchBlogMeta } from "@/lib/payload/site-settings";
 
 export const Route = createFileRoute("/blog/")({
-  head: () => ({
-    meta: [
-      { title: blogMeta.title },
-      { name: "description", content: blogMeta.description },
-      { property: "og:title", content: blogMeta.ogTitle },
-      { property: "og:description", content: blogMeta.ogDescription },
-      { property: "og:image", content: featured.image },
-    ],
-  }),
+  loader: async () => {
+    const allPosts = await getPosts();
+    const featuredPost = await getFeaturedPost(allPosts);
+    const archivePosts = await getArchivePosts(allPosts);
+    const cmsBlogMeta = await fetchBlogMeta();
+    return {
+      posts: allPosts,
+      featured: featuredPost,
+      archive: archivePosts,
+      cmsBlogMeta,
+    };
+  },
+  head: ({ loaderData }) => {
+    const featuredPost = loaderData?.featured;
+    const cmsBlogMeta = loaderData?.cmsBlogMeta;
+    return {
+      meta: [
+        { title: cmsBlogMeta?.title ?? blogMeta.title },
+        { name: "description", content: cmsBlogMeta?.description ?? blogMeta.description },
+        { property: "og:title", content: cmsBlogMeta?.title ?? blogMeta.ogTitle },
+        {
+          property: "og:description",
+          content: cmsBlogMeta?.description ?? blogMeta.ogDescription,
+        },
+        { property: "og:image", content: featuredPost?.image ?? "" },
+      ],
+    };
+  },
   component: BlogPage,
 });
 
@@ -139,6 +164,7 @@ function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
 
 function BlogPage() {
   useReveal();
+  const { featured, archive } = Route.useLoaderData();
   const [active, setActive] = useState("All");
   const [progress, setProgress] = useState(0);
   const resultsId = "archive-results";
