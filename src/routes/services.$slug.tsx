@@ -3,6 +3,7 @@ import { createFileRoute, notFound, Link, redirect } from "@tanstack/react-route
 import { ServicePageView } from "@/components/service-page";
 import { serviceCardIntro } from "@/lib/services";
 import { getServiceContent } from "@/lib/payload/services-cms";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: async ({ params }) => {
@@ -13,17 +14,16 @@ export const Route = createFileRoute("/services/$slug")({
     if (!service) throw notFound();
     return { service };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const s = loaderData?.service;
     if (!s) return { meta: [{ title: "Service not found — R-M" }] };
-    return {
-      meta: [
-        { title: `${s.name} — ${s.tagline} · R—M Studio` },
-        { name: "description", content: serviceCardIntro(s) },
-        { property: "og:title", content: `${s.name} — R—M Studio` },
-        { property: "og:description", content: serviceCardIntro(s) },
-      ],
-    };
+    const title = `${s.name} — ${s.tagline} · R—M Studio`;
+    const description = serviceCardIntro(s);
+    return buildPageHead({
+      title,
+      description,
+      pathname: `/services/${params.slug}`,
+    });
   },
   notFoundComponent: () => (
     <div className="rm-page text-white grid place-items-center px-6">

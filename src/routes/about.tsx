@@ -40,6 +40,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 import { getPageContent, section as pageSection } from "@/lib/payload/pages";
 import { getPageDefaults } from "@/lib/page-content/defaults";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/about")({
   loader: async () => ({
@@ -47,24 +48,14 @@ export const Route = createFileRoute("/about")({
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
+    const title = page?.metaTitle ?? "About — R-M Studio";
+    const description =
+      page?.metaDescription ??
+      "R-M is a strategic marketing agency for founders in Fintech, AI SaaS, Cybersecurity, and iGaming.";
+    const seo = buildPageHead({ title, description, pathname: "/about" });
     return {
-      meta: [
-        { title: page?.metaTitle ?? "About — R-M Studio" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "R-M is a strategic marketing agency for founders in Fintech, AI SaaS, Cybersecurity, and iGaming.",
-        },
-        { property: "og:title", content: page?.metaTitle ?? "About — R-M Studio" },
-        {
-          property: "og:description",
-          content:
-            page?.metaDescription ??
-            "A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming.",
-        },
-      ],
-      links: [{ rel: "preload", as: "image", href: aboutHero, fetchPriority: "high" }],
+      meta: seo.meta,
+      links: [...seo.links, { rel: "preload", as: "image", href: aboutHero, fetchPriority: "high" }],
     };
   },
   component: AboutPage,

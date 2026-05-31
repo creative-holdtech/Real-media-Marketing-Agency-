@@ -3,19 +3,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServicePageView } from "@/components/service-page";
 import { smmService } from "@/lib/services/content/smm";
 import { serviceCardIntro } from "@/lib/services";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/smm")({
-  head: () => ({
-    meta: [
-      { title: "SMM — Be seen | R—M" },
-      {
-        name: "description",
-        content: serviceCardIntro(smmService),
-      },
-      { property: "og:title", content: "SMM — Be seen | R—M" },
-      { property: "og:description", content: serviceCardIntro(smmService) },
-    ],
-  }),
+  head: () =>
+    buildPageHead({
+      title: "SMM — Be seen | R—M",
+      description: serviceCardIntro(smmService),
+      pathname: "/services/smm",
+    }),
   component: SmmServicePage,
 });
 

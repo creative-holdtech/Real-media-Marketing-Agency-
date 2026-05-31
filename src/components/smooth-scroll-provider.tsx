@@ -36,6 +36,24 @@ function usePrefersReducedMotion() {
   return useSyncExternalStore(subscribeReducedMotion, getReducedMotion, getReducedMotionServer);
 }
 
+function subscribeNativeScroll(onChange: () => void) {
+  const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getNativeScroll() {
+  return window.matchMedia("(max-width: 991px), (pointer: coarse)").matches;
+}
+
+function getNativeScrollServer() {
+  return false;
+}
+
+function usePreferNativeScroll() {
+  return useSyncExternalStore(subscribeNativeScroll, getNativeScroll, getNativeScrollServer);
+}
+
 /** Re-measure Lenis after layout locks (preloader) release. */
 export function LenisLayoutSync() {
   const lenis = useLenis();
@@ -68,12 +86,24 @@ function LenisScrollOnNavigate() {
   return null;
 }
 
+/** Same reset when Lenis is off (mobile / touch). */
+function NativeScrollOnNavigate() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion();
+  const nativeScroll = usePreferNativeScroll();
   const lenisRef = useRef<LenisRef>(null);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || nativeScroll) return;
 
     function update(data: { timestamp: number }) {
       lenisRef.current?.lenis?.raf(data.timestamp);
@@ -81,9 +111,16 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     frame.update(update, true);
     return () => cancelFrame(update);
-  }, [reduced]);
+  }, [reduced, nativeScroll]);
 
-  if (reduced) return children;
+  if (reduced || nativeScroll) {
+    return (
+      <>
+        <NativeScrollOnNavigate />
+        {children}
+      </>
+    );
+  }
 
   return (
     <ReactLenis root ref={lenisRef} options={lenisOptions}>

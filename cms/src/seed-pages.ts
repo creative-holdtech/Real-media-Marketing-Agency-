@@ -1,8 +1,12 @@
-import 'dotenv/config'
+import { config as loadEnv } from 'dotenv'
+
+loadEnv({ path: process.env.ENV_FILE || '.env' })
+if (process.env.ENV_FILE) {
+  loadEnv({ path: '.env.local', override: true })
+}
 
 import { getPayload } from 'payload'
 
-import config from './payload.config'
 import { PAGE_DEFAULTS } from '../../src/lib/page-content/defaults'
 
 function pageToPayload(slug: string) {
@@ -54,6 +58,7 @@ function pageToPayload(slug: string) {
 }
 
 async function seedPages() {
+  const { default: config } = await import('./payload.config.js')
   const payload = await getPayload({ config })
 
   const existing = await payload.find({ collection: 'pages', limit: 1 })

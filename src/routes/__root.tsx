@@ -8,12 +8,14 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 
+import { JsonLd } from "../components/json-ld";
 import appCss from "../styles.css?url";
 import { NavProvider } from "../components/nav-context";
 import { HubSpotTracking } from "../components/hubspot-tracking";
 import { SmoothScrollProvider } from "../components/smooth-scroll-provider";
 import { PageTransitionCurtain } from "../components/page-transition";
 import { fetchNavigation } from "../lib/payload/navigation";
+import { buildPageHead, organizationJsonLd } from "../lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -76,30 +78,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   loader: async () => ({
     navigation: await fetchNavigation(),
   }),
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "R-M — Marketing Agency" },
-      {
-        name: "description",
-        content: "R-M is a marketing agency for founders building in EU and MENA.",
-      },
-      { name: "author", content: "R-M" },
-      { property: "og:title", content: "R-M — Marketing Agency" },
-      {
-        property: "og:description",
-        content: "Strategy and execution for founders raising in EU and MENA.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@rm_agency" },
-    ],
-    links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "stylesheet", href: appCss },
-    ],
-  }),
+  head: () => {
+    const seo = buildPageHead({
+      title: "R-M — Marketing Agency",
+      description: "R-M is a marketing agency for founders building in EU and MENA.",
+      pathname: "/",
+    });
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        ...(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
+          ? [{ name: "google-site-verification", content: String(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION) }]
+          : []),
+        ...seo.meta,
+      ],
+      links: [
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml" },
+        { rel: "stylesheet", href: appCss },
+        ...seo.links,
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
@@ -113,6 +114,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <JsonLd data={organizationJsonLd()} />
         {children}
         <HubSpotTracking />
         <Scripts />

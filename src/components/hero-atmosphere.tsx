@@ -1,7 +1,21 @@
-import { useRef, type ReactNode } from "react";
+import { useRef, useSyncExternalStore, type ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 
 import { cn } from "@/lib/utils";
+
+function subscribeMobile(onChange: () => void) {
+  const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getMobile() {
+  return window.matchMedia("(max-width: 991px), (pointer: coarse)").matches;
+}
+
+function getMobileServer() {
+  return false;
+}
 
 type HeroAtmosphereProps = {
   imageSrc: string;
@@ -19,6 +33,8 @@ export function HeroAtmosphere({
 }: HeroAtmosphereProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
+  const mobile = useSyncExternalStore(subscribeMobile, getMobile, getMobileServer);
+  const parallax = !reduce && !mobile;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -46,7 +62,7 @@ export function HeroAtmosphere({
           fetchPriority="high"
           decoding="async"
           className="rm-hero-atmosphere__bg-img"
-          style={reduce ? undefined : { y, scale }}
+          style={parallax ? { y, scale } : undefined}
         />
       </div>
       {children}

@@ -6,7 +6,21 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+
+function subscribeMobile(onChange: () => void) {
+  const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getMobile() {
+  return window.matchMedia("(max-width: 991px), (pointer: coarse)").matches;
+}
+
+function getMobileServer() {
+  return false;
+}
 
 type TextRevealProps = {
   text: string;
@@ -58,6 +72,7 @@ export function TextReveal({
   ariaLabel,
 }: TextRevealProps) {
   const reduce = useReducedMotion();
+  const mobile = useSyncExternalStore(subscribeMobile, getMobile, getMobileServer);
   const ref = useRef<HTMLParagraphElement>(null);
   const [complete, setComplete] = useState(false);
   const { scrollYProgress } = useScroll({
@@ -71,7 +86,7 @@ export function TextReveal({
     if (value >= 0.98) setComplete(true);
   });
 
-  if (reduce || complete) {
+  if (reduce || mobile || complete) {
     return (
       <p
         id={id}

@@ -5,6 +5,7 @@ import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { getPageContent, section as pageSection } from "@/lib/payload/pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/audit")({
   loader: async () => ({
@@ -12,24 +13,11 @@ export const Route = createFileRoute("/audit")({
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
-    return {
-      meta: [
-        { title: page?.metaTitle ?? "Free Marketing Audit — up to 7 days | R—M" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "Free marketing audit with hard data and no pitch. Senior experts analyse your pipeline and deliver a prioritised 90-day plan in up to 7 days.",
-        },
-        { property: "og:title", content: page?.metaTitle ?? "Free Marketing Audit — R—M" },
-        {
-          property: "og:description",
-          content:
-            page?.metaDescription ??
-            "Free, no-strings audit. Concrete recommendations across six focus areas in up to 7 days.",
-        },
-      ],
-    };
+    const title = page?.metaTitle ?? "Free Marketing Audit — up to 7 days | R—M";
+    const description =
+      page?.metaDescription ??
+      "Free marketing audit with hard data and no pitch. Senior experts analyse your pipeline and deliver a prioritised 90-day plan in up to 7 days.";
+    return buildPageHead({ title, description, pathname: "/audit" });
   },
   component: AuditPage,
 });

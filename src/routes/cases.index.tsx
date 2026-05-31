@@ -6,6 +6,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { caseNiches, type CaseNiche } from "@/lib/cases";
 import { getCases } from "@/lib/payload/cases-cms";
 import { getPageContent } from "@/lib/payload/pages";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/cases/")({
   loader: async () => ({
@@ -14,24 +15,11 @@ export const Route = createFileRoute("/cases/")({
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
-    return {
-      meta: [
-        { title: page?.metaTitle ?? "Case Studies — Results We Deliver | R-M" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "Selected work for AI SaaS, Fintech, Cybersecurity and iGaming teams. Real metrics, real engagements.",
-        },
-        { property: "og:title", content: page?.metaTitle ?? "Case Studies — R-M" },
-        {
-          property: "og:description",
-          content:
-            page?.metaDescription ??
-            "Selected work for AI SaaS, Fintech, Cybersecurity and iGaming teams.",
-        },
-      ],
-    };
+    const title = page?.metaTitle ?? "Case Studies — Results We Deliver | R-M";
+    const description =
+      page?.metaDescription ??
+      "Selected work for AI SaaS, Fintech, Cybersecurity and iGaming teams. Real metrics, real engagements.";
+    return buildPageHead({ title, description, pathname: "/cases" });
   },
   component: CasesPage,
 });

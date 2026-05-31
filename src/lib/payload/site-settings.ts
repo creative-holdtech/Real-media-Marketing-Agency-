@@ -6,7 +6,7 @@ import type { PayloadSiteSettingsGlobal } from "./types";
 const defaultRobots = `User-agent: *
 Allow: /
 
-Sitemap: https://refined-narrative-lab.vercel.app/sitemap.xml`;
+Sitemap: https://realmedia.ink/sitemap.xml`;
 
 export async function fetchSiteSettings(): Promise<PayloadSiteSettingsGlobal | null> {
   return payloadFetch<PayloadSiteSettingsGlobal>("/api/globals/site-settings?depth=0", {

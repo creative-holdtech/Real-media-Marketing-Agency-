@@ -31,15 +31,20 @@ import { Reveal, MagneticButton } from "@/components/motion-bits";
 import { TextReveal } from "@/components/text-reveal";
 import { useReveal } from "@/hooks/use-reveal";
 import heroBg from "@/assets/hero-bg.png";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/products/")({
-  head: () => ({
-    links: [{ rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
-    meta: [
-      { title: "Products — Sprint & Marathon | R—M" },
-      { name: "description", content: "Sprint from 4 weeks or Marathon from 2 months." },
-    ],
-  }),
+  head: () => {
+    const seo = buildPageHead({
+      title: "Products — Sprint & Marathon | R—M",
+      description: "Sprint from 4 weeks or Marathon from 2 months.",
+      pathname: "/products",
+    });
+    return {
+      meta: seo.meta,
+      links: [...seo.links, { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
+    };
+  },
   component: ProductsPage,
 });
 

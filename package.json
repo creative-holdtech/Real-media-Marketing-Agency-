@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "dev:cms": "npm run dev --prefix cms",
-    "build": "vite build",
+    "build": "node scripts/generate-seo-files.mjs && vite build",
+    "seo:generate": "node scripts/generate-seo-files.mjs",
     "build:dev": "vite build --mode development",
     "preview": "npm run build && cp dist/server/index.js dist/server/server.js && vite preview",
     "lint": "eslint .",

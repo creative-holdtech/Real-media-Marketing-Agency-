@@ -22,6 +22,7 @@ import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { posts } from "@/lib/posts";
 import { getPageContent } from "@/lib/payload/pages";
+import { buildPageHead } from "@/lib/seo";
 import heroBg from "@/assets/hero-bg.png";
 
 const InsightsHeroSection = lazy(() =>
@@ -34,17 +35,13 @@ export const Route = createFileRoute("/")({
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
+    const title = page?.metaTitle ?? "R-M — Marketing Agency";
+    const description =
+      page?.metaDescription ?? "R-M is a marketing agency for founders building in EU and MENA.";
+    const seo = buildPageHead({ title, description, pathname: "/" });
     return {
-      meta: [
-        { title: page?.metaTitle ?? "R-M — Marketing Agency" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "R-M is a marketing agency for founders building in EU and MENA.",
-        },
-      ],
-      links: [{ rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
+      meta: seo.meta,
+      links: [...seo.links, { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
     };
   },
   component: Index,

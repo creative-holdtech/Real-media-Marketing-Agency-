@@ -2316,6 +2316,18 @@ a.block:focus-visible .rm-points-card__read {
     scroll-behavior: auto;
   }
 
+  /* Hero: one motion path on mobile — child .reveal handles enter, skip wrapper keyframe */
+  html:not(.rm-is-loading) .rm-hero-copy {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* content-visibility delays IntersectionObserver on tall lazy sections */
+  .rm-defer-paint {
+    content-visibility: visible;
+    contain-intrinsic-size: auto;
+  }
+
   .rm-glass-points {
     overflow-x: clip;
     overflow-anchor: none;

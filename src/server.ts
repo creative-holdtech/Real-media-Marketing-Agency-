@@ -4,6 +4,7 @@ import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { fetchRedirects, matchRedirect } from "./lib/payload/redirects";
 import { fetchRobotsTxt } from "./lib/payload/site-settings";
+import { buildSitemapXml } from "./lib/sitemap";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -77,6 +78,16 @@ export default {
         const body = await fetchRobotsTxt();
         return new Response(body, {
           headers: { "content-type": "text/plain; charset=utf-8" },
+        });
+      }
+
+      if (url.pathname === "/sitemap.xml") {
+        const body = await buildSitemapXml();
+        return new Response(body, {
+          headers: {
+            "content-type": "application/xml; charset=utf-8",
+            "cache-control": "public, s-maxage=3600, stale-while-revalidate=86400",
+          },
         });
       }
 

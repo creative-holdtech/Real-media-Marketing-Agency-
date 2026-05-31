@@ -19,6 +19,8 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 import { getPost as getCmsPost } from "@/lib/payload/posts";
+import { JsonLd } from "@/components/json-ld";
+import { articleJsonLd, buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
@@ -27,22 +29,19 @@ export const Route = createFileRoute("/blog/$slug")({
     const allPosts = await import("@/lib/payload/posts").then((m) => m.getPosts());
     return { post, allPosts };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const post = loaderData?.post;
     if (!post) return { meta: [{ title: "Article — R-M" }] };
     const title = post.metaTitle ?? `${post.title} — R-M`;
     const description = post.metaDescription ?? post.excerpt;
-    return {
-      meta: [
-        { title },
-        { name: "description", content: description },
-        { property: "og:title", content: post.title },
-        { property: "og:description", content: description },
-        { property: "og:image", content: post.image },
-        { property: "og:type", content: "article" },
-        { name: "twitter:card", content: "summary_large_image" },
-      ],
-    };
+    return buildPageHead({
+      title,
+      description,
+      pathname: `/blog/${params.slug}`,
+      image: post.image,
+      type: "article",
+      publishedTime: post.dateISO,
+    });
   },
   notFoundComponent: () => (
     <div className="rm-page grid place-items-center px-6 text-[var(--rm-ink)]">
@@ -144,6 +143,16 @@ function ArticlePage() {
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <JsonLd
+        data={articleJsonLd({
+          title: post.title,
+          description: post.metaDescription ?? post.excerpt,
+          pathname: `/blog/${post.slug}`,
+          image: post.image,
+          publishedTime: post.dateISO,
+          author: post.author,
+        })}
+      />
       <a href="#main" className="skip-link">
         Skip to content
       </a>

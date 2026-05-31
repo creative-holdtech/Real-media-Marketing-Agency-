@@ -3,24 +3,16 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/seo")({
-  head: () => ({
-    meta: [
-      { title: "SEO — Intent, Compound, Authority · R—M Studio" },
-      {
-        name: "description",
-        content:
-          "We don't sell SEO traffic. We build category authority — compounding intent, leadership content, and a search footprint that owns the conversation.",
-      },
-      { property: "og:title", content: "SEO that compounds — R—M Studio" },
-      {
-        property: "og:description",
-        content:
-          "Anti-agency SEO for founders. Intent strategy, leadership content, and authority footprint built to compound.",
-      },
-    ],
-  }),
+  head: () =>
+    buildPageHead({
+      title: "SEO — Intent, Compound, Authority · R—M Studio",
+      description:
+        "We don't sell SEO traffic. We build category authority — compounding intent, leadership content, and a search footprint that owns the conversation.",
+      pathname: "/seo",
+    }),
   component: SeoPage,
 });
 

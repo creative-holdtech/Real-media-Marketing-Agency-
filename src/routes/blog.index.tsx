@@ -27,6 +27,7 @@ import {
   getPosts,
 } from "@/lib/payload/posts";
 import { fetchBlogMeta, fetchBlogIndexContent } from "@/lib/payload/site-settings";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/blog/")({
   loader: async () => {
@@ -46,18 +47,14 @@ export const Route = createFileRoute("/blog/")({
   head: ({ loaderData }) => {
     const featuredPost = loaderData?.featured;
     const cmsBlogMeta = loaderData?.cmsBlogMeta;
-    return {
-      meta: [
-        { title: cmsBlogMeta?.title ?? blogMeta.title },
-        { name: "description", content: cmsBlogMeta?.description ?? blogMeta.description },
-        { property: "og:title", content: cmsBlogMeta?.title ?? blogMeta.ogTitle },
-        {
-          property: "og:description",
-          content: cmsBlogMeta?.description ?? blogMeta.ogDescription,
-        },
-        { property: "og:image", content: featuredPost?.image ?? "" },
-      ],
-    };
+    const title = cmsBlogMeta?.title ?? blogMeta.title;
+    const description = cmsBlogMeta?.description ?? blogMeta.description;
+    return buildPageHead({
+      title,
+      description,
+      pathname: "/blog",
+      image: featuredPost?.image,
+    });
   },
   component: BlogPage,
 });

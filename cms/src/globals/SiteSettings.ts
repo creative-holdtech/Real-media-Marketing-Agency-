@@ -25,7 +25,7 @@ export const SiteSettings: GlobalConfig = {
       defaultValue: `User-agent: *
 Allow: /
 
-Sitemap: https://refined-narrative-lab.vercel.app/sitemap.xml`,
+Sitemap: https://realmedia.ink/sitemap.xml`,
     },
     {
       name: 'blogMetaTitle',

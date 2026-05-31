@@ -13,6 +13,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { serviceCardIntro } from "@/lib/services";
 import { getServicesList } from "@/lib/payload/services-cms";
 import { getPageContent } from "@/lib/payload/pages";
+import { buildPageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/services/")({
@@ -22,24 +23,11 @@ export const Route = createFileRoute("/services/")({
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
-    return {
-      meta: [
-        { title: page?.metaTitle ?? "Services — Strategy, Brand, Growth | R-M" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "Six disciplines, one operating system. Brand strategy, SMM, PR, Performance, SEO and Design — engineered to compound.",
-        },
-        { property: "og:title", content: page?.metaTitle ?? "Services — R-M Studio" },
-        {
-          property: "og:description",
-          content:
-            page?.metaDescription ??
-            "Brand strategy, SMM, PR, Performance, SEO and Design — built to compound.",
-        },
-      ],
-    };
+    const title = page?.metaTitle ?? "Services — Strategy, Brand, Growth | R-M";
+    const description =
+      page?.metaDescription ??
+      "Six disciplines, one operating system. Brand strategy, SMM, PR, Performance, SEO and Design — engineered to compound.";
+    return buildPageHead({ title, description, pathname: "/services" });
   },
   component: ServicesIndex,
 });

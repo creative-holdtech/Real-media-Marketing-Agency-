@@ -8,6 +8,7 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { engagementPrefillMessage } from "@/lib/engagements";
 import { getPageContent } from "@/lib/payload/pages";
+import { buildPageHead } from "@/lib/seo";
 
 const socialIconMap: Record<string, LucideIcon> = {
   Linkedin,
@@ -28,24 +29,11 @@ export const Route = createFileRoute("/contact")({
   },
   head: ({ loaderData }) => {
     const page = loaderData?.page;
-    return {
-      meta: [
-        { title: page?.metaTitle ?? "Contact — Let's talk | R—M" },
-        {
-          name: "description",
-          content:
-            page?.metaDescription ??
-            "Short message, sharp answer. We reply within one business day across CET / GST timezones.",
-        },
-        { property: "og:title", content: page?.metaTitle ?? "Contact — R—M" },
-        {
-          property: "og:description",
-          content:
-            page?.metaDescription ??
-            "Short message, sharp answer. We reply within one business day.",
-        },
-      ],
-    };
+    const title = page?.metaTitle ?? "Contact — Let's talk | R—M";
+    const description =
+      page?.metaDescription ??
+      "Short message, sharp answer. We reply within one business day across CET / GST timezones.";
+    return buildPageHead({ title, description, pathname: "/contact" });
   },
   component: ContactPage,
 });

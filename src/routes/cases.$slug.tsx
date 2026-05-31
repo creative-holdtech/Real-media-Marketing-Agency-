@@ -4,6 +4,7 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { getCase, getCases } from "@/lib/payload/cases-cms";
 import { cases as staticCases } from "@/lib/cases";
+import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/cases/$slug")({
   loader: async ({ params }) => {
@@ -12,20 +13,16 @@ export const Route = createFileRoute("/cases/$slug")({
     const allCases = await getCases();
     return { study, allCases };
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     const s = loaderData?.study;
     if (!s) return { meta: [{ title: "Case not found — R-M" }] };
-    return {
-      meta: [
-        { title: `${s.client} — ${s.primaryMetric.value} ${s.primaryMetric.label} | R-M` },
-        { name: "description", content: s.headline },
-        {
-          property: "og:title",
-          content: `${s.client} — ${s.primaryMetric.value} ${s.primaryMetric.label}`,
-        },
-        { property: "og:description", content: s.headline },
-      ],
-    };
+    const title = `${s.client} — ${s.primaryMetric.value} ${s.primaryMetric.label} | R-M`;
+    return buildPageHead({
+      title,
+      description: s.headline,
+      pathname: `/cases/${params.slug}`,
+      image: s.coverImage,
+    });
   },
   notFoundComponent: () => (
     <div className="rm-page text-white grid place-items-center px-6">
