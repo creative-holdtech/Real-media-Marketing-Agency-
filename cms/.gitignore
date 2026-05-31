@@ -5,3 +5,5 @@ node_modules
 media
 payload.db
 *.tsbuildinfo
+.vercel
+.env*
