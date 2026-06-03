@@ -110,10 +110,15 @@ export function DragableCarousel({
   const maxPeekDistance = 1.05;
   const peekFadeStart = 0.85;
 
-  const onSelect = useCallback((api: UseEmblaCarouselType[1]) => {
-    if (!api) return;
-    setSelectedIndex(api.selectedScrollSnap());
-  }, []);
+  const onSelect = useCallback(
+    (api: UseEmblaCarouselType[1]) => {
+      if (!api) return;
+      const index = api.selectedScrollSnap();
+      setSelectedIndex(index);
+      onSlideChange?.(index);
+    },
+    [onSlideChange],
+  );
 
   const onSettle = useCallback(
     (api: UseEmblaCarouselType[1]) => {
@@ -168,23 +173,24 @@ export function DragableCarousel({
         tweenEl.style.visibility = peekMultiplier > 0.02 ? "visible" : "hidden";
         tweenEl.style.pointerEvents = peekMultiplier > 0.02 ? "" : "none";
 
+        const clampedDistance = clamp(distance, -1, 1);
+        const focus = clamp(1 - absDistance, 0, 1) ** 0.9;
+        const slideZ = isActive ? 1000 : Math.round(focus * 10);
+        slideNode.style.position = "relative";
+        slideNode.style.zIndex = String(slideZ);
+
         if (reduceMotion) {
           const baseOpacity = isActive ? 1 : cfg.inactiveOpacity;
           tweenEl.style.opacity = String(baseOpacity * peekMultiplier);
           tweenEl.style.transform = isActive ? "none" : `scale(${cfg.inactiveScale})`;
-          tweenEl.style.zIndex = isActive ? "10" : "1";
           return;
         }
-
-        const clampedDistance = clamp(distance, -1, 1);
-        const focus = clamp(1 - absDistance, 0, 1) ** 0.9;
         const rotateY = clampedDistance * cfg.rotateY;
         const scale = mix(cfg.inactiveScale, cfg.activeScale, focus);
-        const opacity = mix(cfg.inactiveOpacity, 1, focus) * peekMultiplier;
-        const translateZ = -absDistance * cfg.depth;
+        const opacity = isActive ? 1 : mix(cfg.inactiveOpacity, 1, focus) * peekMultiplier;
+        const translateZ = isActive ? 48 : -absDistance * cfg.depth - 72;
 
         tweenEl.style.opacity = String(opacity);
-        tweenEl.style.zIndex = String(Math.round(focus * 100));
         tweenEl.style.transform = [
           `perspective(${cfg.perspective}px)`,
           `rotateY(${rotateY}deg)`,

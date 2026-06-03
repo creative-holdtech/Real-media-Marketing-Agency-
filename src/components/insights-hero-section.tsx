@@ -1,14 +1,9 @@
-import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
+import { useCallback, useState } from "react";
 
-import {
-  btnPrimary,
-  sectionContainer,
-  sectionShell,
-  textMeta,
-} from "@/components/framer-section";
-import { TextReveal } from "@/components/text-reveal";
+import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
+import { btnGhostLink } from "@/components/framer-section";
+import { cn } from "@/lib/utils";
 import type { Post } from "@/lib/posts";
 
 type InsightsHeroSectionProps = {
@@ -24,37 +19,44 @@ const FEATURED_SLUGS = [
   "creation-vs-dominance",
 ] as const;
 
-function postMetaLine(post: Post) {
-  return `${post.label.toUpperCase()} · ${post.date.toUpperCase()} · ${post.read.toUpperCase()}`;
-}
+const INSIGHTS_CAROUSEL_CONFIG = {
+  ...DRAGABLE_CAROUSEL_DEFAULTS,
+  slideWidth: 280,
+  slideHeight: 340,
+  gap: 18,
+  borderRadius: 24,
+  perspective: 1400,
+  rotateY: 48,
+  depth: 140,
+  inactiveScale: 0.84,
+  inactiveOpacity: 0.7,
+  snapDuration: 0.3,
+  arrowColor: "rgba(255, 255, 255, 0.92)",
+  arrowBg: "transparent",
+  arrowSize: 44,
+  dotColor: "rgba(255, 255, 255, 0.92)",
+  dotInactiveOpacity: 0.42,
+  dotSize: 7,
+};
 
-function InsightPreview({ post }: { post: Post }) {
-  const reduce = useReducedMotion();
-
+function InsightCarouselSlide({ post }: { post: Post }) {
   return (
     <Link
       to="/blog/$slug"
       params={{ slug: post.slug }}
-      className="rm-insights-dl__preview group block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      aria-label={`Read ${post.title}`}
+      className="rm-insights-carousel__card block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      aria-hidden
+      tabIndex={-1}
     >
-      <div className="rm-insights-dl__preview-media">
-        <motion.img
-          key={post.slug}
+      <div className="rm-dragable-carousel__media rm-insights-carousel__media overflow-hidden">
+        <img
           src={post.image}
           alt=""
+          draggable={false}
           loading="lazy"
-          initial={reduce ? false : { opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          className="rm-insights-dl__preview-img"
+          decoding="async"
+          className="pointer-events-none h-full w-full object-cover"
         />
-        <div className="rm-insights-dl__preview-wash" />
-        <div className="rm-insights-dl__preview-copy">
-          <p className="rm-insights-dl__preview-kicker">{post.label.toUpperCase()}</p>
-          <p className="rm-insights-dl__preview-title">{post.title}</p>
-          <span className="rm-insights-dl__preview-link">Read essay →</span>
-        </div>
       </div>
     </Link>
   );
@@ -65,87 +67,51 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
     (p): p is Post => Boolean(p),
   );
 
-  const [activeSlug, setActiveSlug] = useState(featured[0]?.slug ?? "");
-  const activePost = featured.find((post) => post.slug === activeSlug) ?? featured[0];
+  const [activeIndex, setActiveIndex] = useState(0);
+  const onSlideChange = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
 
-  if (!activePost || featured.length < 2) return null;
+  if (featured.length < 2) return null;
+
+  const activePost = featured[activeIndex] ?? featured[0];
 
   return (
-    <section className={`${sectionShell} rm-section-insights`} aria-labelledby="insights-heading">
-      <div className={sectionContainer}>
+    <section
+      className={cn("rm-section-insights border-b border-[var(--rm-border-soft)] px-6 md:px-10")}
+      aria-labelledby="insights-heading"
+    >
+      <div className="rm-insights-container reveal">
+        <h2 id="insights-heading" className="rm-insights-heading">
+          Insights
+        </h2>
 
-        {/* Header */}
-        <div className="grid grid-cols-1 items-end gap-6 md:grid-cols-3 md:gap-8">
-          <div className="hidden md:flex md:items-end" aria-hidden>
-            <span
-              className="select-none pointer-events-none font-bold leading-none text-white/[0.05]"
-              style={{ fontSize: "clamp(5rem, 8vw, 8rem)", letterSpacing: "-0.06em" }}
-            >
-              05
-            </span>
-          </div>
-          <div className="reveal flex flex-col gap-4 md:col-span-2">
-            <span className="inline-flex w-fit rounded-full border border-[var(--rm-border-soft)] px-3 py-1 text-xs font-medium uppercase tracking-[0.08em] text-[var(--rm-text-muted)]">
-              Insights
-            </span>
-            <h2
-              id="insights-heading"
-              className="font-semibold text-[var(--rm-ink)]"
-              style={{ fontSize: "clamp(1.25rem, 2.4vw, 1.9rem)", lineHeight: 1.25, letterSpacing: "-0.035em" }}
-            >
-              <TextReveal
-                text="This quarter we are writing on positioning under pressure, pricing in regulated markets, and why agency reporting is theater."
-                className="font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                revealColor="rgb(255, 255, 255)"
-              />
-            </h2>
-          </div>
+        <DragableCarousel
+          ariaLabel="Featured articles"
+          className="rm-insights-carousel__stage"
+          clipSlides={false}
+          config={INSIGHTS_CAROUSEL_CONFIG}
+          dotsPosition="below-cards"
+          onSlideChange={onSlideChange}
+        >
+          {featured.map((post) => (
+            <InsightCarouselSlide key={post.slug} post={post} />
+          ))}
+        </DragableCarousel>
+
+        <div className="rm-insights-meta" aria-live="polite">
+          <Link
+            to="/blog/$slug"
+            params={{ slug: activePost.slug }}
+            className="rm-insights-meta__article"
+          >
+            <span className="rm-insights-meta__kicker">{activePost.label}</span>
+            <span className="rm-insights-meta__title">{activePost.title}</span>
+          </Link>
+          <Link to="/blog" className={cn(btnGhostLink, "rm-insights-meta__all")}>
+            All articles
+          </Link>
         </div>
-
-        {/* Content */}
-        <div className="rm-insights-dl reveal" data-delay="1">
-          <div className="rm-insights-dl__layout">
-            <div className="rm-insights-dl__left">
-              <ul className="rm-insights-dl__list" role="list">
-                {featured.map((post) => {
-                  const active = post.slug === activePost.slug;
-
-                  return (
-                    <li key={post.slug}>
-                      <button
-                        type="button"
-                        aria-current={active ? "true" : undefined}
-                        onMouseEnter={() => setActiveSlug(post.slug)}
-                        onFocus={() => setActiveSlug(post.slug)}
-                        onClick={() => setActiveSlug(post.slug)}
-                        className={[
-                          "rm-insights-dl__item",
-                          active ? "rm-insights-dl__item--active" : "",
-                        ]
-                          .filter(Boolean)
-                          .join(" ")}
-                      >
-                        <span className="rm-insights-dl__item-title">{post.title}</span>
-                        <span className={`rm-insights-dl__item-meta ${textMeta}`}>
-                          {postMetaLine(post)}
-                        </span>
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className="rm-insights-dl__footer">
-                <Link to="/blog" className={btnPrimary}>All articles →</Link>
-              </div>
-            </div>
-
-            <div className="rm-insights-dl__right">
-              <InsightPreview post={activePost} />
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
   );
