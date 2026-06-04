@@ -74,7 +74,7 @@ export function StudioTrustBand({ stats, inView, chapterRef }: StudioTrustBandPr
   const sceneRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div ref={sceneRef} className="rm-trust-scene" data-premium-cursor="attract">
+    <div ref={sceneRef} className="rm-trust-scene">
       <div className="rm-trust-scene__bridge rm-trust-scene__bridge--top" aria-hidden="true" />
       <div className="rm-trust-scene__sticky">
         <TrustParticleEcosystem

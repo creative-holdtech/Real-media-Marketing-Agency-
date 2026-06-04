@@ -38,9 +38,8 @@ export function SiteHeader({
         {/* Logo — anchored left */}
         <Link
           to="/"
-          data-premium-cursor="logo"
           className={cn(
-            "shrink-0 font-semibold tracking-tight text-[15px] will-change-transform",
+            "shrink-0 font-semibold tracking-tight text-[15px]",
             light ? "text-[#111111]" : "text-white",
           )}
         >

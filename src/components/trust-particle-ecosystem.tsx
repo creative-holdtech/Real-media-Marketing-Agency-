@@ -10,7 +10,6 @@ import {
 } from "react";
 
 import { computeTrustSceneProgress } from "@/lib/trust-scene-scroll";
-import { premiumCursorStore } from "@/lib/premium-cursor-store";
 
 const TRUST_BRANDS = [
   "Empresex",
@@ -120,37 +119,6 @@ function clamp(min: number, max: number, value: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-function cursorInField(rect: DOMRect) {
-  const { active, x, y, inTrustScene, energy } = premiumCursorStore;
-  if (!active || !inTrustScene || energy < 0.04) {
-    return { x: 0, y: 0, strength: 0, morphBlend: 0 };
-  }
-  const cx = x - rect.left;
-  const cy = y - rect.top;
-  const morphBlend =
-    premiumCursorStore.mode === "morph" ? energy * (0.38 + premiumCursorStore.pulse * 0.22) : 0;
-  return { x: cx, y: cy, strength: energy, morphBlend };
-}
-
-function applyCursorAttract(
-  p: Particle,
-  targetX: number,
-  targetY: number,
-  cursorX: number,
-  cursorY: number,
-  w: number,
-  h: number,
-  strength: number,
-): [number, number] {
-  const dx = cursorX - p.x;
-  const dy = cursorY - p.y;
-  const dist = Math.hypot(dx, dy);
-  const radius = Math.min(w, h) * 0.34;
-  if (dist < 1 || dist > radius) return [targetX, targetY];
-  const falloff = 1 - dist / radius;
-  const pull = strength * falloff * falloff * (0.16 + p.depth * 0.14);
-  return [targetX + dx * pull, targetY + dy * pull];
-}
 
 function segmentT(scroll: number, start: number, end: number): number {
   if (scroll <= start) return 0;
@@ -405,10 +373,6 @@ export function TrustParticleEcosystem({
   const horizonRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
   const vignetteRef = useRef<HTMLDivElement>(null);
-  const clusterGlowRef = useRef<HTMLDivElement>(null);
-  const lightRayRef = useRef<HTMLDivElement>(null);
-  const burstRef = useRef<HTMLDivElement>(null);
-  const morphRingRef = useRef<HTMLDivElement>(null);
   const curtainTopRef = useRef<HTMLDivElement>(null);
   const curtainBottomRef = useRef<HTMLDivElement>(null);
   const chapterActRef = useRef<HTMLDivElement>(null);
@@ -417,6 +381,7 @@ export function TrustParticleEcosystem({
 
   const [particles, setParticles] = useState<Particle[]>(() => buildParticles(960, 720));
   const [isMobile, setIsMobile] = useState(false);
+  const [sceneVisible, setSceneVisible] = useState(false);
   const displayedActRef = useRef({ label: "01 — Orbit", sub: "Trusted by teams who ship" });
   const actPhaseRef = useRef<"idle" | "out" | "in">("idle");
   const actEnterRef = useRef(1);
@@ -438,7 +403,22 @@ export function TrustParticleEcosystem({
     syncParticles(width || 960, height || 720);
   }, [reduce, syncParticles]);
 
-  const shouldAnimate = !reduce && active;
+  const shouldAnimate = !reduce && active && sceneVisible;
+
+  useEffect(() => {
+    if (reduce) return;
+    const scene = sceneRef.current;
+    if (!scene) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) setSceneVisible(entry.isIntersecting);
+      },
+      { threshold: 0.08, rootMargin: "120px 0px" },
+    );
+    io.observe(scene);
+    return () => io.disconnect();
+  }, [reduce, sceneRef]);
+
 
   useEffect(() => {
     if (!shouldAnimate) return;
@@ -506,21 +486,6 @@ export function TrustParticleEcosystem({
       const clusterSpread = Math.max(2, 26 * (1 - Math.max(0, pull)));
       const stagingDim = clamp(0, 0.5, pull * 0.36 + morphT * 0.2);
 
-      const cursor = cursorInField(rect);
-      const orbitPhase =
-        scroll >= STORY.constellation[0] && scroll < BEATS.stat0.anticipate[0] && pull < 0.02;
-      let morphLeftX = leftX;
-      let morphLeftY = leftY;
-      let morphRightX = rightX;
-      let morphRightY = rightY;
-      if (cursor.morphBlend > 0.01) {
-        morphLeftX = leftX * (1 - cursor.morphBlend) + cursor.x * cursor.morphBlend;
-        morphLeftY = leftY * (1 - cursor.morphBlend) + cursor.y * cursor.morphBlend;
-        morphRightX = rightX * (1 - cursor.morphBlend) + cursor.x * cursor.morphBlend;
-        morphRightY = rightY * (1 - cursor.morphBlend) + cursor.y * cursor.morphBlend;
-      }
-      const effectAnchorX = morphBeat.ax * (1 - cursor.morphBlend) + cursor.x * cursor.morphBlend;
-      const effectAnchorY = morphBeat.ay * (1 - cursor.morphBlend) + cursor.y * cursor.morphBlend;
 
       for (const p of particlesRef.current) {
         const depthFloat = 0.5 + p.depth * 0.5;
@@ -544,8 +509,8 @@ export function TrustParticleEcosystem({
             targetY,
             b0.pull,
             b0.morphT,
-            morphLeftX,
-            morphLeftY,
+            leftX,
+            leftY,
             w,
           );
         } else if (b1.pull > 0.01 && b1.dissolveT < 0.02) {
@@ -555,8 +520,8 @@ export function TrustParticleEcosystem({
             targetY,
             b1.pull,
             b1.morphT,
-            morphRightX,
-            morphRightY,
+            rightX,
+            rightY,
             w,
           );
         }
@@ -572,18 +537,6 @@ export function TrustParticleEcosystem({
           targetY += (p.homeY - rightAnchor.y) * h * scatter * 0.2;
         }
 
-        if (orbitPhase && cursor.strength > 0.05) {
-          [targetX, targetY] = applyCursorAttract(
-            p,
-            targetX,
-            targetY,
-            cursor.x,
-            cursor.y,
-            w,
-            h,
-            cursor.strength,
-          );
-        }
 
         const heroMorphActive =
           (b0.pull > 0.04 && b0.dissolveT < 0.04) || (b1.pull > 0.04 && b1.dissolveT < 0.04);
@@ -663,17 +616,20 @@ export function TrustParticleEcosystem({
           opacity = Math.max(opacity, (0.4 + p.depth * 0.52) * staggerIn * floatPhase);
         }
 
-        const enterBlur = (1 - staggerIn) * 5.5;
-        const morphBlur =
-          b0MorphActive || b1MorphActive
-            ? Math.max(b0.pull, b1.pull) * 0.28
-            : pull * 0.85;
-        const depthBlur = (1 - p.depth) * 0.18 + morphBlur;
+        const enterBlur = (b0MorphActive || b1MorphActive) ? 0 : (1 - staggerIn) * 3;
+        const depthBlur = (b0MorphActive || b1MorphActive) ? 0 : (1 - p.depth) * 0.1;
 
         el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) translate(-50%, -50%) scale(${scale})`;
         el.style.opacity = String(Math.max(0, opacity));
         el.style.filter = `blur(${depthBlur + enterBlur}px)`;
-        el.style.zIndex = String(20 + Math.round(p.depth * 40));
+        const morphActive = b0MorphActive || b1MorphActive;
+        const statFocus = Math.max(b0.heroReveal, b1.heroReveal);
+        let layerZ = 4 + Math.round(p.depth * 2);
+        if (morphActive && statFocus > 0.12) {
+          layerZ = 1;
+          opacity *= Math.max(0.05, 1 - statFocus * 1.15);
+        }
+        el.style.zIndex = String(layerZ);
       }
 
       field.querySelectorAll<HTMLElement>(".rm-trust-ecosystem__fg-stat").forEach((slot, index) => {
@@ -709,65 +665,27 @@ export function TrustParticleEcosystem({
         }
       });
 
-      field.querySelectorAll<HTMLElement>(".rm-trust-ecosystem__stat-shadow").forEach((shadow, index) => {
+      field.querySelectorAll<HTMLElement>(".rm-trust-ecosystem__stat-signal").forEach((signal, index) => {
         const beat = index === 1 ? b1 : b0;
-        const lagged = EASE_SOFT(Math.max(0, statVisibility(index, b0, b1) * beat.heroReveal - 0.18));
-        shadow.style.opacity = String(lagged * 0.72 * (1 - story.exit));
-        shadow.style.transform = `translate(-50%, -50%) scale(${0.62 + lagged * 0.46})`;
+        const vis = statVisibility(index, b0, b1);
+        const reveal = EASE_SOFT(Math.max(0, (beat.heroReveal - 0.06) / 0.94));
+        const height = 18 + reveal * 52;
+        signal.style.opacity = String(reveal * vis * 0.75 * (1 - story.exit));
+        signal.style.height = `${height}px`;
+        signal.style.transform = `translate(-50%, calc(-100% - ${10 + reveal * 6}px))`;
       });
 
-      const heroPeak = Math.max(b0.heroReveal, b1.heroReveal);
-      const morphFlash = morphT * (1 - Math.abs(morphT - 0.65) * 2.5);
 
-      if (clusterGlowRef.current) {
-        const b0Cluster = b0.morphT * b0.pull * (1 - b0.dissolveT);
-        const b1Cluster = b1.morphT * b1.pull * (1 - b1.dissolveT);
-        const cursorEnergy = premiumCursorStore.inTrustScene ? premiumCursorStore.energy : 0;
-        const cursorPulse = premiumCursorStore.inTrustScene ? premiumCursorStore.pulse : 0;
-        const glow =
-          heroPeak * 0.58 +
-          pull * 0.26 +
-          Math.max(b0Cluster, b1Cluster) * 0.52 +
-          cursorEnergy * 0.24 +
-          cursorPulse * 0.16;
-        clusterGlowRef.current.style.opacity = String(
-          (glow * 0.9 + cursorPulse * 0.14) * (1 - story.exit),
-        );
-        clusterGlowRef.current.style.transform = `translate(${effectAnchorX}px, ${effectAnchorY}px) translate(-50%, -50%) scale(${0.55 + glow * 1.05 + cursorPulse * 0.2})`;
-      }
 
-      if (lightRayRef.current) {
-        const cursorPulse = premiumCursorStore.inTrustScene ? premiumCursorStore.pulse : 0;
-        const ray = (pull * 0.55 + morphFlash * 0.45) * holdQuiet;
-        lightRayRef.current.style.opacity = String(
-          (ray * 0.28 + cursorPulse * 0.1) * (1 - story.exit),
-        );
-        lightRayRef.current.style.transform = `translate(${effectAnchorX}px, ${effectAnchorY}px) translate(-50%, -50%) rotate(${scroll * 48 - 12}deg) scale(${0.8 + pull * 1.4 + cursorPulse * 0.35}, ${0.4 + morphFlash * 0.8 + cursorPulse * 0.18})`;
-      }
 
-      if (burstRef.current) {
-        burstRef.current.style.opacity = String(Math.max(0, morphFlash) * 0.42 * holdQuiet * (1 - story.exit));
-        burstRef.current.style.transform = `translate(${effectAnchorX}px, ${effectAnchorY}px) translate(-50%, -50%) scale(${0.5 + morphFlash * 2.2})`;
-      }
 
-      if (morphRingRef.current) {
-        const cursorPulse = premiumCursorStore.inTrustScene ? premiumCursorStore.pulse : 0;
-        const ring = (pull * 0.72 + morphFlash * 0.55) * holdQuiet;
-        morphRingRef.current.style.opacity = String(
-          (ring * 0.34 + cursorPulse * 0.14) * (1 - story.exit),
-        );
-        morphRingRef.current.style.transform = `translate(${effectAnchorX}px, ${effectAnchorY}px) translate(-50%, -50%) scale(${0.72 + ring * 1.35 + cursorPulse * 0.32}) rotate(${scroll * 24 - 8 + cursorPulse * 6}deg)`;
-      }
 
       if (ambientRef.current) {
         const actGlow = Math.max(b0.heroReveal * (1 - b0.dissolveT), b1.heroReveal * (1 - b1.dissolveT));
-        const cursorEnergy = premiumCursorStore.inTrustScene ? premiumCursorStore.energy : 0;
-        const cursorPulse = premiumCursorStore.inTrustScene ? premiumCursorStore.pulse : 0;
         const counterShift = (focusAnchor.x - 0.5) * pull * -20;
-        ambientRef.current.style.transform = `translateX(${counterShift}%) scale(${1 - stagingDim * 0.05 + cursorPulse * 0.015})`;
+        ambientRef.current.style.transform = `translateX(${counterShift}%) scale(${1 - stagingDim * 0.05})`;
         ambientRef.current.style.opacity = String(
-          (0.26 + scroll * 0.1 + actGlow * 0.24 - stagingDim * 0.18 + cursorEnergy * 0.14 + cursorPulse * 0.08) *
-            (1 - story.exit * 0.7),
+          (0.26 + scroll * 0.1 + actGlow * 0.24 - stagingDim * 0.18) * (1 - story.exit * 0.7),
         );
       }
 
@@ -794,24 +712,12 @@ export function TrustParticleEcosystem({
       }
 
       if (vignetteRef.current) {
-        const cursorEnergy = premiumCursorStore.inTrustScene ? premiumCursorStore.energy : 0;
-        const cursorPulse = premiumCursorStore.inTrustScene ? premiumCursorStore.pulse : 0;
-        const sceneFocusX = 50 + (focusAnchor.x - 0.5) * pull * 36;
-        const sceneFocusY = 50 + (focusAnchor.y - 0.5) * pull * 16;
-        const cursorFocusX = premiumCursorStore.trustX * 100;
-        const cursorFocusY = premiumCursorStore.trustY * 100;
-        const focusBlend = cursorEnergy * 0.42 + cursorPulse * 0.12;
-        const focusX = sceneFocusX * (1 - focusBlend) + cursorFocusX * focusBlend;
-        const focusY = sceneFocusY * (1 - focusBlend) + cursorFocusY * focusBlend;
+        const focusX = 50 + (focusAnchor.x - 0.5) * pull * 36;
+        const focusY = 50 + (focusAnchor.y - 0.5) * pull * 16;
         const orbitLift = story.constellation * (1 - pull * 0.55);
-        const edge =
-          0.48 +
-          story.enter * 0.06 +
-          stagingDim * 0.12 -
-          orbitLift * 0.16 -
-          cursorPulse * 0.04;
-        vignetteRef.current.style.background = `radial-gradient(circle at ${focusX}% ${focusY}%, transparent ${22 - cursorPulse * 4}%, rgba(0, 0, 0, ${edge}) 100%)`;
-        vignetteRef.current.style.opacity = String(0.78 + stagingDim * 0.18 + cursorEnergy * 0.06);
+        const edge = 0.48 + story.enter * 0.06 + stagingDim * 0.12 - orbitLift * 0.16;
+        vignetteRef.current.style.background = `radial-gradient(circle at ${focusX}% ${focusY}%, transparent 24%, rgba(0, 0, 0, ${edge}) 100%)`;
+        vignetteRef.current.style.opacity = String(0.78 + stagingDim * 0.18);
       }
 
       if (curtainTopRef.current) {
@@ -909,12 +815,8 @@ export function TrustParticleEcosystem({
         chapter.style.setProperty("--trust-exit", String(story.exit));
         chapter.style.setProperty("--trust-act-glow", String(actGlow));
         chapter.style.setProperty("--trust-act-x", `${actFocusX}%`);
-        chapter.style.setProperty("--trust-cursor-energy", String(premiumCursorStore.energy));
-        chapter.style.setProperty("--trust-cursor-pulse", String(premiumCursorStore.pulse));
       }
 
-      field.style.setProperty("--trust-cursor-energy", String(premiumCursorStore.energy));
-      field.style.setProperty("--trust-cursor-pulse", String(premiumCursorStore.pulse));
 
       raf = requestAnimationFrame(loop);
     };
@@ -981,11 +883,7 @@ export function TrustParticleEcosystem({
           aria-hidden="true"
         />
         <div ref={horizonRef} className="rm-trust-ecosystem__horizon" aria-hidden="true" />
-        <div ref={lightRayRef} className="rm-trust-ecosystem__light-ray" aria-hidden="true" />
-        <div ref={burstRef} className="rm-trust-ecosystem__burst" aria-hidden="true" />
-        <div ref={morphRingRef} className="rm-trust-ecosystem__morph-ring" aria-hidden="true" />
         <div ref={vignetteRef} className="rm-trust-ecosystem__vignette" aria-hidden="true" />
-        <div ref={clusterGlowRef} className="rm-trust-ecosystem__cluster-glow" aria-hidden="true" />
         <div className="rm-trust-ecosystem__grain" aria-hidden="true" />
 
         <div ref={chapterActRef} className="rm-trust-ecosystem__chapter" aria-hidden="true">
@@ -1008,7 +906,7 @@ export function TrustParticleEcosystem({
             return (
               <div key={index} className="rm-trust-ecosystem__stat-anchor">
                 <div
-                  className="rm-trust-ecosystem__stat-shadow"
+                  className="rm-trust-ecosystem__stat-signal"
                   style={{ left: pos.left, top: pos.top }}
                   aria-hidden="true"
                 />

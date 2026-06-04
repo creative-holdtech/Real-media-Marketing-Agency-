@@ -1059,8 +1059,6 @@ button {
 }
 
 .rm-trust-ecosystem {
-  --trust-cursor-energy: 0;
-  --trust-cursor-pulse: 0;
   position: relative;
   width: 100%;
   height: 100%;
@@ -1370,7 +1368,8 @@ button {
 .rm-trust-ecosystem__fg-stats {
   position: absolute;
   inset: 0;
-  z-index: 6;
+  z-index: 30;
+  isolation: isolate;
   pointer-events: none;
 }
 
@@ -1403,6 +1402,7 @@ button {
 }
 
 .rm-trust-ecosystem__fg-stat-value {
+  position: relative;
   margin: 0;
   font-size: clamp(3.75rem, 15vw, 9rem);
   font-weight: 600;
@@ -1413,6 +1413,20 @@ button {
   text-shadow:
     0 8px 64px rgba(0, 0, 0, 0.55),
     0 0 calc(48px * var(--stat-bloom, 0)) rgba(239, 238, 233, calc(var(--stat-bloom, 0) * 0.42));
+}
+
+
+.rm-trust-ecosystem__fg-stat-value::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.65rem;
+  width: calc(var(--stat-bloom, 0) * 3.5rem);
+  max-width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(239, 238, 233, 0.55), transparent);
+  transform-origin: left center;
+  opacity: calc(0.35 + var(--stat-bloom, 0) * 0.65);
 }
 
 .rm-trust-ecosystem__fg-stat-copy {
@@ -1471,29 +1485,27 @@ button {
   z-index: 3;
 }
 
-.rm-trust-ecosystem__stat-shadow {
+.rm-trust-ecosystem__stat-signal {
   position: absolute;
-  width: clamp(10rem, 22vw, 14rem);
-  height: clamp(3rem, 7vw, 4rem);
-  border-radius: 999px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(176, 142, 108, 0.28) 0%,
-    rgba(176, 142, 108, 0.1) 45%,
-    transparent 72%
+  width: 1px;
+  height: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(239, 238, 233, 0.55) 0%,
+    rgba(176, 142, 108, 0.35) 100%
   );
-  filter: blur(18px);
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.76);
+  transform: translate(-50%, calc(-100% - 12px));
+  transform-origin: bottom center;
   pointer-events: none;
-  will-change: transform, opacity;
+  will-change: height, opacity, transform;
   z-index: 2;
 }
 
 .rm-trust-ecosystem__particles {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 5;
 }
 
 .rm-trust-ecosystem__particle {
@@ -1673,7 +1685,7 @@ button {
   }
 }
 
-/* ============ Premium cursor — cross + trail field ============ */
+/* ============ Premium cursor — lightweight cross ============ */
 html.rm-premium-cursor,
 html.rm-premium-cursor * {
   cursor: none !important;
@@ -1681,28 +1693,12 @@ html.rm-premium-cursor * {
 
 .rm-premium-cursor-root {
   position: fixed;
-  inset: 0;
-  z-index: 9999;
-  pointer-events: none;
-  mix-blend-mode: normal;
-  opacity: 0;
-  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.rm-premium-cursor__main,
-.rm-premium-cursor__trail {
-  position: fixed;
   top: 0;
   left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
   will-change: transform, opacity;
-}
-
-.rm-premium-cursor__main {
-  z-index: 4;
-}
-
-.rm-premium-cursor__trail {
-  z-index: 1;
 }
 
 .rm-premium-cursor__cross {
@@ -1718,10 +1714,9 @@ html.rm-premium-cursor * {
   position: absolute;
   left: 50%;
   top: 50%;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.9);
   transform: translate(-50%, -50%);
-  border-radius: 1px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.25);
 }
 
 .rm-premium-cursor__cross::before {
@@ -1732,65 +1727,6 @@ html.rm-premium-cursor * {
 .rm-premium-cursor__cross::after {
   width: 10px;
   height: 1px;
-}
-
-.rm-premium-cursor__glow {
-  position: absolute;
-  inset: -14px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, transparent 72%);
-  opacity: 0;
-  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.rm-premium-cursor__main[data-mode="explore"] .rm-premium-cursor__glow,
-.rm-premium-cursor__main[data-mode="attract"] .rm-premium-cursor__glow,
-.rm-premium-cursor__main[data-mode="morph"] .rm-premium-cursor__glow,
-.rm-premium-cursor__main[data-mode="logo"] .rm-premium-cursor__glow {
-  opacity: 1;
-}
-
-.rm-premium-cursor__field {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 58%),
-    radial-gradient(circle, transparent 62%, rgba(255, 255, 255, 0.04) 63%, transparent 66%);
-  filter: blur(0.5px);
-  will-change: transform, opacity;
-}
-
-.rm-premium-cursor__label {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-  opacity: 0;
-  will-change: transform, opacity;
-  transition: color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.rm-premium-cursor__main[data-mode="logo"] ~ .rm-premium-cursor__label,
-.rm-premium-cursor__main[data-mode="explore"] ~ .rm-premium-cursor__label,
-.rm-premium-cursor__main[data-mode="attract"] ~ .rm-premium-cursor__label {
-  color: rgba(255, 255, 255, 0.88);
-}
-
-.rm-premium-cursor__main[data-mode="morph"] ~ .rm-premium-cursor__label {
-  color: rgba(255, 255, 255, 0.94);
-  letter-spacing: 0.32em;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -5061,8 +4997,6 @@ a.block:focus-visible .rm-points-card__read {
 
 /* ============ Studio chapter — cinematic handoff ============ */
 .rm-studio-chapter {
-  --trust-cursor-energy: 0;
-  --trust-cursor-pulse: 0;
   --trust-scroll: 0;
   --trust-enter: 0;
   --trust-exit: 0;
