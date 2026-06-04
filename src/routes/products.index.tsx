@@ -244,8 +244,13 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
               isActive ? "bg-white/[0.04]" : "opacity-40 hover:opacity-70",
             )}
           >
-            <div className="text-[clamp(3rem,6vw,5rem)] font-medium leading-none tracking-[-0.05em] text-white mb-6">
-              {d.duration}
+            <div className="mb-6">
+              <p className="text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-none tracking-[-0.05em] text-white">
+                {d.tag}
+              </p>
+              <p className="mt-3 text-sm font-medium tracking-[0.02em] text-white/45">
+                {d.meta}
+              </p>
             </div>
             <dl className="flex flex-col gap-3 border-t border-white/[0.07] pt-6">
               {[

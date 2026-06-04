@@ -15,7 +15,7 @@ export function MetaCard({
   className?: string;
 }) {
   return (
-    <SurfaceCard interactive className={cn("min-h-[220px] md:min-h-[240px]", className)}>
+    <SurfaceCard interactive className={cn("min-h-0 md:min-h-[200px]", className)}>
       <CardContent className={cn("flex h-full flex-col justify-between gap-0", surfaceCardPadding)}>
         <p className={textLabel}>{label}</p>
         <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
@@ -41,7 +41,7 @@ export function MetricCard({
   className?: string;
 }) {
   return (
-    <SurfaceCard interactive className={cn("min-h-[220px] md:min-h-[240px]", className)}>
+    <SurfaceCard interactive className={cn("min-h-0 md:min-h-[200px]", className)}>
       <CardContent className={cn("flex h-full flex-col justify-between gap-0", surfaceCardPadding)}>
         <p className={textLabel}>{tag}</p>
         <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">

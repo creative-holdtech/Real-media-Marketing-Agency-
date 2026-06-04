@@ -1,10 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 
-import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
-import { btnGhostLink } from "@/components/framer-section";
-import { cn } from "@/lib/utils";
+import {
+  btnPrimary,
+  sectionContainer,
+  sectionHeadline,
+  sectionHeadlineLead,
+  sectionShell,
+} from "@/components/framer-section";
 import type { Post } from "@/lib/posts";
+import { cn } from "@/lib/utils";
 
 type InsightsHeroSectionProps = {
   posts: Post[];
@@ -15,48 +20,38 @@ const FEATURED_SLUGS = [
   "cybersecurity-trust-building",
   "b2b-performance-marketing",
   "buyers-compare-safe-decisions",
-  "marketing-dark-social-attribution",
-  "creation-vs-dominance",
 ] as const;
 
-const INSIGHTS_CAROUSEL_CONFIG = {
-  ...DRAGABLE_CAROUSEL_DEFAULTS,
-  slideWidth: 280,
-  slideHeight: 340,
-  gap: 18,
-  borderRadius: 24,
-  perspective: 1400,
-  rotateY: 48,
-  depth: 140,
-  inactiveScale: 0.84,
-  inactiveOpacity: 0.7,
-  snapDuration: 0.3,
-  arrowColor: "rgba(255, 255, 255, 0.92)",
-  arrowBg: "transparent",
-  arrowSize: 44,
-  dotColor: "rgba(255, 255, 255, 0.92)",
-  dotInactiveOpacity: 0.42,
-  dotSize: 7,
-};
+function InsightPreview({ post }: { post: Post }) {
+  const reduce = useReducedMotion();
 
-function InsightCarouselSlide({ post }: { post: Post }) {
   return (
     <Link
       to="/blog/$slug"
       params={{ slug: post.slug }}
-      className="rm-insights-carousel__card block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      aria-hidden
-      tabIndex={-1}
+      className="rm-insights-scroll-card group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      aria-label={`Read ${post.title}`}
     >
-      <div className="rm-dragable-carousel__media rm-insights-carousel__media overflow-hidden">
-        <img
+      <div className="rm-insights-scroll-card__media" aria-hidden>
+        <motion.img
           src={post.image}
           alt=""
-          draggable={false}
           loading="lazy"
-          decoding="async"
-          className="pointer-events-none h-full w-full object-cover"
+          initial={reduce ? false : { opacity: 0, scale: 1.02 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, amount: 0.35 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          className="rm-insights-scroll-card__img"
         />
+        <div className="rm-insights-scroll-card__wash" />
+      </div>
+
+      <div className="rm-insights-scroll-card__content">
+        <p className="rm-insights-scroll-card__kicker">{post.label.toUpperCase()}</p>
+        <div className="rm-insights-scroll-card__bottom">
+          <h3 className="rm-insights-scroll-card__title">{post.title}</h3>
+          <span className="rm-insights-scroll-card__cta">Read essay →</span>
+        </div>
       </div>
     </Link>
   );
@@ -67,50 +62,41 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
     (p): p is Post => Boolean(p),
   );
 
-  const [activeIndex, setActiveIndex] = useState(0);
-  const onSlideChange = useCallback((index: number) => {
-    setActiveIndex(index);
-  }, []);
-
-  if (featured.length < 2) return null;
-
-  const activePost = featured[activeIndex] ?? featured[0];
+  if (featured.length === 0) return null;
 
   return (
-    <section
-      className={cn("rm-section-insights border-b border-[var(--rm-border-soft)] px-6 md:px-10")}
-      aria-labelledby="insights-heading"
-    >
-      <div className="rm-insights-container reveal">
-        <h2 id="insights-heading" className="rm-insights-heading">
-          Insights
-        </h2>
+    <section className={cn(sectionShell, "rm-section-insights")} aria-labelledby="insights-heading">
+      <div className={sectionContainer}>
+        <div className="rm-insights-grid reveal">
+          <aside className="rm-insights-grid__aside">
+            <header className="rm-insights-grid__intro">
+              <span className="inline-flex w-fit rounded-full border border-[var(--rm-border-soft)] px-3 py-1 text-xs font-normal uppercase tracking-[0.1em] text-[var(--rm-text-muted)]">
+                Insights
+              </span>
+              <div className={sectionHeadlineLead}>
+                <h2
+                  id="insights-heading"
+                  className={cn(sectionHeadline, "max-w-none font-medium text-white md:leading-[1.15]")}
+                >
+                  Positioning under pressure, regulated pricing.
+                  <br />
+                  Why agency reporting is theater.
+                </h2>
+              </div>
 
-        <DragableCarousel
-          ariaLabel="Featured articles"
-          className="rm-insights-carousel__stage"
-          clipSlides={false}
-          config={INSIGHTS_CAROUSEL_CONFIG}
-          dotsPosition="below-cards"
-          onSlideChange={onSlideChange}
-        >
-          {featured.map((post) => (
-            <InsightCarouselSlide key={post.slug} post={post} />
-          ))}
-        </DragableCarousel>
+              <div className="rm-insights-grid__intro-footer">
+                <Link to="/blog" className={btnPrimary}>
+                  All articles →
+                </Link>
+              </div>
+            </header>
+          </aside>
 
-        <div className="rm-insights-meta" aria-live="polite">
-          <Link
-            to="/blog/$slug"
-            params={{ slug: activePost.slug }}
-            className="rm-insights-meta__article"
-          >
-            <span className="rm-insights-meta__kicker">{activePost.label}</span>
-            <span className="rm-insights-meta__title">{activePost.title}</span>
-          </Link>
-          <Link to="/blog" className={cn(btnGhostLink, "rm-insights-meta__all")}>
-            All articles
-          </Link>
+          <div className="rm-insights-grid__stack">
+            {featured.map((post) => (
+              <InsightPreview key={post.slug} post={post} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

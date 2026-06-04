@@ -49,8 +49,9 @@ export function HeroAtmosphere({
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.04, 1.1]);
+  const isAboutPhoto = className?.includes("rm-hero-atmosphere--about-photo");
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", isAboutPhoto ? "6%" : "12%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], isAboutPhoto ? [1, 1] : [1.04, 1.1]);
 
   return (
     <div

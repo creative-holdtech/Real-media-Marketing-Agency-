@@ -47,6 +47,8 @@ type DragableCarouselProps = {
   className?: string;
   ariaLabel?: string;
   config?: DragableCarouselConfig;
+  /** Snap alignment — start for left-anchored editorial strips. */
+  align?: "center" | "start";
   /** Bottom overlay (e.g. name/role on the active portrait). */
   overlay?: ReactNode;
   /** Lift dots when an overlay occupies the lower portrait area. */
@@ -76,6 +78,7 @@ export function DragableCarousel({
   className,
   ariaLabel = "Carousel",
   config,
+  align = "center",
   overlay,
   dotsPosition = "default",
   onSlideChange,
@@ -89,7 +92,7 @@ export function DragableCarousel({
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: cfg.loop,
-      align: "center",
+      align,
       containScroll: false,
       slidesToScroll: 1,
       startIndex: 0,
@@ -357,7 +360,10 @@ export function DragableCarousel({
                 <div
                   data-dragable-tween
                   data-dragable-active="false"
-                  className="rm-dragable-carousel__slide mx-auto origin-center will-change-[transform,opacity]"
+                  className={cn(
+                    "rm-dragable-carousel__slide origin-center will-change-[transform,opacity]",
+                    align === "start" ? "mr-auto" : "mx-auto",
+                  )}
                   style={{ width: cfg.slideWidth }}
                 >
                   {child}

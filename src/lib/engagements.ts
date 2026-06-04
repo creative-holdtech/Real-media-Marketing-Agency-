@@ -7,17 +7,25 @@ export type EngagementStep = {
 export type Engagement = {
   id: "sprint" | "marathon";
   name: string;
+  index: string;
   time: string;
   intro: string;
   steps: EngagementStep[];
   ctaLabel: string;
   compareHint: string;
+  metricBig: string;
+  metricUnitLabel: string;
+  metricUnitSub: string;
 };
 
 export const homepageEngagements: Engagement[] = [
   {
     id: "sprint",
     name: "Sprint",
+    index: "01",
+    metricBig: "4",
+    metricUnitLabel: "Weeks",
+    metricUnitSub: "to first ship",
     time: "From 4 weeks",
     intro:
       "Fast start for brands that don’t want to spend months on planning. We dive straight into execution, taking over your chosen channels from week one.",
@@ -30,12 +38,12 @@ export const homepageEngagements: Engagement[] = [
       {
         code: "02",
         title: "RUN",
-        body: "weekly updates, monthly reports, on-demand analytics and recommendations",
+        body: "Weekly updates, monthly reports, on-demand analytics and recommendations",
       },
       {
         code: "03",
         title: "HANDOVER",
-        body: "final deliverable with a clear roadmap and 100% asset & content ownership",
+        body: "Final deliverable with a clear roadmap and 100% asset & content ownership",
       },
     ],
     ctaLabel: "Scope a Sprint →",
@@ -44,24 +52,28 @@ export const homepageEngagements: Engagement[] = [
   {
     id: "marathon",
     name: "Marathon",
-    time: "From 2 months",
+    index: "02",
+    metricBig: "6",
+    metricUnitLabel: "Months",
+    metricUnitSub: "minimum runway",
+    time: "From 6 months",
     intro:
-      "Strategy followed by execution. For brands launching from scratch, rebranding, or entering new markets. We build your positioning and run your marketing channels.",
+      "Strategy followed by execution. For brands launching, rebranding, or new markets. We build positioning and run your marketing channels.",
     steps: [
       {
         code: "01",
         title: "STRATEGY",
-        body: "deep-dive workshop, market analysis, brand positioning, and GTM planning",
+        body: "Deep-dive workshop, market analysis, brand positioning, and GTM planning",
       },
       {
         code: "02",
         title: "ACTION",
-        body: "full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
+        body: "Full-scale execution across SMM, PR, SEO, Performance, and active Brand Management",
       },
       {
         code: "03",
         title: "HANDOVER",
-        body: "final brand guidelines, operational channels, 100% asset & content ownership",
+        body: "Final brand guidelines, operational channels, 100% asset & content ownership",
       },
     ],
     ctaLabel: "Plan a Marathon →",

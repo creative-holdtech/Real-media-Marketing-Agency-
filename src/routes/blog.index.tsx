@@ -21,11 +21,7 @@ import { blogFilters, blogMeta } from "@/content/blog";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 import type { Post } from "@/lib/posts";
-import {
-  getArchivePosts,
-  getFeaturedPost,
-  getPosts,
-} from "@/lib/payload/posts";
+import { getArchivePosts, getFeaturedPost, getPosts } from "@/lib/payload/posts";
 import { fetchBlogMeta, fetchBlogIndexContent } from "@/lib/payload/site-settings";
 import { buildPageHead } from "@/lib/seo";
 
@@ -181,8 +177,7 @@ function BlogPage() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const filtered =
-    active === "All" ? archive : archive.filter((p) => p.category === active);
+  const filtered = active === "All" ? archive : archive.filter((p) => p.category === active);
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
@@ -208,62 +203,75 @@ function BlogPage() {
 
       <main id="main" className="pt-[var(--rm-header-offset)]">
         <MarketingSection ariaLabelledBy="page-title" className="rm-blog-hero !pb-12 md:!pb-16">
-          <div className={cn("reveal flex w-full flex-col items-start", sectionInnerStack)}>
-            <div className="flex flex-col items-start gap-2">
-              <p className={textMeta}>{copy.seasonLabel}</p>
-              <p className={textMeta}>{copy.issuedBy}</p>
+          <div className="rm-blog-hero__grid reveal">
+            <div className={cn("flex w-full flex-col items-start", sectionInnerStack)}>
+              <div className="flex flex-col items-start gap-2">
+                <p className={textMeta}>{copy.seasonLabel}</p>
+                <p className={textMeta}>{copy.issuedBy}</p>
+              </div>
+              <h1 className="w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-[var(--rm-ink)] sm:text-[48px] md:text-[58px] lg:text-[64px]">
+                <TextReveal
+                  id="page-title"
+                  text={copy.titleLine1 ?? "Field notes on"}
+                  className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
+                  revealColor="rgb(255, 255, 255)"
+                />
+                <TextReveal
+                  text={copy.titleLine2 ?? "building brands that last."}
+                  className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
+                  revealColor="rgb(255, 255, 255)"
+                />
+              </h1>
+              <p className={cn(bodyCopy, "m-0 max-w-[42rem] text-pretty")}>{copy.lead}</p>
+              <TopicFilter
+                active={active}
+                onChange={setActive}
+                resultsId={resultsId}
+                className="w-full"
+              />
             </div>
-            <h1 className="w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-[var(--rm-ink)] sm:text-[48px] md:text-[58px] lg:text-[64px]">
-              <TextReveal
-                id="page-title"
-                text={copy.titleLine1 ?? "Field notes on"}
-                className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                revealColor="rgb(255, 255, 255)"
-              />
-              <TextReveal
-                text={copy.titleLine2 ?? "building brands that last."}
-                className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                revealColor="rgb(255, 255, 255)"
-              />
-            </h1>
-            <p className={cn(bodyCopy, "m-0 max-w-[42rem] text-pretty")}>{copy.lead}</p>
-            <TopicFilter active={active} onChange={setActive} resultsId={resultsId} className="w-full" />
+            <div className="rm-blog-hero__mark hidden md:block" aria-hidden>
+              <div className="rm-blog-hero__mark-label">
+                <span>Field notes</span>
+                <strong>R—M</strong>
+              </div>
+            </div>
           </div>
         </MarketingSection>
 
-        {(active === "All" || featured.category === active) ? (
-        <MarketingSection ariaLabelledBy="featured-heading" className="!pt-12 md:!pt-16">
-          <p id="featured-heading" className={cn("reveal mb-6 md:mb-8", textMeta)}>
-            {copy.featuredLabel}
-          </p>
-          <article className="reveal group relative grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
-            <Link
-              to="/blog/$slug"
-              params={{ slug: featured.slug }}
-              aria-label={`Read article: ${featured.title}`}
-              className="absolute inset-0 z-20 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25"
-            >
-              <span className="sr-only">{featured.title}</span>
-            </Link>
-            <figure className="hover-zoom card-cover relative aspect-[5/4] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]">
-              <img
-                src={featured.image}
-                alt=""
-                width={1280}
-                height={1024}
-                className="h-full w-full object-cover"
-              />
-            </figure>
-            <div className="flex flex-col justify-center">
-              <PostMetaLine post={featured} />
-              <h2 className={cn("mt-4", sectionHeadline)}>{featured.title}</h2>
-              <p className={cn("mt-4 max-w-prose", textCardBody)}>{featured.excerpt}</p>
-              <span className="relative z-10 mt-8 inline-flex">
-                <span className={btnPrimary}>Read article →</span>
-              </span>
-            </div>
-          </article>
-        </MarketingSection>
+        {active === "All" || featured.category === active ? (
+          <MarketingSection ariaLabelledBy="featured-heading" className="!pt-12 md:!pt-16">
+            <p id="featured-heading" className={cn("reveal mb-6 md:mb-8", textMeta)}>
+              {copy.featuredLabel}
+            </p>
+            <article className="reveal group relative grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12">
+              <Link
+                to="/blog/$slug"
+                params={{ slug: featured.slug }}
+                aria-label={`Read article: ${featured.title}`}
+                className="absolute inset-0 z-20 rounded-3xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25"
+              >
+                <span className="sr-only">{featured.title}</span>
+              </Link>
+              <figure className="hover-zoom card-cover relative aspect-[5/4] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]">
+                <img
+                  src={featured.image}
+                  alt=""
+                  width={1280}
+                  height={1024}
+                  className="h-full w-full object-cover"
+                />
+              </figure>
+              <div className="flex flex-col justify-center">
+                <PostMetaLine post={featured} />
+                <h2 className={cn("mt-4", sectionHeadline)}>{featured.title}</h2>
+                <p className={cn("mt-4 max-w-prose", textCardBody)}>{featured.excerpt}</p>
+                <span className="relative z-10 mt-8 inline-flex">
+                  <span className={btnPrimary}>Read article →</span>
+                </span>
+              </div>
+            </article>
+          </MarketingSection>
         ) : null}
 
         <MarketingSection ariaLabelledBy="archive-heading">
@@ -283,7 +291,11 @@ function BlogPage() {
           {filtered.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-[var(--rm-border-soft)] py-20 text-center">
               <p className={textCardBody}>{copy.emptyArchive}</p>
-              <button type="button" onClick={() => setActive("All")} className={cn("mt-6", btnOutline)}>
+              <button
+                type="button"
+                onClick={() => setActive("All")}
+                className={cn("mt-6", btnOutline)}
+              >
                 {copy.resetFilters}
               </button>
             </div>
@@ -295,11 +307,7 @@ function BlogPage() {
               className="grid grid-cols-1 gap-8 md:grid-cols-2"
             >
               {filtered.map((post, index) => (
-                <ArchiveCard
-                  key={post.slug}
-                  post={post}
-                  delay={String(Math.min(index + 1, 5))}
-                />
+                <ArchiveCard key={post.slug} post={post} delay={String(Math.min(index + 1, 5))} />
               ))}
             </ul>
           )}
