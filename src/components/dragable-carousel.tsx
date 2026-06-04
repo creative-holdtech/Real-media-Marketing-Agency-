@@ -40,7 +40,17 @@ export const DRAGABLE_CAROUSEL_DEFAULTS = {
   pauseOnHover: true,
 } as const;
 
-export type DragableCarouselConfig = Partial<typeof DRAGABLE_CAROUSEL_DEFAULTS>;
+type WidenLiteral<T> = T extends number
+  ? number
+  : T extends boolean
+    ? boolean
+    : T extends string
+      ? string
+      : T;
+
+export type DragableCarouselConfig = Partial<{
+  [K in keyof typeof DRAGABLE_CAROUSEL_DEFAULTS]: WidenLiteral<(typeof DRAGABLE_CAROUSEL_DEFAULTS)[K]>;
+}>;
 
 type DragableCarouselProps = {
   children: ReactNode;
@@ -110,8 +120,8 @@ export function DragableCarousel({
   const captionReadyRef = useRef(true);
 
   /** Max neighbor distance still rendered (Framer shows ~1 peek per side) */
-  const maxPeekDistance = 1.05;
-  const peekFadeStart = 0.85;
+  const maxPeekDistance = 1.15;
+  const peekFadeStart = 0.72;
 
   const onSelect = useCallback(
     (api: UseEmblaCarouselType[1]) => {
@@ -137,6 +147,7 @@ export function DragableCarousel({
 
   const applyCoverflow = useCallback(
     (api: UseEmblaCarouselType[1]) => {
+      if (!api) return;
       const root = api.rootNode();
       const rootRect = root.getBoundingClientRect();
       const viewportCenter = rootRect.left + rootRect.width / 2;
@@ -177,7 +188,7 @@ export function DragableCarousel({
         tweenEl.style.pointerEvents = peekMultiplier > 0.02 ? "" : "none";
 
         const clampedDistance = clamp(distance, -1, 1);
-        const focus = clamp(1 - absDistance, 0, 1) ** 0.9;
+        const focus = clamp(1 - absDistance, 0, 1) ** 0.75;
         const slideZ = isActive ? 1000 : Math.round(focus * 10);
         slideNode.style.position = "relative";
         slideNode.style.zIndex = String(slideZ);
@@ -248,6 +259,7 @@ export function DragableCarousel({
     if (!emblaApi) return;
 
     const onReInitHandler = (api: UseEmblaCarouselType[1]) => {
+      if (!api) return;
       onReInit(api);
       if (!alignStartOnce.current) {
         api.scrollTo(0, true);
