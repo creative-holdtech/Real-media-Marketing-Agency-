@@ -14,6 +14,7 @@ import { NavProvider } from "../components/nav-context";
 import { HubSpotTracking } from "../components/hubspot-tracking";
 import { SmoothScrollProvider } from "../components/smooth-scroll-provider";
 import { PageTransitionCurtain } from "../components/page-transition";
+import { PremiumCursor } from "../components/premium-cursor";
 import { fetchNavigation } from "../lib/payload/navigation";
 import { buildPageHead, organizationJsonLd } from "../lib/seo";
 
@@ -131,6 +132,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <NavProvider items={navigation}>
         <SmoothScrollProvider>
+          <PremiumCursor />
           <Outlet />
           <PageTransitionCurtain />
         </SmoothScrollProvider>

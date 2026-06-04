@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 import {
   bodyCopy,
   bodyCopyStrong,
@@ -11,39 +13,42 @@ import {
   MarketingSectionIntro,
 } from "@/components/marketing-section";
 import { MetaCard } from "@/components/meta-card";
-import { BigStatValue, StudioTrustBand, useSectionInView } from "@/components/studio-trust-band";
+import { StudioTrustBand, useSectionInView } from "@/components/studio-trust-band";
 import type { PageContent } from "@/lib/page-content/types";
 import { getPageDefaults } from "@/lib/page-content/defaults";
 
 const defaultPage = getPageDefaults("home");
 
 export function AboutSection({ page }: { page?: PageContent }) {
+  const chapterRef = useRef<HTMLElement>(null);
   const { ref, inView } = useSectionInView<HTMLElement>();
   const studio = page?.sections.studio ?? defaultPage.sections.studio;
   const stats = page?.stats ?? defaultPage.stats ?? [];
   const metaCards = page?.metaCards ?? defaultPage.metaCards ?? [];
 
   return (
-    <section ref={ref} id="studio" aria-label="Studio overview">
+    <section ref={chapterRef} id="studio" className="rm-studio-chapter" aria-label="Studio overview">
       <StudioTrustBand
+        chapterRef={chapterRef}
         inView={inView}
         stats={stats.map((stat) => ({
-          value:
-            stat.animateTo != null ? (
-              <BigStatValue
-                prefix={stat.prefix}
-                to={stat.animateTo}
-                suffix={stat.suffix}
-                start={inView}
-              />
-            ) : (
-              `${stat.prefix ?? ""}${stat.value}${stat.suffix ?? ""}`
-            ),
           copy: stat.label,
+          ...(stat.animateTo != null
+            ? {
+                countUp: {
+                  to: stat.animateTo,
+                  prefix: stat.prefix,
+                  suffix: stat.suffix,
+                },
+              }
+            : {
+                value: `${stat.prefix ?? ""}${stat.value}${stat.suffix ?? ""}`,
+              }),
         }))}
       />
 
-      <div className={sectionShell}>
+      <div className="rm-studio-chapter__body">
+        <div className={sectionShell}>
         <div className={sectionContainer}>
           <MarketingSectionIntro
             tag={studio?.tag ?? "Marketing agency"}
@@ -86,6 +91,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
             ))}
           </MarketingContentGrid>
         </div>
+      </div>
       </div>
     </section>
   );
