@@ -5,6 +5,7 @@ import type { LucideIcon } from "lucide-react";
 
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { TeamEnsemble } from "@/components/team-ensemble";
 import { useReveal } from "@/hooks/use-reveal";
 import { engagementPrefillMessage } from "@/lib/engagements";
 import { getPageContent } from "@/lib/payload/pages";
@@ -193,6 +194,8 @@ function ContactPage() {
           </div>
         </div>
       </section>
+
+      <TeamEnsemble variant="banner" />
 
       <SiteFooter />
     </div>

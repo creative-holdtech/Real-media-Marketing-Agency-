@@ -126,6 +126,8 @@ function PostMetaLine({ post }: { post: Post }) {
 }
 
 function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
+  const containImage = post.imageFit === "contain";
+
   return (
     <li className="reveal" data-delay={delay}>
       <Link
@@ -134,14 +136,23 @@ function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
         className="group flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
       >
         <article className="flex h-full flex-col">
-          <figure className="hover-zoom card-cover relative mb-6 aspect-[4/3] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]">
+          <figure
+            className={cn(
+              "hover-zoom card-cover relative mb-6 aspect-[4/3] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]",
+              containImage && "flex items-center justify-center",
+            )}
+          >
             <img
               src={post.image}
-              alt=""
+              alt={post.imageAlt ?? ""}
               loading="lazy"
               width={1024}
               height={768}
-              className="h-full w-full object-cover"
+              className={cn(
+                containImage
+                  ? "max-h-full max-w-full object-contain p-4"
+                  : "h-full w-full object-cover",
+              )}
             />
           </figure>
           <PostMetaLine post={post} />
@@ -229,12 +240,6 @@ function BlogPage() {
                 resultsId={resultsId}
                 className="w-full"
               />
-            </div>
-            <div className="rm-blog-hero__mark hidden md:block" aria-hidden>
-              <div className="rm-blog-hero__mark-label">
-                <span>Field notes</span>
-                <strong>R—M</strong>
-              </div>
             </div>
           </div>
         </MarketingSection>

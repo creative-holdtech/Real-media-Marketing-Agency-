@@ -173,8 +173,8 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
     slug: "cases",
     sections: {
       work: {
-        tag: "Selected work",
-        heading: "Three engagements. One standard.",
+        tag: "System specs",
+        heading: "Three core runs. Pure performance.",
       },
     },
     metaTitle: "Case Studies — Work That Ships | R-M",
@@ -182,12 +182,12 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
       "Selected brand, product, and growth work for AI SaaS, Fintech, Cybersecurity, and iGaming teams.",
     hero: {
       tag: "Case studies · R—M",
-      titleLines: ["Work that ships", "for founders who build to scale"],
+      titleLines: ["Selected work", "proven to ship"],
       subheading:
-        "Identity, sites, funnels, and platforms for Empresex, Tequila, and Progresivo.",
+        "Identity, websites, funnels, and platforms for Fintech, iGaming, and Web3 brands.",
       ctaPrimaryLabel: "Book free audit →",
       ctaPrimaryUrl: "/audit",
-      ctaSecondaryLabel: "Browse the work",
+      ctaSecondaryLabel: "Check our cases",
       ctaSecondaryUrl: "#work",
     },
     cta: {

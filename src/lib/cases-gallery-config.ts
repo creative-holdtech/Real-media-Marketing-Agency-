@@ -1,13 +1,16 @@
 export const CASES_GALLERY_CHAPTER = "04";
 
-export const CASES_GALLERY_SUBHEADING =
-  "Empresex, Tequila, and Progresivo — Fintech and iGaming work that ships.";
+export const CASES_GALLERY_SUBHEADING = "Deep-volume systems built for high-speed markets.";
 
-export function casesGalleryHeaderProps(work?: { tag?: string; heading?: string }) {
+export function casesGalleryHeaderProps(work?: {
+  tag?: string;
+  heading?: string;
+  subheading?: string;
+}) {
   return {
-    tag: work?.tag ?? "Selected work",
-    heading: work?.heading ?? "Three engagements. One standard.",
-    subheading: CASES_GALLERY_SUBHEADING,
+    tag: work?.tag ?? "System specs",
+    heading: work?.heading ?? "Three core runs. Pure performance.",
+    subheading: work?.subheading ?? CASES_GALLERY_SUBHEADING,
     chapter: CASES_GALLERY_CHAPTER,
     animateHeading: true as const,
   };

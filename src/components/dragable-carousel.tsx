@@ -118,6 +118,7 @@ export function DragableCarousel({
   const coverframe = useRef<number | null>(null);
   const settledIndexRef = useRef(0);
   const captionReadyRef = useRef(true);
+  const carouselRootRef = useRef<HTMLDivElement>(null);
 
   /** Max neighbor distance still rendered (Framer shows ~1 peek per side) */
   const maxPeekDistance = 1.15;
@@ -162,7 +163,7 @@ export function DragableCarousel({
         const slideCenter = slideRect.left + slideRect.width / 2;
         const distance = (slideCenter - viewportCenter) / slideStride;
         const absDistance = clamp(Math.abs(distance), 0, 2.5);
-        const isActive = absDistance < 0.28;
+        const isActive = absDistance < 0.18;
 
         tweenEl.dataset.dragableActive = isActive ? "true" : "false";
         tweenEl.dataset.dragableSettled =
@@ -188,8 +189,9 @@ export function DragableCarousel({
         tweenEl.style.pointerEvents = peekMultiplier > 0.02 ? "" : "none";
 
         const clampedDistance = clamp(distance, -1, 1);
-        const focus = clamp(1 - absDistance, 0, 1) ** 0.75;
-        const slideZ = isActive ? 1000 : Math.round(focus * 10);
+        const focus = clamp(1 - absDistance, 0, 1);
+        const focusEase = focus * focus * (3 - 2 * focus);
+        const slideZ = isActive ? 1000 : Math.round(focusEase * 10);
         slideNode.style.position = "relative";
         slideNode.style.zIndex = String(slideZ);
 
@@ -200,13 +202,12 @@ export function DragableCarousel({
           return;
         }
         const rotateY = clampedDistance * cfg.rotateY;
-        const scale = mix(cfg.inactiveScale, cfg.activeScale, focus);
-        const opacity = isActive ? 1 : mix(cfg.inactiveOpacity, 1, focus) * peekMultiplier;
-        const translateZ = isActive ? 48 : -absDistance * cfg.depth - 72;
+        const scale = mix(cfg.inactiveScale, cfg.activeScale, focusEase);
+        const opacity = mix(cfg.inactiveOpacity, 1, focusEase) * peekMultiplier;
+        const translateZ = mix(-cfg.depth - 56, 36, focusEase);
 
         tweenEl.style.opacity = String(opacity);
         tweenEl.style.transform = [
-          `perspective(${cfg.perspective}px)`,
           `rotateY(${rotateY}deg)`,
           `scale(${scale})`,
           `translateZ(${translateZ}px)`,
@@ -250,6 +251,7 @@ export function DragableCarousel({
   const onScroll = useCallback(
     (api: UseEmblaCarouselType[1]) => {
       captionReadyRef.current = false;
+      carouselRootRef.current?.setAttribute("data-dragable-scrolling", "true");
       scheduleCoverflow(api);
     },
     [scheduleCoverflow],
@@ -270,6 +272,7 @@ export function DragableCarousel({
 
     const onSettleHandler = (api: UseEmblaCarouselType[1]) => {
       onSettle(api);
+      carouselRootRef.current?.setAttribute("data-dragable-scrolling", "false");
       scheduleCoverflow(api);
     };
 
@@ -338,10 +341,12 @@ export function DragableCarousel({
 
   return (
     <div
+      ref={carouselRootRef}
       className={cn("rm-dragable-carousel relative mx-auto w-full max-w-[min(100%,52rem)]", className)}
       role="region"
       aria-label={ariaLabel}
       aria-roledescription="carousel"
+      data-dragable-scrolling="false"
       style={
         {
           "--rm-carousel-slide-w": `${cfg.slideWidth}px`,

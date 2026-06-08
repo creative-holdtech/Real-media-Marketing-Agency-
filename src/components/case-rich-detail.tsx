@@ -312,7 +312,6 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const toc = useMemo(() => (rich ? buildToc(rich) : []), [rich]);
   const [progress, setProgress] = useState(0);
   const [activeId, setActiveId] = useState<string>(toc[0]?.id ?? "case-overview");
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!rich) return;
@@ -354,26 +353,11 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const showIdentityLogo = Boolean(rich.logo) && !isLogoCover;
   const identityCompact = !showIdentityLogo && !identityVisual;
 
-  const copyLink = async () => {
-    if (typeof window === "undefined") return;
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* no-op */
-    }
-  };
-
   return (
     <div className="rm-page rm-case-study selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div aria-live="polite" aria-atomic="true" className="sr-only">
-        {copied ? "Case study link copied to clipboard" : ""}
-      </div>
-
       <div
         role="progressbar"
         aria-label="Reading progress"
@@ -437,6 +421,15 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     {rich.subline}
                   </p>
 
+                  {rich.heroNote ? (
+                    <p
+                      className={cn("reveal mt-5 max-w-[42ch]", bodyCopyStrong)}
+                      data-delay="1"
+                    >
+                      {rich.heroNote}
+                    </p>
+                  ) : null}
+
                   <div className="reveal mt-10" data-delay="2">
                     <HeroMetric metric={c.primaryMetric} />
                   </div>
@@ -445,14 +438,9 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     className="reveal mt-10 flex flex-wrap items-center gap-3"
                     data-delay="3"
                   >
-                    <button
-                      type="button"
-                      onClick={copyLink}
-                      className={btnOutline}
-                      aria-label={copied ? "Link copied" : "Copy case study link"}
-                    >
-                      {copied ? "Link copied" : "Copy link"}
-                    </button>
+                    <Link to="/contact" className={btnOutline}>
+                      Consultation
+                    </Link>
                     <Link to={rich.closing.primaryTo} className={btnPrimary}>
                       {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
                     </Link>
@@ -464,7 +452,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     )}
                     data-delay="4"
                   >
-                    Read case study
+                    Full case study
                     <ChevronDownIcon />
                   </a>
                 </div>
@@ -531,6 +519,12 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     {rich.subline}
                   </p>
 
+                  {rich.heroNote ? (
+                    <p className={cn("reveal mt-5 max-w-prose", bodyCopyStrong)} data-delay="1">
+                      {rich.heroNote}
+                    </p>
+                  ) : null}
+
                   <div className="reveal mt-10" data-delay="2">
                     <HeroMetric metric={c.primaryMetric} />
                   </div>
@@ -541,14 +535,9 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   >
                     <span className={textMeta}>{c.client} case study</span>
                     <div className="flex flex-wrap items-center gap-3">
-                      <button
-                        type="button"
-                        onClick={copyLink}
-                        className={btnOutline}
-                        aria-label={copied ? "Link copied" : "Copy case study link"}
-                      >
-                        {copied ? "Link copied" : "Copy link"}
-                      </button>
+                      <Link to="/contact" className={btnOutline}>
+                        Consultation
+                      </Link>
                       <Link to={rich.closing.primaryTo} className={btnPrimary}>
                         {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
                       </Link>

@@ -25,6 +25,8 @@ export type Post = {
   excerpt: string;
   image: string;
   imageAlt?: string;
+  /** Card framing — use contain for tall mockups (e.g. phone screenshots). */
+  imageFit?: "cover" | "contain";
   author: string;
   featured?: boolean;
   body: string[];
@@ -47,6 +49,7 @@ export const posts: Post[] = [
     excerpt:
       "Regulatory fatigue, trust gaps, and localisation debt. A pattern study of twelve fintechs that entered both regions — and what separated the ones that survived.",
     image: blog04,
+    imageAlt: "Brutalist exhibition poster with bold typography and architectural installation photography",
     author: "R-M Editorial",
     featured: true,
     body: [
@@ -68,6 +71,7 @@ export const posts: Post[] = [
     excerpt:
       "In a category where every vendor claims best-in-class detection rates, the brands that win are the ones that make buyers feel safe before the demo.",
     image: blog05,
+    imageAlt: "Abstract orange and black grain texture with interlocking geometric mark",
     author: "R-M Editorial",
     body: [
       "The cybersecurity buyer is the most skeptical buyer in B2B. They have been burned by vendors who overpromised, by platforms that created new attack surfaces, by dashboards that showed activity without producing safety. By the time they reach your website, they are already waiting to be disappointed.",
@@ -88,6 +92,7 @@ export const posts: Post[] = [
     excerpt:
       "Clicks, impressions, and MQLs are metrics of activity, not outcomes. Here is what pipeline-attributed reporting actually looks like — and why most teams resist it.",
     image: blog06,
+    imageAlt: "Warm amber light trails on black — editorial performance marketing visual",
     author: "R-M Editorial",
     body: [
       "The performance marketing dashboard looks healthy. CTR is up. CPL is down. The weekly report shows green everywhere. And yet the sales team is complaining that leads don't convert, and the CFO is asking why revenue isn't moving. This is not a coincidence. It is a measurement problem.",
@@ -108,6 +113,7 @@ export const posts: Post[] = [
     excerpt:
       "The market is flooded with identical promises. What is the only way out — and how to decode the deeper context of how your specific audience perceives value.",
     image: blog01,
+    imageAlt: "Distressed editorial poster with burnt-orange glow and motivational typography",
     author: "R-M Editorial",
     body: [
       "Sophisticated buyers rarely choose the best product. They choose the option that feels least risky to defend in a meeting. That gap — between actual superiority and perceived safety — is where most B2B brands lose deals they never knew were competitive.",
@@ -128,6 +134,7 @@ export const posts: Post[] = [
     excerpt:
       "Buyers research products in dark social and hit your site ready to buy. We explained how to implement self-reported attribution to save your best channels.",
     image: blog02,
+    imageAlt: "Frosted glass agency branding card with minimal sans-serif typography",
     author: "R-M Editorial",
     body: [
       "Most of your pipeline arrives with a blank attribution field and a firm opinion already formed. They did not discover you in a keyword auction. They were sent a screenshot in a founder group chat, watched two podcast clips, and asked a peer who already uses you.",
@@ -148,6 +155,8 @@ export const posts: Post[] = [
     excerpt:
       "You don't need to invent a new market to win. Here we break down strategies for positioning against established giants.",
     image: blog03,
+    imageAlt: "Mobile portfolio mockup with abstract 3D sculpture and warm studio lighting",
+    imageFit: "contain",
     author: "R-M Editorial",
     body: [
       "Early-stage teams are told to find a wedge. Later-stage teams are told to defend a moat. Almost nobody is told the middle truth: most markets reward a clear point of view long before they reward product superiority.",

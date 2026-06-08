@@ -12,7 +12,6 @@ type InsightsHeroSectionProps = {
 };
 
 const FEATURED_SLUGS = [
-  "cross-border-fintech-scale",
   "cybersecurity-trust-building",
   "b2b-performance-marketing",
   "buyers-compare-safe-decisions",
@@ -20,7 +19,19 @@ const FEATURED_SLUGS = [
   "creation-vs-dominance",
 ] as const;
 
+/** Per-card motion identity — Premium personality, active-slide only (see styles.css). */
+const INSIGHT_CARD_MOTION: Record<(typeof FEATURED_SLUGS)[number], string> = {
+  "cybersecurity-trust-building": "scan",
+  "b2b-performance-marketing": "pipeline",
+  "buyers-compare-safe-decisions": "balance",
+  "marketing-dark-social-attribution": "ripple",
+  "creation-vs-dominance": "pulse",
+};
+
 function InsightCarouselSlide({ post }: { post: Post }) {
+  const motionId =
+    INSIGHT_CARD_MOTION[post.slug as (typeof FEATURED_SLUGS)[number]] ?? "orbit";
+
   return (
     <Link
       to="/blog/$slug"
@@ -29,14 +40,27 @@ function InsightCarouselSlide({ post }: { post: Post }) {
       aria-hidden
       tabIndex={-1}
     >
-      <div className="rm-dragable-carousel__media rm-insights-carousel__media overflow-hidden">
+      <div
+        className={cn(
+          "rm-dragable-carousel__media rm-insights-carousel__media overflow-hidden",
+          `rm-insights-carousel__media--${motionId}`,
+        )}
+        data-insight-motion={motionId}
+      >
+        <div className="rm-insights-carousel__sheen" aria-hidden="true" />
+        <div className="rm-insights-carousel__wash" aria-hidden="true" />
         <img
           src={post.image}
           alt=""
           draggable={false}
           loading="lazy"
           decoding="async"
-          className="pointer-events-none h-full w-full object-cover"
+          className={cn(
+            "rm-insights-carousel__img pointer-events-none",
+            motionId === "pulse"
+              ? "max-h-full max-w-full object-contain"
+              : "h-full w-full object-cover",
+          )}
         />
       </div>
     </Link>
@@ -84,7 +108,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
       depth: 72,
       inactiveScale: 0.92,
       inactiveOpacity: 0.62,
-      snapDuration: 0.48,
+      snapDuration: 0.55,
       arrowColor: "rgba(255, 255, 255, 0.9)",
       arrowBg: "rgba(255, 255, 255, 0.08)",
       arrowSize: 38,
@@ -147,10 +171,14 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={activePost.slug}
-                  initial={reduce ? false : { opacity: 0, y: 6 }}
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduce ? undefined : { opacity: 0, y: -4 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  transition={
+                    reduce
+                      ? { duration: 0 }
+                      : { duration: 0.42, ease: [0.4, 0, 0.2, 1] }
+                  }
                 >
                   <Link
                     to="/blog/$slug"

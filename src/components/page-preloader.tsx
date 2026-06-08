@@ -18,6 +18,9 @@ export function PagePreloader() {
       return;
     }
 
+    const mobile = window.matchMedia("(max-width: 991px)").matches;
+    const showMs = mobile ? 1400 : SHOW_MS;
+
     setVisible(true);
     document.documentElement.classList.add("rm-is-loading");
 
@@ -32,7 +35,7 @@ export function PagePreloader() {
         window.dispatchEvent(new Event("rm:loading-end"));
         setMounted(false);
       }, EXIT_MS);
-    }, SHOW_MS);
+    }, showMs);
 
     return () => {
       window.clearTimeout(exitTimer);

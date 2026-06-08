@@ -139,6 +139,8 @@ function ParallaxImage({
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
+    // Defer measurement to post-hydration (avoids Motion's "ref not hydrated" warning).
+    layoutEffect: false,
   });
   const y = useTransform(scrollYProgress, [0, 1], [-range, range]);
   const sy = useSpring(y, { stiffness: 80, damping: 22, mass: 0.3 });

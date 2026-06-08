@@ -6,7 +6,14 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import { useMemo, useRef, useState, useSyncExternalStore, type ElementType, type RefObject } from "react";
+import {
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ElementType,
+  type RefObject,
+} from "react";
 
 function subscribeMobile(onChange: () => void) {
   const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
@@ -81,6 +88,8 @@ export function TextReveal({
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.92", "start 0.35"],
+    // Defer measurement to post-hydration (avoids Motion's "ref not hydrated" warning).
+    layoutEffect: false,
   });
 
   const chunks = useMemo(() => chunkWords(text.trim().split(/\s+/), CHUNK_SIZE), [text]);
@@ -104,7 +113,12 @@ export function TextReveal({
   }
 
   return (
-    <HeadingTag id={id} ref={ref as RefObject<HTMLElement>} className={className} aria-label={ariaLabel}>
+    <HeadingTag
+      id={id}
+      ref={ref as RefObject<HTMLElement>}
+      className={className}
+      aria-label={ariaLabel}
+    >
       {chunks.map((chunk, index) => {
         const start = index / chunks.length;
         const end = Math.min(1, (index + 1.2) / chunks.length);

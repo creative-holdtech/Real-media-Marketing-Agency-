@@ -11,6 +11,8 @@ export type CaseSectionVisual = { src: string; alt: string };
 export type CaseRichContent = {
   titleLines: [string, string];
   subline: string;
+  /** Optional second hero paragraph — narrative framing under the subline */
+  heroNote?: string;
   /** Optional figure per narrative section */
   visuals?: Partial<
     Record<"overview" | "challenge" | "identity" | "deliverables", CaseSectionVisual>
@@ -106,7 +108,7 @@ export const cases: CaseStudy[] = [
     format: "Marathon",
     duration: "6 months",
     preview:
-      "CPA network with in-house media buying — 300+ brands across Tier 1, 2, and 3 GEOs including Africa.",
+      "iGaming CPA network — brand identity, web ecosystem, and performance creative engine built from the ground up.",
     headline: "How R-M helped Tequila turn brand into a partner acquisition engine.",
     heroMetrics: [
       { value: "+35%", label: "Brand growth" },
@@ -156,9 +158,11 @@ export const cases: CaseStudy[] = [
     coverScope: ["Identity & branding", "Web & landing", "Performance & SMM"],
     layout: "rich",
     rich: {
-      titleLines: ["Brand system", "for a CPA network."],
+      titleLines: ["Brand system", "for a CPA network"],
       subline:
         "A CPA network with in-house media buying, specialising in iGaming — 300+ brands across Tier-1, Tier-2, and Tier-3 regions, including Africa.",
+      heroNote:
+        "TEQUILA had it all: strong offer, reliable team, and global coverage. But not yet the recognition. Together we closed that gap.",
       meta: {
         client: "Tequila CPA",
         scope: "Brand, Web, Performance & SMM",
@@ -267,7 +271,7 @@ export const cases: CaseStudy[] = [
     format: "Marathon",
     duration: "2024",
     preview:
-      "A next-generation crypto exchange — identity, marketing site, mobile app, and trading platform.",
+      "Licensed crypto exchange — brand identity, marketing site, mobile app, and web trading platform.",
     headline: "Not just an exchange. A new standard.",
     heroMetrics: [
       { value: "VASP", label: "Licensed in Czech Republic" },
@@ -436,7 +440,7 @@ export const cases: CaseStudy[] = [
     format: "Marathon",
     duration: "9 months",
     preview:
-      "Visual identity and digital ecosystem for a LATAM academy — brand system built for feed and paid scale.",
+      "LATAM educational academy — brand identity, web infrastructure, and scalable marketing assets.",
     headline: "How R-M helped Progresivo rebuild its brand for LATAM.",
     heroMetrics: [
       { value: "LATAM", label: "Primary market" },

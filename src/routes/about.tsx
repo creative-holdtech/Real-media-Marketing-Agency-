@@ -10,6 +10,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import aboutHero from "@/assets/about-hero.png";
+import aboutHeroTeam from "@/assets/about-hero-team.jpg";
 import nicheAi from "@/assets/niche-ai.jpg";
 import nicheFintech from "@/assets/niche-fintech.jpg";
 import nicheHospitality from "@/assets/niche-hospitality.jpg";
@@ -55,7 +56,7 @@ export const Route = createFileRoute("/about")({
     const seo = buildPageHead({ title, description, pathname: "/about" });
     return {
       meta: seo.meta,
-      links: [...seo.links, { rel: "preload", as: "image", href: aboutHero, fetchPriority: "high" }],
+      links: [...seo.links, { rel: "preload", as: "image", href: aboutHeroTeam, fetchPriority: "high" }],
     };
   },
   component: AboutPage,
@@ -81,6 +82,7 @@ function AmbientBlobs() {
 /* ================================================================== */
 function AboutPage() {
   useReveal();
+  const reduce = useReducedMotion();
   const { page } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
@@ -106,10 +108,12 @@ function AboutPage() {
       <SiteHeader variant="dark" overlay />
 
       <HeroAtmosphere
-        imageSrc={hero?.image || aboutHero}
+        imageSrc={aboutHeroTeam}
+        fallbackImageSrc={hero?.image || aboutHero}
         underHeader
         className="rm-hero-atmosphere--about-photo"
       >
+        <div aria-hidden className="rm-hero-grain" />
         <section
           aria-labelledby="page-title"
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
@@ -117,34 +121,45 @@ function AboutPage() {
           <div className={pageHeroContainer}>
             <div className="rm-hero-copy flex w-full max-w-[40rem] flex-col items-start text-left">
               {hero?.tag ? (
-                <p className="reveal mb-8 w-fit">
+                <motion.p
+                  className="mb-8 w-fit"
+                  initial={reduce ? false : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+                >
                   <FramerTag>{hero.tag}</FramerTag>
-                </p>
+                </motion.p>
               ) : null}
               <h1
                 id="page-title"
-                className="reveal w-full max-w-[16ch] text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:max-w-[18ch] md:text-[58px] lg:text-[64px]"
+                className="rm-hero-headline w-full max-w-[16ch] text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:max-w-[18ch] md:text-[58px] lg:text-[64px]"
               >
-                {(hero?.titleLines ?? []).map((line) => (
-                  <span key={line} className="block text-pretty">
-                    {line}
+                {(hero?.titleLines ?? []).map((line, i) => (
+                  <span key={line} className="rm-hero-line">
+                    <span
+                      className="rm-hero-line__inner text-pretty"
+                      style={{ animationDelay: `${0.28 + i * 0.12}s` }}
+                    >
+                      {line}
+                    </span>
                   </span>
                 ))}
               </h1>
               {hero?.subheading ? (
-                <p
-                  className={cn(
-                    "reveal mt-7 max-w-[34ch] text-pretty",
-                    heroSubcopyStrong,
-                  )}
-                  data-delay="2"
+                <motion.p
+                  className={cn("mt-7 max-w-[34ch] text-pretty", heroSubcopyStrong)}
+                  initial={reduce ? false : { opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.75, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
                 >
                   {hero.subheading}
-                </p>
+                </motion.p>
               ) : null}
-              <div
-                className="reveal mt-10 hidden flex-wrap items-center justify-start gap-4 md:flex"
-                data-delay="3"
+              <motion.div
+                className="mt-10 hidden flex-wrap items-center justify-start gap-4 md:flex"
+                initial={reduce ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
               >
                 {hero?.ctaPrimaryLabel ? (
                   <Link to={hero.ctaPrimaryUrl ?? "/audit"} className={btnPrimary}>
@@ -156,7 +171,7 @@ function AboutPage() {
                     {hero.ctaSecondaryLabel}
                   </a>
                 ) : null}
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>

@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "dev:site": "vite dev",
+    "dev:about": "vite dev --open /about",
+    "preview:about": "open http://localhost:8080/about",
+    "assets:hero": "node scripts/optimize-about-hero.mjs",
     "dev:cms": "npm run dev --prefix cms",
     "build": "node scripts/generate-seo-files.mjs && vite build",
     "seo:generate": "node scripts/generate-seo-files.mjs",

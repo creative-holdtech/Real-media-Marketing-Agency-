@@ -12,12 +12,14 @@ import {
 } from "@/components/framer-section";
 import { cases as staticCases } from "@/lib/cases";
 import { casesGalleryHeaderProps } from "@/lib/cases-gallery-config";
-import { getPageDefaults } from "@/lib/page-content/defaults";
 import { cn } from "@/lib/utils";
 
 export function CasesSection() {
-  const work = getPageDefaults("cases").sections?.work;
-  const header = casesGalleryHeaderProps(work);
+  const header = casesGalleryHeaderProps({
+    tag: "Selected case studies",
+    heading: "Results we deliver.",
+    subheading: "Identity, product, and growth systems for founders who build to scale.",
+  });
   const featuredCases = staticCases.slice(0, 3);
 
   const reduce = useReducedMotion();
@@ -31,8 +33,12 @@ export function CasesSection() {
 
   if (featuredCases.length === 0) return null;
 
+  const finePointer =
+    typeof window !== "undefined" &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
   const handleMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (reduce) return;
+    if (reduce || !finePointer) return;
     px.set(event.clientX);
     py.set(event.clientY);
   };

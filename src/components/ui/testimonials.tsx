@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
 import { FramerTag, sectionContainer } from "@/components/framer-section";
@@ -15,12 +15,29 @@ export const quoteStatementStyle = {
   letterSpacing: "-0.035em",
 } as const;
 
+function subscribeCoarse(onChange: () => void) {
+  const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function getCoarse() {
+  return window.matchMedia("(max-width: 991px), (pointer: coarse)").matches;
+}
+
+function getCoarseServer() {
+  return false;
+}
+
 function QuoteBackground() {
   const reduce = useReducedMotion();
+  const coarse = useSyncExternalStore(subscribeCoarse, getCoarse, getCoarseServer);
+  const parallax = !reduce && !coarse;
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
+    layoutEffect: false,
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
@@ -30,7 +47,7 @@ function QuoteBackground() {
         src={quoteBg}
         alt=""
         loading="lazy"
-        style={reduce ? undefined : { y, scale: 1.12 }}
+        style={parallax ? { y, scale: 1.12 } : { scale: 1.06 }}
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-[rgb(10,10,10)]/50" />
