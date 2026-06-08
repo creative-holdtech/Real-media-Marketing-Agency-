@@ -2,7 +2,7 @@ import aboutHero from "@/assets/about-hero.png";
 import engageBg from "@/assets/engage-bg.jpg";
 import nicheFintech from "@/assets/niche-fintech.jpg";
 import nicheHospitality from "@/assets/niche-hospitality.jpg";
-import { caseAsset, deckImage } from "@/lib/case-deck-images";
+import { caseAsset, caseGalleryImage, deckImage } from "@/lib/case-deck-images";
 
 export type CaseMetric = { value: string; label: string };
 
@@ -253,6 +253,51 @@ export const cases: CaseStudy[] = [
           },
         ],
       },
+      galleryHeading: "Campaign & SMM gallery",
+      galleryLead:
+        "Performance creatives, seamless carousels, landing pages, and Instagram series — built for tequila.cpa across Tier 1–3.",
+      gallery: [
+        {
+          src: caseGalleryImage("tequila-cpa", "kawasaki-carousel-mockup.jpg"),
+          alt: "Kawasaki Ninja giveaway — seamless Instagram carousel across three screens",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "infrastructure-hub-mockup.jpg"),
+          alt: "Infrastructure Hub — Instagram post mockup for tequila.cpa",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "partner-protection-mockup.jpg"),
+          alt: "How a partner protects your traffic — Instagram story creative",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "tequila-boost-mockup.jpg"),
+          alt: "Tequila Boost contest landing page on tablet",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "peru-hub.png"),
+          alt: "Peruvian market hub — GEO storytelling post",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "beach-cr.png"),
+          alt: "CR conversion rate — beach scene creative",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "hr-experts.png"),
+          alt: "HR experts recruitment creative",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "studio-bricks.png"),
+          alt: "Studio bricks — brand editorial shoot",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "gym-product.png"),
+          alt: "Gym product category creative",
+        },
+        {
+          src: caseGalleryImage("tequila-cpa", "checklist-wave.png"),
+          alt: "Checklist wave — onboarding series",
+        },
+      ],
       closing: {
         titleLines: ["Ready for the next", "partner wave?"],
         subline:
