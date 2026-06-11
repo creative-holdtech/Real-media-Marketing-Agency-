@@ -1,0 +1,5 @@
+{
+  "buildCommand": "npm run build && node -e \"const fs=require('fs');fs.copyFileSync('dist/client/_shell.html','dist/client/index.html')\" && test -f dist/client/sitemap.xml && test -f dist/client/robots.txt",
+  "outputDirectory": "dist/client",
+  "routes": [{ "handle": "filesystem" }, { "src": "/(.*)", "dest": "/index.html" }]
+}

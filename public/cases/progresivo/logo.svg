@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 72" fill="none" aria-hidden="true">
+  <text
+    x="0"
+    y="54"
+    fill="white"
+    font-family="Inter, system-ui, sans-serif"
+    font-size="48"
+    font-weight="600"
+    letter-spacing="-0.04em"
+  >
+    progresivo
+  </text>
+  <rect x="0" y="62" width="72" height="3" fill="#f43f5e" />
+</svg>
