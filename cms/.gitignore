@@ -1,0 +1,10 @@
+node_modules
+.next
+.env
+.env.local
+.env.production.local
+media
+payload.db
+*.tsbuildinfo
+.vercel
+.env*

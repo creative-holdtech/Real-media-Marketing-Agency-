@@ -1,0 +1,243 @@
+/* Premium utilitarian minimalism — black canvas + Helvetica (/services/smm) */
+.smm-minimal {
+  --mm-canvas: #000000;
+  --mm-surface: #0a0a0a;
+  --mm-ink: #f5f4f0;
+  --mm-muted: rgba(245, 244, 240, 0.58);
+  --mm-border: rgba(255, 255, 255, 0.1);
+  --mm-pastel-red-bg: rgba(253, 235, 236, 0.12);
+  --mm-pastel-red-text: #e8b4b2;
+  --mm-pastel-blue-bg: rgba(225, 243, 254, 0.1);
+  --mm-pastel-blue-text: #9ccae8;
+  --mm-pastel-green-bg: rgba(237, 243, 236, 0.1);
+  --mm-pastel-green-text: #a8c4a6;
+  --mm-pastel-yellow-bg: rgba(251, 243, 219, 0.1);
+  --mm-pastel-yellow-text: #d4bc7a;
+  background-color: var(--mm-canvas);
+  color: var(--mm-ink);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-feature-settings: "kern" 1, "liga" 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+.smm-minimal .mm-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    55% 45% at 12% 8%,
+    rgba(245, 244, 240, 0.035),
+    transparent 70%
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .smm-minimal .mm-ambient {
+    animation: mm-ambient-drift 28s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mm-ambient-drift {
+  from {
+    opacity: 0.85;
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(2%, 1%, 0);
+  }
+}
+
+.smm-minimal .mm-shell {
+  position: relative;
+  z-index: 1;
+}
+
+.smm-minimal .mm-display {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  font-weight: 500;
+  color: var(--mm-ink);
+}
+
+.smm-minimal .mm-eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mm-muted);
+}
+
+.smm-minimal .mm-mono {
+  font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.smm-minimal .mm-body {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--mm-muted);
+  max-width: 42rem;
+}
+
+.smm-minimal .mm-divider {
+  border-top: 1px solid var(--mm-border);
+}
+
+.smm-minimal .mm-card {
+  background: var(--mm-surface);
+  border: 1px solid var(--mm-border);
+  border-radius: 8px;
+  transition: box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.smm-minimal .mm-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.smm-minimal .mm-btn-primary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  background: #f5f4f0;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition:
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.smm-minimal .mm-btn-primary:hover {
+  background: #ffffff;
+}
+
+.smm-minimal .mm-btn-primary:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+.smm-minimal .mm-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.smm-minimal .mm-btn-secondary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 1.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--mm-border);
+  background: transparent;
+  color: var(--mm-ink);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    transform 200ms ease;
+}
+
+.smm-minimal .mm-btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.smm-minimal .mm-btn-secondary:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 2px;
+}
+
+.smm-minimal .mm-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.smm-minimal .mm-tag {
+  display: inline-flex;
+  border-radius: 9999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.smm-minimal .mm-tag--blue {
+  background: var(--mm-pastel-blue-bg);
+  color: var(--mm-pastel-blue-text);
+}
+
+.smm-minimal .mm-tag--green {
+  background: var(--mm-pastel-green-bg);
+  color: var(--mm-pastel-green-text);
+}
+
+.smm-minimal .mm-tag--yellow {
+  background: var(--mm-pastel-yellow-bg);
+  color: var(--mm-pastel-yellow-text);
+}
+
+.smm-minimal .mm-tag--red {
+  background: var(--mm-pastel-red-bg);
+  color: var(--mm-pastel-red-text);
+}
+
+.smm-minimal .mm-metric {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--mm-ink);
+}
+
+.smm-minimal .mm-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--mm-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color 200ms ease, opacity 200ms ease;
+}
+
+.smm-minimal .mm-link:hover {
+  color: #ffffff;
+}
+
+.smm-minimal .mm-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.35);
+  outline-offset: 2px;
+}
+
+.smm-minimal .mm-bento {
+  display: grid;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .smm-minimal .mm-bento {
+    gap: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smm-minimal .mm-ambient {
+    animation: none;
+  }
+
+  .smm-minimal .mm-btn-primary,
+  .smm-minimal .mm-btn-secondary,
+  .smm-minimal .mm-card {
+    transition: none;
+  }
+}
