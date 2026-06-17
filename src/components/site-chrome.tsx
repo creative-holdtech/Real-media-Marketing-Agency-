@@ -264,8 +264,8 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
               <Link
                 to="/audit"
                 className={cn(
-                  "font-medium transition-colors duration-150",
-                  light ? "text-[#787774] hover:text-[#111111]" : "text-white/55 hover:text-white",
+                  "transition-colors duration-150",
+                  light ? "hover:text-[#111111]" : "hover:text-white",
                 )}
               >
                 Free Audit
@@ -303,13 +303,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
         )}
       >
         <span>© R-M 2026</span>
-        <Link
-          to="/contact"
-          className="opacity-60 hover:opacity-100 transition-opacity duration-150"
-        >
-          Privacy Policy
-        </Link>
-        <span>Vol. 01 — Made with intent</span>
+        <span className="opacity-60">Privacy Policy</span>
       </div>
     </footer>
   );

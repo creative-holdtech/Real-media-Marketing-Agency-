@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 
 import {
   FramerTag,
+  BtnArrow,
   btnPrimary,
   sectionContainer,
   sectionContentGrid,
@@ -21,27 +22,6 @@ type FormatId = "sprint" | "marathon";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const UNDERLINE_SPRING = { type: "spring", stiffness: 380, damping: 34 } as const;
-
-function Arrow({ className }: { className?: string }) {
-  return (
-    <svg
-      className={cn("inline-block", className)}
-      width="16"
-      height="16"
-      viewBox="0 0 17 17"
-      fill="none"
-      aria-hidden="true"
-    >
-      <path
-        d="M3 8.5h11M9.5 4l4.5 4.5L9.5 13"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function StepBody({
   engagementId,
@@ -174,7 +154,7 @@ export function ServicesSection() {
                     className={cn(btnPrimary, "group gap-2")}
                   >
                     {engagement.ctaLabel.replace(/\s*→$/, "")}
-                    <Arrow className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[5px] motion-reduce:group-hover:translate-x-0" />
+                    <BtnArrow />
                   </Link>
                   <Link
                     to="/products"
@@ -182,7 +162,7 @@ export function ServicesSection() {
                     title={engagement.compareHint}
                   >
                     Compare formats
-                    <Arrow className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1 motion-reduce:group-hover:translate-x-0" />
+                    <BtnArrow className="group-hover:translate-x-1" />
                   </Link>
                 </div>
               </motion.div>

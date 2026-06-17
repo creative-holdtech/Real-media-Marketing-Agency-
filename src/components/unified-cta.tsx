@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 import { MagneticButton, Reveal } from "@/components/motion-bits";
 import {
+  BtnArrow,
   bodyCopy,
   btnOutline,
   btnPrimary,
@@ -58,21 +59,25 @@ export function UnifiedCTA({
         <Reveal delay={0.1} duration={0.5}>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {primaryHref ? (
-              <MagneticButton href={primaryHref} strength={8} className={btnPrimary}>
-                {primaryLabel}
+              <MagneticButton href={primaryHref} strength={8} className={cn(btnPrimary, "group gap-2")}>
+                {primaryLabel?.replace(/\s*→$/, "")}
+                <BtnArrow />
               </MagneticButton>
             ) : (
-              <Link to={primaryTo ?? "/audit"} className={btnPrimary}>
-                {primaryLabel}
+              <Link to={primaryTo ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
+                {primaryLabel?.replace(/\s*→$/, "")}
+                <BtnArrow />
               </Link>
             )}
             {secondaryHref ? (
-              <MagneticButton href={secondaryHref} strength={6} className={btnOutline}>
-                {secondaryLabel}
+              <MagneticButton href={secondaryHref} strength={6} className={cn(btnOutline, "group gap-2")}>
+                {secondaryLabel?.replace(/\s*→$/, "")}
+                <BtnArrow />
               </MagneticButton>
             ) : (
-              <Link to={secondaryTo ?? "/cases"} className={btnOutline}>
-                {secondaryLabel}
+              <Link to={secondaryTo ?? "/cases"} className={cn(btnOutline, "group gap-2")}>
+                {secondaryLabel?.replace(/\s*→$/, "")}
+                <BtnArrow />
               </Link>
             )}
           </div>

@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import {
+  BtnArrow,
   btnOutlineOnDark,
   btnPrimary,
   FramerTag,
@@ -122,16 +123,18 @@ function Index() {
 
               <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-4" data-delay="3">
                 {hero?.ctaPrimaryLabel ? (
-                  <Link to={hero.ctaPrimaryUrl ?? "/contact"} className={btnPrimary}>
-                    {hero.ctaPrimaryLabel}
+                  <Link to={hero.ctaPrimaryUrl ?? "/contact"} className={cn(btnPrimary, "group gap-2")}>
+                    {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
+                    <BtnArrow />
                   </Link>
                 ) : null}
                 {hero?.ctaSecondaryLabel ? (
                   <Link
                     to={hero.ctaSecondaryUrl ?? "/cases"}
-                    className={btnOutlineOnDark}
+                    className={cn(btnOutlineOnDark, "group gap-2")}
                   >
                     {hero.ctaSecondaryLabel}
+                    <BtnArrow />
                   </Link>
                 ) : null}
               </div>

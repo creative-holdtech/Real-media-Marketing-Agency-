@@ -2,10 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import type { CSSProperties } from "react";
 
 import {
+  BtnArrow,
   bodyCopy,
+  FramerTag,
+  interactiveSurfaceCard,
   pageHeroContainer,
   sectionContainer,
+  sectionShell,
+  surfaceCardPadding,
+  surfaceCardShell,
   textMeta,
+  subsectionTitle,
 } from "@/components/framer-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
@@ -46,10 +53,12 @@ function ServicesIndex() {
       <section className={cn(pageHeroContainer, "rm-services-hero pb-14 md:pb-20")}>
         <div aria-hidden className="rm-services-hero__ambient" />
         <div className="relative flex flex-col gap-6 md:gap-8">
-          <p className={cn("reveal", textMeta)}>{hero?.tag ?? `Services · ${servicesList.length} disciplines`}</p>
-          <h1 className="reveal rm-services-hero__title max-w-[14ch] md:max-w-none">
-            {titleLines[0]}{" "}
-            <span className="font-light text-white/55">{titleLines[1] ?? ""}</span>
+          <p className="reveal">
+            <FramerTag>{hero?.tag ?? `Services · ${servicesList.length} disciplines`}</FramerTag>
+          </p>
+          <h1 className="reveal rm-type-display max-w-[14ch] text-white md:max-w-none">
+            <span className="block">{titleLines[0]}</span>
+            <span className="block font-light text-white/55">{titleLines[1] ?? ""}</span>
           </h1>
           {hero?.body ? (
             <p className={cn("reveal max-w-[42rem]", bodyCopy)} data-delay="2">
@@ -59,12 +68,12 @@ function ServicesIndex() {
         </div>
       </section>
 
-      <section className="border-t border-white/10 px-6 pb-24 md:px-12 md:pb-32">
-        <div className={cn(sectionContainer, "max-w-[1280px] pt-14 md:pt-20")}>
-          <div className="reveal mb-10 flex flex-col gap-3 md:mb-14 md:flex-row md:items-end md:justify-between">
-            <div className="flex flex-col gap-2">
+      <section className={cn(sectionShell, "border-t border-white/10")}>
+        <div className={cn(sectionContainer, "pt-2 md:pt-4")}>
+          <div className="reveal mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
+            <div className="flex flex-col gap-3">
               <p className={textMeta}>Choose your entry point</p>
-              <p className="max-w-[36ch] text-sm leading-relaxed text-[var(--rm-text-body)] md:text-base">
+              <p className={cn(bodyCopy, "max-w-[36ch]")}>
                 Be seen. Be trusted. Be profitable. Be found. Be chosen. Be expressive.
               </p>
             </div>
@@ -78,40 +87,45 @@ function ServicesIndex() {
                 to={s.slug === "smm" ? "/services/smm" : "/services/$slug"}
                 params={s.slug === "smm" ? undefined : { slug: s.slug }}
                 className={cn(
-                  "rm-services-card reveal group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+                  surfaceCardShell,
+                  interactiveSurfaceCard,
+                  "reveal group flex min-h-[18rem] flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
                 )}
                 data-delay={String((i % 4) + 1)}
                 style={{ "--service-accent": s.accent } as CSSProperties}
               >
-                <div className="rm-services-card__accent" aria-hidden />
+                <div
+                  className="absolute inset-y-0 left-0 w-0.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+                  style={{ background: s.accent }}
+                  aria-hidden
+                />
 
-                <div className="flex items-start justify-between gap-4 px-6 pt-6 md:px-8 md:pt-8">
-                  <span className="text-xs font-medium tabular-nums tracking-[0.14em] text-white/30 capitalize">
-                    Be {s.hero.word}
-                  </span>
-                  <span className={textMeta}>{s.shortName}</span>
-                </div>
+                <div className={cn(surfaceCardPadding, "flex h-full flex-col pb-5 md:pb-6")}>
+                  <div className="flex items-start justify-between gap-4">
+                    <span className={cn(textMeta, "capitalize text-white/55")}>
+                      Be {s.hero.word}
+                    </span>
+                    <span className={textMeta}>{s.shortName}</span>
+                  </div>
 
-                <div className="flex flex-col gap-2 px-6 pt-5 md:px-8 md:pt-6">
-                  <h2 className="text-[1.625rem] font-medium leading-[1.08] tracking-[-0.035em] text-white md:text-[2rem]">
-                    {s.name}
-                  </h2>
-                  <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/50">
-                    {s.tagline}
+                  <div className="mt-5 flex flex-col gap-2 md:mt-6">
+                    <h2 className={cn(subsectionTitle, "text-white md:text-[1.75rem]")}>{s.name}</h2>
+                    <p className={textMeta}>{s.tagline}</p>
+                  </div>
+
+                  <p className={cn(bodyCopy, "mt-5 flex-1 text-[var(--rm-text-body)]")}>
+                    {serviceCardIntro(s)}
                   </p>
-                </div>
 
-                <p className="mt-5 px-6 text-sm leading-[1.65] text-[var(--rm-text-body)] md:px-8 md:text-[15px]">
-                  {serviceCardIntro(s)}
-                </p>
-
-                <div className="mt-6 flex items-center justify-between border-t border-white/10 px-6 py-4 md:mt-8 md:px-8 md:py-5">
-                  <span className="text-xs text-white/45">
-                    {s.blocks.length} blocks · {s.hero.primaryCta}
-                  </span>
-                  <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/70 transition-colors duration-200 group-hover:text-white">
-                    View
-                  </span>
+                  <div className="mt-6 flex items-center justify-between gap-4 border-t border-[var(--rm-border-soft)] pt-5 md:mt-8">
+                    <span className={cn(textMeta, "normal-case tracking-normal text-white/45")}>
+                      {s.blocks.length} blocks · {s.hero.primaryCta.replace(/\s*→$/, "")}
+                    </span>
+                    <span className="inline-flex items-center gap-2 rm-type-body font-medium text-white/70 transition-colors duration-200 group-hover:text-white">
+                      View
+                      <BtnArrow />
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

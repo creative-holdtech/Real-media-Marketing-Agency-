@@ -91,6 +91,30 @@ export const btnGhostLink = cn(
   "group min-h-11 gap-2 px-2 text-[var(--rm-text-muted)] hover:bg-transparent hover:text-[var(--rm-ink)] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)] motion-safe:hover:translate-y-0 active:scale-100",
 );
 
+const btnArrowMotion =
+  "transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[5px] motion-reduce:group-hover:translate-x-0";
+
+export function BtnArrow({ className }: { className?: string }) {
+  return (
+    <svg
+      className={cn("inline-block shrink-0", btnArrowMotion, className)}
+      width="16"
+      height="16"
+      viewBox="0 0 17 17"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M3 8.5h11M9.5 4l4.5 4.5L9.5 13"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function FramerTag({ children, className }: { children: string; className?: string }) {
   return (
     <span

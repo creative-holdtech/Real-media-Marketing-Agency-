@@ -1866,8 +1866,8 @@ html.rm-premium-cursor * {
 }
 
 .rm-premium-cursor__ring {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.38);
   background: transparent;
@@ -1878,15 +1878,15 @@ html.rm-premium-cursor * {
 }
 
 .rm-premium-cursor__core {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 .rm-premium-cursor__cross {
   position: relative;
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
 }
 
 .rm-premium-cursor__cross::before,
@@ -6218,23 +6218,7 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 .rm-plan-scene__axis {
-  position: absolute;
-  top: 38%;
-  left: 18%;
-  width: 42%;
-  height: 1px;
-  opacity: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgb(255 255 255 / 0.12) 35%,
-    rgb(255 255 255 / 0.06) 100%
-  );
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition:
-    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s,
-    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+  display: none;
 }
 
 .rm-plan-scene:has(.rm-plan-scene__cards.is-visible) .rm-plan-scene__grid {
@@ -6249,8 +6233,7 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 .rm-plan-scene:has(.rm-plan-scene__cards.is-visible) .rm-plan-scene__axis {
-  opacity: 1;
-  transform: scaleX(1);
+  display: none;
 }
 
 @keyframes rm-plan-grid-breathe {

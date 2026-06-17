@@ -1,10 +1,29 @@
 import { Link } from "@tanstack/react-router";
 import type { CSSProperties } from "react";
 
-import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import {
+  BtnArrow,
+  bodyCopy,
+  btnOutline,
+  btnPrimary,
+  pageHeroContainer,
+  sectionContainer,
+  sectionHeadline,
+  sectionShell,
+  subsectionTitle,
+  surfaceCardPadding,
+  surfaceCardShell,
+  textCardBody,
+  textMeta,
+  textMetric,
+  FramerTag,
+  interactiveSurfaceCard,
+} from "@/components/framer-section";
 import { ScrollProgressBar, Reveal } from "@/components/motion-bits";
-import { textMeta } from "@/components/framer-section";
-import type { ServiceContent } from "@/lib/services";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { QuoteGradientSection } from "@/components/ui/testimonials";
+import { UnifiedCTA } from "@/components/unified-cta";
+import type { ServiceContent } from "@/lib/services/types";
 import { cn } from "@/lib/utils";
 
 export function ServicePageView({ service: s }: { service: ServiceContent }) {
@@ -20,69 +39,71 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
       <SiteHeader variant="dark" />
 
       <main id="main">
-        {/* HERO */}
-        <section aria-labelledby="service-title" className="relative isolate overflow-hidden pt-16 md:pt-24 pb-14 md:pb-20">
+        <section aria-labelledby="service-title" className="relative isolate overflow-hidden">
           <div aria-hidden className="rm-service-hero__ambient" />
-          <div className="relative mx-auto w-full max-w-[1280px] px-6 md:px-12 text-center">
+          <div className={cn(pageHeroContainer, "pb-14 text-center md:pb-20")}>
             <Link
               to="/services"
-              className="inline-flex cursor-pointer items-center text-[11px] font-medium uppercase tracking-[0.2em] text-white/50 transition-colors duration-200 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 rounded-sm"
+              className={cn(
+                textMeta,
+                "inline-flex items-center gap-2 transition-colors duration-200 hover:text-white",
+              )}
             >
               All services
             </Link>
 
-            <p className={cn("mt-10", textMeta)}>{s.shortName}</p>
+            <p className={cn("reveal mt-8", textMeta)}>{s.shortName}</p>
 
-            <h1 id="service-title" className="rm-title-hero mx-auto mt-4 capitalize">
+            <h1 id="service-title" className="reveal rm-type-display mt-4 capitalize text-white">
               Be {s.hero.word}
             </h1>
 
-            <div className="mx-auto mt-8 flex max-w-[40rem] flex-col gap-4 text-left md:text-center">
+            <div className="reveal mx-auto mt-8 flex max-w-[40rem] flex-col gap-4 text-left md:text-center">
               {s.hero.paragraphs.map((p) => (
-                <p key={p} className="rm-copy-lead text-[15px] leading-[1.75] md:text-[17px]">
+                <p key={p} className={bodyCopy}>
                   {p}
                 </p>
               ))}
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-              <Link to="/audit" className="rm-btn rm-btn-primary cursor-pointer">
-                {s.hero.primaryCta}
+            <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-3">
+              <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
+                {s.hero.primaryCta.replace(/\s*→$/, "")}
+                <BtnArrow />
               </Link>
-              <a href="#blocks" className="rm-btn rm-btn-secondary cursor-pointer">
+              <a href="#blocks" className={cn(btnOutline, "group gap-2")}>
                 How we work
+                <BtnArrow />
               </a>
             </div>
           </div>
         </section>
 
-        {/* БЛОКИ ПОСЛУГ */}
         <section id="blocks" aria-label="Service blocks" className="border-t border-white/10">
           {s.blocks.map((block) => (
-            <article key={block.n} className="border-b border-white/10">
-              <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-12 md:py-24">
+            <article key={block.n} className={cn(sectionShell, "border-b border-white/10 py-14 md:py-20")}>
+              <div className={sectionContainer}>
                 <Reveal duration={0.55}>
-                  <div className="mb-8 flex items-baseline gap-5">
-                    <span className="text-[2.5rem] font-light leading-none tracking-[-0.04em] text-white/20 tabular-nums md:text-[4rem]">
+                  <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-2">
+                    <span className={cn(textMetric, "text-[2.5rem] text-white/25 md:text-[4rem]")}>
                       {block.n}
                     </span>
                     <span className={textMeta}>{block.title}</span>
                   </div>
-                  <h2 className="max-w-[20ch] text-[1.75rem] font-medium leading-[1.06] tracking-[-0.03em] text-white md:text-[3rem]">
-                    {block.subtitle}
-                  </h2>
+                  <h2 className={cn(sectionHeadline, "max-w-[20ch] text-white")}>{block.subtitle}</h2>
 
                   <div className="mt-10 grid gap-10 md:mt-12 md:grid-cols-2 md:gap-12">
                     {block.sections.map((section) => (
                       <div key={section.heading}>
-                        <h3 className="text-[11px] font-medium uppercase tracking-[0.18em] text-white/55">
-                          {section.heading}
-                        </h3>
+                        <h3 className={textMeta}>{section.heading}</h3>
                         <ul className="mt-4 space-y-3">
                           {section.items.map((item) => (
                             <li
                               key={item}
-                              className="border-l border-white/15 pl-4 text-[14px] leading-[1.65] text-[var(--rm-text-body)] md:text-[15px]"
+                              className={cn(
+                                textCardBody,
+                                "border-l border-white/15 pl-4 text-[var(--rm-text-body)]",
+                              )}
                             >
                               {item}
                             </li>
@@ -95,10 +116,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                   {block.notes?.length ? (
                     <div className="mt-10 space-y-3 border-t border-white/10 pt-8">
                       {block.notes.map((note) => (
-                        <p
-                          key={note}
-                          className="max-w-[52ch] text-[15px] leading-[1.75] text-[var(--rm-ink)] md:text-[16px]"
-                        >
+                        <p key={note} className={cn(bodyCopy, "max-w-[52ch]")}>
                           {note}
                         </p>
                       ))}
@@ -107,8 +125,9 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
                   {block.cta ? (
                     <div className="mt-10">
-                      <Link to="/audit" className="rm-btn rm-btn-primary cursor-pointer">
-                        {block.cta}
+                      <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
+                        {block.cta.replace(/\s*→$/, "")}
+                        <BtnArrow />
                       </Link>
                     </div>
                   ) : null}
@@ -118,54 +137,54 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           ))}
         </section>
 
-        {/* РЕЗУЛЬТАТИ */}
         <section
           aria-labelledby="outcomes-heading"
-          className="border-b border-white/10 bg-[var(--rm-surface-raised)]"
+          className={cn(sectionShell, "border-b border-white/10 bg-[var(--rm-surface-raised)]")}
         >
-          <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-12 md:py-24">
+          <div className={sectionContainer}>
             <Reveal duration={0.55}>
-              <p className={textMeta}>Results</p>
-              <h2
-                id="outcomes-heading"
-                className="mt-4 max-w-3xl text-[2rem] font-medium leading-[1.06] tracking-[-0.03em] text-white md:text-[3.5rem]"
-              >
+              <FramerTag>Results</FramerTag>
+              <h2 id="outcomes-heading" className={cn(sectionHeadline, "mt-4 max-w-3xl text-white")}>
                 {s.outcomes.title}
               </h2>
             </Reveal>
 
-            <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-12 md:gap-4">
+            <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mt-12">
               {s.outcomes.items.map((o, i) => (
-                <Reveal key={o.title} delay={i * 0.04} className="rm-service-outcome" duration={0.55}>
-                  <h3 className="text-[1.25rem] font-medium leading-[1.12] tracking-[-0.025em] text-white md:text-[1.625rem]">
-                    {o.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-[1.65] text-[var(--rm-text-body)] md:text-[15px]">
-                    {o.body}
-                  </p>
-                  {o.bullets?.length ? (
-                    <ul className="mt-4 space-y-2 border-t border-white/10 pt-4">
-                      {o.bullets.map((b) => (
-                        <li key={b} className="text-[13px] leading-[1.6] text-[var(--rm-text-body)]">
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
+                <Reveal
+                  key={o.title}
+                  delay={i * 0.04}
+                  className={cn(surfaceCardShell, interactiveSurfaceCard, "h-full")}
+                  duration={0.55}
+                >
+                  <div className={cn(surfaceCardPadding, "flex h-full flex-col")}>
+                    <h3 className={subsectionTitle}>{o.title}</h3>
+                    <p className={cn(textCardBody, "mt-3 flex-1 text-[var(--rm-text-body)]")}>{o.body}</p>
+                    {o.bullets?.length ? (
+                      <ul className="mt-4 space-y-2 border-t border-[var(--rm-border-soft)] pt-4">
+                        {o.bullets.map((b) => (
+                          <li key={b} className={cn(textCardBody, "text-[var(--rm-text-body)]")}>
+                            {b}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
                 </Reveal>
               ))}
             </div>
 
             {s.outcomes.extra ? (
               <Reveal delay={0.1} duration={0.55} className="mt-12 md:mt-16">
-                <h3 className="text-[1.25rem] font-medium tracking-[-0.025em] text-white md:text-[1.75rem]">
-                  {s.outcomes.extra.title}
-                </h3>
-                <div className="mt-6 grid gap-3 md:grid-cols-3 md:gap-4">
+                <h3 className={subsectionTitle}>{s.outcomes.extra.title}</h3>
+                <div className="mt-6 grid gap-4 md:grid-cols-3">
                   {s.outcomes.extra.items.map((o) => (
-                    <div key={o.title} className="rm-service-outcome">
-                      <h4 className="text-base font-medium text-white">{o.title}</h4>
-                      <p className="mt-2 text-sm leading-[1.65] text-[var(--rm-text-body)]">{o.body}</p>
+                    <div
+                      key={o.title}
+                      className={cn(surfaceCardShell, surfaceCardPadding, "h-full")}
+                    >
+                      <h4 className={subsectionTitle}>{o.title}</h4>
+                      <p className={cn(textCardBody, "mt-2 text-[var(--rm-text-body)]")}>{o.body}</p>
                     </div>
                   ))}
                 </div>
@@ -174,38 +193,43 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           </div>
         </section>
 
-        {/* СОЦІАЛЬНИЙ ДОКАЗ */}
-        <section aria-labelledby="proof-heading" className="border-b border-white/10">
-          <div className="mx-auto max-w-[1280px] px-6 py-16 md:px-12 md:py-24">
+        <section aria-labelledby="proof-heading" className={cn(sectionShell, "border-b border-white/10")}>
+          <div className={sectionContainer}>
             <Reveal duration={0.55}>
-              <p className={textMeta}>Social proof</p>
-              <h2 id="proof-heading" className="mt-4 text-[1.75rem] font-medium tracking-[-0.03em] text-white md:text-[2.5rem]">
+              <FramerTag>Social proof</FramerTag>
+              <h2 id="proof-heading" className={cn(sectionHeadline, "mt-4 text-white")}>
                 {s.socialProof.title}
               </h2>
             </Reveal>
 
             <div className="mt-10 flex flex-col gap-6 md:mt-12">
               {s.socialProof.cases.map((c, i) => (
-                <Reveal key={c.quote ?? c.label ?? i} delay={i * 0.05} className="rm-service-proof" duration={0.55}>
-                  {c.label ? (
-                    <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">
-                      {c.label}
-                    </p>
-                  ) : null}
+                <Reveal
+                  key={c.quote ?? c.label ?? i}
+                  delay={i * 0.05}
+                  className={cn(surfaceCardShell, surfaceCardPadding)}
+                  duration={0.55}
+                >
+                  {c.label ? <p className={textMeta}>{c.label}</p> : null}
                   {c.quote ? (
-                    <blockquote className="mt-4 text-[1.125rem] leading-[1.5] tracking-[-0.02em] text-white md:text-[1.375rem]">
-                      "{c.quote}"
+                    <blockquote className={cn(sectionHeadline, "mt-4 text-balance text-white")}>
+                      &ldquo;{c.quote}&rdquo;
                     </blockquote>
                   ) : null}
                   {c.attribution ? (
-                    <p className="mt-3 text-sm text-white/50">— {c.attribution}</p>
+                    <p className={cn(textMeta, "mt-3 normal-case")}>— {c.attribution}</p>
                   ) : null}
                   {c.metrics.length ? (
                     <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                       {c.metrics.map((m) => (
-                        <div key={m.label} className="rounded-lg border border-white/10 px-4 py-3">
-                          <p className="text-lg font-medium tabular-nums text-white">{m.value}</p>
-                          <p className="mt-1 text-[12px] leading-snug text-white/50">{m.label}</p>
+                        <div
+                          key={m.label}
+                          className="rounded-2xl border border-[var(--rm-border-soft)] px-4 py-3"
+                        >
+                          <p className={cn(textMetric, "text-white")}>{m.value}</p>
+                          <p className={cn(textMeta, "mt-1 normal-case tracking-normal text-white/50")}>
+                            {m.label}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -216,27 +240,27 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           </div>
         </section>
 
-        {/* ЦИТАТА + CTA */}
-        <section className="border-b border-white/10">
-          <div className="mx-auto max-w-[1280px] px-6 py-20 md:px-12 md:py-28 text-center">
-            <Reveal duration={0.55}>
-              <figure className="rm-service-quote mx-auto max-w-3xl text-left md:text-center">
-                <blockquote className="text-[1.625rem] font-medium leading-[1.18] tracking-[-0.025em] text-white md:text-[2.25rem]">
-                  {s.closingQuote}
-                </blockquote>
-              </figure>
-              <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-                <Link to="/audit" className="rm-btn rm-btn-primary cursor-pointer">
-                  {s.footerCta}
-                </Link>
-                <Link to="/contact" className="rm-btn rm-btn-secondary cursor-pointer">
-                  Talk to the team
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        {s.closingQuote ? (
+          <QuoteGradientSection ariaLabel="Closing statement" background="solid">
+            <figure className="mx-auto max-w-3xl text-center">
+              <blockquote className="rm-quote-editorial__text-wrap mx-auto max-w-[22ch] md:max-w-none">
+                <span
+                  aria-hidden
+                  className="rm-quote-editorial__accent mx-auto mb-6 block h-10 w-px origin-top bg-white/30"
+                />
+                <p className="rm-quote-editorial__text text-balance text-white">{s.closingQuote}</p>
+              </blockquote>
+            </figure>
+          </QuoteGradientSection>
+        ) : null}
       </main>
+
+      <UnifiedCTA
+        primaryLabel={s.footerCta.includes("→") ? s.footerCta : `${s.footerCta} →`}
+        primaryTo="/audit"
+        secondaryLabel="Talk to the team →"
+        secondaryTo="/contact"
+      />
 
       <SiteFooter />
 
