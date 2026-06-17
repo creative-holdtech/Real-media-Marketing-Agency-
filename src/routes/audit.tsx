@@ -1,11 +1,34 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import {
+  NarrowBand,
+  PageHero,
+  PageSection,
+  SectionEyebrow,
+  SectionSplitHeadline,
+} from "@/components/ds-templates";
+import {
+  bodyCopy,
+  btnPrimary,
+  BtnArrow,
+  interactiveSurfaceCard,
+  sectionHeadline,
+  subsectionTitle,
+  surfaceCardPadding,
+  surfaceCardShell,
+  textCardBody,
+  textFaint,
+  textGhost,
+  textMeta,
+  textMetric,
+} from "@/components/framer-section";
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { getPageContent, section as pageSection } from "@/lib/payload/pages";
 import { buildPageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/audit")({
   loader: async () => ({
@@ -76,6 +99,17 @@ const defaultSteps = [
 
 const focusOptions = ["SMM", "PR", "SEO", "Performance", "Brand & Marketing", "Design"];
 
+const heroAmbient = (
+  <div
+    aria-hidden
+    className="absolute inset-0 -z-10"
+    style={{
+      background:
+        "radial-gradient(60% 50% at 50% 30%, rgba(232,93,58,0.22), transparent 70%), radial-gradient(40% 40% at 80% 80%, rgba(80,60,255,0.14), transparent 70%), #000000",
+    }}
+  />
+);
+
 function AuditPage() {
   useReveal();
   const { page } = Route.useLoaderData();
@@ -104,99 +138,78 @@ function AuditPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20">
-        <div
-          aria-hidden
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "radial-gradient(60% 50% at 50% 30%, rgba(232,93,58,0.22), transparent 70%), radial-gradient(40% 40% at 80% 80%, rgba(80,60,255,0.14), transparent 70%), #000000",
-          }}
-        />
-        <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/55 mb-8">
-          {hero?.tag ?? "Free · No obligation · up to 7 days"}
-        </p>
-        <h1 className="reveal text-[44px] sm:text-[80px] md:text-[112px] leading-[0.95] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
-          {hero?.titleLines?.[0] ?? "Free marketing audit."}{" "}
-          <span className="font-light text-white/55">
-            {hero?.titleLines?.[1] ?? "Hard data. No pitch."}
-          </span>
-        </h1>
-
+      <PageHero
+        tag={hero?.tag ?? "Free · No obligation · up to 7 days"}
+        titleLines={[
+          hero?.titleLines?.[0] ?? "Free marketing audit.",
+          hero?.titleLines?.[1] ?? "Hard data. No pitch.",
+        ]}
+        ambient={heroAmbient}
+      >
         <ul
-          className="reveal mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 max-w-[820px] text-[15px] md:text-[17px] text-white/75"
+          className="reveal mt-10 grid max-w-[var(--rm-prose-max)] grid-cols-1 gap-4 md:grid-cols-2 md:gap-x-12"
           data-delay="2"
         >
           {heroBullets.map((it) => (
             <li key={it} className="flex gap-3">
               <span className="text-rm-accent">—</span>
-              <span>{it}</span>
+              <span className={bodyCopy}>{it}</span>
             </li>
           ))}
         </ul>
-      </section>
+      </PageHero>
 
-      <section
-        id="what-included"
-        className="border-y border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24"
-      >
-        <div className="reveal max-w-4xl">
-          <h2 className="text-[40px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            Pick the channel that's most urgent.{" "}
-            <span className="font-light text-white/45">We diagnose all six if needed.</span>
-          </h2>
-        </div>
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <PageSection id="what-included" className="border-y border-[var(--rm-border-soft)]">
+        <SectionSplitHeadline
+          primary="Pick the channel that's most urgent."
+          muted="We diagnose all six if needed."
+        />
+        <div className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {includes.map((b, i) => (
             <div
               key={b.title}
-              className="reveal rm-card p-7 md:p-8 transition-[border-color] duration-500 hover:border-white/25"
+              className={cn(
+                surfaceCardShell,
+                interactiveSurfaceCard,
+                "reveal",
+                surfaceCardPadding,
+              )}
               data-delay={String((i % 6) + 1)}
             >
-              <div className="text-[11px] uppercase tracking-[0.28em] text-white/45 mb-5 tabular-nums">
+              <div className={cn(textMeta, "mb-5 tabular-nums", textFaint)}>
                 0{i + 1}
               </div>
-              <h3 className="text-[26px] md:text-[32px] leading-[1.05] tracking-[-0.02em] font-medium text-white">
-                {b.title}
-              </h3>
-              <p className="mt-4 text-[14px] md:text-[15px] rm-body leading-[1.65]">{b.body}</p>
+              <h3 className={subsectionTitle}>{b.title}</h3>
+              <p className={cn(textCardBody, "mt-4")}>{b.body}</p>
             </div>
           ))}
         </div>
-      </section>
+      </PageSection>
 
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-b border-white/10">
-        <div className="reveal max-w-4xl">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-6">How it works</p>
-          <h2 className="text-[40px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            Three steps. <span className="font-light text-white/45">No mystery.</span>
-          </h2>
-        </div>
-        <ol className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+      <PageSection className="border-b border-[var(--rm-border-soft)]">
+        <SectionEyebrow>How it works</SectionEyebrow>
+        <SectionSplitHeadline primary="Three steps." muted="No mystery." />
+        <ol className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
           {steps.map((s, i) => (
             <li
               key={s.n}
-              className="reveal relative rm-card p-7 md:p-10 transition-[border-color] duration-500 hover:border-white/25"
+              className={cn(surfaceCardShell, interactiveSurfaceCard, "reveal", surfaceCardPadding)}
               data-delay={String(i + 1)}
             >
-              <div className="text-[48px] md:text-[64px] font-light tracking-[-0.04em] text-white/25 tabular-nums leading-none mb-6">
+              <div className={cn(textMetric, "mb-6 text-[2.5rem] text-[var(--rm-text-ghost)] md:text-[4rem]")}>
                 {s.n}
               </div>
-              <h3 className="text-[22px] md:text-[28px] font-medium tracking-[-0.02em] text-white">
-                {s.title}
-              </h3>
-              <p className="mt-4 text-[14px] md:text-[15px] rm-body leading-[1.65]">{s.body}</p>
+              <h3 className={subsectionTitle}>{s.title}</h3>
+              <p className={cn(textCardBody, "mt-4")}>{s.body}</p>
             </li>
           ))}
         </ol>
-      </section>
+      </PageSection>
 
-      <section id="audit-form" className="px-6 md:px-12 max-w-[820px] mx-auto py-24 md:py-36">
-        <div className="reveal mb-16 md:mb-20">
-          <h2 className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            What are you interested in?
-          </h2>
-          <p className="mt-5 text-[14px] md:text-[15px] text-white/45">
+      <NarrowBand id="audit-form" maxWidth="form" className="md:py-28">
+        <div className="reveal mb-12 md:mb-16">
+          <h2 className={cn(sectionHeadline, "text-white")}>What are you interested in?</h2>
+          <p className={cn(textMeta, "mt-5 normal-case tracking-normal", textFaint)}>
             Free · No strings attached · Result in up to 7 days
           </p>
         </div>
@@ -212,17 +225,15 @@ function AuditPage() {
           data-delay="2"
         >
           <input type="hidden" name="audit_focus" value={picks.join(", ")} readOnly />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-9">
+          <div className="grid grid-cols-1 gap-x-10 gap-y-9 md:grid-cols-2">
             <Field label="Name" name="name" required />
             <Field label="Company" name="company" />
             <Field label="Email" name="email" type="email" required />
             <Field label="Website" name="site" placeholder="https://" />
           </div>
 
-          <div className="mt-14">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 mb-4">
-              Choose your focus:
-            </div>
+          <div className="mt-12">
+            <div className={cn(textMeta, "mb-4", textGhost)}>Choose your focus:</div>
             <div className="flex flex-wrap gap-x-7 gap-y-3">
               {focusOptions.map((k) => {
                 const active = picks.includes(k);
@@ -232,11 +243,12 @@ function AuditPage() {
                     type="button"
                     onClick={() => toggle(k)}
                     aria-pressed={active}
-                    className={`text-[14px] pb-1 border-b transition-colors ${
+                    className={cn(
+                      "rm-type-body border-b pb-1 transition-colors",
                       active
-                        ? "text-white border-rm-accent"
-                        : "text-white/45 border-transparent hover:text-white/80"
-                    }`}
+                        ? "border-rm-accent text-white"
+                        : cn(textFaint, "border-transparent hover:text-[var(--rm-text-subtle)]"),
+                    )}
                   >
                     {k}
                   </button>
@@ -245,28 +257,24 @@ function AuditPage() {
             </div>
           </div>
 
-          <div className="mt-14">
-            <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
-              Anything else?
-            </label>
+          <div className="mt-12">
+            <label className={cn("mb-4 block", textMeta, textGhost)}>Anything else?</label>
             <textarea
               name="notes"
               rows={2}
               placeholder="Add any extra context or specific goals here"
-              className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
+              className="w-full resize-none border-0 border-b border-[var(--rm-border-soft)] bg-transparent px-0 py-2 rm-type-body text-white placeholder:text-[var(--rm-text-ghost)] focus:border-white/50 focus:outline-none"
             />
           </div>
 
-          <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
-            <button
-              type="submit"
-              className="inline-flex rm-touch items-center gap-2 px-8 text-[12px] uppercase tracking-[0.2em] rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white transition-[background-color,transform] duration-150 active:scale-[0.97]"
-            >
-              {sent ? "Request sent — we'll be in touch" : "Book the audit →"}
+          <div className="mt-12 flex flex-wrap items-center justify-end gap-4">
+            <button type="submit" className={cn(btnPrimary, "group gap-2")}>
+              {sent ? "Request sent — we'll be in touch" : "Book the audit"}
+              {!sent ? <BtnArrow /> : null}
             </button>
           </div>
         </form>
-      </section>
+      </NarrowBand>
 
       <SiteFooter />
     </div>
@@ -288,16 +296,16 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-3">
+      <label className={cn("mb-3 block", textMeta, textGhost)}>
         {label}
-        {required && <span className="text-rm-accent ml-1">*</span>}
+        {required ? <span className="ml-1 text-rm-accent">*</span> : null}
       </label>
       <input
         type={type}
         name={name}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors"
+        className="w-full border-0 border-b border-[var(--rm-border-soft)] bg-transparent px-0 py-2 rm-type-body text-white placeholder:text-[var(--rm-text-ghost)] focus:border-white/50 focus:outline-none"
       />
     </div>
   );

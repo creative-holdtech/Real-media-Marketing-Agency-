@@ -14,6 +14,9 @@ import {
   subsectionTitle,
   textCardBody,
   textMeta,
+  textSubtle,
+  textFaint,
+  textGhost,
 } from "@/components/framer-section";
 import { homepageEngagements, type Engagement } from "@/lib/engagements";
 import { cn } from "@/lib/utils";
@@ -33,11 +36,11 @@ function StepBody({
   const isSprintAudit = engagementId === "sprint" && step.code === "01";
 
   if (!isSprintAudit) {
-    return <dd className={cn("m-0", textCardBody, "text-white/55")}>{step.body}</dd>;
+    return <dd className={cn("m-0", textCardBody, textSubtle)}>{step.body}</dd>;
   }
 
   return (
-    <dd className={cn("m-0", textCardBody, "text-white/55")}>
+    <dd className={cn("m-0", textCardBody, textSubtle)}>
       <Link
         to="/audit"
         className="font-medium text-white underline decoration-white/30 underline-offset-[3px] transition-colors duration-200 hover:decoration-white/70"
@@ -70,7 +73,7 @@ export function ServicesSection() {
           <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
             <h2 id="engage-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
               <span className="block">Two ways to work with us.</span>
-              <span className="block text-white/55">Both end in shipped revenue.</span>
+              <span className={cn("block", textSubtle)}>Both end in shipped revenue.</span>
             </h2>
           </header>
 
@@ -96,7 +99,7 @@ export function ServicesSection() {
                   subsectionTitle,
                   "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
-                  isActive ? "text-white" : "text-white/30 hover:text-white/60",
+                  isActive ? "text-white" : cn(textGhost, "hover:text-[var(--rm-text-muted)]"),
                 )}
               >
                 {e.name}
@@ -136,14 +139,14 @@ export function ServicesSection() {
                 className="flex flex-col"
               >
                 <p className={textMeta}>
-                  <span className="tabular-nums text-white/70">
+                  <span className={cn("tabular-nums", textSubtle)}>
                     {engagement.metricBig} {engagement.metricUnitLabel}
                   </span>
-                  <span className="mx-2 text-white/25">·</span>
+                  <span className={cn("mx-2", textGhost)}>·</span>
                   {engagement.metricUnitSub}
                 </p>
 
-                <p className={cn("mt-5 max-w-[34ch] rm-type-body rm-type-body-strong text-white/90")}>
+                <p className={cn("mt-5 max-w-[34ch] rm-type-body rm-type-body-strong text-white")}>
                   {engagement.intro}
                 </p>
 
@@ -158,7 +161,7 @@ export function ServicesSection() {
                   </Link>
                   <Link
                     to="/products"
-                    className="group inline-flex items-center gap-2 text-sm font-medium text-white/50 transition-colors duration-300 hover:text-white/85 motion-reduce:transition-none"
+                    className={cn("group inline-flex items-center gap-2 rm-type-body font-medium", textFaint, "transition-colors duration-300 hover:text-white motion-reduce:transition-none")}
                     title={engagement.compareHint}
                   >
                     Compare formats
@@ -182,13 +185,13 @@ export function ServicesSection() {
                     className="grid grid-cols-[2.25rem_1fr] gap-x-5 gap-y-1.5 border-b border-white/10 py-5 last:border-b-0 sm:grid-cols-[6.5rem_1fr]"
                   >
                     <dt className="flex items-baseline gap-2.5">
-                      <span className="text-xs tabular-nums text-white/30">{step.code}</span>
-                      <span className={cn(textMeta, "hidden text-white/70 sm:inline")}>
+                      <span className={cn(textMeta, textGhost)}>{step.code}</span>
+                      <span className={cn(textMeta, "hidden sm:inline", textSubtle)}>
                         {step.title}
                       </span>
                     </dt>
                     <div className="flex flex-col gap-1.5">
-                      <span className={cn(textMeta, "text-white/70 sm:hidden")}>{step.title}</span>
+                      <span className={cn(textMeta, "sm:hidden", textSubtle)}>{step.title}</span>
                       <StepBody engagementId={engagement.id} step={step} />
                     </div>
                   </motion.div>

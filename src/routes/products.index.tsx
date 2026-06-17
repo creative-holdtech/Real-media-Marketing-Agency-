@@ -375,7 +375,7 @@ function ProductsPage() {
 
       {isSticky && (
         <div className="rm-sticky-mode-bar">
-          <div className="mx-auto flex max-w-[1440px] items-center justify-end px-6 md:px-12">
+          <div className="mx-auto flex max-w-[var(--rm-grid-max)] items-center justify-end px-6 md:px-10">
             <ModeSwitcherCompact active={mode} onChange={handleModeChange} />
           </div>
         </div>
@@ -386,7 +386,7 @@ function ProductsPage() {
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
           aria-labelledby="products-heading"
         >
-          <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8">
+          <div className="relative mx-auto w-full max-w-[var(--rm-grid-max)] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8">
             <div className="mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
               <HeroHeadline />
               <motion.p
@@ -423,7 +423,7 @@ function ProductsPage() {
           className="border-b border-white/10 bg-[#000]"
           style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
-          <div className="mx-auto max-w-[1440px] px-6 md:px-12 overflow-hidden">
+          <div className="mx-auto max-w-[var(--rm-grid-max)] px-6 md:px-10 overflow-hidden">
             <SplitModeSwitcher
               active={mode}
               onChange={handleModeChange}
@@ -438,7 +438,7 @@ function ProductsPage() {
 
           {/* Headline + lead */}
           <section className="border-b border-white/[0.06] bg-[#000]">
-            <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
+            <div className="mx-auto max-w-[var(--rm-grid-max)] px-6 py-16 md:px-10 md:py-24">
               <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <TextReveal
@@ -462,7 +462,7 @@ function ProductsPage() {
 
           {/* Deliverables — 3-column grid */}
           <section className="border-b border-white/[0.06] bg-[#000]">
-            <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-20 lg:px-32">
+            <div className="mx-auto max-w-[var(--rm-grid-max)] px-6 md:px-10">
               <DeliverablesGrid deliverables={data.deliverables} />
             </div>
           </section>
@@ -471,7 +471,7 @@ function ProductsPage() {
 
         {/* Compare formats */}
         <section className="border-b border-white/[0.06] bg-[#000]">
-          <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
+          <div className="mx-auto max-w-[var(--rm-grid-max)] px-6 py-16 md:px-10 md:py-24">
             <Reveal>
               <p className="text-[10px] uppercase tracking-[0.28em] text-white/25 mb-10">
                 Compare formats

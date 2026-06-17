@@ -2,8 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
+import { ScrollProgressBar, Reveal } from "@/components/motion-bits";
+import {
+  bodyCopy,
+  CtaButton,
+  pageHeroContainer,
+  sectionContainer,
+  sectionHeadline,
+  sectionShell,
+  textDisplay,
+  textMeta,
+  textSubtle,
+} from "@/components/framer-section";
 import { buildPageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/seo")({
   head: () =>
@@ -155,8 +167,8 @@ function SeoPage() {
             }}
           />
 
-          <div className="relative px-6 md:px-12 max-w-[1360px] mx-auto w-full text-center">
-            <h1 id="page-title" className="rm-title-hero mx-auto max-w-6xl">
+          <div className={cn(pageHeroContainer, "text-center")}>
+            <h1 id="page-title" className={cn(textDisplay, "mx-auto max-w-6xl text-white")}>
               SEO built on{" "}
               <span className="relative inline-block align-baseline w-[6.2ch] md:w-[7.6ch] h-[1em] text-left overflow-hidden">
                 <AnimatePresence mode="wait" initial={false}>
@@ -173,21 +185,21 @@ function SeoPage() {
                 </AnimatePresence>
               </span>
               <br />
-              <span className="font-light text-white/55">— not keyword sludge.</span>
+              <span className={cn("font-light", textSubtle)}>— not keyword sludge.</span>
             </h1>
 
-            <p className="rm-copy-lead mx-auto mt-10 max-w-[640px]">
+            <p className={cn(bodyCopy, "mx-auto mt-10 max-w-[40rem]")}>
               We don't rent you traffic. We build the intent map, leadership content and authority
               footprint that make organic your most defensible channel.
             </p>
 
             <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-              <MagneticButton href="#contact" strength={8} className="rm-btn rm-btn-primary">
+              <CtaButton href="#contact" variant="primary">
                 Get an audit
-              </MagneticButton>
-              <MagneticButton href="#services" strength={6} className="rm-btn rm-btn-secondary">
+              </CtaButton>
+              <CtaButton href="#services" variant="outline">
                 How we work
-              </MagneticButton>
+              </CtaButton>
             </div>
           </div>
         </section>
@@ -209,7 +221,7 @@ function SeoPage() {
 
         {/* ANTI-POSITION */}
         <section className="border-b border-white/10">
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
+          <div className={cn(sectionContainer, sectionShell, "py-0")}>
             <Reveal duration={0.5}>
               <p className="rm-eyebrow mb-8 tabular-nums">Our position</p>
             </Reveal>
@@ -238,7 +250,7 @@ function SeoPage() {
             const reverse = i % 2 === 1;
             return (
               <article key={s.n} className="border-b border-white/10">
-                <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
+                <div className={cn(sectionContainer, sectionShell, "py-0")}>
                   <div
                     className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center ${reverse ? "md:[&>div:first-child]:order-2" : ""}`}
                   >
@@ -284,7 +296,7 @@ function SeoPage() {
           aria-labelledby="outcomes-heading"
           className="border-b border-white/10 bg-rm-surface"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-24">
+          <div className={cn(sectionContainer, sectionShell, "py-0")}>
             <Reveal duration={0.5}>
               <h2
                 id="outcomes-heading"
@@ -348,7 +360,7 @@ function SeoPage() {
                 "radial-gradient(50% 60% at 30% 40%, rgba(80,60,255,0.18), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className="px-6 md:px-12 max-w-[1200px] mx-auto py-28 md:py-28">
+          <div className={cn(sectionContainer, sectionShell, "py-0")}>
             <Reveal duration={0.5}>
               <blockquote className="text-[28px] sm:text-[40px] md:text-[56px] leading-[1.15] tracking-[-0.025em] font-medium text-white max-w-[22ch] md:max-w-[26ch]">
                 <span className="text-white/35">"</span>
@@ -382,7 +394,7 @@ function SeoPage() {
                 "radial-gradient(70% 60% at 50% 50%, rgba(255,75,40,0.22), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-28 md:py-28 text-center">
+          <div className={cn(sectionContainer, sectionShell, "py-0 text-center")}>
             <Reveal duration={0.5}>
               <h2
                 id="cta-heading"

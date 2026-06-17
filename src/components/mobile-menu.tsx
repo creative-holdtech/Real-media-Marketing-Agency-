@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import logoUrl from "@/assets/logo.svg";
+import { CtaButton } from "@/components/framer-section";
 import { useSiteNav } from "@/components/nav-context";
 
 export function MobileMenu() {
@@ -206,15 +207,9 @@ export function MobileMenu() {
         }}
       >
         {/* Primary CTA */}
-        <Link
-          to="/audit"
-          onClick={close}
-          className="rm-btn rm-btn-primary w-full flex items-center justify-between active:scale-[0.97]"
-          style={{ transition: "background-color 160ms ease-out, transform 120ms ease-out" }}
-        >
-          <span>Book an audit</span>
-          <span aria-hidden>→</span>
-        </Link>
+        <CtaButton to="/audit" variant="primary" className="w-full justify-between" onClick={close}>
+          Book an audit
+        </CtaButton>
 
         {/* Meta row */}
         <div className="grid grid-cols-2 gap-4 text-[12px] text-white/40">

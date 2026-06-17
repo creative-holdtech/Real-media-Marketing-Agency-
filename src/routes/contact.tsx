@@ -3,6 +3,17 @@ import { useState } from "react";
 import { Dribbble, Instagram, Linkedin, Mail, MapPin } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { SplitDisplayTitle } from "@/components/ds-templates";
+import {
+  bodyCopy,
+  btnPrimary,
+  BtnArrow,
+  formContainer,
+  pageBand,
+  textFaint,
+  textGhost,
+  textMeta,
+} from "@/components/framer-section";
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { TeamEnsemble } from "@/components/team-ensemble";
@@ -10,6 +21,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { engagementPrefillMessage } from "@/lib/engagements";
 import { getPageContent } from "@/lib/payload/pages";
 import { buildPageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 const socialIconMap: Record<string, LucideIcon> = {
   Linkedin,
@@ -57,7 +69,7 @@ function ContactPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-24 md:pt-24 pb-24 md:pb-36">
+      <section className={cn("relative pt-24 pb-24 md:pb-36", pageBand)}>
         <div
           aria-hidden
           className="absolute inset-0 -z-10 opacity-60"
@@ -69,18 +81,19 @@ function ContactPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-20 items-start">
           <div className="lg:col-span-5 max-w-[720px]">
-            <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/50 mb-8">
-              {contact?.eyebrow ?? "The conversation starts here"}
+            <p className="reveal mb-8">
+              <span className={textMeta}>{contact?.eyebrow ?? "The conversation starts here"}</span>
             </p>
-            <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[12ch]">
-              {(hero?.titleLines?.[0] ?? "Let's")}{" "}
-              <span className="font-light text-white/70">
-                {hero?.titleLines?.[1] ?? "talk."}
-              </span>
-            </h1>
+            <SplitDisplayTitle
+              lines={[
+                hero?.titleLines?.[0] ?? "Let's",
+                hero?.titleLines?.[1] ?? "talk.",
+              ]}
+              className="max-w-[12ch] reveal"
+            />
             {hero?.subheading ? (
               <p
-                className="reveal mt-8 max-w-[44ch] text-[15px] md:text-[17px] leading-relaxed rm-body"
+                className={cn("reveal mt-8 max-w-[44ch]", bodyCopy)}
                 data-delay="2"
               >
                 {hero.subheading}
@@ -89,10 +102,10 @@ function ContactPage() {
 
             <div className="reveal mt-12 flex flex-col gap-10" data-delay="3">
               <div>
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/40 mb-3">Email</p>
+                <p className={cn(textMeta, "mb-3", textGhost)}>Email</p>
                 <a
                   href={`mailto:${contact?.email ?? "info@realmedia.ink"}`}
-                  className="inline-flex rm-touch items-center gap-3 text-[16px] md:text-[18px] text-white hover:text-rm-accent transition-colors"
+                  className="inline-flex rm-touch items-center gap-3 rm-type-body text-white hover:text-rm-accent transition-colors"
                 >
                   <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-white/20 text-white/70">
                     <Mail className="size-[18px]" strokeWidth={1.5} aria-hidden />
@@ -122,10 +135,10 @@ function ContactPage() {
               </div>
 
               <div>
-                <p className="text-[11px] uppercase tracking-[0.22em] text-white/40 mb-3">
+                <p className={cn(textMeta, "mb-3", textGhost)}>
                   Located
                 </p>
-                <div className="flex items-start gap-3 text-[18px] md:text-[20px] text-white/85">
+                <div className="flex items-start gap-3 rm-type-body text-white">
                   <MapPin
                     className="mt-1 size-[18px] shrink-0 text-white/35"
                     strokeWidth={1.5}
@@ -133,7 +146,7 @@ function ContactPage() {
                   />
                   <div>
                     {contact?.location ?? "Warsaw · EU · MENA"}
-                    <span className="block mt-1 text-[13px] text-white/45">
+                    <span className={cn("mt-1 block rm-type-body", textFaint)}>
                       {contact?.locationNote ?? "Operating across CET / GST"}
                     </span>
                   </div>
@@ -142,7 +155,7 @@ function ContactPage() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 lg:col-start-6 max-w-[820px] w-full">
+          <div className={cn("lg:col-span-7 lg:col-start-6 w-full", formContainer)}>
             <form
               id="rm-contact-form"
               name="rm-contact-form"
@@ -163,7 +176,7 @@ function ContactPage() {
               </div>
 
               <div className="mt-14">
-                <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
+                <label className={cn("mb-4 block", textMeta, textGhost)}>
                   Message
                 </label>
                 <textarea
@@ -176,18 +189,16 @@ function ContactPage() {
                     contact?.formPlaceholder ??
                     "Tell us what you are building and where you are stuck."
                   }
-                  className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
+                  className="w-full resize-none border-0 border-b border-[var(--rm-border-soft)] bg-transparent px-0 py-2 rm-type-body text-white placeholder:text-[var(--rm-text-ghost)] focus:border-white/50 focus:outline-none"
                 />
               </div>
 
               <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
-                <button
-                  type="submit"
-                  className="inline-flex rm-touch items-center gap-2 px-8 text-[12px] uppercase tracking-[0.2em] rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white transition-[background-color,transform] duration-150 active:scale-[0.97]"
-                >
+                <button type="submit" className={cn(btnPrimary, "group gap-2")}>
                   {sent
                     ? (contact?.submitSuccessLabel ?? "Message sent — we'll reply soon")
-                    : (contact?.submitLabel ?? "Send message →")}
+                    : (contact?.submitLabel ?? "Send message").replace(/\s*→$/, "")}
+                  {!sent ? <BtnArrow /> : null}
                 </button>
               </div>
             </form>
@@ -219,16 +230,16 @@ function Field({
 }) {
   return (
     <div className={className}>
-      <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-3">
+      <label className={cn("mb-3 block", textMeta, textGhost)}>
         {label}
-        {required && <span className="text-rm-accent ml-1">*</span>}
+        {required && <span className="ml-1 text-rm-accent">*</span>}
       </label>
       <input
         type={type}
         name={name}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors"
+        className="w-full border-0 border-b border-[var(--rm-border-soft)] bg-transparent px-0 py-2 rm-type-body text-white placeholder:text-[var(--rm-text-ghost)] focus:border-white/50 focus:outline-none"
       />
     </div>
   );

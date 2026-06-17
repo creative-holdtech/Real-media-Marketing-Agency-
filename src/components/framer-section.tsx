@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 /* ——— Layout (4 / 8 / 16 / 24 / 32 / 48 scale) ——— */
 /** Shared horizontal gutter — all sections, hero, header, footer */
 export const siteGutter = "px-6 md:px-10";
+/** Full-width page band aligned to editorial grid */
+export const pageBand = `mx-auto w-full max-w-[var(--rm-grid-max)] ${siteGutter}`;
 export const sectionShell =
   `border-b border-[var(--rm-border-soft)] bg-[var(--rm-surface-raised)] py-16 md:py-20 ${siteGutter}`;
 export const sectionContainer =
@@ -13,6 +15,8 @@ export const sectionContainer =
 /** Hero band — same grid as section blocks */
 export const pageHeroContainer =
   `relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ${siteGutter}`;
+export const proseContainer = "mx-auto w-full max-w-[var(--rm-prose-max)]";
+export const formContainer = "mx-auto w-full max-w-[var(--rm-form-max)]";
 export const sectionGap = "gap-6 md:gap-8";
 export const sectionInnerStack = "flex flex-col gap-4 md:gap-6";
 /** Title → body spacing — 16px (8px grid) */
@@ -28,6 +32,9 @@ export const sectionGridSpacer = "hidden md:block";
 export const sectionActionRow = "flex justify-end pt-2";
 
 /* ——— Typography — 8px grid via .rm-type-* (styles.css) ——— */
+export const textDisplay = "rm-type-display text-[var(--rm-ink)]";
+export const textDisplayMuted = "rm-type-display-muted";
+export const textNav = "rm-type-nav";
 export const sectionHeadline = "rm-type-section-headline text-[var(--rm-ink)]";
 export const textMeta = "rm-type-meta";
 export const textLabel = "rm-type-body rm-type-body-strong text-[var(--rm-text-muted)]";
@@ -37,14 +44,23 @@ export const textMetric =
 export const textCardBody = "rm-type-body text-[var(--rm-text-body)]";
 export const textBlogMeta = textMeta;
 export const sectionChapterNumeral =
-  "rm-type-meta tabular-nums text-white/35";
+  "rm-type-meta tabular-nums text-[var(--rm-text-ghost)]";
 export const bodyCopy = "rm-type-body max-w-prose text-[var(--rm-text-body)]";
 export const bodyCopyStrong = "rm-type-body rm-type-body-strong max-w-prose";
+export const textSubtle = "text-[var(--rm-text-subtle)]";
+export const textFaint = "text-[var(--rm-text-faint)]";
+export const textGhost = "text-[var(--rm-text-ghost)]";
 /** Hero / centered band subcopy */
 export const heroSubcopy = "rm-type-body text-[var(--rm-text-body)]";
 export const heroSubcopyStrong = "rm-type-body rm-type-body-strong text-[var(--rm-ink)]";
 /** Section intro block — tag column + headline column */
 export const sectionIntroStack = "flex flex-col gap-4";
+
+/* ——— Chrome (light header/footer variant) ——— */
+export const chromeLightInk = "text-[var(--rm-light-ink)]";
+export const chromeLightMuted = "text-[var(--rm-light-muted)]";
+export const chromeLightBorder = "border-[var(--rm-light-border)]";
+export const chromeLightSurface = "bg-[var(--rm-light-surface)]";
 
 /* ——— Surfaces ——— */
 export const surfaceCardShell =
@@ -115,6 +131,61 @@ export function BtnArrow({ className }: { className?: string }) {
   );
 }
 
+/** Canonical CTA with arrow — single interaction pattern */
+export function CtaButton({
+  children,
+  to,
+  href,
+  variant = "primary",
+  className,
+  onClick,
+}: {
+  children: ReactNode;
+  to?: "/blog" | "/cases" | "/contact" | "/audit" | "/about" | "/services" | "/products";
+  href?: string;
+  variant?: "primary" | "outline" | "outlineDark" | "ghost";
+  className?: string;
+  onClick?: () => void;
+}) {
+  const styles = {
+    primary: btnPrimary,
+    outline: btnOutline,
+    outlineDark: btnOutlineOnDark,
+    ghost: btnGhostLink,
+  }[variant];
+  const classes = cn(styles, "group gap-2", className);
+  const label = typeof children === "string" ? children.replace(/\s*→$/, "") : children;
+
+  const content = (
+    <>
+      {label}
+      {variant !== "ghost" ? <BtnArrow /> : <span aria-hidden>→</span>}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a href={href} className={classes} onClick={onClick}>
+        {content}
+      </a>
+    );
+  }
+
+  if (to) {
+    return (
+      <Link to={to} className={classes} onClick={onClick}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button type="button" className={classes} onClick={onClick}>
+      {content}
+    </button>
+  );
+}
+
 export function FramerTag({ children, className }: { children: string; className?: string }) {
   return (
     <span
@@ -158,20 +229,10 @@ export function FramerPrimaryButton({
   href?: string;
   className?: string;
 }) {
-  const classes = cn(btnPrimary, className);
-
-  if (href) {
-    return (
-      <a href={href} className={classes}>
-        {children}
-      </a>
-    );
-  }
-
   return (
-    <Link to={to} className={classes}>
+    <CtaButton to={to} href={href} variant="primary" className={className}>
       {children}
-    </Link>
+    </CtaButton>
   );
 }
 
@@ -186,20 +247,10 @@ export function FramerOutlineButton({
   href?: string;
   className?: string;
 }) {
-  const classes = cn(btnOutline, className);
-
-  if (href) {
-    return (
-      <a href={href} className={classes}>
-        {children}
-      </a>
-    );
-  }
-
   return (
-    <Link to={to} className={classes}>
+    <CtaButton to={to} href={href} variant="outline" className={className}>
       {children}
-    </Link>
+    </CtaButton>
   );
 }
 

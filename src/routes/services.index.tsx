@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { CSSProperties } from "react";
 
+import { SplitDisplayTitle } from "@/components/ds-templates";
 import {
   BtnArrow,
   bodyCopy,
@@ -56,10 +57,9 @@ function ServicesIndex() {
           <p className="reveal">
             <FramerTag>{hero?.tag ?? `Services · ${servicesList.length} disciplines`}</FramerTag>
           </p>
-          <h1 className="reveal rm-type-display max-w-[14ch] text-white md:max-w-none">
-            <span className="block">{titleLines[0]}</span>
-            <span className="block font-light text-white/55">{titleLines[1] ?? ""}</span>
-          </h1>
+          <div className="reveal max-w-[14ch] md:max-w-none">
+            <SplitDisplayTitle lines={titleLines} className="text-white" />
+          </div>
           {hero?.body ? (
             <p className={cn("reveal max-w-[42rem]", bodyCopy)} data-delay="2">
               {hero.body}
@@ -109,7 +109,7 @@ function ServicesIndex() {
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2 md:mt-6">
-                    <h2 className={cn(subsectionTitle, "text-white md:text-[1.75rem]")}>{s.name}</h2>
+                    <h2 className={cn(subsectionTitle, "text-white")}>{s.name}</h2>
                     <p className={textMeta}>{s.tagline}</p>
                   </div>
 

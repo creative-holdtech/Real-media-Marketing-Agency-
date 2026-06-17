@@ -8,6 +8,7 @@ import {
   FramerTag,
   pageHeroContainer,
 } from "@/components/framer-section";
+import { SplitDisplayTitle } from "@/components/ds-templates";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
 import { CasesSection } from "@/components/cases-section";
@@ -85,21 +86,13 @@ function Index() {
                   <FramerTag>{hero.tag}</FramerTag>
                 </p>
               ) : null}
-              <h1 className="reveal rm-type-display w-full text-white">
-                {titleLines.map((line, index) => (
-                  <span
-                    key={`${line}-${index}`}
-                    className={cn(
-                      "block text-balance",
-                      index === titleLines.length - 1 && titleLines.length > 1
-                        ? "font-light text-white/48"
-                        : undefined,
-                    )}
-                  >
-                    {line}
-                  </span>
-                ))}
-              </h1>
+              <div className="reveal w-full">
+                <SplitDisplayTitle
+                  lines={titleLines}
+                  className="text-white"
+                  mutedClassName="!text-white/48"
+                />
+              </div>
               {hero?.subheading ? (
                 <p
                   className={cn(

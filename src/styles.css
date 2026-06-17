@@ -158,6 +158,9 @@
     --rm-border-strong: rgba(255, 255, 255, 0.16);
     --rm-text-body: rgba(255, 255, 255, 0.82);
     --rm-text-muted: rgba(255, 255, 255, 0.66);
+    --rm-text-subtle: rgba(255, 255, 255, 0.55);
+    --rm-text-faint: rgba(255, 255, 255, 0.45);
+    --rm-text-ghost: rgba(255, 255, 255, 0.35);
     --accent-red: var(--rm-accent);
     --rm-header-offset: 4.75rem;
     --rm-motion-fast: 160ms;
@@ -169,6 +172,8 @@
     --rm-grid-max: 80rem;
     --rm-grid-gutter: 1.5rem;
     --rm-grid-gutter-md: 2.5rem;
+    --rm-prose-max: 42rem;
+    --rm-form-max: 51.25rem;
 
     /* Type scale — 8px grid (12 / 16 / 24 / 32 / 40 / 48 / 56 / 64) */
     --rm-font-xs: 0.75rem;
@@ -194,6 +199,13 @@
     --rm-track-subsection: -0.02em;
     --rm-track-headline: -0.03em;
     --rm-track-display: -0.04em;
+
+    /* Light chrome (header/footer variant) */
+    --rm-light-ink: #111111;
+    --rm-light-muted: #787774;
+    --rm-light-border: #eaeaea;
+    --rm-light-surface: #fbfbfa;
+    --rm-light-accent: #9f2f2d;
   }
 
   html {
@@ -359,6 +371,18 @@
     }
   }
 
+  .rm-type-display-muted {
+    font-weight: 300;
+    color: var(--rm-text-subtle);
+  }
+
+  .rm-type-nav {
+    font-size: 0.8125rem;
+    line-height: var(--rm-line-xs);
+    font-weight: 500;
+    letter-spacing: var(--rm-track-body);
+  }
+
   .rm-eyebrow {
     font-size: var(--rm-font-xs);
     line-height: var(--rm-line-xs);
@@ -373,6 +397,27 @@
     letter-spacing: var(--rm-track-display);
     font-weight: 500;
     color: var(--rm-ink);
+  }
+
+  @media (min-width: 640px) {
+    .rm-title-hero {
+      font-size: var(--rm-font-3xl);
+      line-height: var(--rm-line-3xl);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .rm-title-hero {
+      font-size: var(--rm-font-4xl);
+      line-height: var(--rm-line-4xl);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rm-title-hero {
+      font-size: var(--rm-font-5xl);
+      line-height: var(--rm-line-5xl);
+    }
   }
 
   .rm-title-section {
@@ -431,17 +476,18 @@
     align-items: center;
     gap: 0.5rem;
     border-radius: 9999px;
-    padding-inline: 1.75rem;
-    font-size: 12px;
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+    padding-inline: 1.5rem;
+    padding-block: 0.75rem;
+    font-size: var(--rm-font-base);
+    line-height: var(--rm-line-base);
+    letter-spacing: var(--rm-track-body);
     font-weight: 500;
+    text-transform: none;
     transition:
-      background-color 160ms ease-out,
-      border-color 160ms ease-out,
-      color 160ms ease-out,
-      transform 160ms ease-out;
+      background-color 200ms ease-out,
+      border-color 200ms ease-out,
+      color 200ms ease-out,
+      transform 200ms ease-out;
   }
 
   .rm-btn:active {
