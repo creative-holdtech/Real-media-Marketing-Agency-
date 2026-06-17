@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
+import logoUrl from "@/assets/logo.svg";
 import { btnPrimarySm, siteGutter, textMeta } from "@/components/framer-section";
 import { MobileMenu } from "@/components/mobile-menu";
 import { useSiteNav } from "@/components/nav-context";
@@ -37,14 +38,14 @@ export function SiteHeader({
             : "rounded-full border border-white/[0.08] bg-rm-surface/40",
         )}
       >
-        <Link
-          to="/"
-          className={cn(
-            "justify-self-start font-semibold tracking-tight text-[15px]",
-            light ? "text-[#111111]" : "text-white",
-          )}
-        >
-          R—M
+        <Link to="/" aria-label="Real Media — home" className="justify-self-start">
+          <img
+            src={logoUrl}
+            alt="Real Media"
+            width={90}
+            height={65}
+            className={cn("h-8 w-auto", light && "[filter:invert(1)]")}
+          />
         </Link>
 
         <ul className="hidden items-center justify-center gap-5 text-[13px] md:flex">
@@ -119,9 +120,13 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
     >
       <div className="grid grid-cols-12 gap-6 md:gap-8">
         <div className="col-span-12 md:col-span-5">
-          <div className="text-3xl font-semibold tracking-tight">
-            R—M
-          </div>
+          <img
+            src={logoUrl}
+            alt="Real Media"
+            width={90}
+            height={65}
+            className={cn("h-12 w-auto", light && "[filter:invert(1)]")}
+          />
           <p
             className={cn(
               "mt-5 max-w-xs text-[14px] leading-relaxed",

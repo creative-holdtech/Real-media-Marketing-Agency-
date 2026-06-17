@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import logoUrl from "@/assets/logo.svg";
 import { useSiteNav } from "@/components/nav-context";
 
 export function MobileMenu() {
@@ -81,12 +82,8 @@ export function MobileMenu() {
           className="h-14 flex items-center justify-between pl-5 pr-2 rounded-full border border-white/10"
           style={{ background: "rgba(255,255,255,0.03)" }}
         >
-          <Link
-            to="/"
-            onClick={close}
-            className="font-semibold tracking-tight text-[15px] text-white leading-none"
-          >
-            R—M<span className="text-rm-accent">.</span>
+          <Link to="/" onClick={close} aria-label="Real Media — home" className="leading-none">
+            <img src={logoUrl} alt="Real Media" width={90} height={65} className="h-8 w-auto" />
           </Link>
 
           {/* Animated hamburger → X */}
