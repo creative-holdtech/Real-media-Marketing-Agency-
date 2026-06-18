@@ -178,15 +178,18 @@
     /* Type scale — 8px grid (12 / 16 / 24 / 32 / 40 / 48 / 56 / 64) */
     --rm-font-xs: 0.75rem;
     --rm-font-base: 1rem;
+    --rm-font-lead: 1.25rem; /* 20 — standfirst / hero lead between base and lg */
     --rm-font-lg: 1.5rem;
     --rm-font-xl: 2rem;
     --rm-font-2xl: 2.5rem;
     --rm-font-3xl: 3rem;
     --rm-font-4xl: 3.5rem;
     --rm-font-5xl: 4rem;
+    --rm-font-6xl: 4.5rem; /* 72 — display hero lead */
 
     --rm-line-xs: 1rem;
     --rm-line-base: 1.5rem;
+    --rm-line-lead: 1.9rem; /* 30.4 — relaxed standfirst leading */
     --rm-line-lg: 2rem;
     --rm-line-xl: 2.5rem;
     --rm-line-2xl: 3rem;
@@ -218,6 +221,13 @@
     color: var(--rm-ink);
     font-family: "Inter", system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* PREVIEW: Manrope scoped to the home page only (Perform reference eval).
+     Remove this block + the rm-font-manrope class to revert. */
+  .rm-font-manrope,
+  .rm-font-manrope :where(*) {
+    font-family: "Manrope", "Inter", system-ui, sans-serif;
   }
 }
 
@@ -440,6 +450,40 @@
     line-height: var(--rm-line-base);
     letter-spacing: var(--rm-track-body);
     color: var(--rm-text-body);
+  }
+
+  /* Standfirst — the deck under a hero headline. Larger and brighter than body
+     so the headline↔lead relationship reads as intentional, not fine-print. */
+  .rm-copy-standfirst {
+    font-size: var(--rm-font-lead); /* 20 — Perform "Heading 3 — Smaller" */
+    line-height: 1.4; /* Perform: 1.4em */
+    letter-spacing: var(--rm-track-subsection); /* -0.02em */
+    font-weight: 500; /* Manrope Medium */
+    color: var(--rm-text-body);
+    text-wrap: balance;
+  }
+
+  /* Editorial hero lead — large display (up to 72px) but with airy leading so
+     it reads confident, not heavy. Pairs with .rm-copy-standfirst beneath. */
+  .rm-title-hero-lead {
+    font-size: var(--rm-font-3xl);
+    line-height: 1.2; /* Perform H1: 1.2em */
+    letter-spacing: -0.05em; /* Perform H1: -0.05em */
+    font-weight: 500; /* Manrope Medium */
+    color: var(--rm-ink);
+    text-wrap: balance;
+  }
+
+  @media (min-width: 768px) {
+    .rm-title-hero-lead {
+      font-size: var(--rm-font-4xl);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rm-title-hero-lead {
+      font-size: var(--rm-font-6xl);
+    }
   }
 
   .rm-kicker {

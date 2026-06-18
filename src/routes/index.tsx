@@ -1,16 +1,13 @@
 import { lazy, Suspense } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { motion, useReducedMotion, type Variants } from "motion/react";
 
 import {
   BtnArrow,
   btnOutlineOnDark,
   btnPrimary,
-  FramerTag,
-  heroSubcopyStrong,
   pageHeroContainer,
-  textFaint,
 } from "@/components/framer-section";
-import { SplitDisplayTitle } from "@/components/ds-templates";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
 import { CasesSection } from "@/components/cases-section";
@@ -43,13 +40,52 @@ export const Route = createFileRoute("/")({
     const seo = buildPageHead({ title, description, pathname: "/" });
     return {
       meta: seo.meta,
-      links: [...seo.links, { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
+      links: [
+        ...seo.links,
+        { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" },
+        // Manrope — preview only on home, to evaluate against the Perform reference
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+        },
+      ],
     };
   },
   component: Index,
 });
 
 const insightPosts = posts;
+
+/* ——— Hero entrance choreography (Motion) ——— */
+const HERO_EASE = [0.22, 1, 0.36, 1] as const;
+
+const heroStage: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } },
+};
+const heroFade: Variants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { duration: 0.6, ease: HERO_EASE } },
+};
+const heroRise: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: HERO_EASE } },
+};
+const heroLineDraw: Variants = {
+  hidden: { scaleX: 0, opacity: 0 },
+  show: { scaleX: 1, opacity: 1, transition: { duration: 0.7, ease: HERO_EASE } },
+};
+// Headline rises line-by-line with a brief de-blur — the premium "settle".
+const heroTitle: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
+const heroTitleLine: Variants = {
+  hidden: { opacity: 0, y: "0.45em", filter: "blur(7px)" },
+  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: HERO_EASE } },
+};
 
 function AmbientBlobs() {
   return (
@@ -63,13 +99,14 @@ function AmbientBlobs() {
 
 function Index() {
   useReveal();
+  const reduce = useReducedMotion();
   const { page } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
   const titleLines = hero?.titleLines ?? [];
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page rm-font-manrope selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -78,50 +115,51 @@ function Index() {
 
       <SiteHeader variant="dark" overlay />
 
+      {/* HERO — editorial split: copy on a hard left edge + framed photo */}
       <HeroAtmosphere imageSrc={hero?.image || heroBg} underHeader>
-        {/* HERO */}
-        <section className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]">
+        {/* HERO — full-bleed photo, left-aligned editorial copy block */}
+        <section
+          aria-labelledby="home-hero-title"
+          className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
+        >
           <div className={pageHeroContainer}>
-            <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
+            <motion.div
+              className="rm-hero-copy flex w-full max-w-[36rem] flex-col items-start text-left"
+              variants={heroStage}
+              initial={reduce ? false : "hidden"}
+              animate="show"
+            >
               {hero?.tag ? (
-                <p className="reveal mb-4 w-fit">
-                  <FramerTag>{hero.tag}</FramerTag>
-                </p>
+                <motion.p className="mb-8 flex items-center gap-3" variants={heroFade}>
+                  <motion.span
+                    aria-hidden
+                    className="h-px w-12 origin-left bg-white/60"
+                    variants={heroLineDraw}
+                  />
+                  <span className="rm-type-meta text-[var(--rm-text-body)]">{hero.tag}</span>
+                </motion.p>
               ) : null}
-              <div className="reveal w-full">
-                <SplitDisplayTitle
-                  lines={titleLines}
-                  className="text-white"
-                  mutedClassName="rm-type-display-muted"
-                />
-              </div>
+              <motion.h1 id="home-hero-title" className="rm-title-hero-lead" variants={heroTitle}>
+                <span className="block">
+                  <motion.span className="block" variants={heroTitleLine}>
+                    {titleLines[0]}
+                  </motion.span>
+                </span>
+                {titleLines.length > 1 ? (
+                  <span className="block">
+                    <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
+                      {titleLines.slice(1).join(" ")}
+                    </motion.span>
+                  </span>
+                ) : null}
+              </motion.h1>
               {hero?.subheading ? (
-                <p
-                  className={cn(
-                    "reveal mt-6 max-w-[34ch] text-balance text-center",
-                    heroSubcopyStrong,
-                  )}
-                  data-delay="2"
-                >
+                <motion.p className="rm-copy-standfirst mt-6 max-w-[42ch]" variants={heroRise}>
                   {hero.subheading}
-                </p>
-              ) : null}
-              {hero?.body ? (
-                <p
-                  className={cn(
-                    "reveal mt-4 max-w-[34ch] text-balance text-center rm-type-body",
-                    textFaint,
-                  )}
-                  data-delay="2"
-                >
-                  {hero.body}
-                </p>
+                </motion.p>
               ) : null}
 
-              <div
-                className="reveal mt-10 flex flex-wrap items-center justify-center gap-4"
-                data-delay="3"
-              >
+              <motion.div className="mt-10 flex flex-wrap items-center gap-4" variants={heroRise}>
                 {hero?.ctaPrimaryLabel ? (
                   <Link
                     to={hero.ctaPrimaryUrl ?? "/contact"}
@@ -140,8 +178,8 @@ function Index() {
                     <BtnArrow />
                   </Link>
                 ) : null}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
       </HeroAtmosphere>

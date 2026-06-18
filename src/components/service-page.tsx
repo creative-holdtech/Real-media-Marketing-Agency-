@@ -97,23 +97,25 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                     {block.subtitle}
                   </h2>
 
-                  <div className="mt-10 grid gap-10 md:mt-12 md:grid-cols-2 md:gap-12">
+                  {/* Points laid out horizontally (top-border grid), matching the
+                      landing's deliverable rhythm — not vertical left-bordered lists. */}
+                  <div className="mt-10 flex flex-col gap-10 md:mt-12 md:gap-12">
                     {block.sections.map((section) => (
                       <div key={section.heading}>
                         <h3 className={textMeta}>{section.heading}</h3>
-                        <ul className="mt-4 space-y-3">
+                        <div className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
                           {section.items.map((item) => (
-                            <li
+                            <p
                               key={item}
                               className={cn(
                                 textCardBody,
-                                "border-l border-white/15 pl-4 text-[var(--rm-text-body)]",
+                                "border-t border-[var(--rm-border-soft)] pt-3 text-[var(--rm-text-body)]",
                               )}
                             >
                               {item}
-                            </li>
+                            </p>
                           ))}
-                        </ul>
+                        </div>
                       </div>
                     ))}
                   </div>
