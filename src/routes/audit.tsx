@@ -2,7 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
+import {
+  BtnArrow,
+  btnPrimary,
+  sectionHeadline,
+  siteGutter,
+  surfaceCardTitle,
+  textCardBody,
+  textFaint,
+  textGhost,
+  textMeta,
+} from "@/components/framer-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
 import { getPageContent, section as pageSection } from "@/lib/payload/pages";
 import { buildPageHead } from "@/lib/seo";
@@ -104,7 +116,12 @@ function AuditPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section className="relative px-6 md:px-12 max-w-[1440px] mx-auto pt-16 md:pt-24 pb-12 md:pb-20">
+      <section
+        className={cn(
+          "relative mx-auto max-w-[var(--rm-grid-max)] pt-16 md:pt-24 pb-12 md:pb-20",
+          siteGutter,
+        )}
+      >
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
@@ -113,18 +130,21 @@ function AuditPage() {
               "radial-gradient(60% 50% at 50% 30%, rgba(232,93,58,0.22), transparent 70%), radial-gradient(40% 40% at 80% 80%, rgba(80,60,255,0.14), transparent 70%), #000000",
           }}
         />
-        <p className="reveal text-[11px] uppercase tracking-[0.25em] text-white/55 mb-8">
+        <p className="reveal rm-eyebrow mb-8">
           {hero?.tag ?? "Free · No obligation · up to 7 days"}
         </p>
-        <h1 className="reveal text-[44px] sm:text-[80px] md:text-[112px] leading-[0.95] tracking-[-0.04em] font-medium text-white max-w-[1200px]">
+        <h1 className="reveal rm-title-hero max-w-[var(--rm-grid-max)]">
           {hero?.titleLines?.[0] ?? "Free marketing audit."}{" "}
-          <span className="font-light text-white/55">
+          <span className="rm-type-display-muted">
             {hero?.titleLines?.[1] ?? "Hard data. No pitch."}
           </span>
         </h1>
 
         <ul
-          className="reveal mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 max-w-[820px] text-[15px] md:text-[17px] text-white/75"
+          className={cn(
+            "reveal mt-12 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 max-w-[820px]",
+            textCardBody,
+          )}
           data-delay="2"
         >
           {heroBullets.map((it) => (
@@ -138,65 +158,69 @@ function AuditPage() {
 
       <section
         id="what-included"
-        className="border-y border-white/10 px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24"
+        className={cn(
+          "border-y border-[var(--rm-border-soft)] mx-auto max-w-[var(--rm-grid-max)] py-24",
+          siteGutter,
+        )}
       >
         <div className="reveal max-w-4xl">
-          <h2 className="text-[40px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
+          <h2 className={sectionHeadline}>
             Pick the channel that's most urgent.{" "}
-            <span className="font-light text-white/45">We diagnose all six if needed.</span>
+            <span className="rm-type-display-muted">We diagnose all six if needed.</span>
           </h2>
         </div>
         <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {includes.map((b, i) => (
             <div
               key={b.title}
-              className="reveal rm-card p-7 md:p-8 transition-[border-color] duration-500 hover:border-white/25"
+              className="reveal rm-card p-7 md:p-8 transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]"
               data-delay={String((i % 6) + 1)}
             >
-              <div className="text-[11px] uppercase tracking-[0.28em] text-white/45 mb-5 tabular-nums">
-                0{i + 1}
-              </div>
-              <h3 className="text-[26px] md:text-[32px] leading-[1.05] tracking-[-0.02em] font-medium text-white">
-                {b.title}
-              </h3>
-              <p className="mt-4 text-[14px] md:text-[15px] rm-body leading-[1.65]">{b.body}</p>
+              <div className={cn(textMeta, "mb-5 tabular-nums")}>0{i + 1}</div>
+              <h3 className={surfaceCardTitle}>{b.title}</h3>
+              <p className={cn("mt-4", textCardBody)}>{b.body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="px-6 md:px-12 max-w-[1440px] mx-auto py-24 md:py-24 border-b border-white/10">
+      <section
+        className={cn(
+          "mx-auto max-w-[var(--rm-grid-max)] py-24 border-b border-[var(--rm-border-soft)]",
+          siteGutter,
+        )}
+      >
         <div className="reveal max-w-4xl">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-white/45 mb-6">How it works</p>
-          <h2 className="text-[40px] sm:text-[56px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            Three steps. <span className="font-light text-white/45">No mystery.</span>
+          <p className="rm-eyebrow mb-6">How it works</p>
+          <h2 className={sectionHeadline}>
+            Three steps. <span className="rm-type-display-muted">No mystery.</span>
           </h2>
         </div>
         <ol className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           {steps.map((s, i) => (
             <li
               key={s.n}
-              className="reveal relative rm-card p-7 md:p-10 transition-[border-color] duration-500 hover:border-white/25"
+              className="reveal relative rm-card p-7 md:p-10 transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]"
               data-delay={String(i + 1)}
             >
-              <div className="text-[48px] md:text-[64px] font-light tracking-[-0.04em] text-white/25 tabular-nums leading-none mb-6">
+              <div
+                className={cn(
+                  "rm-type-display font-light text-[var(--rm-text-ghost)] tabular-nums leading-none mb-6",
+                )}
+              >
                 {s.n}
               </div>
-              <h3 className="text-[22px] md:text-[28px] font-medium tracking-[-0.02em] text-white">
-                {s.title}
-              </h3>
-              <p className="mt-4 text-[14px] md:text-[15px] rm-body leading-[1.65]">{s.body}</p>
+              <h3 className={surfaceCardTitle}>{s.title}</h3>
+              <p className={cn("mt-4", textCardBody)}>{s.body}</p>
             </li>
           ))}
         </ol>
       </section>
 
-      <section id="audit-form" className="px-6 md:px-12 max-w-[820px] mx-auto py-24 md:py-36">
+      <section id="audit-form" className={cn("mx-auto max-w-[820px] py-24 md:py-36", siteGutter)}>
         <div className="reveal mb-16 md:mb-20">
-          <h2 className="text-[36px] sm:text-[48px] md:text-[64px] leading-[1.02] tracking-[-0.035em] font-medium text-white">
-            What are you interested in?
-          </h2>
-          <p className="mt-5 text-[14px] md:text-[15px] text-white/45">
+          <h2 className={sectionHeadline}>What are you interested in?</h2>
+          <p className={cn("mt-5 rm-type-body", textFaint)}>
             Free · No strings attached · Result in up to 7 days
           </p>
         </div>
@@ -220,9 +244,7 @@ function AuditPage() {
           </div>
 
           <div className="mt-14">
-            <div className="text-[10px] uppercase tracking-[0.24em] text-white/35 mb-4">
-              Choose your focus:
-            </div>
+            <div className={cn("rm-type-tag mb-4", textGhost)}>Choose your focus:</div>
             <div className="flex flex-wrap gap-x-7 gap-y-3">
               {focusOptions.map((k) => {
                 const active = picks.includes(k);
@@ -232,11 +254,12 @@ function AuditPage() {
                     type="button"
                     onClick={() => toggle(k)}
                     aria-pressed={active}
-                    className={`text-[14px] pb-1 border-b transition-colors ${
+                    className={cn(
+                      "rm-type-body pb-1 border-b transition-colors",
                       active
-                        ? "text-white border-rm-accent"
-                        : "text-white/45 border-transparent hover:text-white/80"
-                    }`}
+                        ? "text-[var(--rm-ink)] border-rm-accent"
+                        : "text-[var(--rm-text-faint)] border-transparent hover:text-[var(--rm-text-body)]",
+                    )}
                   >
                     {k}
                   </button>
@@ -246,23 +269,19 @@ function AuditPage() {
           </div>
 
           <div className="mt-14">
-            <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-4">
-              Anything else?
-            </label>
+            <label className={cn("block rm-type-tag mb-4", textFaint)}>Anything else?</label>
             <textarea
               name="notes"
               rows={2}
               placeholder="Add any extra context or specific goals here"
-              className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors resize-none"
+              className="w-full bg-transparent border-0 border-b border-[var(--rm-border-strong)] px-0 py-2 rm-type-body text-[var(--rm-ink)] placeholder:text-[var(--rm-text-ghost)] focus:outline-none focus:border-white/50 transition-colors resize-none"
             />
           </div>
 
           <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
-            <button
-              type="submit"
-              className="inline-flex rm-touch items-center gap-2 px-8 text-[12px] uppercase tracking-[0.2em] rounded-full bg-white text-black font-medium hover:bg-rm-accent hover:text-white transition-[background-color,transform] duration-150 active:scale-[0.97]"
-            >
-              {sent ? "Request sent — we'll be in touch" : "Book the audit →"}
+            <button type="submit" className={cn(btnPrimary, "group")}>
+              {sent ? "Request sent — we'll be in touch" : "Book the audit"}
+              {!sent ? <BtnArrow /> : null}
             </button>
           </div>
         </form>
@@ -288,7 +307,7 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-[10px] uppercase tracking-[0.3em] text-white/40 mb-3">
+      <label className={cn("block rm-type-tag mb-3", textFaint)}>
         {label}
         {required && <span className="text-rm-accent ml-1">*</span>}
       </label>
@@ -297,7 +316,7 @@ function Field({
         name={name}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-transparent border-0 border-b border-white/15 px-0 py-2 text-[15px] text-white placeholder:text-white/25 focus:outline-none focus:border-white/50 transition-colors"
+        className="w-full bg-transparent border-0 border-b border-[var(--rm-border-strong)] px-0 py-2 rm-type-body text-[var(--rm-ink)] placeholder:text-[var(--rm-text-ghost)] focus:outline-none focus:border-white/50 transition-colors"
       />
     </div>
   );

@@ -80,7 +80,7 @@ export function MobileMenu() {
       {/* ── Header bar ─────────────────────────────────────── */}
       <div className="px-5 pt-5 shrink-0">
         <div
-          className="h-14 flex items-center justify-between pl-5 pr-2 rounded-full border border-white/10"
+          className="h-14 flex items-center justify-between pl-5 pr-2 rounded-full border border-[var(--rm-border-soft)]"
           style={{ background: "rgba(255,255,255,0.03)" }}
         >
           <Link to="/" onClick={close} aria-label="Real Media — home" className="leading-none">
@@ -92,7 +92,7 @@ export function MobileMenu() {
             type="button"
             onClick={close}
             aria-label="Close navigation"
-            className="rm-touch inline-flex items-center gap-2.5 px-4 text-[11px] uppercase tracking-[0.24em] text-white/60 hover:text-white transition-colors duration-200 rounded-full"
+            className="rm-touch inline-flex items-center gap-2.5 px-4 rm-type-tag text-[var(--rm-text-muted)] hover:text-white transition-colors duration-200 rounded-full"
           >
             Close
             <span className="relative w-[14px] h-[14px]">
@@ -129,7 +129,7 @@ export function MobileMenu() {
                 >
                   {/* Index numeral */}
                   <span
-                    className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
+                    className="shrink-0 tabular-nums rm-type-tag text-[var(--rm-text-ghost)] select-none"
                     style={{ width: "2ch" }}
                   >
                     {String(i + 1).padStart(2, "0")}
@@ -138,12 +138,12 @@ export function MobileMenu() {
                   {/* Label + sub */}
                   <span className="flex-1 flex flex-col gap-0.5 min-w-0">
                     <span
-                      className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
+                      className="text-[var(--rm-ink)] group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
                       style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
                     >
                       {item.label}
                     </span>
-                    <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
+                    <span className="rm-type-meta normal-case tracking-normal text-[var(--rm-text-ghost)]">
                       {item.sub ?? ""}
                     </span>
                   </span>
@@ -151,7 +151,7 @@ export function MobileMenu() {
                   {/* Arrow */}
                   <span
                     aria-hidden
-                    className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
+                    className="shrink-0 text-rm-accent rm-type-subsection leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
                     style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
                   >
                     →
@@ -164,27 +164,27 @@ export function MobileMenu() {
                   className="group flex items-center justify-between gap-4 py-[18px]"
                 >
                   <span
-                    className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
+                    className="shrink-0 tabular-nums rm-type-tag text-[var(--rm-text-ghost)] select-none"
                     style={{ width: "2ch" }}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span className="flex-1 flex flex-col gap-0.5 min-w-0">
                     <span
-                      className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
+                      className="text-[var(--rm-ink)] group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
                       style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
                     >
                       {item.label}
                     </span>
                     {item.sub ? (
-                      <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
+                      <span className="rm-type-meta normal-case tracking-normal text-[var(--rm-text-ghost)]">
                         {item.sub}
                       </span>
                     ) : null}
                   </span>
                   <span
                     aria-hidden
-                    className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
+                    className="shrink-0 text-rm-accent rm-type-subsection leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
                     style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
                   >
                     →
@@ -212,24 +212,26 @@ export function MobileMenu() {
         </CtaButton>
 
         {/* Meta row */}
-        <div className="grid grid-cols-2 gap-4 text-[12px] text-white/40">
+        <div className="grid grid-cols-2 gap-4 rm-type-body text-[var(--rm-text-faint)]">
           <div className="space-y-1">
-            <div className="text-[9px] uppercase tracking-[0.24em] text-white/25">Write</div>
+            <div className="rm-type-tag text-[var(--rm-text-ghost)]">Write</div>
             <a
               href="mailto:info@realmedia.ink"
               onClick={close}
-              className="block text-white/70 hover:text-white transition-colors normal-case tracking-normal"
+              className="block text-[var(--rm-text-muted)] hover:text-white transition-colors normal-case tracking-normal"
             >
               info@realmedia.ink
             </a>
           </div>
           <div className="space-y-1">
-            <div className="text-[9px] uppercase tracking-[0.24em] text-white/25">Located</div>
-            <div className="text-white/70 normal-case tracking-normal">Warsaw · EU · MENA</div>
+            <div className="rm-type-tag text-[var(--rm-text-ghost)]">Located</div>
+            <div className="text-[var(--rm-text-muted)] normal-case tracking-normal">
+              Warsaw · EU · MENA
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.24em] text-white/20">
+        <div className="flex items-center justify-between rm-type-tag text-[var(--rm-text-ghost)]">
           <span>© R—M 2026</span>
           <span>Vol. 01</span>
         </div>
@@ -245,7 +247,7 @@ export function MobileMenu() {
         onClick={() => setOpen(true)}
         aria-label="Open navigation"
         aria-expanded={open}
-        className="md:hidden rm-touch inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.24em] text-white/70 hover:text-white px-4 rounded-full border border-white/10 transition-colors duration-200"
+        className="md:hidden rm-touch inline-flex items-center gap-2 rm-type-tag text-[var(--rm-text-muted)] hover:text-white px-4 rounded-full border border-[var(--rm-border-soft)] transition-colors duration-200"
         style={{ background: "rgba(255,255,255,0.03)" }}
       >
         {/* Two-line icon */}

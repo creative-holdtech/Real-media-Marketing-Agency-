@@ -3,7 +3,17 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
+import {
+  sectionHeadline,
+  siteGutter,
+  textCardBody,
+  textFaint,
+  textGhost,
+  textMeta,
+  textSubtle,
+} from "@/components/framer-section";
 import { buildPageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/seo")({
   head: () =>
@@ -155,7 +165,12 @@ function SeoPage() {
             }}
           />
 
-          <div className="relative px-6 md:px-12 max-w-[1360px] mx-auto w-full text-center">
+          <div
+            className={cn(
+              "relative mx-auto max-w-[var(--rm-grid-max)] w-full text-center",
+              siteGutter,
+            )}
+          >
             <h1 id="page-title" className="rm-title-hero mx-auto max-w-6xl">
               SEO built on{" "}
               <span className="relative inline-block align-baseline w-[6.2ch] md:w-[7.6ch] h-[1em] text-left overflow-hidden">
@@ -173,7 +188,7 @@ function SeoPage() {
                 </AnimatePresence>
               </span>
               <br />
-              <span className="font-light text-white/55">— not keyword sludge.</span>
+              <span className="rm-type-display-muted">— not keyword sludge.</span>
             </h1>
 
             <p className="rm-copy-lead mx-auto mt-10 max-w-[640px]">
@@ -193,9 +208,17 @@ function SeoPage() {
         </section>
 
         {/* SOCIAL PROOF MARQUEE */}
-        <section aria-label="Trusted by" className="border-y border-white/10 bg-rm-surface/40">
+        <section
+          aria-label="Trusted by"
+          className="border-y border-[var(--rm-border-soft)] bg-rm-surface/40"
+        >
           <div className="overflow-hidden">
-            <div className="flex gap-12 whitespace-nowrap py-5 text-[11px] uppercase tracking-[0.28em] text-white/55 animate-[marquee_38s_linear_infinite]">
+            <div
+              className={cn(
+                "flex gap-12 whitespace-nowrap py-5 rm-type-tag animate-[marquee_38s_linear_infinite]",
+                textSubtle,
+              )}
+            >
               {[...marqueeWords, ...marqueeWords, ...marqueeWords].map((w, i) => (
                 <span key={i} className="flex items-center gap-12">
                   {w}
@@ -208,21 +231,21 @@ function SeoPage() {
         </section>
 
         {/* ANTI-POSITION */}
-        <section className="border-b border-white/10">
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
+        <section className="border-b border-[var(--rm-border-soft)]">
+          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24 md:py-36", siteGutter)}>
             <Reveal duration={0.5}>
               <p className="rm-eyebrow mb-8 tabular-nums">Our position</p>
             </Reveal>
             <Reveal delay={0.05} duration={0.5}>
-              <h2 className="rm-title-section max-w-5xl">
+              <h2 className={cn(sectionHeadline, "max-w-5xl")}>
                 We don't sell SEO traffic.{" "}
-                <span className="font-light text-white/45">
+                <span className="rm-type-display-muted">
                   We build category authority that compounds for years after the engagement ends.
                 </span>
               </h2>
             </Reveal>
             <Reveal delay={0.1} duration={0.5}>
-              <p className="mt-10 max-w-[680px] text-[15px] md:text-[17px] leading-[1.7] rm-body">
+              <p className={cn("mt-10 max-w-[680px]", textCardBody)}>
                 The market is loaded with agencies optimising for impressions, anchor-text spam and
                 AI-generated word count. That model dies on every Google update. Ours doesn't —
                 because authority earned by real operators on real intent is the moat algorithms
@@ -237,31 +260,27 @@ function SeoPage() {
           {services.map((s, i) => {
             const reverse = i % 2 === 1;
             return (
-              <article key={s.n} className="border-b border-white/10">
-                <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-36">
+              <article key={s.n} className="border-b border-[var(--rm-border-soft)]">
+                <div
+                  className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24 md:py-36", siteGutter)}
+                >
                   <div
                     className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center ${reverse ? "md:[&>div:first-child]:order-2" : ""}`}
                   >
                     <Reveal className="md:col-span-7" duration={0.5}>
                       <div className="flex items-baseline gap-5 mb-6">
-                        <span className="text-[48px] md:text-[72px] leading-none font-light tracking-[-0.04em] text-white/25 tabular-nums">
+                        <span className="rm-type-display font-light text-[var(--rm-text-ghost)] tabular-nums leading-none">
                           {s.n}
                         </span>
-                        <span className="text-[11px] uppercase tracking-[0.28em] text-white/45">
-                          {s.kicker}
-                        </span>
+                        <span className={cn("rm-type-meta", textFaint)}>{s.kicker}</span>
                       </div>
-                      <h3 className="text-[32px] md:text-[56px] leading-[1.02] tracking-[-0.03em] font-medium text-white max-w-[18ch]">
-                        {s.title}
-                      </h3>
-                      <p className="mt-6 max-w-[60ch] text-[15px] md:text-[17px] leading-[1.7] text-white/70">
-                        {s.body}
-                      </p>
+                      <h3 className={cn(sectionHeadline, "max-w-[18ch]")}>{s.title}</h3>
+                      <p className={cn("mt-6 max-w-[60ch]", textCardBody)}>{s.body}</p>
                       <ul className="mt-8 flex flex-wrap gap-2">
                         {s.deliverables.map((d) => (
                           <li
                             key={d}
-                            className="text-[12px] uppercase tracking-[0.18em] px-4 py-2 rounded-full border border-white/15 text-white/75 hover:border-white/35 hover:text-white transition-[color,border-color,transform] duration-150 ease-out active:scale-[0.97]"
+                            className="rm-type-tag rounded-full border border-[var(--rm-border-soft)] px-4 py-2 text-[var(--rm-text-body)] hover:border-[var(--rm-border-strong)] hover:text-white transition-[color,border-color,transform] duration-150 ease-out active:scale-[0.97]"
                           >
                             {d}
                           </li>
@@ -282,16 +301,13 @@ function SeoPage() {
         {/* OUTCOMES — gapless bento */}
         <section
           aria-labelledby="outcomes-heading"
-          className="border-b border-white/10 bg-rm-surface"
+          className="border-b border-[var(--rm-border-soft)] bg-rm-surface"
         >
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-24 md:py-24">
+          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24", siteGutter)}>
             <Reveal duration={0.5}>
-              <h2
-                id="outcomes-heading"
-                className="max-w-4xl text-[40px] sm:text-[64px] md:text-[80px] leading-[1.02] tracking-[-0.035em] font-medium text-white"
-              >
+              <h2 id="outcomes-heading" className={cn(sectionHeadline, "max-w-4xl")}>
                 What changes in the business.{" "}
-                <span className="font-light text-white/45">Four shifts.</span>
+                <span className="rm-type-display-muted">Four shifts.</span>
               </h2>
             </Reveal>
 
@@ -307,20 +323,18 @@ function SeoPage() {
                   <Reveal
                     key={o.n}
                     delay={i * 0.05}
-                    className={`${span} rm-card p-6 md:p-10 overflow-hidden relative transition-[border-color] duration-500 hover:border-white/25`}
+                    className={`${span} rm-card p-6 md:p-10 overflow-hidden relative transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]`}
                     duration={0.5}
                   >
-                    <div className="text-[10px] uppercase tracking-[0.28em] text-white/40 mb-5 tabular-nums">
-                      {o.n}
-                    </div>
+                    <div className={cn("rm-type-meta mb-5 tabular-nums", textFaint)}>{o.n}</div>
                     <h3
-                      className={`${i === 0 ? "text-[28px] md:text-[44px]" : "text-[22px] md:text-[30px]"} leading-[1.05] tracking-[-0.03em] font-medium text-white`}
+                      className={
+                        i === 0 ? "rm-title-section" : "rm-type-subsection text-[var(--rm-ink)]"
+                      }
                     >
                       {o.title}
                     </h3>
-                    <p className="mt-4 max-w-[44ch] text-[14px] md:text-[15px] leading-[1.65] rm-body">
-                      {o.body}
-                    </p>
+                    <p className={cn("mt-4 max-w-[44ch]", textCardBody)}>{o.body}</p>
                     {i === 0 && (
                       <div
                         aria-hidden
@@ -339,7 +353,7 @@ function SeoPage() {
         </section>
 
         {/* TESTIMONIAL */}
-        <section className="relative overflow-hidden border-b border-white/10">
+        <section className="relative overflow-hidden border-b border-[var(--rm-border-soft)]">
           <div
             aria-hidden
             className="absolute inset-0 -z-10"
@@ -348,13 +362,13 @@ function SeoPage() {
                 "radial-gradient(50% 60% at 30% 40%, rgba(80,60,255,0.18), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className="px-6 md:px-12 max-w-[1200px] mx-auto py-28 md:py-28">
+          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-28", siteGutter)}>
             <Reveal duration={0.5}>
-              <blockquote className="text-[28px] sm:text-[40px] md:text-[56px] leading-[1.15] tracking-[-0.025em] font-medium text-white max-w-[22ch] md:max-w-[26ch]">
-                <span className="text-white/35">"</span>
+              <blockquote className={cn(sectionHeadline, "max-w-[22ch] md:max-w-[26ch]")}>
+                <span className="text-[var(--rm-text-ghost)]">"</span>
                 Six months in, organic is 64% of pipeline. It's the first agency relationship that
                 actually built an asset instead of renting one.
-                <span className="text-white/35">"</span>
+                <span className="text-[var(--rm-text-ghost)]">"</span>
               </blockquote>
             </Reveal>
             <Reveal delay={0.1} duration={0.5}>
@@ -364,8 +378,10 @@ function SeoPage() {
                   className="w-14 h-14 rounded-full bg-gradient-to-br from-white/20 to-white/5 ring-1 ring-white/15"
                 />
                 <div>
-                  <p className="text-[15px] font-medium text-white">Anna K.</p>
-                  <p className="text-[13px] text-white/55">Head of Growth · Series-B Fintech</p>
+                  <p className="rm-type-body rm-type-body-strong text-[var(--rm-ink)]">Anna K.</p>
+                  <p className={cn("rm-type-body", textSubtle)}>
+                    Head of Growth · Series-B Fintech
+                  </p>
                 </div>
               </div>
             </Reveal>
@@ -382,14 +398,11 @@ function SeoPage() {
                 "radial-gradient(70% 60% at 50% 50%, rgba(255,75,40,0.22), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className="px-6 md:px-12 max-w-[1280px] mx-auto py-28 md:py-28 text-center">
+          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-28 text-center", siteGutter)}>
             <Reveal duration={0.5}>
-              <h2
-                id="cta-heading"
-                className="mx-auto max-w-5xl text-[44px] sm:text-[72px] md:text-[104px] leading-[0.98] tracking-[-0.04em] font-medium text-white"
-              >
+              <h2 id="cta-heading" className="mx-auto max-w-5xl rm-title-hero">
                 Ready to own the search?{" "}
-                <span className="font-light text-white/55">Let's audit yours.</span>
+                <span className="rm-type-display-muted">Let's audit yours.</span>
               </h2>
             </Reveal>
             <Reveal delay={0.1} duration={0.5}>
@@ -397,15 +410,11 @@ function SeoPage() {
                 <MagneticButton
                   href="mailto:info@realmedia.ink?subject=SEO%20audit"
                   strength={8}
-                  className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
+                  className="rm-btn rm-btn-primary"
                 >
                   Get an audit
                 </MagneticButton>
-                <MagneticButton
-                  href="/cases"
-                  strength={6}
-                  className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full border border-white/20 text-white/90 hover:bg-white/5 transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
-                >
+                <MagneticButton href="/cases" strength={6} className="rm-btn rm-btn-secondary">
                   See case studies
                 </MagneticButton>
               </div>
@@ -423,7 +432,7 @@ function SeoPage() {
 function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
   if (kind === "intent") {
     return (
-      <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-white/25">
+      <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]">
         <div
           className="absolute inset-0 opacity-60"
           style={{
@@ -432,7 +441,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
           }}
         />
         <div className="relative h-full flex flex-col justify-between">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">Intent map</div>
+          <div className="rm-type-meta text-[var(--rm-text-muted)]">Intent map</div>
           <svg viewBox="0 0 200 200" className="w-full h-auto opacity-80">
             {[20, 40, 60, 80, 100, 120, 140, 160, 180].map((y) => (
               <line key={y} x1="0" x2="200" y1={y} y2={y} stroke="rgba(255,255,255,0.06)" />
@@ -451,7 +460,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
               <circle key={i} cx={x} cy={y} r="4" fill="white" />
             ))}
           </svg>
-          <div className="grid grid-cols-3 gap-2 text-[10px] uppercase tracking-[0.18em] text-white/55">
+          <div className="grid grid-cols-3 gap-2 rm-type-tag text-[var(--rm-text-subtle)]">
             <span>Top</span>
             <span className="text-center">Mid</span>
             <span className="text-right">Bottom</span>
@@ -462,15 +471,13 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
   }
   if (kind === "content") {
     return (
-      <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-white/25">
+      <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]">
         <div
           className="absolute -top-20 -right-20 w-60 h-60 rounded-full blur-3xl opacity-40"
           style={{ background: "radial-gradient(circle, rgba(80,60,255,0.5), transparent 70%)" }}
         />
         <div className="relative h-full flex flex-col gap-4">
-          <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">
-            Pillar / cluster
-          </div>
+          <div className="rm-type-meta text-[var(--rm-text-muted)]">Pillar / cluster</div>
           <div className="space-y-2">
             <div className="h-2 rounded-full bg-white/80 w-3/4" />
             <div className="h-2 rounded-full bg-white/30 w-full" />
@@ -481,7 +488,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
             {["POV essay", "Comparison", "Deep dive", "Pillar"].map((t) => (
               <div
                 key={t}
-                className="rounded-lg border border-white/10 px-3 py-2 text-[11px] uppercase tracking-[0.18em] text-white/70"
+                className="rounded-lg border border-[var(--rm-border-soft)] px-3 py-2 rm-type-tag text-[var(--rm-text-body)]"
               >
                 {t}
               </div>
@@ -492,7 +499,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
     );
   }
   return (
-    <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-white/25">
+    <div className="relative aspect-[4/5] rm-media-card p-6 transition-[border-color] duration-500 hover:border-[var(--rm-border-strong)]">
       <div
         className="absolute inset-0 opacity-50"
         style={{
@@ -501,7 +508,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
         }}
       />
       <div className="relative h-full flex flex-col">
-        <div className="text-[10px] uppercase tracking-[0.28em] text-white/60">Authority graph</div>
+        <div className="rm-type-meta text-[var(--rm-text-muted)]">Authority graph</div>
         <svg viewBox="0 0 200 200" className="w-full h-full mt-4 opacity-85">
           <circle cx="100" cy="100" r="6" fill="white" />
           {[
@@ -520,7 +527,7 @@ function ServiceArt({ kind }: { kind: "intent" | "content" | "authority" }) {
             </g>
           ))}
         </svg>
-        <div className="mt-2 text-[11px] uppercase tracking-[0.2em] text-white/55">
+        <div className="mt-2 rm-type-tag text-[var(--rm-text-subtle)]">
           Entity · Schema · Backlinks
         </div>
       </div>

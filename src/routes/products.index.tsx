@@ -10,7 +10,14 @@ import {
   useMotionValueEvent,
 } from "motion/react";
 
-import { btnPrimary, bodyCopy } from "@/components/framer-section";
+import {
+  bodyCopy,
+  btnPrimary,
+  siteGutter,
+  textFaint,
+  textGhost,
+  textSubtle,
+} from "@/components/framer-section";
 
 function PinFrame({
   children,
@@ -232,15 +239,13 @@ function DeliverablesGrid({
   deliverables: readonly { title: string; body: string }[];
 }) {
   return (
-    <div className="grid grid-cols-1 gap-px border-t border-white/[0.07] sm:grid-cols-3">
+    <div className="grid grid-cols-1 gap-px border-t border-[var(--rm-border-soft)] sm:grid-cols-3">
       {deliverables.map((d, i) => (
         <Reveal key={d.title} delay={i * 0.08}>
-          <div className="flex flex-col gap-4 px-0 py-8 sm:px-6 md:px-8 md:py-10 border-b border-white/[0.07] sm:border-b-0 sm:border-r sm:last:border-r-0">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-white/30">0{i + 1}</span>
-            <h3 className="text-[14px] font-medium uppercase tracking-[0.12em] text-white/80 leading-tight">
-              {d.title}
-            </h3>
-            <p className={cn("text-[14px] leading-relaxed text-white/45", bodyCopy)}>{d.body}</p>
+          <div className="flex flex-col gap-4 px-0 py-8 sm:px-6 md:px-8 md:py-10 border-b border-[var(--rm-border-soft)] sm:border-b-0 sm:border-r sm:last:border-r-0">
+            <span className={cn("rm-type-meta", textGhost)}>0{i + 1}</span>
+            <h3 className="rm-type-tag text-[var(--rm-ink)]">{d.title}</h3>
+            <p className={cn("rm-type-body max-w-prose", textFaint)}>{d.body}</p>
           </div>
         </Reveal>
       ))}
@@ -250,7 +255,7 @@ function DeliverablesGrid({
 
 function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) => void }) {
   return (
-    <div className="grid grid-cols-1 gap-px border border-white/[0.07] sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-px border border-[var(--rm-border-soft)] sm:grid-cols-2">
       {(["sprint", "marathon"] as Mode[]).map((m) => {
         const d = modes[m];
         const isActive = active === m;
@@ -265,12 +270,10 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
             )}
           >
             <div className="mb-6">
-              <p className="text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-none tracking-[-0.05em] text-white">
-                {d.tag}
-              </p>
-              <p className="mt-3 text-sm font-medium tracking-[0.02em] text-white/45">{d.meta}</p>
+              <p className="rm-type-display text-[var(--rm-ink)]">{d.tag}</p>
+              <p className={cn("mt-3 rm-type-body", textFaint)}>{d.meta}</p>
             </div>
-            <dl className="flex flex-col gap-3 border-t border-white/[0.07] pt-6">
+            <dl className="flex flex-col gap-3 border-t border-[var(--rm-border-soft)] pt-6">
               {[
                 { label: "Format", value: d.format },
                 { label: "Best for", value: d.bestFor },
@@ -278,16 +281,14 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
                 { label: "Output", value: d.output },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-baseline gap-4">
-                  <dt className="text-[11px] uppercase tracking-[0.18em] text-white/30 shrink-0">
-                    {label}
-                  </dt>
-                  <dd className="text-[13px] font-light tracking-[-0.02em] text-white/70 text-right italic">
+                  <dt className={cn("rm-type-tag shrink-0", textGhost)}>{label}</dt>
+                  <dd className="rm-type-body text-[var(--rm-text-muted)] text-right italic">
                     {value}
                   </dd>
                 </div>
               ))}
             </dl>
-            <div className="mt-8 text-[13px] font-medium tracking-[-0.01em] text-white/50">
+            <div className={cn("mt-8 rm-type-body", textSubtle)}>
               {isActive ? d.cta : `Select ${d.tag}`}
             </div>
           </button>
@@ -320,10 +321,7 @@ function HeroHeadline() {
   const words = [...LINE1, ...LINE2, "right now."];
 
   return (
-    <h1
-      id="products-heading"
-      className="w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:text-[58px] lg:text-[64px]"
-    >
+    <h1 id="products-heading" className="w-full rm-title-hero text-balance">
       <span className="block text-balance">
         {LINE1.map((word, i) => (
           <motion.span
@@ -356,7 +354,7 @@ function HeroHeadline() {
           initial="hidden"
           animate="visible"
           variants={reduce ? undefined : wordVariant}
-          className="font-light text-white/48"
+          className="rm-type-display-muted"
           style={{ display: "inline-block" }}
         >
           right now.
@@ -399,7 +397,7 @@ function ProductsPage() {
 
       {isSticky && (
         <div className="rm-sticky-mode-bar">
-          <div className="mx-auto flex max-w-[1440px] items-center justify-end px-6 md:px-12">
+          <div className="mx-auto flex max-w-[var(--rm-grid-max)] items-center justify-end ">
             <ModeSwitcherCompact active={mode} onChange={handleModeChange} />
           </div>
         </div>
@@ -410,7 +408,7 @@ function ProductsPage() {
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
           aria-labelledby="products-heading"
         >
-          <div className="relative mx-auto w-full max-w-[1440px] px-6 pb-10 pt-2 md:px-12 md:pb-20 md:pt-8">
+          <div className="relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ">
             <div className="mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
               <HeroHeadline />
               <motion.p
@@ -447,10 +445,10 @@ function ProductsPage() {
         <div
           ref={switcherRef}
           id="format"
-          className="border-b border-white/10 bg-[#000]"
+          className="border-b border-[var(--rm-border-soft)] bg-[#000]"
           style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
-          <div className="mx-auto max-w-[1440px] px-6 md:px-12 overflow-hidden">
+          <div className="mx-auto max-w-[var(--rm-grid-max)] overflow-hidden ">
             <SplitModeSwitcher active={mode} onChange={handleModeChange} sectionRef={switcherRef} />
           </div>
         </div>
@@ -458,8 +456,8 @@ function ProductsPage() {
         {/* Mode content */}
         <div className="rm-mode-panel" key={mode}>
           {/* Headline + lead */}
-          <section className="border-b border-white/[0.06] bg-[#000]">
-            <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
+          <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
+            <div className="mx-auto max-w-[var(--rm-grid-max)] py-16 md:py-24 ">
               <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <TextReveal
@@ -482,20 +480,18 @@ function ProductsPage() {
           </section>
 
           {/* Deliverables — 3-column grid */}
-          <section className="border-b border-white/[0.06] bg-[#000]">
-            <div className="mx-auto max-w-[1440px] px-6 sm:px-10 md:px-20 lg:px-32">
+          <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
+            <div className="mx-auto max-w-[var(--rm-grid-max)] ">
               <DeliverablesGrid deliverables={data.deliverables} />
             </div>
           </section>
         </div>
 
         {/* Compare formats */}
-        <section className="border-b border-white/[0.06] bg-[#000]">
-          <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
+        <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
+          <div className="mx-auto max-w-[var(--rm-grid-max)] py-16 md:py-24 ">
             <Reveal>
-              <p className="text-[10px] uppercase tracking-[0.28em] text-white/25 mb-10">
-                Compare formats
-              </p>
+              <p className="rm-eyebrow mb-10">Compare formats</p>
             </Reveal>
             <Reveal delay={0.08}>
               <PinFrame>
