@@ -9,6 +9,7 @@ import {
   chromeLightSurface,
   siteGutter,
   textFaint,
+  textGhost,
   textMeta,
   textNav,
   textSubtle,
