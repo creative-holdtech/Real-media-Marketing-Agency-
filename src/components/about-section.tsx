@@ -8,6 +8,7 @@ import {
   sectionGap,
   sectionInnerStack,
   sectionShell,
+  textGhost,
 } from "@/components/framer-section";
 import { ChapterSpacer, MarketingSectionIntro } from "@/components/marketing-section";
 import { MetaCard, type PlanCardMotion } from "@/components/meta-card";
@@ -73,7 +74,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
                   <ul className="rm-plan-bullets reveal flex flex-col gap-3 pt-1" data-delay="2">
                     {studio.bullets.map((item) => (
                       <li key={item} className="rm-plan-bullets__item flex items-start gap-3">
-                        <span className="rm-plan-bullets__tick mt-[0.3em] shrink-0 text-sm text-white/30">
+                        <span className={cn("rm-plan-bullets__tick mt-[0.3em] shrink-0 text-sm", textGhost)}>
                           —
                         </span>
                         <span className={bodyCopy}>{item}</span>

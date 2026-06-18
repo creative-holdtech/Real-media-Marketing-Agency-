@@ -6,8 +6,11 @@ import {
   btnOutlineOnDark,
   btnPrimary,
   FramerTag,
+  heroSubcopyStrong,
   pageHeroContainer,
+  textFaint,
 } from "@/components/framer-section";
+import { SplitDisplayTitle } from "@/components/ds-templates";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
 import { CasesSection } from "@/components/cases-section";
@@ -81,29 +84,22 @@ function Index() {
           <div className={pageHeroContainer}>
             <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
               {hero?.tag ? (
-                <p className="reveal mb-5 w-fit">
+                <p className="reveal mb-4 w-fit">
                   <FramerTag>{hero.tag}</FramerTag>
                 </p>
               ) : null}
-              <h1 className="reveal rm-type-display w-full text-white">
-                {titleLines.map((line, index) => (
-                  <span
-                    key={`${line}-${index}`}
-                    className={cn(
-                      "block text-balance",
-                      index === titleLines.length - 1 && titleLines.length > 1
-                        ? "font-light text-white/48"
-                        : undefined,
-                    )}
-                  >
-                    {line}
-                  </span>
-                ))}
-              </h1>
+              <div className="reveal w-full">
+                <SplitDisplayTitle
+                  lines={titleLines}
+                  className="text-white"
+                  mutedClassName="rm-type-display-muted"
+                />
+              </div>
               {hero?.subheading ? (
                 <p
                   className={cn(
-                    "reveal mt-6 max-w-[34ch] text-balance text-center rm-type-body rm-type-body-strong text-white/92",
+                    "reveal mt-6 max-w-[34ch] text-balance text-center",
+                    heroSubcopyStrong,
                   )}
                   data-delay="2"
                 >
@@ -113,7 +109,8 @@ function Index() {
               {hero?.body ? (
                 <p
                   className={cn(
-                    "reveal mt-4 max-w-[34ch] text-balance text-center rm-type-body text-white/52",
+                    "reveal mt-4 max-w-[34ch] text-balance text-center rm-type-body",
+                    textFaint,
                   )}
                   data-delay="2"
                 >

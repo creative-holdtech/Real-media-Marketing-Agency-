@@ -14,6 +14,7 @@ import {
   sectionContainer,
   sectionContentGrid,
   siteGutter,
+  textGhost,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
 import { cn } from "@/lib/utils";
@@ -89,7 +90,7 @@ export function QuoteGradientSection({
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       className={cn(
-        `relative flex min-h-[min(560px,72svh)] flex-col justify-center overflow-hidden border-b border-white/[0.06] py-20 md:py-28 ${siteGutter}`,
+        `relative flex min-h-[min(560px,72svh)] flex-col justify-center overflow-hidden border-b border-[var(--rm-border-soft)] py-20 md:py-28 ${siteGutter}`,
         background === "solid" && "bg-[var(--rm-surface-raised)]",
         className,
       )}
@@ -269,7 +270,7 @@ export function ManifestoQuoteSection({
           <ul className="mt-10 flex flex-col gap-4 md:mt-12">
             {bullets.map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <span className="mt-[0.35em] shrink-0 text-sm text-white/30" aria-hidden>
+                <span className={cn("mt-[0.35em] shrink-0 text-sm", textGhost)} aria-hidden>
                   —
                 </span>
                 <span

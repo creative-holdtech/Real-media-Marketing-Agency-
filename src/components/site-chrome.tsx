@@ -1,18 +1,35 @@
 import { Link } from "@tanstack/react-router";
 
 import logoUrl from "@/assets/logo.svg";
-import { btnPrimarySm, siteGutter, textMeta } from "@/components/framer-section";
+import {
+  btnPrimarySm,
+  chromeLightBorder,
+  chromeLightInk,
+  chromeLightMuted,
+  chromeLightSurface,
+  siteGutter,
+  textFaint,
+  textMeta,
+  textNav,
+  textSubtle,
+} from "@/components/framer-section";
 import { MobileMenu } from "@/components/mobile-menu";
 import { useSiteNav } from "@/components/nav-context";
 import { triggerPageTransition } from "@/components/page-transition";
 import { cn } from "@/lib/utils";
+
+function chromeLink(light: boolean) {
+  return cn(
+    "transition-colors duration-150",
+    light ? "text-[var(--rm-light-muted)] hover:text-[var(--rm-light-ink)]" : "text-[var(--rm-text-muted)] hover:text-white",
+  );
+}
 
 export function SiteHeader({
   variant = "dark",
   overlay = false,
 }: {
   variant?: "light" | "dark";
-  /** Homepage hero — no bar behind the floating nav pill */
   overlay?: boolean;
 }) {
   const light = variant === "light";
@@ -26,7 +43,7 @@ export function SiteHeader({
         overlay
           ? "bg-transparent"
           : light
-            ? "bg-[#fbfbfa]/90 backdrop-blur-md"
+            ? "bg-[var(--rm-light-surface)]/90 backdrop-blur-md"
             : "bg-rm-page/80 backdrop-blur-md",
       )}
     >
@@ -34,7 +51,7 @@ export function SiteHeader({
         className={cn(
           "mx-auto grid h-14 w-full max-w-[var(--rm-grid-max)] grid-cols-[1fr_auto_1fr] items-center px-5",
           light
-            ? "rounded-lg border border-[#eaeaea] bg-white/90"
+            ? cn("rounded-lg border bg-white/90", chromeLightBorder)
             : "rounded-full border border-white/[0.08] bg-rm-surface/40",
         )}
       >
@@ -48,7 +65,7 @@ export function SiteHeader({
           />
         </Link>
 
-        <ul className="hidden items-center justify-center gap-5 text-[13px] md:flex">
+        <ul className={cn("hidden items-center justify-center gap-5 md:flex", textNav)}>
           {siteNav.map((n) => (
             <li key={n.label}>
               {n.to ? (
@@ -59,32 +76,26 @@ export function SiteHeader({
                     triggerPageTransition(n.to!);
                   }}
                   className={cn(
-                    "relative inline-flex flex-col items-center gap-1.5 transition-colors duration-150",
-                    light
-                      ? "text-[#787774] hover:text-[#111111]"
-                      : "text-white/60 hover:text-white",
+                    "relative inline-flex flex-col items-center gap-1.5",
+                    light ? cn(chromeLightMuted, "hover:text-[var(--rm-light-ink)]") : "text-[var(--rm-text-muted)] hover:text-white",
                   )}
                   activeProps={{
-                    className: light ? "nav-active !text-[#111111]" : "nav-active !text-white",
+                    className: light
+                      ? "nav-active !text-[var(--rm-light-ink)]"
+                      : "nav-active !text-white",
                   }}
                 >
                   {n.label}
                   <span
                     aria-hidden
                     className={cn(
-                      "nav-dot block w-[3px] h-[3px] rounded-full opacity-0 scale-0 transition-[opacity,transform] duration-200",
-                      light ? "bg-[#9f2f2d]" : "bg-rm-accent",
+                      "nav-dot block h-[3px] w-[3px] scale-0 rounded-full opacity-0 transition-[opacity,transform] duration-200",
+                      light ? "bg-[var(--rm-light-accent)]" : "bg-rm-accent",
                     )}
                   />
                 </Link>
               ) : (
-                <a
-                  href={n.href}
-                  className={cn(
-                    "transition-colors duration-150",
-                    light ? "text-[#787774] hover:text-[#111111]" : "text-white/60 hover:text-white",
-                  )}
-                >
+                <a href={n.href} className={chromeLink(light)}>
                   {n.label}
                 </a>
               )}
@@ -95,7 +106,10 @@ export function SiteHeader({
         <div className="col-start-3 flex items-center justify-end gap-1">
           <Link
             to="/audit"
-            onClick={(e) => { e.preventDefault(); triggerPageTransition("/audit"); }}
+            onClick={(e) => {
+              e.preventDefault();
+              triggerPageTransition("/audit");
+            }}
             className={cn(btnPrimarySm, "hidden md:inline-flex")}
           >
             Get Audit
@@ -115,7 +129,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
       className={cn(
         "mx-auto max-w-[var(--rm-grid-max)] pb-10 pt-12",
         siteGutter,
-        light && "border-t border-[#eaeaea] text-[#111111]",
+        light && cn("border-t", chromeLightBorder, chromeLightInk),
       )}
     >
       <div className="grid grid-cols-12 gap-6 md:gap-8">
@@ -127,28 +141,15 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
             height={65}
             className={cn("h-12 w-auto", light && "[filter:invert(1)]")}
           />
-          <p
-            className={cn(
-              "mt-5 max-w-xs text-[14px] leading-relaxed",
-              light ? "text-[#787774]" : "text-white/55",
-            )}
-          >
+          <p className={cn("rm-type-body mt-5 max-w-xs", light ? chromeLightMuted : textSubtle)}>
             Strategic marketing engine for competitive B2B markets.
           </p>
-          <div
-            className={cn(
-              "mt-8 flex gap-5 text-[12px] uppercase tracking-[0.18em]",
-              light ? "text-[#787774]" : "text-white/40",
-            )}
-          >
+          <div className={cn("mt-8 flex gap-5", textMeta, light ? chromeLightMuted : textFaint)}>
             <a
               href="https://www.linkedin.com/company/real-media-corp/"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "transition-colors duration-150",
-                light ? "hover:text-[#111111]" : "hover:text-white",
-              )}
+              className={chromeLink(light)}
             >
               LinkedIn
             </a>
@@ -156,10 +157,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
               href="https://dribbble.com/realmedia26"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "transition-colors duration-150",
-                light ? "hover:text-[#111111]" : "hover:text-white",
-              )}
+              className={chromeLink(light)}
             >
               Dribbble
             </a>
@@ -167,10 +165,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
               href="https://www.instagram.com/realmedia.corp"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "transition-colors duration-150",
-                light ? "hover:text-[#111111]" : "hover:text-white",
-              )}
+              className={chromeLink(light)}
             >
               Instagram
             </a>
@@ -178,117 +173,56 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
         </div>
 
         <div className="col-span-6 md:col-span-2">
-          <div
-            className={cn("mb-5", textMeta, light ? "text-[#787774]" : "text-white/30")}
-          >
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
             Work
           </div>
-          <ul className={cn("space-y-3 rm-type-body", light ? "text-[#787774]" : "text-white/70")}>
-            <li>
-              <Link
-                to="/services"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Services
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/cases"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Case Studies
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/products"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/blog"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Blog
-              </Link>
-            </li>
+          <ul className={cn("space-y-3 rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
+            {(
+              [
+                ["/services", "Services"],
+                ["/cases", "Case Studies"],
+                ["/products", "Products"],
+                ["/blog", "Blog"],
+              ] as const
+            ).map(([to, label]) => (
+              <li key={to}>
+                <Link to={to} className={chromeLink(light)}>
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div className="col-span-6 md:col-span-2">
-          <div
-            className={cn("mb-5", textMeta, light ? "text-[#787774]" : "text-white/30")}
-          >
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
             Agency
           </div>
-          <ul className={cn("space-y-3 rm-type-body", light ? "text-[#787774]" : "text-white/70")}>
-            <li>
-              <Link
-                to="/about"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                About
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contact"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/audit"
-                className={cn(
-                  "transition-colors duration-150",
-                  light ? "hover:text-[#111111]" : "hover:text-white",
-                )}
-              >
-                Free Audit
-              </Link>
-            </li>
+          <ul className={cn("space-y-3 rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
+            {(
+              [
+                ["/about", "About"],
+                ["/contact", "Contact"],
+                ["/audit", "Free Audit"],
+              ] as const
+            ).map(([to, label]) => (
+              <li key={to}>
+                <Link to={to} className={chromeLink(light)}>
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
         <div className="col-span-12 md:col-span-3">
-          <div
-            className={cn("mb-5", textMeta, light ? "text-[#787774]" : "text-white/30")}
-          >
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
             Located
           </div>
-          <div className={cn("rm-type-body", light ? "text-[#787774]" : "text-white/70")}>
+          <div className={cn("rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
             Warsaw — EU — MENA
           </div>
-          <div
-            className={cn(
-              "mt-5 rm-type-body",
-              light ? "text-[#787774]" : "text-white/40",
-            )}
-          >
+          <div className={cn("rm-type-body mt-5", light ? chromeLightMuted : textFaint)}>
             Operating across CET / GST timezones for partners in Fintech · AI SaaS · Cybersecurity ·
             iGaming
           </div>
@@ -297,9 +231,9 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
 
       <div
         className={cn(
-          "mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-5",
+          "mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--rm-border-soft)] pt-5",
           textMeta,
-          light ? "text-[#787774]" : "text-white/30",
+          light ? chromeLightMuted : textGhost,
         )}
       >
         <span>© R-M 2026</span>
