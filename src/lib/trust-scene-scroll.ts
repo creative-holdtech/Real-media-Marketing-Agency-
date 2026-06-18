@@ -39,8 +39,7 @@ export function computeTrustSceneProgress(sceneEl: HTMLElement): number {
   const viewportFill = clamp(0, 1, (vh - Math.max(0, rect.top)) / vh);
 
   // Sticky field is actively presented (scene spans most of the viewport).
-  const stickyPresented =
-    rect.top <= pinLeadPx + 12 && rect.bottom >= vh * 0.68;
+  const stickyPresented = rect.top <= pinLeadPx + 12 && rect.bottom >= vh * 0.68;
   if (stickyPresented || viewportFill > 0.7) {
     const presence = Math.max(base, 0.042 + viewportFill * 0.045);
     return clamp(0, 1, presence);

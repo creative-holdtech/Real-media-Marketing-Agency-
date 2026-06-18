@@ -49,7 +49,9 @@ type WidenLiteral<T> = T extends number
       : T;
 
 export type DragableCarouselConfig = Partial<{
-  [K in keyof typeof DRAGABLE_CAROUSEL_DEFAULTS]: WidenLiteral<(typeof DRAGABLE_CAROUSEL_DEFAULTS)[K]>;
+  [K in keyof typeof DRAGABLE_CAROUSEL_DEFAULTS]: WidenLiteral<
+    (typeof DRAGABLE_CAROUSEL_DEFAULTS)[K]
+  >;
 }>;
 
 type DragableCarouselProps = {
@@ -166,8 +168,7 @@ export function DragableCarousel({
         const isActive = absDistance < 0.18;
 
         tweenEl.dataset.dragableActive = isActive ? "true" : "false";
-        tweenEl.dataset.dragableSettled =
-          showCaption && index === settledIndex ? "true" : "false";
+        tweenEl.dataset.dragableSettled = showCaption && index === settledIndex ? "true" : "false";
 
         if (absDistance > maxPeekDistance) {
           tweenEl.style.opacity = "0";
@@ -342,7 +343,10 @@ export function DragableCarousel({
   return (
     <div
       ref={carouselRootRef}
-      className={cn("rm-dragable-carousel relative mx-auto w-full max-w-[min(100%,52rem)]", className)}
+      className={cn(
+        "rm-dragable-carousel relative mx-auto w-full max-w-[min(100%,52rem)]",
+        className,
+      )}
       role="region"
       aria-label={ariaLabel}
       aria-roledescription="carousel"
@@ -470,7 +474,10 @@ export function DragableCarousel({
             onClick={() => emblaApi?.scrollPrev()}
             aria-label="Previous slide"
           >
-            <ChevronLeft strokeWidth={2.25} style={{ width: arrowIconSize, height: arrowIconSize }} />
+            <ChevronLeft
+              strokeWidth={2.25}
+              style={{ width: arrowIconSize, height: arrowIconSize }}
+            />
           </button>
           <button
             type="button"
@@ -484,11 +491,13 @@ export function DragableCarousel({
             onClick={() => emblaApi?.scrollNext()}
             aria-label="Next slide"
           >
-            <ChevronRight strokeWidth={2.25} style={{ width: arrowIconSize, height: arrowIconSize }} />
+            <ChevronRight
+              strokeWidth={2.25}
+              style={{ width: arrowIconSize, height: arrowIconSize }}
+            />
           </button>
         </div>
       ) : null}
-
     </div>
   );
 }

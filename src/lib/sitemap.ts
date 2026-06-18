@@ -44,9 +44,7 @@ export async function buildSitemapXml(): Promise<string> {
   }
 
   for (const service of servicesList) {
-    entries.push(
-      urlEntry(`${siteUrl}/services/${service.slug}`, today, "monthly", "0.8"),
-    );
+    entries.push(urlEntry(`${siteUrl}/services/${service.slug}`, today, "monthly", "0.8"));
   }
 
   const caseList = await getCases().catch(() => cases);
@@ -57,9 +55,7 @@ export async function buildSitemapXml(): Promise<string> {
   const posts = await getPosts().catch(() => [] as Awaited<ReturnType<typeof getPosts>>);
   for (const post of posts) {
     const lastmod = post.dateISO || today;
-    entries.push(
-      urlEntry(`${siteUrl}/blog/${post.slug}`, lastmod, "monthly", "0.6"),
-    );
+    entries.push(urlEntry(`${siteUrl}/blog/${post.slug}`, lastmod, "monthly", "0.6"));
   }
 
   return `<?xml version="1.0" encoding="UTF-8"?>

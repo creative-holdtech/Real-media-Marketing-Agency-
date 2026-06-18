@@ -51,15 +51,17 @@ export function UnifiedCTA({
             className={cn("mx-auto max-w-lg text-balance", sectionHeadlineLead)}
           >
             <span className={cn("block", sectionHeadline)}>{title}</span>
-            {titleAccent ? (
-              <span className={cn("block", bodyCopy)}>{titleAccent}</span>
-            ) : null}
+            {titleAccent ? <span className={cn("block", bodyCopy)}>{titleAccent}</span> : null}
           </h2>
         </Reveal>
         <Reveal delay={0.1} duration={0.5}>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {primaryHref ? (
-              <MagneticButton href={primaryHref} strength={8} className={cn(btnPrimary, "group gap-2")}>
+              <MagneticButton
+                href={primaryHref}
+                strength={8}
+                className={cn(btnPrimary, "group gap-2")}
+              >
                 {primaryLabel?.replace(/\s*→$/, "")}
                 <BtnArrow />
               </MagneticButton>
@@ -70,7 +72,11 @@ export function UnifiedCTA({
               </Link>
             )}
             {secondaryHref ? (
-              <MagneticButton href={secondaryHref} strength={6} className={cn(btnOutline, "group gap-2")}>
+              <MagneticButton
+                href={secondaryHref}
+                strength={6}
+                className={cn(btnOutline, "group gap-2")}
+              >
                 {secondaryLabel?.replace(/\s*→$/, "")}
                 <BtnArrow />
               </MagneticButton>

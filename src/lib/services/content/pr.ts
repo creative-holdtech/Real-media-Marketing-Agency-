@@ -126,8 +126,14 @@ export const prService: ServiceContent = {
         metrics: [
           { value: "External positioning", label: "Full strategy built from the ground up" },
           { value: "Media presence", label: "Launched from scratch with industry collaborations" },
-          { value: "Market validation", label: "Media coverage and a structured testimonials strategy" },
-          { value: "Global stage", label: "First international event booth in less than a year of work" },
+          {
+            value: "Market validation",
+            label: "Media coverage and a structured testimonials strategy",
+          },
+          {
+            value: "Global stage",
+            label: "First international event booth in less than a year of work",
+          },
         ],
       },
     ],

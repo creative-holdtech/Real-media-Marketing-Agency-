@@ -3,7 +3,14 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
-import { btnGhostLink, FramerTag, sectionContainer, sectionHeadline, sectionShell, textMeta } from "@/components/framer-section";
+import {
+  btnGhostLink,
+  FramerTag,
+  sectionContainer,
+  sectionHeadline,
+  sectionShell,
+  textMeta,
+} from "@/components/framer-section";
 import type { Post } from "@/lib/posts";
 import { cn } from "@/lib/utils";
 
@@ -29,8 +36,7 @@ const INSIGHT_CARD_MOTION: Record<(typeof FEATURED_SLUGS)[number], string> = {
 };
 
 function InsightCarouselSlide({ post }: { post: Post }) {
-  const motionId =
-    INSIGHT_CARD_MOTION[post.slug as (typeof FEATURED_SLUGS)[number]] ?? "orbit";
+  const motionId = INSIGHT_CARD_MOTION[post.slug as (typeof FEATURED_SLUGS)[number]] ?? "orbit";
 
   return (
     <Link
@@ -154,8 +160,8 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
 
           <div ref={stageRef} className="rm-insights-stage">
             <p className="sr-only">
-              Drag or use arrows to browse featured articles. Details for the selected article appear below the
-              carousel.
+              Drag or use arrows to browse featured articles. Details for the selected article
+              appear below the carousel.
             </p>
 
             <DragableCarousel
@@ -178,11 +184,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
                   initial={reduce ? false : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={reduce ? undefined : { opacity: 0, y: -4 }}
-                  transition={
-                    reduce
-                      ? { duration: 0 }
-                      : { duration: 0.42, ease: [0.4, 0, 0.2, 1] }
-                  }
+                  transition={reduce ? { duration: 0 } : { duration: 0.42, ease: [0.4, 0, 0.2, 1] }}
                 >
                   <Link
                     to="/blog/$slug"

@@ -121,7 +121,8 @@ export const performanceService: ServiceContent = {
         metrics: [
           {
             value: "2.7 ROAS",
-            label: "US market entry · First month in. Profitable funnel with a 3+ month user lifecycle",
+            label:
+              "US market entry · First month in. Profitable funnel with a 3+ month user lifecycle",
           },
         ],
       },

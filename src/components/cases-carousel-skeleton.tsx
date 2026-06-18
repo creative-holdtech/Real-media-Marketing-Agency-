@@ -1,6 +1,12 @@
 import insightsBg from "@/assets/insights-bg.png";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
-import { pageHeroContainer, sectionContainer, sectionGap, sectionHeaderGrid, sectionShell } from "@/components/framer-section";
+import {
+  pageHeroContainer,
+  sectionContainer,
+  sectionGap,
+  sectionHeaderGrid,
+  sectionShell,
+} from "@/components/framer-section";
 import { SiteHeader } from "@/components/site-chrome";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +45,13 @@ export function CasesCarouselSkeleton() {
             </div>
           </div>
           <div className="border-t border-[var(--rm-border-soft)]">
-            <div className={cn("rm-cases-gallery__row border-b border-[var(--rm-border-soft)]", sectionGap, "grid grid-cols-1 md:grid-cols-3")}>
+            <div
+              className={cn(
+                "rm-cases-gallery__row border-b border-[var(--rm-border-soft)]",
+                sectionGap,
+                "grid grid-cols-1 md:grid-cols-3",
+              )}
+            >
               <div className="hidden md:block" />
               <div className={cn("grid grid-cols-1 md:col-span-2 md:grid-cols-2", sectionGap)}>
                 <div className="aspect-[16/10] rounded-md border border-[var(--rm-border-soft)] bg-white/[0.03]" />

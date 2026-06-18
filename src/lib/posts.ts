@@ -49,7 +49,8 @@ export const posts: Post[] = [
     excerpt:
       "Regulatory fatigue, trust gaps, and localisation debt. A pattern study of twelve fintechs that entered both regions — and what separated the ones that survived.",
     image: blog04,
-    imageAlt: "Brutalist exhibition poster with bold typography and architectural installation photography",
+    imageAlt:
+      "Brutalist exhibition poster with bold typography and architectural installation photography",
     author: "R-M Editorial",
     featured: true,
     body: [

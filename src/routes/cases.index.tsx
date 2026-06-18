@@ -26,10 +26,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/cases/")({
   loader: async () => {
-    const [page, casesResult] = await Promise.all([
-      getPageContent("cases"),
-      getCasesWithMeta(),
-    ]);
+    const [page, casesResult] = await Promise.all([getPageContent("cases"), getCasesWithMeta()]);
     return { page, cases: casesResult.cases, cmsFailed: casesResult.cmsFailed };
   },
   head: ({ loaderData }) => {
@@ -43,7 +40,10 @@ export const Route = createFileRoute("/cases/")({
     const seo = buildPageHead({ title, description, pathname: "/cases" });
     return {
       meta: seo.meta,
-      links: [...seo.links, { rel: "preload", as: "image", href: insightsBg, fetchPriority: "high" }],
+      links: [
+        ...seo.links,
+        { rel: "preload", as: "image", href: insightsBg, fetchPriority: "high" },
+      ],
     };
   },
   pendingComponent: CasesCarouselSkeleton,
@@ -67,8 +67,10 @@ function CasesPage() {
   const cta = page.cta;
   const casesDefaults = getPageDefaults("cases");
 
-  const titleLines =
-    casesDefaults.hero?.titleLines ?? ["Work that ships", "for founders who build to scale"];
+  const titleLines = casesDefaults.hero?.titleLines ?? [
+    "Work that ships",
+    "for founders who build to scale",
+  ];
   const heroSubheading = casesDefaults.hero?.subheading ?? casesDefaults.hero?.body;
   const heroTag = hero?.tag ?? casesDefaults.hero?.tag ?? "Case studies · R—M";
   const workSection = casesDefaults.sections?.work;
@@ -158,10 +160,7 @@ function CasesPage() {
           </MarketingSection>
         ) : (
           <div className="rm-defer-paint">
-            <CasesGallerySection
-              {...casesGalleryHeaderProps(workSection)}
-              cases={caseList}
-            />
+            <CasesGallerySection {...casesGalleryHeaderProps(workSection)} cases={caseList} />
           </div>
         )}
 

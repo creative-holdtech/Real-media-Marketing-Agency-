@@ -109,7 +109,9 @@ function ServicesIndex() {
                   </div>
 
                   <div className="mt-5 flex flex-col gap-2 md:mt-6">
-                    <h2 className={cn(subsectionTitle, "text-white md:text-[1.75rem]")}>{s.name}</h2>
+                    <h2 className={cn(subsectionTitle, "text-white md:text-[1.75rem]")}>
+                      {s.name}
+                    </h2>
                     <p className={textMeta}>{s.tagline}</p>
                   </div>
 

@@ -48,7 +48,10 @@ function SlotChar({
   }, [triggered, char, delay, cycles]);
 
   return (
-    <span className="inline-block" style={{ minWidth: /[a-zA-Z0-9]/.test(char) ? "0.58em" : undefined }}>
+    <span
+      className="inline-block"
+      style={{ minWidth: /[a-zA-Z0-9]/.test(char) ? "0.58em" : undefined }}
+    >
       {display}
     </span>
   );

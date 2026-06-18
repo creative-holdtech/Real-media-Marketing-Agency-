@@ -122,74 +122,74 @@ export function MobileMenu() {
               }}
             >
               {item.to ? (
-              <Link
-                to={item.to}
-                onClick={close}
-                className="group flex items-center justify-between gap-4 py-[18px]"
-              >
-                {/* Index numeral */}
-                <span
-                  className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
-                  style={{ width: "2ch" }}
+                <Link
+                  to={item.to}
+                  onClick={close}
+                  className="group flex items-center justify-between gap-4 py-[18px]"
                 >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-
-                {/* Label + sub */}
-                <span className="flex-1 flex flex-col gap-0.5 min-w-0">
+                  {/* Index numeral */}
                   <span
-                    className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
-                    style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
+                    className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
+                    style={{ width: "2ch" }}
                   >
-                    {item.label}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
-                    {item.sub ?? ""}
-                  </span>
-                </span>
 
-                {/* Arrow */}
-                <span
-                  aria-hidden
-                  className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
-                  style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
-                >
-                  →
-                </span>
-              </Link>
-              ) : (
-              <a
-                href={item.href}
-                onClick={close}
-                className="group flex items-center justify-between gap-4 py-[18px]"
-              >
-                <span
-                  className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
-                  style={{ width: "2ch" }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="flex-1 flex flex-col gap-0.5 min-w-0">
-                  <span
-                    className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
-                    style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
-                  >
-                    {item.label}
-                  </span>
-                  {item.sub ? (
-                    <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
-                      {item.sub}
+                  {/* Label + sub */}
+                  <span className="flex-1 flex flex-col gap-0.5 min-w-0">
+                    <span
+                      className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
+                      style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
+                    >
+                      {item.label}
                     </span>
-                  ) : null}
-                </span>
-                <span
-                  aria-hidden
-                  className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
-                  style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
+                    <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
+                      {item.sub ?? ""}
+                    </span>
+                  </span>
+
+                  {/* Arrow */}
+                  <span
+                    aria-hidden
+                    className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
+                    style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
+                  >
+                    →
+                  </span>
+                </Link>
+              ) : (
+                <a
+                  href={item.href}
+                  onClick={close}
+                  className="group flex items-center justify-between gap-4 py-[18px]"
                 >
-                  →
-                </span>
-              </a>
+                  <span
+                    className="shrink-0 tabular-nums text-[10px] uppercase tracking-[0.28em] text-white/25 select-none"
+                    style={{ width: "2ch" }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="flex-1 flex flex-col gap-0.5 min-w-0">
+                    <span
+                      className="text-white/90 group-hover:text-white font-medium leading-[1] tracking-[-0.025em] transition-colors duration-200"
+                      style={{ fontSize: "clamp(2rem, 9vw, 2.8rem)" }}
+                    >
+                      {item.label}
+                    </span>
+                    {item.sub ? (
+                      <span className="text-[11px] text-white/35 tracking-[0.08em] font-normal">
+                        {item.sub}
+                      </span>
+                    ) : null}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="shrink-0 text-rm-accent text-[18px] leading-none opacity-0 group-hover:opacity-100 translate-x-[-6px] group-hover:translate-x-0"
+                    style={{ transition: "opacity 180ms ease-out, transform 180ms ease-out" }}
+                  >
+                    →
+                  </span>
+                </a>
               )}
             </li>
           ))}

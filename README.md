@@ -1,6 +1,6 @@
 # refined-narrative-lab
 
-Marketing site (TanStack Start + Vite). Production deploys from `main` via Vercel.
+Marketing site for R—M (TanStack Start + Vite). Production deploys from `main` via Vercel.
 
 ## Setup
 
@@ -9,32 +9,24 @@ git clone https://github.com/juliiakruk0604/refined-narrative-lab.git
 cd refined-narrative-lab
 npm install
 cp .env.example .env
-# Edit .env with your Supabase anon keys (Vercel → Project Settings → Environment Variables for production)
 npm run dev
 ```
 
+Open http://localhost:8080
+
 ## Payload CMS
 
-Content admin lives in `cms/` (Payload 3 + Next.js + PostgreSQL).
+Content admin lives in `cms/` (Payload 3 + Next.js + PostgreSQL). See `cms/README.md`.
 
-### Local setup
+### Quick local CMS setup
 
 ```bash
-# 1. Start Postgres
 cd cms && docker compose up -d
-
-# 2. Configure env
-cp cms/.env.example cms/.env
-# Set PAYLOAD_SECRET (openssl rand -hex 32)
-
-# 3. Install & run CMS
-cd cms && npm install && npm run dev
+cp .env.example .env   # set PAYLOAD_SECRET (openssl rand -hex 32)
+npm install && npm run dev
 # Admin: http://localhost:3001/admin
 
-# 4. Seed sample posts (optional)
-npm run seed --prefix cms
-
-# 5. Point the site at Payload (root .env)
+# Point the site at Payload (root .env)
 PAYLOAD_URL=http://localhost:3001
 ```
 
@@ -48,14 +40,8 @@ PAYLOAD_URL=http://localhost:3001
 | Header & mobile menu | **Globals → Navigation** |
 | Redirects | **Redirects** |
 | robots.txt | **Globals → Site Settings** |
-| Pages (future routes) | **Pages** |
 
-Scheduled posts: enable **Schedule publish** in the post sidebar. Vercel cron hits `/api/jobs/run` every minute (set `CRON_SECRET`).
-
-### Deploy
-
-- **Site:** Vercel (existing) — set `PAYLOAD_URL` to your CMS URL
-- **CMS:** deploy `cms/` as separate Vercel project — set `DATABASE_URL` (Supabase Postgres), `PAYLOAD_SECRET`, `CRON_SECRET`
+Scheduled posts: enable **Schedule publish** in the post sidebar. Vercel cron hits `/api/jobs/run` once daily at 09:00 UTC (set `CRON_SECRET` in CMS project).
 
 ## Scripts
 
@@ -63,18 +49,22 @@ Scheduled posts: enable **Schedule publish** in the post sidebar. Vercel cron hi
 |---------|---------|
 | `npm run dev` | Local dev server |
 | `npm run dev:cms` | Payload admin (port 3001) |
-| `npm run build` | Production build |
+| `npm run build` | Generate SEO assets + production build |
 | `npm run lint` | ESLint |
 | `npm run format` | Prettier |
+| `npm run seo:generate` | Regenerate `public/sitemap.xml` and `robots.txt` |
 
 ## Deploy
 
-- **Production:** https://refined-narrative-lab.vercel.app
-- **Branch:** `main` only (PRs required)
-- **Build:** see `vercel.json`
+| Project | URL / path |
+|---------|------------|
+| **Site** | https://rm-marketing-agency.vercel.app |
+| **CMS** | Separate Vercel project from `cms/` |
+
+Set `SITE_URL` and `VITE_SITE_URL` to your production domain. Set `PAYLOAD_URL` to the deployed CMS URL.
 
 ## Git workflow
 
-- One canonical clone per machine (avoid duplicate folders with different SHAs).
 - Conventional commits: `feat:`, `fix:`, `style:`, `chore:`.
-- Do not commit `.env` or `.claude/` — use `.env.example` as a template.
+- Do not commit `.env` — use `.env.example` as a template.
+- PRs into `main` run CI (lint + build).

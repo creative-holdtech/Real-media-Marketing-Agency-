@@ -8,13 +8,11 @@ import { cn } from "@/lib/utils";
 export const siteGutter = "px-6 md:px-10";
 /** Full-width page band aligned to editorial grid */
 export const pageBand = `mx-auto w-full max-w-[var(--rm-grid-max)] ${siteGutter}`;
-export const sectionShell =
-  `border-b border-[var(--rm-border-soft)] bg-[var(--rm-surface-raised)] py-16 md:py-20 ${siteGutter}`;
+export const sectionShell = `border-b border-[var(--rm-border-soft)] bg-[var(--rm-surface-raised)] py-16 md:py-20 ${siteGutter}`;
 export const sectionContainer =
   "mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col gap-8 md:gap-12";
 /** Hero band — same grid as section blocks */
-export const pageHeroContainer =
-  `relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ${siteGutter}`;
+export const pageHeroContainer = `relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ${siteGutter}`;
 export const proseContainer = "mx-auto w-full max-w-[var(--rm-prose-max)]";
 export const formContainer = "mx-auto w-full max-w-[var(--rm-form-max)]";
 export const sectionGap = "gap-6 md:gap-8";
@@ -22,8 +20,7 @@ export const sectionInnerStack = "flex flex-col gap-4 md:gap-6";
 /** Title → body spacing — 16px (8px grid) */
 export const sectionHeadlineLead = "flex w-full flex-col gap-4";
 export const sectionHeaderGrid = `grid grid-cols-1 items-start ${sectionGap} md:grid-cols-3`;
-export const sectionHeaderContent =
-  "reveal flex flex-col items-start md:col-span-2 md:max-w-prose";
+export const sectionHeaderContent = "reveal flex flex-col items-start md:col-span-2 md:max-w-prose";
 /** 3-col editorial grid — intro + card blocks share one rhythm */
 export const sectionContentGrid = `grid grid-cols-1 ${sectionGap} md:grid-cols-3 md:items-stretch`;
 /** 2×2 card matrix in columns 2–3 (chapter watermark in column 1) */
@@ -39,12 +36,10 @@ export const sectionHeadline = "rm-type-section-headline text-[var(--rm-ink)]";
 export const textMeta = "rm-type-meta";
 export const textLabel = "rm-type-body rm-type-body-strong text-[var(--rm-text-muted)]";
 export const textValue = "rm-type-body text-[var(--rm-ink)]";
-export const textMetric =
-  "rm-type-section-headline tabular-nums text-[var(--rm-ink)]";
+export const textMetric = "rm-type-section-headline tabular-nums text-[var(--rm-ink)]";
 export const textCardBody = "rm-type-body text-[var(--rm-text-body)]";
 export const textBlogMeta = textMeta;
-export const sectionChapterNumeral =
-  "rm-type-meta tabular-nums text-[var(--rm-text-ghost)]";
+export const sectionChapterNumeral = "rm-type-meta tabular-nums text-[var(--rm-text-ghost)]";
 export const bodyCopy = "rm-type-body max-w-prose text-[var(--rm-text-body)]";
 export const bodyCopyStrong = "rm-type-body rm-type-body-strong max-w-prose";
 export const textSubtle = "text-[var(--rm-text-subtle)]";

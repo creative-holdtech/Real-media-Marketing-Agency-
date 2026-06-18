@@ -77,10 +77,7 @@ function RevealChunk({
   const opacity = useTransform(progress, range, [OPACITY_BASE, OPACITY_REVEAL]);
 
   return (
-    <motion.span
-      style={variant === "opacity" ? { opacity } : { color }}
-      className="inline"
-    >
+    <motion.span style={variant === "opacity" ? { opacity } : { color }} className="inline">
       {children}{" "}
     </motion.span>
   );

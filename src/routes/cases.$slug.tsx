@@ -2,11 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 
 import { CaseRichDetail } from "@/components/case-rich-detail";
 import { JsonLd } from "@/components/json-ld";
-import {
-  btnOutline,
-  sectionHeadline,
-  textMeta,
-} from "@/components/framer-section";
+import { btnOutline, sectionHeadline, textMeta } from "@/components/framer-section";
 import { getCase, getCases } from "@/lib/payload/cases-cms";
 import { cases as staticCases } from "@/lib/cases";
 import { breadcrumbJsonLd, buildPageHead, caseStudyJsonLd } from "@/lib/seo";

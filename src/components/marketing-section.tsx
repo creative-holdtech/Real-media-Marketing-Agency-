@@ -35,13 +35,7 @@ export function MarketingSection({
 }
 
 /** Watermark chapter numeral in content grid (home studio pattern). */
-export function ChapterSpacer({
-  chapter,
-  className,
-}: {
-  chapter: string;
-  className?: string;
-}) {
+export function ChapterSpacer({ chapter, className }: { chapter: string; className?: string }) {
   return (
     <div
       className={cn(
@@ -73,12 +67,7 @@ export function MarketingSectionIntro({
   lead?: ReactNode;
 }) {
   const headline = (
-    <TextReveal
-      id={titleId}
-      text={title}
-      className={sectionHeadline}
-      ariaLabel={srTitle}
-    />
+    <TextReveal id={titleId} text={title} className={sectionHeadline} ariaLabel={srTitle} />
   );
 
   return (
@@ -105,23 +94,14 @@ export function MarketingContentGrid({
   delay?: string;
 }) {
   return (
-    <div
-      className={cn("reveal", sectionCardGrid, className)}
-      data-delay={delay}
-    >
+    <div className={cn("reveal", sectionCardGrid, className)} data-delay={delay}>
       {children}
     </div>
   );
 }
 
 /** Chapter numeral in label column (about page flow 01–04). */
-export function ChapterNumeral({
-  chapter,
-  className,
-}: {
-  chapter: string;
-  className?: string;
-}) {
+export function ChapterNumeral({ chapter, className }: { chapter: string; className?: string }) {
   return (
     <span
       className={cn(
@@ -152,32 +132,22 @@ export function MarketingTagColumn({
       chapter={chapter}
       className={cn(
         "hidden md:block",
-        chapterAtBottom &&
-          "text-[clamp(5rem,8vw,8rem)] text-white/[0.05]",
+        chapterAtBottom && "text-[clamp(5rem,8vw,8rem)] text-white/[0.05]",
       )}
     />
   ) : null;
 
   return (
-    <div
-      className={cn(
-        "flex flex-col gap-6 md:gap-8",
-        chapterAtBottom && "md:h-full",
-      )}
-    >
+    <div className={cn("flex flex-col gap-6 md:gap-8", chapterAtBottom && "md:h-full")}>
       <div className="reveal shrink-0">
         <FramerTag>{tag}</FramerTag>
       </div>
       {!chapterAtBottom ? numeral : null}
       {children ? (
-        <div className={cn(chapterAtBottom && "flex min-h-0 flex-1 flex-col")}>
-          {children}
-        </div>
+        <div className={cn(chapterAtBottom && "flex min-h-0 flex-1 flex-col")}>{children}</div>
       ) : null}
       {chapterAtBottom ? (
-        <div className="mt-auto hidden shrink-0 md:flex md:items-end md:pb-2">
-          {numeral}
-        </div>
+        <div className="mt-auto hidden shrink-0 md:flex md:items-end md:pb-2">{numeral}</div>
       ) : null}
     </div>
   );

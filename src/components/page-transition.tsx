@@ -13,7 +13,7 @@ function animateClipPath(
   el: HTMLElement,
   from: string,
   to: string,
-  duration: number
+  duration: number,
 ): Promise<void> {
   return new Promise((resolve) => {
     el.style.clipPath = from;
@@ -30,14 +30,21 @@ function animateClipPath(
       // Parse inset percentages from "inset(A% 0% B% 0%)" => interpolate A,B
       const fromMatch = from.match(/inset\((\d+)%[^,)]+(\d+)%/);
       const toMatch = to.match(/inset\((\d+)%[^,)]+(\d+)%/);
-      if (!fromMatch || !toMatch) { el.style.clipPath = to; resolve(); return; }
+      if (!fromMatch || !toMatch) {
+        el.style.clipPath = to;
+        resolve();
+        return;
+      }
 
       const a = Number(fromMatch[1]) + (Number(toMatch[1]) - Number(fromMatch[1])) * t;
       const b = Number(fromMatch[2]) + (Number(toMatch[2]) - Number(fromMatch[2])) * t;
       el.style.clipPath = `inset(${a}% 0% ${b}% 0%)`;
 
       if (raw < 1) requestAnimationFrame(tick);
-      else { el.style.clipPath = to; resolve(); }
+      else {
+        el.style.clipPath = to;
+        resolve();
+      }
     }
     requestAnimationFrame(tick);
   });
@@ -71,7 +78,9 @@ export function PageTransitionCurtain() {
       router.navigate({ to: to as never });
     };
 
-    return () => { _triggerFn = null; };
+    return () => {
+      _triggerFn = null;
+    };
   }, [router]);
 
   useEffect(() => {

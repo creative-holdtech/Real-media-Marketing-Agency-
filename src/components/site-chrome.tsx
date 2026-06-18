@@ -22,7 +22,9 @@ import { cn } from "@/lib/utils";
 function chromeLink(light: boolean) {
   return cn(
     "transition-colors duration-150",
-    light ? "text-[var(--rm-light-muted)] hover:text-[var(--rm-light-ink)]" : "text-[var(--rm-text-muted)] hover:text-white",
+    light
+      ? "text-[var(--rm-light-muted)] hover:text-[var(--rm-light-ink)]"
+      : "text-[var(--rm-text-muted)] hover:text-white",
   );
 }
 
@@ -78,7 +80,9 @@ export function SiteHeader({
                   }}
                   className={cn(
                     "relative inline-flex flex-col items-center gap-1.5",
-                    light ? cn(chromeLightMuted, "hover:text-[var(--rm-light-ink)]") : "text-[var(--rm-text-muted)] hover:text-white",
+                    light
+                      ? cn(chromeLightMuted, "hover:text-[var(--rm-light-ink)]")
+                      : "text-[var(--rm-text-muted)] hover:text-white",
                   )}
                   activeProps={{
                     className: light
@@ -174,10 +178,13 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
         </div>
 
         <div className="col-span-6 md:col-span-2">
-          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
-            Work
-          </div>
-          <ul className={cn("space-y-3 rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>Work</div>
+          <ul
+            className={cn(
+              "space-y-3 rm-type-body",
+              light ? chromeLightMuted : "text-[var(--rm-text-body)]",
+            )}
+          >
             {(
               [
                 ["/services", "Services"],
@@ -196,10 +203,13 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
         </div>
 
         <div className="col-span-6 md:col-span-2">
-          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
-            Agency
-          </div>
-          <ul className={cn("space-y-3 rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>Agency</div>
+          <ul
+            className={cn(
+              "space-y-3 rm-type-body",
+              light ? chromeLightMuted : "text-[var(--rm-text-body)]",
+            )}
+          >
             {(
               [
                 ["/about", "About"],
@@ -217,10 +227,10 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
         </div>
 
         <div className="col-span-12 md:col-span-3">
-          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>
-            Located
-          </div>
-          <div className={cn("rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}>
+          <div className={cn("mb-5", textMeta, light ? chromeLightMuted : textGhost)}>Located</div>
+          <div
+            className={cn("rm-type-body", light ? chromeLightMuted : "text-[var(--rm-text-body)]")}
+          >
             Warsaw — EU — MENA
           </div>
           <div className={cn("rm-type-body mt-5", light ? chromeLightMuted : textFaint)}>

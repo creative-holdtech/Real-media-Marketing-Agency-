@@ -26,8 +26,7 @@ function mapSections(sections: PayloadPostDoc["sections"]): PostSection[] {
 
 export function mapPayloadPost(doc: PayloadPostDoc): Post {
   const published = parseISO(doc.publishedAt);
-  const imageMedia =
-    typeof doc.featuredImage === "object" ? doc.featuredImage : null;
+  const imageMedia = typeof doc.featuredImage === "object" ? doc.featuredImage : null;
 
   return {
     slug: doc.slug,

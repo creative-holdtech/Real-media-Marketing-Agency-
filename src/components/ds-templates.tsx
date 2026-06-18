@@ -125,20 +125,10 @@ export function NarrowBand({
   children: ReactNode;
   maxWidth?: "form" | "prose";
 }) {
-  const max =
-    maxWidth === "form" ? "max-w-[var(--rm-form-max)]" : "max-w-[var(--rm-prose-max)]";
+  const max = maxWidth === "form" ? "max-w-[var(--rm-form-max)]" : "max-w-[var(--rm-prose-max)]";
 
   return (
-    <Tag
-      id={id}
-      className={cn(
-        "mx-auto w-full",
-        max,
-        siteGutter,
-        "py-16 md:py-24",
-        className,
-      )}
-    >
+    <Tag id={id} className={cn("mx-auto w-full", max, siteGutter, "py-16 md:py-24", className)}>
       {children}
     </Tag>
   );
@@ -148,6 +138,12 @@ export function SectionLead({ children, className }: { children: ReactNode; clas
   return <p className={cn(bodyCopy, className)}>{children}</p>;
 }
 
-export function SectionEyebrow({ children, className }: { children: ReactNode; className?: string }) {
+export function SectionEyebrow({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
   return <p className={cn(textMeta, "mb-4 md:mb-6", className)}>{children}</p>;
 }

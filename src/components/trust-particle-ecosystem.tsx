@@ -797,7 +797,10 @@ export function TrustParticleEcosystem({
         if (!el) continue;
 
         const staggerIn = EASE_SOFT(
-          Math.max(0, Math.min(1, (story.constellation - p.morphOrder * CONSTELLATION_STAGGER) / 0.45)),
+          Math.max(
+            0,
+            Math.min(1, (story.constellation - p.morphOrder * CONSTELLATION_STAGGER) / 0.45),
+          ),
         );
         const depthScale = 0.82 + p.depth * 0.26;
         let scale = depthScale * p.size * (p.hero ? 1.12 : 1);
@@ -850,7 +853,8 @@ export function TrustParticleEcosystem({
           !p.keeper &&
           pull < 0.08 &&
           !morphActive &&
-          ((b0.pull <= 0.04 || b0.dissolveT >= 0.04) && (b1.pull <= 0.04 || b1.dissolveT >= 0.04));
+          (b0.pull <= 0.04 || b0.dissolveT >= 0.04) &&
+          (b1.pull <= 0.04 || b1.dissolveT >= 0.04);
         const visRate = particleOrbitDrift ? 9.5 : morphActive ? 11 : 8;
         visState.opacity = smoothStep(visState.opacity, targetOpacity, dt, visRate);
         visState.scale = smoothStep(visState.scale, scale, dt, visRate);

@@ -81,7 +81,10 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
         <section id="blocks" aria-label="Service blocks" className="border-t border-white/10">
           {s.blocks.map((block) => (
-            <article key={block.n} className={cn(sectionShell, "border-b border-white/10 py-14 md:py-20")}>
+            <article
+              key={block.n}
+              className={cn(sectionShell, "border-b border-white/10 py-14 md:py-20")}
+            >
               <div className={sectionContainer}>
                 <Reveal duration={0.55}>
                   <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-2">
@@ -90,7 +93,9 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                     </span>
                     <span className={textMeta}>{block.title}</span>
                   </div>
-                  <h2 className={cn(sectionHeadline, "max-w-[20ch] text-white")}>{block.subtitle}</h2>
+                  <h2 className={cn(sectionHeadline, "max-w-[20ch] text-white")}>
+                    {block.subtitle}
+                  </h2>
 
                   <div className="mt-10 grid gap-10 md:mt-12 md:grid-cols-2 md:gap-12">
                     {block.sections.map((section) => (
@@ -144,7 +149,10 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           <div className={sectionContainer}>
             <Reveal duration={0.55}>
               <FramerTag>Results</FramerTag>
-              <h2 id="outcomes-heading" className={cn(sectionHeadline, "mt-4 max-w-3xl text-white")}>
+              <h2
+                id="outcomes-heading"
+                className={cn(sectionHeadline, "mt-4 max-w-3xl text-white")}
+              >
                 {s.outcomes.title}
               </h2>
             </Reveal>
@@ -159,7 +167,9 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                 >
                   <div className={cn(surfaceCardPadding, "flex h-full flex-col")}>
                     <h3 className={subsectionTitle}>{o.title}</h3>
-                    <p className={cn(textCardBody, "mt-3 flex-1 text-[var(--rm-text-body)]")}>{o.body}</p>
+                    <p className={cn(textCardBody, "mt-3 flex-1 text-[var(--rm-text-body)]")}>
+                      {o.body}
+                    </p>
                     {o.bullets?.length ? (
                       <ul className="mt-4 space-y-2 border-t border-[var(--rm-border-soft)] pt-4">
                         {o.bullets.map((b) => (
@@ -184,7 +194,9 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                       className={cn(surfaceCardShell, surfaceCardPadding, "h-full")}
                     >
                       <h4 className={subsectionTitle}>{o.title}</h4>
-                      <p className={cn(textCardBody, "mt-2 text-[var(--rm-text-body)]")}>{o.body}</p>
+                      <p className={cn(textCardBody, "mt-2 text-[var(--rm-text-body)]")}>
+                        {o.body}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -193,7 +205,10 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           </div>
         </section>
 
-        <section aria-labelledby="proof-heading" className={cn(sectionShell, "border-b border-white/10")}>
+        <section
+          aria-labelledby="proof-heading"
+          className={cn(sectionShell, "border-b border-white/10")}
+        >
           <div className={sectionContainer}>
             <Reveal duration={0.55}>
               <FramerTag>Social proof</FramerTag>
@@ -227,7 +242,12 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                           className="rounded-2xl border border-[var(--rm-border-soft)] px-4 py-3"
                         >
                           <p className={cn(textMetric, "text-white")}>{m.value}</p>
-                          <p className={cn(textMeta, "mt-1 normal-case tracking-normal text-white/50")}>
+                          <p
+                            className={cn(
+                              textMeta,
+                              "mt-1 normal-case tracking-normal text-white/50",
+                            )}
+                          >
                             {m.label}
                           </p>
                         </div>

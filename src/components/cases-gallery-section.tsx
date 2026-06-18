@@ -40,16 +40,9 @@ const galleryActionLink = cn(
   galleryLinkFocus,
 );
 
-const galleryRowGrid = cn(
-  "grid grid-cols-1 items-start",
-  sectionGap,
-  "md:grid-cols-3",
-);
+const galleryRowGrid = cn("grid grid-cols-1 items-start", sectionGap, "md:grid-cols-3");
 
-const galleryContentGrid = cn(
-  "grid grid-cols-1 md:col-span-2 md:grid-cols-2",
-  sectionGap,
-);
+const galleryContentGrid = cn("grid grid-cols-1 md:col-span-2 md:grid-cols-2", sectionGap);
 
 const COVER_OBJECT_POSITION: Partial<Record<string, string>> = {
   empresex: "center 42%",
@@ -204,11 +197,7 @@ export function CasesGallerySection({
   const headingId = "cases-gallery-heading";
 
   return (
-    <section
-      id="work"
-      className={cn(sectionShell, "rm-cases-gallery")}
-      aria-labelledby={headingId}
-    >
+    <section id="work" className={cn(sectionShell, "rm-cases-gallery")} aria-labelledby={headingId}>
       <div className={sectionContainer}>
         <GallerySectionHeader
           tag={tag}

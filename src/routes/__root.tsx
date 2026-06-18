@@ -90,7 +90,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { charSet: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         ...(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION
-          ? [{ name: "google-site-verification", content: String(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION) }]
+          ? [
+              {
+                name: "google-site-verification",
+                content: String(import.meta.env.VITE_GOOGLE_SITE_VERIFICATION),
+              },
+            ]
           : []),
         ...seo.meta,
       ],

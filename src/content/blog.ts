@@ -14,8 +14,7 @@ export const blogIndex = {
   issuedBy: "Issued by marketing nerds",
   titleLine1: "Field notes on",
   titleLine2: "building brands that last.",
-  lead:
-    "Essays, frameworks and observations from our work with founders across the EU and MENA. Published when there is something worth saying.",
+  lead: "Essays, frameworks and observations from our work with founders across the EU and MENA. Published when there is something worth saying.",
   featuredLabel: "Featured",
   archiveLabel: "Archive",
   allEntriesLabel: "All entries",

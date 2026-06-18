@@ -73,10 +73,8 @@ function ContactPage() {
               {contact?.eyebrow ?? "The conversation starts here"}
             </p>
             <h1 className="reveal text-[44px] sm:text-[72px] md:text-[104px] leading-[0.92] tracking-[-0.04em] font-medium text-white max-w-[12ch]">
-              {(hero?.titleLines?.[0] ?? "Let's")}{" "}
-              <span className="font-light text-white/70">
-                {hero?.titleLines?.[1] ?? "talk."}
-              </span>
+              {hero?.titleLines?.[0] ?? "Let's"}{" "}
+              <span className="font-light text-white/70">{hero?.titleLines?.[1] ?? "talk."}</span>
             </h1>
             {hero?.subheading ? (
               <p

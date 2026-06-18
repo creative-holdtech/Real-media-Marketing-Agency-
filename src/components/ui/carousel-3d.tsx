@@ -137,7 +137,11 @@ export function Carousel3D({
       return;
     }
 
-    rotationRef.current += shortestDelta(normalizeIndex(rotationRef.current, count), normalized, count);
+    rotationRef.current += shortestDelta(
+      normalizeIndex(rotationRef.current, count),
+      normalized,
+      count,
+    );
     applyLayout();
   }, [activeIndex, applyLayout, count]);
 
@@ -200,7 +204,13 @@ export function Carousel3D({
                 {renderSlide ? (
                   renderSlide({ slide, index, isActive: active === index, step })
                 ) : slide.src ? (
-                  <img src={slide.src} alt={slide.alt ?? ""} draggable={false} loading="eager" decoding="async" />
+                  <img
+                    src={slide.src}
+                    alt={slide.alt ?? ""}
+                    draggable={false}
+                    loading="eager"
+                    decoding="async"
+                  />
                 ) : null}
               </div>
             </div>
@@ -216,10 +226,20 @@ export function Carousel3D({
           <span className="sr-only" aria-live="polite">
             Slide {active + 1} of {count}
           </span>
-          <button type="button" className="rm-carousel-3d__btn" onClick={() => step(-1)} aria-label="Previous slide">
+          <button
+            type="button"
+            className="rm-carousel-3d__btn"
+            onClick={() => step(-1)}
+            aria-label="Previous slide"
+          >
             ←
           </button>
-          <button type="button" className="rm-carousel-3d__btn" onClick={() => step(1)} aria-label="Next slide">
+          <button
+            type="button"
+            className="rm-carousel-3d__btn"
+            onClick={() => step(1)}
+            aria-label="Next slide"
+          >
             →
           </button>
         </nav>

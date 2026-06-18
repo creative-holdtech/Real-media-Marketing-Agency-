@@ -5,7 +5,13 @@ import { prService } from "./content/pr";
 import { seoService } from "./content/seo";
 import { smmService } from "./content/smm";
 
-export type { ServiceBlock, ServiceContent, ServiceProofCase, ServiceSection, ServiceSlug } from "./types";
+export type {
+  ServiceBlock,
+  ServiceContent,
+  ServiceProofCase,
+  ServiceSection,
+  ServiceSlug,
+} from "./types";
 
 export const services = {
   smm: smmService,

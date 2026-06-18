@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
-import {
-  DRAGABLE_CAROUSEL_DEFAULTS,
-  DragableCarousel,
-} from "@/components/dragable-carousel";
+import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
 import { textMeta } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +47,9 @@ function CaseStudySlide({ item }: { item: VerticalStackItem }) {
         />
         <div className="rm-insights-dl__preview-wash" />
         <div className="rm-insights-dl__preview-copy">
-          {item.meta ? <p className={cn(textMeta, "rm-insights-dl__preview-kicker")}>{item.meta}</p> : null}
+          {item.meta ? (
+            <p className={cn(textMeta, "rm-insights-dl__preview-kicker")}>{item.meta}</p>
+          ) : null}
           <p className="rm-insights-dl__preview-title">{item.title}</p>
           {metricValue ? (
             <p className="rm-case-carousel-slide__metric">

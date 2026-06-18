@@ -4,18 +4,11 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
   home: {
     slug: "home",
     metaTitle: "R-M — Marketing Agency",
-    metaDescription:
-      "R-M is a marketing agency for founders building in EU and MENA.",
+    metaDescription: "R-M is a marketing agency for founders building in EU and MENA.",
     hero: {
       tag: "R-M marketing agency",
-      titleLines: [
-        "Strategy and",
-        "execution for",
-        "founders raising",
-        "in EU and MENA.",
-      ],
-      subheading:
-        "We create market environment where your product becomes the obvious choice.",
+      titleLines: ["Strategy and", "execution for", "founders raising", "in EU and MENA."],
+      subheading: "We create market environment where your product becomes the obvious choice.",
       body: "In the last twelve months our clients raised $10M+, shipped 50 launches, and received industry awards.",
       ctaPrimaryLabel: "Start a project →",
       ctaPrimaryUrl: "/contact",
@@ -243,19 +236,46 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
       includes: {
         heading: "What's included",
         items: [
-          { title: "SMM", body: "Audience quality, narrative consistency, 30-day cadence plan tied to inbound." },
-          { title: "PR", body: "Authority angles, target media shortlist, placement plan for the next quarter." },
-          { title: "SEO", body: "Commercial intent map, technical health check, 3-pillar compounding roadmap." },
-          { title: "Performance", body: "Attribution setup, channel performance audit, payback-aware budget reshape." },
-          { title: "Design", body: "Visual identity asset check, consistency alignment, product first-impression audit." },
-          { title: "Marketing", body: "Positioning clarity, ICP fit, funnel leak analysis, 90-day priority stack." },
+          {
+            title: "SMM",
+            body: "Audience quality, narrative consistency, 30-day cadence plan tied to inbound.",
+          },
+          {
+            title: "PR",
+            body: "Authority angles, target media shortlist, placement plan for the next quarter.",
+          },
+          {
+            title: "SEO",
+            body: "Commercial intent map, technical health check, 3-pillar compounding roadmap.",
+          },
+          {
+            title: "Performance",
+            body: "Attribution setup, channel performance audit, payback-aware budget reshape.",
+          },
+          {
+            title: "Design",
+            body: "Visual identity asset check, consistency alignment, product first-impression audit.",
+          },
+          {
+            title: "Marketing",
+            body: "Positioning clarity, ICP fit, funnel leak analysis, 90-day priority stack.",
+          },
         ],
       },
       steps: {
         items: [
-          { title: "You submit", body: "Three minutes to fill the form below — context, channels, what needs fixing." },
-          { title: "We diagnose", body: "Senior expert reviews your setup and talks to your representative if needed." },
-          { title: "You get the plan", body: "Concrete, prioritised recommendations in a 6–10 page document. Ready to execute." },
+          {
+            title: "You submit",
+            body: "Three minutes to fill the form below — context, channels, what needs fixing.",
+          },
+          {
+            title: "We diagnose",
+            body: "Senior expert reviews your setup and talks to your representative if needed.",
+          },
+          {
+            title: "You get the plan",
+            body: "Concrete, prioritised recommendations in a 6–10 page document. Ready to execute.",
+          },
         ],
       },
     },

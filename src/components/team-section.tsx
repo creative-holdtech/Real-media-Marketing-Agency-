@@ -5,10 +5,7 @@ import team04 from "@/assets/team-04.jpg";
 import team05 from "@/assets/team-05.jpg";
 import team06 from "@/assets/team-06.jpg";
 import team07 from "@/assets/team-07.jpg";
-import {
-  DRAGABLE_CAROUSEL_DEFAULTS,
-  DragableCarousel,
-} from "@/components/dragable-carousel";
+import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
 import { FramerTag, heroSubcopy } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
 import { TextReveal } from "@/components/text-reveal";
@@ -100,16 +97,9 @@ export function TeamSection() {
           <p className="reveal mb-6 w-fit md:mb-8">
             <FramerTag>{aboutTeam.tag}</FramerTag>
           </p>
-          <TextReveal
-            id="team-heading"
-            text={aboutTeam.title}
-            className={teamHeroTitle}
-          />
+          <TextReveal id="team-heading" text={aboutTeam.title} className={teamHeroTitle} />
           <p
-            className={cn(
-              "reveal mt-7 mx-auto max-w-[34ch] text-balance text-center",
-              heroSubcopy,
-            )}
+            className={cn("reveal mt-7 mx-auto max-w-[34ch] text-balance text-center", heroSubcopy)}
             data-delay="1"
           >
             {aboutTeam.subtitle}

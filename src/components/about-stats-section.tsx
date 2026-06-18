@@ -41,11 +41,7 @@ export function AboutStatsSection() {
               tag={item.tag}
               headline={
                 item.animate && item.numericTarget != null ? (
-                  <BigStatValue
-                    to={item.numericTarget}
-                    suffix={item.suffix ?? ""}
-                    start={inView}
-                  />
+                  <BigStatValue to={item.numericTarget} suffix={item.suffix ?? ""} start={inView} />
                 ) : (
                   item.value
                 )

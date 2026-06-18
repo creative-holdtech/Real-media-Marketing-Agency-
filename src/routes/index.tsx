@@ -118,9 +118,15 @@ function Index() {
                 </p>
               ) : null}
 
-              <div className="reveal mt-10 flex flex-wrap items-center justify-center gap-4" data-delay="3">
+              <div
+                className="reveal mt-10 flex flex-wrap items-center justify-center gap-4"
+                data-delay="3"
+              >
                 {hero?.ctaPrimaryLabel ? (
-                  <Link to={hero.ctaPrimaryUrl ?? "/contact"} className={cn(btnPrimary, "group gap-2")}>
+                  <Link
+                    to={hero.ctaPrimaryUrl ?? "/contact"}
+                    className={cn(btnPrimary, "group gap-2")}
+                  >
                     {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
                     <BtnArrow />
                   </Link>

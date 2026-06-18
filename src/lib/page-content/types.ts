@@ -103,32 +103,38 @@ export type PayloadPageDoc = {
     ctaSecondaryLabel?: string | null;
     ctaSecondaryUrl?: string | null;
   } | null;
-  sections?: {
-    sectionKey: string;
-    tag?: string | null;
-    heading?: string | null;
-    subheading?: string | null;
-    body?: string | null;
-    bullets?: { text: string; id?: string }[] | null;
-    items?: {
-      title?: string | null;
-      body?: string | null;
-      label?: string | null;
-      value?: string | null;
-      url?: string | null;
-      image?: PayloadMedia | string | null;
-      id?: string;
-    }[] | null;
-    id?: string;
-  }[] | null;
-  stats?: {
-    prefix?: string | null;
-    value: string;
-    suffix?: string | null;
-    label: string;
-    animateTo?: number | null;
-    id?: string;
-  }[] | null;
+  sections?:
+    | {
+        sectionKey: string;
+        tag?: string | null;
+        heading?: string | null;
+        subheading?: string | null;
+        body?: string | null;
+        bullets?: { text: string; id?: string }[] | null;
+        items?:
+          | {
+              title?: string | null;
+              body?: string | null;
+              label?: string | null;
+              value?: string | null;
+              url?: string | null;
+              image?: PayloadMedia | string | null;
+              id?: string;
+            }[]
+          | null;
+        id?: string;
+      }[]
+    | null;
+  stats?:
+    | {
+        prefix?: string | null;
+        value: string;
+        suffix?: string | null;
+        label: string;
+        animateTo?: number | null;
+        id?: string;
+      }[]
+    | null;
   metaCards?: { label: string; value: string; id?: string }[] | null;
   contact?: {
     eyebrow?: string | null;
@@ -167,39 +173,47 @@ export type PayloadServiceDoc = {
     paragraphs?: { text: string; id?: string }[] | null;
     primaryCta?: string | null;
   };
-  blocks?: {
-    n: string;
-    title: string;
-    subtitle: string;
-    sections?: {
-      heading: string;
-      items?: { text: string; id?: string }[] | null;
-      id?: string;
-    }[] | null;
-    notes?: { text?: string | null; id?: string }[] | null;
-    cta?: string | null;
-    id?: string;
-  }[] | null;
+  blocks?:
+    | {
+        n: string;
+        title: string;
+        subtitle: string;
+        sections?:
+          | {
+              heading: string;
+              items?: { text: string; id?: string }[] | null;
+              id?: string;
+            }[]
+          | null;
+        notes?: { text?: string | null; id?: string }[] | null;
+        cta?: string | null;
+        id?: string;
+      }[]
+    | null;
   outcomes?: {
     title: string;
-    items?: {
-      title: string;
-      body: string;
-      bullets?: { text?: string | null; id?: string }[] | null;
-      id?: string;
-    }[] | null;
+    items?:
+      | {
+          title: string;
+          body: string;
+          bullets?: { text?: string | null; id?: string }[] | null;
+          id?: string;
+        }[]
+      | null;
     extraTitle?: string | null;
     extraItems?: { title: string; body: string; id?: string }[] | null;
   } | null;
   socialProof?: {
     title: string;
-    cases?: {
-      quote?: string | null;
-      attribution?: string | null;
-      label?: string | null;
-      metrics?: { value: string; label: string; id?: string }[] | null;
-      id?: string;
-    }[] | null;
+    cases?:
+      | {
+          quote?: string | null;
+          attribution?: string | null;
+          label?: string | null;
+          metrics?: { value: string; label: string; id?: string }[] | null;
+          id?: string;
+        }[]
+      | null;
   } | null;
   closingQuote?: string | null;
   footerCta?: string | null;

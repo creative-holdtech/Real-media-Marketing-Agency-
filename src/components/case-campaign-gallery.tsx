@@ -149,10 +149,7 @@ export function CaseCampaignGallery({ items, fallback, accent = "#c4a035" }: Cam
   if (mockups.length === 0 && flats.length === 0) return null;
 
   return (
-    <div
-      className="rm-campaign-gallery"
-      style={{ "--campaign-accent": accent } as CSSProperties}
-    >
+    <div className="rm-campaign-gallery" style={{ "--campaign-accent": accent } as CSSProperties}>
       {mockups.length > 0 ? (
         <div className="rm-campaign-gallery__stage reveal" data-delay="1">
           <div className="rm-campaign-gallery__glow" aria-hidden />

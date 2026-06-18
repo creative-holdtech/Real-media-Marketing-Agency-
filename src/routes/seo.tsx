@@ -395,7 +395,7 @@ function SeoPage() {
             <Reveal delay={0.1} duration={0.5}>
               <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
                 <MagneticButton
-                  href="mailto:hello@r-m.studio?subject=SEO%20audit"
+                  href="mailto:info@realmedia.ink?subject=SEO%20audit"
                   strength={8}
                   className="inline-flex rm-touch items-center gap-2 px-7 text-[12px] uppercase tracking-[0.2em] leading-[1] rounded-full bg-white text-black font-medium hover:bg-[#efeeea] transition-[background-color,transform] duration-150 ease-out active:scale-[0.97]"
                 >

@@ -1,12 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import aboutHero from "@/assets/about-hero.png";
@@ -56,7 +49,10 @@ export const Route = createFileRoute("/about")({
     const seo = buildPageHead({ title, description, pathname: "/about" });
     return {
       meta: seo.meta,
-      links: [...seo.links, { rel: "preload", as: "image", href: aboutHeroTeam, fetchPriority: "high" }],
+      links: [
+        ...seo.links,
+        { rel: "preload", as: "image", href: aboutHeroTeam, fetchPriority: "high" },
+      ],
     };
   },
   component: AboutPage,
@@ -89,8 +85,7 @@ function AboutPage() {
   const manifesto = pageSection(page, "manifesto");
   const verticalsContent = pageSection(page, "verticals");
   const defaultVerticals = getPageDefaults("about").sections.verticals?.items ?? [];
-  const verticalItems =
-    verticalsContent.items?.length ? verticalsContent.items : defaultVerticals;
+  const verticalItems = verticalsContent.items?.length ? verticalsContent.items : defaultVerticals;
   const verticals = verticalItems.map((item, index) => ({
     n: String(index + 1).padStart(2, "0"),
     title: item.title ?? "",
@@ -216,11 +211,7 @@ const manifestoBulletsDefault = [
   "We killed the generic agency layers to ship execution focused on the outcomes that show up on your cap table.",
 ] as const;
 
-function ManifestoSection({
-  manifesto,
-}: {
-  manifesto: ReturnType<typeof pageSection>;
-}) {
+function ManifestoSection({ manifesto }: { manifesto: ReturnType<typeof pageSection> }) {
   return (
     <ManifestoQuoteSection
       tag={manifesto.tag ?? "The position"}
@@ -359,17 +350,9 @@ function VerticalsSection({
               <motion.div
                 key={sector.n}
                 className="absolute inset-0 will-change-[opacity,transform]"
-                initial={
-                  reduce
-                    ? false
-                    : { opacity: 0, scale: 1.03, filter: "blur(6px)" }
-                }
+                initial={reduce ? false : { opacity: 0, scale: 1.03, filter: "blur(6px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={
-                  reduce
-                    ? undefined
-                    : { opacity: 0, scale: 1.01, filter: "blur(4px)" }
-                }
+                exit={reduce ? undefined : { opacity: 0, scale: 1.01, filter: "blur(4px)" }}
                 transition={{
                   duration: reduce ? 0 : 0.32,
                   ease: verticalPanelEase,
@@ -396,12 +379,8 @@ function VerticalsSection({
                   }}
                 >
                   <div>
-                    <h3 className={cn(sectionHeadline, "max-w-none text-white")}>
-                      {sector.title}
-                    </h3>
-                    <p className={cn(bodyCopy, "mt-4 max-w-[44ch] text-white/75")}>
-                      {sector.body}
-                    </p>
+                    <h3 className={cn(sectionHeadline, "max-w-none text-white")}>{sector.title}</h3>
+                    <p className={cn(bodyCopy, "mt-4 max-w-[44ch] text-white/75")}>{sector.body}</p>
                   </div>
                 </motion.div>
               </motion.div>

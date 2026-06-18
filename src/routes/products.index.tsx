@@ -12,9 +12,19 @@ import {
 
 import { btnPrimary, bodyCopy } from "@/components/framer-section";
 
-function PinFrame({ children, className, active }: { children: React.ReactNode; className?: string; active?: boolean }) {
+function PinFrame({
+  children,
+  className,
+  active,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  active?: boolean;
+}) {
   return (
-    <div className={`rm-pin-frame${active ? " rm-pin-frame--active" : ""}${className ? ` ${className}` : ""}`}>
+    <div
+      className={`rm-pin-frame${active ? " rm-pin-frame--active" : ""}${className ? ` ${className}` : ""}`}
+    >
       <span className="rm-pin-corner rm-pin-corner--tl" aria-hidden />
       <span className="rm-pin-corner rm-pin-corner--tr" aria-hidden />
       <span className="rm-pin-corner rm-pin-corner--bl" aria-hidden />
@@ -141,22 +151,28 @@ function SplitModeSwitcher({
 
   // Clamp slide distance to viewport width — prevents >20% jump on narrow screens
   const xOffset = useMemo(
-    () => typeof window !== "undefined" ? Math.round(Math.min(80, window.innerWidth * 0.13)) : 80,
-    []
+    () => (typeof window !== "undefined" ? Math.round(Math.min(80, window.innerWidth * 0.13)) : 80),
+    [],
   );
 
   const raw = useSpring(scrollYProgress, { stiffness: 120, damping: 22, mass: 0.4 });
 
   // Full transform strings — GPU-composited, not rAF/main-thread like x/y shorthands
   const sprintTransform = useTransform(
-    raw, [0, 1],
-    reduce ? ["translateX(0px)", "translateX(0px)"] : [`translateX(-${xOffset}px)`, "translateX(0px)"]
+    raw,
+    [0, 1],
+    reduce
+      ? ["translateX(0px)", "translateX(0px)"]
+      : [`translateX(-${xOffset}px)`, "translateX(0px)"],
   );
   const marathonTransform = useTransform(
-    raw, [0, 1],
-    reduce ? ["translateX(0px)", "translateX(0px)"] : [`translateX(${xOffset}px)`, "translateX(0px)"]
+    raw,
+    [0, 1],
+    reduce
+      ? ["translateX(0px)", "translateX(0px)"]
+      : [`translateX(${xOffset}px)`, "translateX(0px)"],
   );
-  const opacity   = useTransform(raw, [0, 1], [0, 1]);
+  const opacity = useTransform(raw, [0, 1], [0, 1]);
   const barScaleX = useTransform(raw, [0.2, 0.9], reduce ? [1, 1] : [0, 1]);
   // Ratcheted value — bar only ever increases, never shrinks on scroll-back
   const barRatchet = useMotionValue(0);
@@ -183,7 +199,9 @@ function SplitModeSwitcher({
         <motion.span
           className="rm-mode-btn__bar"
           aria-hidden
-          style={active === "sprint" ? { transform: barTransform, transformOrigin: "left" } : undefined}
+          style={
+            active === "sprint" ? { transform: barTransform, transformOrigin: "left" } : undefined
+          }
         />
       </motion.button>
 
@@ -199,28 +217,30 @@ function SplitModeSwitcher({
         <motion.span
           className="rm-mode-btn__bar"
           aria-hidden
-          style={active === "marathon" ? { transform: barTransform, transformOrigin: "left" } : undefined}
+          style={
+            active === "marathon" ? { transform: barTransform, transformOrigin: "left" } : undefined
+          }
         />
       </motion.button>
     </div>
   );
 }
 
-function DeliverablesGrid({ deliverables }: { deliverables: readonly { title: string; body: string }[] }) {
+function DeliverablesGrid({
+  deliverables,
+}: {
+  deliverables: readonly { title: string; body: string }[];
+}) {
   return (
     <div className="grid grid-cols-1 gap-px border-t border-white/[0.07] sm:grid-cols-3">
       {deliverables.map((d, i) => (
         <Reveal key={d.title} delay={i * 0.08}>
           <div className="flex flex-col gap-4 px-0 py-8 sm:px-6 md:px-8 md:py-10 border-b border-white/[0.07] sm:border-b-0 sm:border-r sm:last:border-r-0">
-            <span className="text-[11px] font-medium tracking-[0.2em] text-white/30">
-              0{i + 1}
-            </span>
+            <span className="text-[11px] font-medium tracking-[0.2em] text-white/30">0{i + 1}</span>
             <h3 className="text-[14px] font-medium uppercase tracking-[0.12em] text-white/80 leading-tight">
               {d.title}
             </h3>
-            <p className={cn("text-[14px] leading-relaxed text-white/45", bodyCopy)}>
-              {d.body}
-            </p>
+            <p className={cn("text-[14px] leading-relaxed text-white/45", bodyCopy)}>{d.body}</p>
           </div>
         </Reveal>
       ))}
@@ -248,9 +268,7 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
               <p className="text-[clamp(2.25rem,5vw,3.75rem)] font-medium leading-none tracking-[-0.05em] text-white">
                 {d.tag}
               </p>
-              <p className="mt-3 text-sm font-medium tracking-[0.02em] text-white/45">
-                {d.meta}
-              </p>
+              <p className="mt-3 text-sm font-medium tracking-[0.02em] text-white/45">{d.meta}</p>
             </div>
             <dl className="flex flex-col gap-3 border-t border-white/[0.07] pt-6">
               {[
@@ -260,8 +278,12 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
                 { label: "Output", value: d.output },
               ].map(({ label, value }) => (
                 <div key={label} className="flex justify-between items-baseline gap-4">
-                  <dt className="text-[11px] uppercase tracking-[0.18em] text-white/30 shrink-0">{label}</dt>
-                  <dd className="text-[13px] font-light tracking-[-0.02em] text-white/70 text-right italic">{value}</dd>
+                  <dt className="text-[11px] uppercase tracking-[0.18em] text-white/30 shrink-0">
+                    {label}
+                  </dt>
+                  <dd className="text-[13px] font-light tracking-[-0.02em] text-white/70 text-right italic">
+                    {value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -353,10 +375,10 @@ function ProductsPage() {
   useEffect(() => {
     const el = switcherRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsSticky(!entry.isIntersecting),
-      { threshold: 0, rootMargin: "-80px 0px 0px 0px" },
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsSticky(!entry.isIntersecting), {
+      threshold: 0,
+      rootMargin: "-80px 0px 0px 0px",
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
@@ -370,7 +392,9 @@ function ProductsPage() {
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
-      <a href="#main" className="skip-link">Skip to content</a>
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
       <SiteHeader variant="dark" overlay />
 
       {isSticky && (
@@ -395,7 +419,8 @@ function ProductsPage() {
                 transition={{ delay: 1.0, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
                 className={cn("mt-6 max-w-[34ch] text-balance text-center", bodyCopy)}
               >
-                Both formats are built around your growth. One moves faster, the other goes deeper. Same quality, different scope.
+                Both formats are built around your growth. One moves faster, the other goes deeper.
+                Same quality, different scope.
               </motion.p>
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
@@ -404,7 +429,9 @@ function ProductsPage() {
                 className="mt-10"
               >
                 <button
-                  onClick={() => document.getElementById("format")?.scrollIntoView({ behavior: "smooth" })}
+                  onClick={() =>
+                    document.getElementById("format")?.scrollIntoView({ behavior: "smooth" })
+                  }
                   className={btnPrimary}
                 >
                   See formats ↓
@@ -424,18 +451,12 @@ function ProductsPage() {
           style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
           <div className="mx-auto max-w-[1440px] px-6 md:px-12 overflow-hidden">
-            <SplitModeSwitcher
-              active={mode}
-              onChange={handleModeChange}
-              sectionRef={switcherRef}
-            />
+            <SplitModeSwitcher active={mode} onChange={handleModeChange} sectionRef={switcherRef} />
           </div>
         </div>
 
-
         {/* Mode content */}
         <div className="rm-mode-panel" key={mode}>
-
           {/* Headline + lead */}
           <section className="border-b border-white/[0.06] bg-[#000]">
             <div className="mx-auto max-w-[1440px] px-6 py-16 sm:px-10 md:px-20 md:py-24 lg:px-32">
@@ -466,7 +487,6 @@ function ProductsPage() {
               <DeliverablesGrid deliverables={data.deliverables} />
             </div>
           </section>
-
         </div>
 
         {/* Compare formats */}

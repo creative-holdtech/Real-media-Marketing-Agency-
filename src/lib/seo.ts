@@ -9,7 +9,7 @@ export function resolveSiteUrl(): string {
       ? String(import.meta.env.VITE_SITE_URL)
       : "");
 
-  const url = fromEnv.trim() || "https://realmedia.ink";
+  const url = fromEnv.trim() || "https://rm-marketing-agency.vercel.app";
   return url.replace(/\/$/, "");
 }
 
@@ -91,10 +91,7 @@ export function organizationJsonLd(siteUrl = resolveSiteUrl()) {
         url: siteUrl,
         logo: absoluteUrl("/favicon.svg", siteUrl),
         email: "info@realmedia.ink",
-        sameAs: [
-          "https://www.instagram.com/realmedia.corp",
-          "https://dribbble.com/realmedia26",
-        ],
+        sameAs: ["https://www.instagram.com/realmedia.corp", "https://dribbble.com/realmedia26"],
       },
       {
         "@type": "WebSite",

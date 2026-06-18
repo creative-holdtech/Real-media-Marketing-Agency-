@@ -16,7 +16,7 @@ const SITE_URL = (
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : "") ||
   process.env.VITE_SITE_URL ||
-  "https://realmedia.ink"
+  "https://rm-marketing-agency.vercel.app"
 )
   .trim()
   .replace(/\/$/, "");
@@ -40,6 +40,15 @@ const STATIC_ROUTES = [
 const SERVICE_SLUGS = ["brand", "smm", "pr", "performance", "seo", "design"];
 
 const FALLBACK_CASE_SLUGS = ["empresex", "tequila-cpa", "progresivo"];
+
+const FALLBACK_POSTS = [
+  { slug: "cross-border-fintech-scale", dateISO: "2026-05-21" },
+  { slug: "cybersecurity-trust-building", dateISO: "2026-05-05" },
+  { slug: "b2b-performance-marketing", dateISO: "2026-04-29" },
+  { slug: "buyers-compare-safe-decisions", dateISO: "2026-04-15" },
+  { slug: "marketing-dark-social-attribution", dateISO: "2026-04-01" },
+  { slug: "creation-vs-dominance", dateISO: "2026-03-18" },
+];
 
 function escapeXml(value) {
   return value
@@ -66,7 +75,7 @@ async function fetchJson(url) {
 }
 
 async function fetchCmsSlugs() {
-  if (!PAYLOAD_URL) return { cases: FALLBACK_CASE_SLUGS, posts: [] };
+  if (!PAYLOAD_URL) return { cases: FALLBACK_CASE_SLUGS, posts: FALLBACK_POSTS };
 
   try {
     const [casesData, postsData] = await Promise.all([
@@ -78,18 +87,19 @@ async function fetchCmsSlugs() {
       ),
     ]);
 
-    const cases =
-      casesData.docs?.map((d) => d.slug).filter(Boolean) ?? FALLBACK_CASE_SLUGS;
+    const cases = casesData.docs?.map((d) => d.slug).filter(Boolean) ?? FALLBACK_CASE_SLUGS;
     const posts =
-      postsData.docs?.map((d) => ({
-        slug: d.slug,
-        dateISO: d.publishedAt?.slice(0, 10),
-      })).filter((p) => p.slug) ?? [];
+      postsData.docs
+        ?.map((d) => ({
+          slug: d.slug,
+          dateISO: d.publishedAt?.slice(0, 10),
+        }))
+        .filter((p) => p.slug) ?? [];
 
     return { cases, posts };
   } catch (err) {
     console.warn("[seo] CMS fetch failed, using static fallbacks:", err.message);
-    return { cases: FALLBACK_CASE_SLUGS, posts: [] };
+    return { cases: FALLBACK_CASE_SLUGS, posts: FALLBACK_POSTS };
   }
 }
 
@@ -112,12 +122,7 @@ async function buildSitemapXml() {
 
   for (const post of posts) {
     entries.push(
-      urlEntry(
-        `${SITE_URL}/blog/${post.slug}`,
-        post.dateISO || today,
-        "monthly",
-        "0.6",
-      ),
+      urlEntry(`${SITE_URL}/blog/${post.slug}`, post.dateISO || today, "monthly", "0.6"),
     );
   }
 

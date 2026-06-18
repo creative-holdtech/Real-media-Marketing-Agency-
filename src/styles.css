@@ -2252,7 +2252,13 @@ html.rm-premium-cursor * {
   inset: 0;
   background:
     radial-gradient(ellipse 72% 58% at 28% 52%, rgb(0 0 0 / 0.15), rgb(0 0 0 / 0.72) 72%),
-    linear-gradient(180deg, rgb(0 0 0 / 0.55) 0%, transparent 28%, transparent 72%, rgb(0 0 0 / 0.65) 100%);
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.55) 0%,
+      transparent 28%,
+      transparent 72%,
+      rgb(0 0 0 / 0.65) 100%
+    );
   pointer-events: none;
 }
 
@@ -3239,11 +3245,7 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__wash {
   z-index: 1;
-  background: radial-gradient(
-    ellipse 80% 70% at 50% 100%,
-    rgba(0, 0, 0, 0.42) 0%,
-    transparent 68%
-  );
+  background: radial-gradient(ellipse 80% 70% at 50% 100%, rgba(0, 0, 0, 0.42) 0%, transparent 68%);
 }
 
 .rm-insights-carousel__stage
@@ -3275,7 +3277,8 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="orbit"] .rm-insights-carousel__sheen {
+  [data-insight-motion="orbit"]
+  .rm-insights-carousel__sheen {
   animation: rm-insight-sheen-orbit 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
@@ -3302,14 +3305,16 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="pipeline"] .rm-insights-carousel__img {
+  [data-insight-motion="pipeline"]
+  .rm-insights-carousel__img {
   animation-name: rm-insight-pipeline;
   object-position: 48% 42%;
 }
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="pipeline"] .rm-insights-carousel__sheen {
+  [data-insight-motion="pipeline"]
+  .rm-insights-carousel__sheen {
   animation: rm-insight-sheen-pipeline 5.5s ease-in-out infinite;
   background: linear-gradient(
     135deg,
@@ -3340,7 +3345,8 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="balance"] .rm-insights-carousel__img {
+  [data-insight-motion="balance"]
+  .rm-insights-carousel__img {
   animation-name: rm-insight-balance;
   transform-origin: 50% 88%;
 }
@@ -3357,7 +3363,8 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="ripple"] .rm-insights-carousel__img {
+  [data-insight-motion="ripple"]
+  .rm-insights-carousel__img {
   animation-name: rm-insight-ripple;
 }
 
@@ -3370,11 +3377,7 @@ html.rm-premium-cursor * {
   z-index: 1;
   border-radius: 50%;
   pointer-events: none;
-  background: radial-gradient(
-    circle,
-    rgba(180, 220, 160, 0.14) 0%,
-    transparent 68%
-  );
+  background: radial-gradient(circle, rgba(180, 220, 160, 0.14) 0%, transparent 68%);
   animation: rm-insight-ripple-ambient 6s ease-in-out infinite;
 }
 
@@ -3420,13 +3423,15 @@ html.rm-premium-cursor * {
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="pulse"] .rm-insights-carousel__img {
+  [data-insight-motion="pulse"]
+  .rm-insights-carousel__img {
   animation-name: rm-insight-pulse;
 }
 
 .rm-insights-carousel__stage
   [data-dragable-settled="true"][data-dragable-active="true"]
-  [data-insight-motion="pulse"] .rm-insights-carousel__wash {
+  [data-insight-motion="pulse"]
+  .rm-insights-carousel__wash {
   background: radial-gradient(
     ellipse 90% 80% at 50% 50%,
     transparent 30%,
@@ -3897,7 +3902,9 @@ html.rm-premium-cursor * {
   --cs-text-tertiary: var(--rm-text-muted);
   --cs-text-muted: color-mix(in oklab, var(--rm-text-muted) 88%, transparent);
   --cs-border-subtle: color-mix(in oklab, var(--rm-border-soft) 72%, transparent);
-  font-feature-settings: "kern" 1, "liga" 1;
+  font-feature-settings:
+    "kern" 1,
+    "liga" 1;
   text-rendering: optimizeLegibility;
 }
 
@@ -6423,12 +6430,7 @@ a.block:focus-visible .rm-points-card__read {
 
 /* Timeline — Sprint / Marathon dual lane */
 .rm-plan-card--timeline .rm-plan-card__trace {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgb(255 255 255 / 0.14) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.14) 50%, transparent 100%);
   background-size: 200% 2px;
   background-position: 100% 0;
   background-repeat: no-repeat;
@@ -6451,11 +6453,7 @@ a.block:focus-visible .rm-points-card__read {
 
 /* Globe — market spread rings */
 .rm-plan-card--globe .rm-plan-card__trace {
-  background: radial-gradient(
-    circle at 50% 120%,
-    rgb(255 255 255 / 0.1) 0%,
-    transparent 55%
-  );
+  background: radial-gradient(circle at 50% 120%, rgb(255 255 255 / 0.1) 0%, transparent 55%);
 }
 
 .rm-plan-card--globe:hover .rm-plan-card__trace,
@@ -6655,7 +6653,13 @@ a.block:focus-visible .rm-points-card__read {
   pointer-events: none;
   background:
     radial-gradient(120% 90% at 50% 18%, transparent 52%, rgb(0 0 0 / 0.22) 100%),
-    linear-gradient(180deg, rgb(0 0 0 / 0.18) 0%, transparent 26%, transparent 52%, rgb(0 0 0 / 0.72) 100%);
+    linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.18) 0%,
+      transparent 26%,
+      transparent 52%,
+      rgb(0 0 0 / 0.72) 100%
+    );
 }
 
 .rm-ensemble__grain {
@@ -6682,7 +6686,9 @@ a.block:focus-visible .rm-points-card__read {
   );
   transform: translateX(-130%);
   opacity: 0;
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+  transition:
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.4s ease;
 }
 .rm-ensemble__frame:hover .rm-ensemble__sheen {
   transform: translateX(130%);
@@ -6828,12 +6834,24 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 @keyframes rm-hero-grain {
-  0% { background-position: 0 0; }
-  20% { background-position: -80px 40px; }
-  40% { background-position: 60px -70px; }
-  60% { background-position: -40px -30px; }
-  80% { background-position: 70px 60px; }
-  100% { background-position: 0 0; }
+  0% {
+    background-position: 0 0;
+  }
+  20% {
+    background-position: -80px 40px;
+  }
+  40% {
+    background-position: 60px -70px;
+  }
+  60% {
+    background-position: -40px -30px;
+  }
+  80% {
+    background-position: 70px 60px;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -6866,8 +6884,7 @@ a.block:focus-visible .rm-points-card__read {
   padding: clamp(1.75rem, 3.5vw, 2.75rem);
   border-radius: 2px;
   background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, rgb(255 255 255 / 0.035), transparent 58%),
-    #000;
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgb(255 255 255 / 0.035), transparent 58%), #000;
   overflow: hidden;
 }
 

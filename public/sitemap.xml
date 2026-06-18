@@ -1,111 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://realmedia.ink/</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/about</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/about</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/products</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/products</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/cases</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/cases</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/blog</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/blog</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/contact</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/contact</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/audit</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/audit</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/seo</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/seo</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/brand</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/brand</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/smm</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/smm</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/pr</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/pr</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/performance</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/performance</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/seo</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/seo</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/services/design</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/services/design</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/cases/empresex</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/cases/empresex</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/cases/tequila-cpa</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/cases/tequila-cpa</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://realmedia.ink/cases/progresivo</loc>
-    <lastmod>2026-06-17</lastmod>
+    <loc>https://rm-marketing-agency.vercel.app/cases/progresivo</loc>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/cross-border-fintech-scale</loc>
+    <lastmod>2026-05-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/cybersecurity-trust-building</loc>
+    <lastmod>2026-05-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/b2b-performance-marketing</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/buyers-compare-safe-decisions</loc>
+    <lastmod>2026-04-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/marketing-dark-social-attribution</loc>
+    <lastmod>2026-04-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://rm-marketing-agency.vercel.app/blog/creation-vs-dominance</loc>
+    <lastmod>2026-03-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>

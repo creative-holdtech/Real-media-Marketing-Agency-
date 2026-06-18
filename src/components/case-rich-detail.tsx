@@ -89,12 +89,7 @@ function buildToc(rich: CaseRichContent): TocItem[] {
 
 function ChevronDownIcon({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden
-      viewBox="0 0 16 16"
-      fill="none"
-      className={cn("size-4 shrink-0", className)}
-    >
+    <svg aria-hidden viewBox="0 0 16 16" fill="none" className={cn("size-4 shrink-0", className)}>
       <path
         d="M4 6l4 4 4-4"
         stroke="currentColor"
@@ -115,11 +110,7 @@ function HeroMetric({ metric }: { metric: { value: string; label: string } }) {
   );
 }
 
-function OverviewMetrics({
-  metrics,
-}: {
-  metrics: CaseStudy["heroMetrics"];
-}) {
+function OverviewMetrics({ metrics }: { metrics: CaseStudy["heroMetrics"] }) {
   if (metrics.length === 0) return null;
 
   return (
@@ -178,9 +169,7 @@ function DividerList({ items }: { items: { title: string; body: string }[] }) {
           data-delay={String((i % 4) + 1)}
         >
           <dt className="rm-case-study__eyebrow">{item.title}</dt>
-          <dd className="rm-case-study__prose rm-case-study__prose--emphasis mt-2">
-            {item.body}
-          </dd>
+          <dd className="rm-case-study__prose rm-case-study__prose--emphasis mt-2">{item.body}</dd>
         </div>
       ))}
     </dl>
@@ -211,10 +200,7 @@ function SectionFigure({
           src={visual.src}
           alt={visual.alt}
           fallback={fallback}
-          className={cn(
-            "h-full w-full",
-            deck ? "object-contain object-center" : "object-cover",
-          )}
+          className={cn("h-full w-full", deck ? "object-contain object-center" : "object-cover")}
         />
       </div>
       <figcaption className="rm-case-study__figure-caption">{visual.alt}</figcaption>
@@ -235,10 +221,7 @@ function TocLink({
   return (
     <a
       href={`#${section.id}`}
-      className={cn(
-        "rm-case-study__toc-link",
-        isActive && "rm-case-study__toc-link--active",
-      )}
+      className={cn("rm-case-study__toc-link", isActive && "rm-case-study__toc-link--active")}
       aria-current={isActive ? "location" : undefined}
     >
       <span className="rm-case-study__toc-index">{String(index + 1).padStart(2, "0")}</span>
@@ -410,17 +393,15 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     {c.niche} · {c.format} · {c.duration}
                   </p>
 
-                  <h1
-                    id="case-title"
-                    className="reveal rm-case-study__title"
-                  >
+                  <h1 id="case-title" className="reveal rm-case-study__title">
                     {rich.titleLines[0]}{" "}
-                    <span className="rm-case-study__title-muted">
-                      {rich.titleLines[1]}
-                    </span>
+                    <span className="rm-case-study__title-muted">{rich.titleLines[1]}</span>
                   </h1>
 
-                  <p className="rm-case-study__prose rm-case-study__hero-lead reveal mt-7" data-delay="1">
+                  <p
+                    className="rm-case-study__prose rm-case-study__hero-lead reveal mt-7"
+                    data-delay="1"
+                  >
                     {rich.subline}
                   </p>
 
@@ -437,10 +418,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     <HeroMetric metric={c.primaryMetric} />
                   </div>
 
-                  <div
-                    className="reveal mt-10 flex flex-wrap items-center gap-3"
-                    data-delay="3"
-                  >
+                  <div className="reveal mt-10 flex flex-wrap items-center gap-3" data-delay="3">
                     <Link to="/contact" className={btnOutline}>
                       Consultation
                     </Link>
@@ -513,9 +491,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     className="reveal rm-case-study__title max-w-[20ch] md:max-w-[18ch]"
                   >
                     {rich.titleLines[0]}{" "}
-                    <span className="rm-case-study__title-muted">
-                      {rich.titleLines[1]}
-                    </span>
+                    <span className="rm-case-study__title-muted">{rich.titleLines[1]}</span>
                   </h1>
 
                   <p className="rm-case-study__prose reveal mt-6" data-delay="1">
@@ -598,8 +574,8 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   {showResume ? (
                     <div className="rm-case-study__resume reveal" role="status">
                       <p className="rm-case-study__resume-text">
-                        Pick up where you left off in this case — your reading position is saved
-                        for this session.
+                        Pick up where you left off in this case — your reading position is saved for
+                        this session.
                       </p>
                       <div className="rm-case-study__resume-actions">
                         <button
@@ -620,10 +596,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     </div>
                   ) : null}
 
-                  <nav
-                    aria-label="Reading paths"
-                    className="rm-case-study__reading-paths reveal"
-                  >
+                  <nav aria-label="Reading paths" className="rm-case-study__reading-paths reveal">
                     {CASE_READER_PATHS.map((path) => (
                       <a
                         key={path.sectionId}
@@ -637,7 +610,10 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     ))}
                   </nav>
 
-                  <nav aria-label="Section navigation" className="rm-case-study__mobile-nav lg:hidden">
+                  <nav
+                    aria-label="Section navigation"
+                    className="rm-case-study__mobile-nav lg:hidden"
+                  >
                     {toc.map((s) => (
                       <a
                         key={s.id}
@@ -671,10 +647,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     {overviewRest.length > 0 ? (
                       <div className="space-y-6">
                         {overviewRest.map((paragraph) => (
-                          <p
-                            key={paragraph.slice(0, 24)}
-                            className="rm-case-study__prose reveal"
-                          >
+                          <p key={paragraph.slice(0, 24)} className="rm-case-study__prose reveal">
                             {paragraph}
                           </p>
                         ))}
@@ -822,59 +795,59 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                         </div>
                       </dl>
                     ) : (
-                    <div className="divide-y divide-[var(--rm-border-soft)] border-y border-[var(--rm-border-soft)]">
-                      <div className="rm-case-study__divider-item">
-                        <p className="rm-case-study__eyebrow">Typeface</p>
-                        <h3 className="rm-case-study__subsection mt-3">
-                          {rich.identity.typeface.label}
-                        </h3>
-                        <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
-                          {rich.identity.typeface.body}
-                        </p>
+                      <div className="divide-y divide-[var(--rm-border-soft)] border-y border-[var(--rm-border-soft)]">
+                        <div className="rm-case-study__divider-item">
+                          <p className="rm-case-study__eyebrow">Typeface</p>
+                          <h3 className="rm-case-study__subsection mt-3">
+                            {rich.identity.typeface.label}
+                          </h3>
+                          <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
+                            {rich.identity.typeface.body}
+                          </p>
+                        </div>
+                        <div className="rm-case-study__divider-item">
+                          <p className="rm-case-study__eyebrow">Colour system</p>
+                          <p className="rm-case-study__prose rm-case-study__prose--emphasis mt-3">
+                            {rich.identity.colors.principle}
+                          </p>
+                          <ul className="mt-6 space-y-4">
+                            {rich.identity.colors.items.map((color) => (
+                              <li key={color.name} className="flex items-start gap-3">
+                                <span
+                                  aria-hidden
+                                  className="mt-1.5 size-3 shrink-0 rounded-sm"
+                                  style={{
+                                    background: colorSwatch(color.name, c.accent),
+                                    border:
+                                      color.name === "White"
+                                        ? "1px solid var(--rm-border-soft)"
+                                        : undefined,
+                                  }}
+                                />
+                                <div className="rm-case-study__prose rm-case-study__prose--secondary">
+                                  <span className="font-medium text-[var(--rm-ink)]">
+                                    {color.name}
+                                  </span>
+                                  <span className="text-[var(--rm-text-muted)]"> — </span>
+                                  {color.meaning}
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="rm-case-study__divider-item">
+                          <p className="rm-case-study__eyebrow">Logo</p>
+                          <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
+                            {rich.identity.logo}
+                          </p>
+                        </div>
+                        <div className="rm-case-study__divider-item">
+                          <p className="rm-case-study__eyebrow">Key visual</p>
+                          <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
+                            {rich.identity.keyVisual}
+                          </p>
+                        </div>
                       </div>
-                      <div className="rm-case-study__divider-item">
-                        <p className="rm-case-study__eyebrow">Colour system</p>
-                        <p className="rm-case-study__prose rm-case-study__prose--emphasis mt-3">
-                          {rich.identity.colors.principle}
-                        </p>
-                        <ul className="mt-6 space-y-4">
-                          {rich.identity.colors.items.map((color) => (
-                            <li key={color.name} className="flex items-start gap-3">
-                              <span
-                                aria-hidden
-                                className="mt-1.5 size-3 shrink-0 rounded-sm"
-                                style={{
-                                  background: colorSwatch(color.name, c.accent),
-                                  border:
-                                    color.name === "White"
-                                      ? "1px solid var(--rm-border-soft)"
-                                      : undefined,
-                                }}
-                              />
-                              <div className="rm-case-study__prose rm-case-study__prose--secondary">
-                                <span className="font-medium text-[var(--rm-ink)]">
-                                  {color.name}
-                                </span>
-                                <span className="text-[var(--rm-text-muted)]"> — </span>
-                                {color.meaning}
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="rm-case-study__divider-item">
-                        <p className="rm-case-study__eyebrow">Logo</p>
-                        <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
-                          {rich.identity.logo}
-                        </p>
-                      </div>
-                      <div className="rm-case-study__divider-item">
-                        <p className="rm-case-study__eyebrow">Key visual</p>
-                        <p className="rm-case-study__prose rm-case-study__prose--secondary mt-4">
-                          {rich.identity.keyVisual}
-                        </p>
-                      </div>
-                    </div>
                     )}
                   </section>
 
@@ -884,7 +857,10 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       aria-labelledby="case-campaign-heading"
                       className={cn(caseSection, "rm-case-campaign")}
                     >
-                      <h2 id="case-campaign-heading" className="rm-case-study__section-title reveal">
+                      <h2
+                        id="case-campaign-heading"
+                        className="rm-case-study__section-title reveal"
+                      >
                         {rich.galleryHeading ?? "Campaign gallery"}
                       </h2>
                       {rich.galleryLead ? (
@@ -904,14 +880,14 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     aria-labelledby="case-deliverables-heading"
                     className={caseSection}
                   >
-                    <h2 id="case-deliverables-heading" className="rm-case-study__section-title reveal">
+                    <h2
+                      id="case-deliverables-heading"
+                      className="rm-case-study__section-title reveal"
+                    >
                       {rich.deliverables.heading}
                     </h2>
                     {deliverablesVisual ? (
-                      <SectionFigure
-                        visual={deliverablesVisual}
-                        fallback={visualFallback}
-                      />
+                      <SectionFigure visual={deliverablesVisual} fallback={visualFallback} />
                     ) : null}
                     <ol className="relative mt-10 space-y-12">
                       {rich.deliverables.items.map((item, i) => (

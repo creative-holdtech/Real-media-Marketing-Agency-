@@ -110,10 +110,8 @@ export function CasesSection() {
 
                 <span className="rm-index__metric">
                   <span className="rm-index__metric-value">
-                  {study.primaryMetric.value === "LATAM"
-                    ? "Latam"
-                    : study.primaryMetric.value}
-                </span>
+                    {study.primaryMetric.value === "LATAM" ? "Latam" : study.primaryMetric.value}
+                  </span>
                   <span className="rm-index__metric-label">{study.primaryMetric.label}</span>
                 </span>
 
@@ -139,12 +137,7 @@ export function CasesSection() {
       </div>
 
       <motion.div className="rm-index__cursor" style={{ x, y }} aria-hidden>
-        <div
-          className={cn(
-            "rm-index__anchor",
-            previewBelow && "rm-index__anchor--below",
-          )}
-        >
+        <div className={cn("rm-index__anchor", previewBelow && "rm-index__anchor--below")}>
           <AnimatePresence mode="popLayout">
             {activeCase ? (
               <motion.div

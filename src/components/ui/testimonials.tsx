@@ -1,11 +1,5 @@
 import type { ReactNode } from "react";
-import {
-  motion,
-  useInView,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef, useState, useSyncExternalStore } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
@@ -169,9 +163,7 @@ function QuoteEditorial({
             aria-hidden
             className="rm-quote-editorial__accent"
             initial={false}
-            animate={
-              showChrome ? { transform: "scaleY(1)" } : { transform: "scaleY(0)" }
-            }
+            animate={showChrome ? { transform: "scaleY(1)" } : { transform: "scaleY(0)" }}
             transition={reduce ? motionOff : enterQuote}
             style={{ transformOrigin: "top center" }}
           />

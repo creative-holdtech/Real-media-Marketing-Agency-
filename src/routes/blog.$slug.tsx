@@ -96,10 +96,7 @@ function ArticlePage() {
   const [activeId, setActiveId] = useState("s-1");
 
   const sections = useMemo(
-    () =>
-      post.sections?.length
-        ? post.sections
-        : buildSections(post.body),
+    () => (post.sections?.length ? post.sections : buildSections(post.body)),
     [post.body, post.sections],
   );
 
