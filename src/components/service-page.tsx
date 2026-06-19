@@ -27,6 +27,29 @@ import { useReveal } from "@/hooks/use-reveal";
 import type { ServiceContent } from "@/lib/services/types";
 import { cn } from "@/lib/utils";
 
+/**
+ * Renders a deliverable as a scannable "term — definition" row instead of a
+ * flat paragraph: the lead-in (text before the first colon) is set in white,
+ * the rest stays muted, anchored by a small per-service accent tick.
+ */
+function DeliverableRow({ item }: { item: string }) {
+  const idx = item.indexOf(":");
+  const lead = idx === -1 ? null : item.slice(0, idx).trim();
+  const rest = idx === -1 ? item : item.slice(idx + 1).trim();
+  return (
+    <div className="flex gap-3 border-t border-[var(--rm-border-soft)] pt-4">
+      <span
+        aria-hidden
+        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--service-accent)]"
+      />
+      <p className={textCardBody}>
+        {lead ? <span className="font-medium text-white">{lead} — </span> : null}
+        <span className="text-[var(--rm-text-body)]">{rest}</span>
+      </p>
+    </div>
+  );
+}
+
 export function ServicePageView({ service: s }: { service: ServiceContent }) {
   useReveal();
   return (
@@ -60,7 +83,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
               Be {s.hero.word}
             </h1>
 
-            <div className="reveal mx-auto mt-8 flex max-w-[40rem] flex-col gap-4 text-left md:text-center">
+            <div className="reveal mx-auto mt-8 flex max-w-[34rem] flex-col gap-4 text-left md:text-center">
               {s.hero.paragraphs.map((p) => (
                 <p key={p} className={bodyCopy}>
                   {p}
@@ -88,59 +111,59 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
               className={cn(sectionShell, "border-b border-[var(--rm-border-soft)] py-14 md:py-20")}
             >
               <div className={sectionContainer}>
-                <Reveal duration={0.55}>
-                  <div className="mb-8 flex flex-wrap items-baseline gap-x-5 gap-y-2">
-                    <span className={cn(textMetric, "text-[2.5rem] text-white/25 md:text-[4rem]")}>
-                      {block.n}
-                    </span>
-                    <span className={textMeta}>{block.title}</span>
+                <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-10 lg:gap-x-16">
+                  {/* Left rail: the phase marker + headline. Sticky on desktop so
+                      it anchors the deliverables scrolling past on the right. */}
+                  <div className="md:col-span-4">
+                    <Reveal duration={0.55}>
+                      <span
+                        className={cn(
+                          textMetric,
+                          "block leading-none text-white/30 text-[2.75rem] md:text-[4.5rem]",
+                        )}
+                      >
+                        {block.n}
+                      </span>
+                      <p className={cn(textMeta, "mt-5")}>{block.title}</p>
+                      <h2 className={cn(sectionHeadline, "mt-3 max-w-[16ch] text-white")}>
+                        {block.subtitle}
+                      </h2>
+                    </Reveal>
                   </div>
-                  <h2 className={cn(sectionHeadline, "max-w-[20ch] text-white")}>
-                    {block.subtitle}
-                  </h2>
 
-                  {/* Points laid out horizontally (top-border grid), matching the
-                      landing's deliverable rhythm — not vertical left-bordered lists. */}
-                  <div className="mt-10 flex flex-col gap-10 md:mt-12 md:gap-12">
+                  {/* Right column: deliverable groups as scannable term/definition rows. */}
+                  <div className="flex flex-col gap-10 md:col-span-8 md:gap-12">
                     {block.sections.map((section) => (
-                      <div key={section.heading}>
+                      <Reveal key={section.heading} duration={0.55}>
                         <h3 className={textMeta}>{section.heading}</h3>
-                        <div className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
+                        <div className="mt-5 grid gap-x-10 gap-y-4 sm:grid-cols-2">
                           {section.items.map((item) => (
-                            <p
-                              key={item}
-                              className={cn(
-                                textCardBody,
-                                "border-t border-[var(--rm-border-soft)] pt-3 text-[var(--rm-text-body)]",
-                              )}
-                            >
-                              {item}
-                            </p>
+                            <DeliverableRow key={item} item={item} />
                           ))}
                         </div>
-                      </div>
+                      </Reveal>
                     ))}
+
+                    {block.notes?.length ? (
+                      <div className="space-y-3 border-t border-[var(--rm-border-soft)] pt-8">
+                        {block.notes.map((note) => (
+                          <p key={note} className={cn(bodyCopy, "max-w-[52ch]")}>
+                            {note}
+                          </p>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {block.cta ? (
+                      <div>
+                        <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
+                          {block.cta.replace(/\s*→$/, "")}
+                          <BtnArrow />
+                        </Link>
+                      </div>
+                    ) : null}
                   </div>
-
-                  {block.notes?.length ? (
-                    <div className="mt-10 space-y-3 border-t border-[var(--rm-border-soft)] pt-8">
-                      {block.notes.map((note) => (
-                        <p key={note} className={cn(bodyCopy, "max-w-[52ch]")}>
-                          {note}
-                        </p>
-                      ))}
-                    </div>
-                  ) : null}
-
-                  {block.cta ? (
-                    <div className="mt-10">
-                      <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
-                        {block.cta.replace(/\s*→$/, "")}
-                        <BtnArrow />
-                      </Link>
-                    </div>
-                  ) : null}
-                </Reveal>
+                </div>
               </div>
             </article>
           ))}
