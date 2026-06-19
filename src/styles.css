@@ -147,10 +147,10 @@
 
   :root {
     /* Brand tokens — single source of truth for the dark editorial palette */
-    --rm-page: #000000;
-    --rm-surface: #000000;
-    --rm-surface-raised: #000000;
-    --rm-surface-float: #000000;
+    --rm-page: #0a0a0b;
+    --rm-surface: #0a0a0b;
+    --rm-surface-raised: #0a0a0b;
+    --rm-surface-float: #0a0a0b;
     --rm-ink: #f4f4f5; /* neutral near-white body (no warm cast) */
     --rm-accent: #c03535; /* signature crimson */
     --rm-accent-soft: #c9cbd1; /* neutral secondary */
