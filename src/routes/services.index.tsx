@@ -6,8 +6,9 @@ import {
   bodyCopy,
   FramerTag,
   interactiveSurfaceCard,
+  pageBand,
   pageHeroContainer,
-  sectionContainer,
+  sectionPill,
   sectionShell,
   surfaceCardPadding,
   surfaceCardShell,
@@ -56,7 +57,7 @@ function ServicesIndex() {
           <p className="reveal">
             <FramerTag>{hero?.tag ?? `Services · ${servicesList.length} disciplines`}</FramerTag>
           </p>
-          <h1 className="reveal rm-type-display max-w-[14ch] text-white md:max-w-none">
+          <h1 className="reveal rm-type-display ml-[-0.04em] max-w-[14ch] text-white md:max-w-none">
             <span className="block">{titleLines[0]}</span>
             <span className="block font-light text-white/55">{titleLines[1] ?? ""}</span>
           </h1>
@@ -68,16 +69,16 @@ function ServicesIndex() {
         </div>
       </section>
 
-      <section className={cn(sectionShell, "border-t border-white/10")}>
-        <div className={cn(sectionContainer, "pt-2 md:pt-4")}>
-          <div className="reveal mb-10 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
+      <section className={cn(sectionShell, "border-t border-white/10 px-0 md:px-0")}>
+        <div className={cn(pageBand, "flex flex-col gap-8 pt-2 md:gap-12 md:pt-4")}>
+          <div className="reveal flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
             <div className="flex flex-col gap-3">
               <p className={textMeta}>Choose your entry point</p>
               <p className={cn(bodyCopy, "max-w-[36ch]")}>
                 Be seen. Be trusted. Be profitable. Be found. Be chosen. Be expressive.
               </p>
             </div>
-            <p className={cn(textMeta, "tabular-nums")}>01 — 06</p>
+            <p className={cn(textMeta, "tabular-nums shrink-0")}>01 — 06</p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
@@ -101,18 +102,18 @@ function ServicesIndex() {
                 />
 
                 <div className={cn(surfaceCardPadding, "flex h-full flex-col pb-5 md:pb-6")}>
-                  <div className="flex items-start justify-between gap-4">
-                    <span className={cn(textMeta, "capitalize text-white/55")}>
+                  <div className="flex items-center justify-between gap-4">
+                    <span className={cn(textMeta, "capitalize text-white/[0.66]")}>
                       Be {s.hero.word}
                     </span>
-                    <span className={textMeta}>{s.shortName}</span>
+                    <span className={cn(sectionPill, "uppercase")}>{s.shortName}</span>
                   </div>
 
-                  <div className="mt-5 flex flex-col gap-2 md:mt-6">
+                  <div className="mt-5 flex flex-col gap-2 border-t border-[var(--rm-border-soft)] pt-5 md:mt-6 md:pt-6">
+                    <p className={textMeta}>{s.tagline}</p>
                     <h2 className={cn(subsectionTitle, "text-white md:text-[1.75rem]")}>
                       {s.name}
                     </h2>
-                    <p className={textMeta}>{s.tagline}</p>
                   </div>
 
                   <p className={cn(bodyCopy, "mt-5 flex-1 text-[var(--rm-text-body)]")}>
@@ -120,8 +121,8 @@ function ServicesIndex() {
                   </p>
 
                   <div className="mt-6 flex items-center justify-between gap-4 border-t border-[var(--rm-border-soft)] pt-5 md:mt-8">
-                    <span className={cn(textMeta, "normal-case tracking-normal text-white/45")}>
-                      {s.blocks.length} blocks · {s.hero.primaryCta.replace(/\s*→$/, "")}
+                    <span className={cn(textMeta, "normal-case tracking-normal text-white/55")}>
+                      {s.blocks.length} blocks
                     </span>
                     <span className="inline-flex items-center gap-2 rm-type-body font-medium text-white/70 transition-colors duration-200 group-hover:text-white">
                       View
