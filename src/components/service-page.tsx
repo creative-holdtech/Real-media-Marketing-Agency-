@@ -23,10 +23,12 @@ import { ScrollProgressBar, Reveal } from "@/components/motion-bits";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { QuoteGradientSection } from "@/components/ui/testimonials";
 import { UnifiedCTA } from "@/components/unified-cta";
+import { useReveal } from "@/hooks/use-reveal";
 import type { ServiceContent } from "@/lib/services/types";
 import { cn } from "@/lib/utils";
 
 export function ServicePageView({ service: s }: { service: ServiceContent }) {
+  useReveal();
   return (
     <div
       className="rm-page selection:bg-rm-accent selection:text-black"
