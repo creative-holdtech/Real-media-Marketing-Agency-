@@ -132,7 +132,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
   return (
     <footer
       className={cn(
-        "mx-auto max-w-[var(--rm-grid-max)] pb-10 pt-12",
+        "mx-auto max-w-[var(--rm-grid-max)] pb-12 pt-12",
         siteGutter,
         light && cn("border-t", chromeLightBorder, chromeLightInk),
       )}
