@@ -103,6 +103,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
         { rel: "sitemap", type: "application/xml", title: "Sitemap", href: "/sitemap.xml" },
         { rel: "stylesheet", href: appCss },
+        // Manrope — site-wide base typeface (loaded globally, matches the home page).
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+        },
         ...seo.links,
       ],
     };

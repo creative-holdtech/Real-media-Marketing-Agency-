@@ -43,13 +43,6 @@ export const Route = createFileRoute("/")({
       links: [
         ...seo.links,
         { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" },
-        // Manrope — preview only on home, to evaluate against the Perform reference
-        { rel: "preconnect", href: "https://fonts.googleapis.com" },
-        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-        {
-          rel: "stylesheet",
-          href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
-        },
       ],
     };
   },
@@ -106,7 +99,7 @@ function Index() {
   const titleLines = hero?.titleLines ?? [];
 
   return (
-    <div className="rm-page rm-font-manrope selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>

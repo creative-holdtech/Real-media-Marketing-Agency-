@@ -219,15 +219,8 @@
     /* background intentionally on html only — so fixed z-index:-1 blobs are
        visible above the root canvas but below body's transparent background */
     color: var(--rm-ink);
-    font-family: "Inter", system-ui, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* PREVIEW: Manrope scoped to the home page only (Perform reference eval).
-     Remove this block + the rm-font-manrope class to revert. */
-  .rm-font-manrope,
-  .rm-font-manrope :where(*) {
     font-family: "Manrope", "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
@@ -387,7 +380,7 @@
   }
 
   .rm-type-nav {
-    font-size: 0.8125rem;
+    font-size: var(--rm-font-xs);
     line-height: var(--rm-line-xs);
     font-weight: 500;
     letter-spacing: var(--rm-track-body);
