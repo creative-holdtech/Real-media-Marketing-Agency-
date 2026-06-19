@@ -6262,6 +6262,16 @@ a.block:focus-visible .rm-points-card__read {
   background: linear-gradient(to bottom, #000 0%, var(--rm-surface-raised) clamp(3rem, 8vh, 5rem));
 }
 
+/* On phones the scroll-scrubbed focus-pull reads as permanently blurred/faded
+   text (jittery scrub, narrow focal window), so render the chapter body static. */
+@media (max-width: 767px) {
+  .rm-studio-chapter__body {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .rm-studio-chapter__body {
     opacity: 1;
