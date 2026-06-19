@@ -85,8 +85,8 @@ function ServicesIndex() {
             {servicesList.map((s, i) => (
               <Link
                 key={s.slug}
-                to={s.slug === "smm" ? "/services/smm" : "/services/$slug"}
-                params={s.slug === "smm" ? undefined : { slug: s.slug }}
+                to="/services/$slug"
+                params={{ slug: s.slug }}
                 className={cn(
                   surfaceCardShell,
                   interactiveSurfaceCard,

@@ -18,7 +18,6 @@ import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as CasesIndexRouteImport } from './routes/cases.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as ServicesSmmRouteImport } from './routes/services.smm'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as CasesSlugRouteImport } from './routes/cases.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
@@ -68,11 +67,6 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesSmmRoute = ServicesSmmRouteImport.update({
-  id: '/services/smm',
-  path: '/services/smm',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services/$slug',
   path: '/services/$slug',
@@ -98,7 +92,6 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
-  '/services/smm': typeof ServicesSmmRoute
   '/blog/': typeof BlogIndexRoute
   '/cases/': typeof CasesIndexRoute
   '/products/': typeof ProductsIndexRoute
@@ -113,7 +106,6 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
-  '/services/smm': typeof ServicesSmmRoute
   '/blog': typeof BlogIndexRoute
   '/cases': typeof CasesIndexRoute
   '/products': typeof ProductsIndexRoute
@@ -129,7 +121,6 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
-  '/services/smm': typeof ServicesSmmRoute
   '/blog/': typeof BlogIndexRoute
   '/cases/': typeof CasesIndexRoute
   '/products/': typeof ProductsIndexRoute
@@ -146,7 +137,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/cases/$slug'
     | '/services/$slug'
-    | '/services/smm'
     | '/blog/'
     | '/cases/'
     | '/products/'
@@ -161,7 +151,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/cases/$slug'
     | '/services/$slug'
-    | '/services/smm'
     | '/blog'
     | '/cases'
     | '/products'
@@ -176,7 +165,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/cases/$slug'
     | '/services/$slug'
-    | '/services/smm'
     | '/blog/'
     | '/cases/'
     | '/products/'
@@ -192,7 +180,6 @@ export interface RootRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
   CasesSlugRoute: typeof CasesSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
-  ServicesSmmRoute: typeof ServicesSmmRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CasesIndexRoute: typeof CasesIndexRoute
   ProductsIndexRoute: typeof ProductsIndexRoute
@@ -264,13 +251,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/smm': {
-      id: '/services/smm'
-      path: '/services/smm'
-      fullPath: '/services/smm'
-      preLoaderRoute: typeof ServicesSmmRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/services/$slug'
@@ -304,7 +284,6 @@ const rootRouteChildren: RootRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
   CasesSlugRoute: CasesSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
-  ServicesSmmRoute: ServicesSmmRoute,
   BlogIndexRoute: BlogIndexRoute,
   CasesIndexRoute: CasesIndexRoute,
   ProductsIndexRoute: ProductsIndexRoute,

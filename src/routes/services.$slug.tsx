@@ -1,4 +1,4 @@
-import { createFileRoute, notFound, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 
 import { ServicePageView } from "@/components/service-page";
 import { serviceCardIntro } from "@/lib/services";
@@ -7,9 +7,6 @@ import { buildPageHead } from "@/lib/seo";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: async ({ params }) => {
-    if (params.slug === "smm") {
-      throw redirect({ to: "/services/smm" });
-    }
     const service = await getServiceContent(params.slug);
     if (!service) throw notFound();
     return { service };
