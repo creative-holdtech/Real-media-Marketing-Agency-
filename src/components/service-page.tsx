@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 export function ServicePageView({ service: s }: { service: ServiceContent }) {
   return (
     <div
-      className="rm-page selection:bg-[#efeeea] selection:text-black"
+      className="rm-page selection:bg-rm-accent selection:text-black"
       style={{ "--service-accent": s.accent } as CSSProperties}
     >
       <a href="#main" className="skip-link">
@@ -79,11 +79,11 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
           </div>
         </section>
 
-        <section id="blocks" aria-label="Service blocks" className="border-t border-white/10">
+        <section id="blocks" aria-label="Service blocks" className="border-t border-[var(--rm-border-soft)]">
           {s.blocks.map((block) => (
             <article
               key={block.n}
-              className={cn(sectionShell, "border-b border-white/10 py-14 md:py-20")}
+              className={cn(sectionShell, "border-b border-[var(--rm-border-soft)] py-14 md:py-20")}
             >
               <div className={sectionContainer}>
                 <Reveal duration={0.55}>
@@ -121,7 +121,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                   </div>
 
                   {block.notes?.length ? (
-                    <div className="mt-10 space-y-3 border-t border-white/10 pt-8">
+                    <div className="mt-10 space-y-3 border-t border-[var(--rm-border-soft)] pt-8">
                       {block.notes.map((note) => (
                         <p key={note} className={cn(bodyCopy, "max-w-[52ch]")}>
                           {note}
@@ -146,7 +146,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
         <section
           aria-labelledby="outcomes-heading"
-          className={cn(sectionShell, "border-b border-white/10 bg-[var(--rm-surface-raised)]")}
+          className={cn(sectionShell, "border-b border-[var(--rm-border-soft)] bg-[var(--rm-surface-raised)]")}
         >
           <div className={sectionContainer}>
             <Reveal duration={0.55}>
@@ -209,7 +209,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
         <section
           aria-labelledby="proof-heading"
-          className={cn(sectionShell, "border-b border-white/10")}
+          className={cn(sectionShell, "border-b border-[var(--rm-border-soft)]")}
         >
           <div className={sectionContainer}>
             <Reveal duration={0.55}>
@@ -241,7 +241,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                       {c.metrics.map((m) => (
                         <div
                           key={m.label}
-                          className="rounded-2xl border border-[var(--rm-border-soft)] px-4 py-3"
+                          className="rounded-3xl border border-[var(--rm-border-soft)] px-4 py-3"
                         >
                           <p className={cn(textMetric, "text-white")}>{m.value}</p>
                           <p

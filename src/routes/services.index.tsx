@@ -59,7 +59,7 @@ function ServicesIndex() {
           </p>
           <h1 className="reveal rm-type-display ml-[-0.04em] max-w-[14ch] text-white md:max-w-none">
             <span className="block">{titleLines[0]}</span>
-            <span className="block font-light text-white/55">{titleLines[1] ?? ""}</span>
+            <span className="block font-light text-[var(--rm-text-subtle)]">{titleLines[1] ?? ""}</span>
           </h1>
           {hero?.body ? (
             <p className={cn("reveal max-w-[42rem]", bodyCopy)} data-delay="2">
@@ -69,7 +69,7 @@ function ServicesIndex() {
         </div>
       </section>
 
-      <section className={cn(sectionShell, "border-t border-white/10 px-0 md:px-0")}>
+      <section className={cn(sectionShell, "border-t border-[var(--rm-border-soft)] px-0 md:px-0")}>
         <div className={cn(pageBand, "flex flex-col gap-8 pt-2 md:gap-12 md:pt-4")}>
           <div className="reveal flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
             <div className="flex flex-col gap-3">
@@ -103,7 +103,7 @@ function ServicesIndex() {
 
                 <div className={cn(surfaceCardPadding, "flex h-full flex-col pb-5 md:pb-6")}>
                   <div className="flex items-center justify-between gap-4">
-                    <span className={cn(textMeta, "capitalize text-white/[0.66]")}>
+                    <span className={cn(textMeta, "capitalize text-[var(--rm-text-muted)]")}>
                       Be {s.hero.word}
                     </span>
                     <span className={cn(sectionPill, "uppercase")}>{s.shortName}</span>
@@ -121,7 +121,7 @@ function ServicesIndex() {
                   </p>
 
                   <div className="mt-6 flex items-center justify-between gap-4 border-t border-[var(--rm-border-soft)] pt-5 md:mt-8">
-                    <span className={cn(textMeta, "normal-case tracking-normal text-white/55")}>
+                    <span className={cn(textMeta, "normal-case tracking-normal text-[var(--rm-text-subtle)]")}>
                       {s.blocks.length} blocks
                     </span>
                     <span className="inline-flex items-center gap-2 rm-type-body font-medium text-white/70 transition-colors duration-200 group-hover:text-white">
