@@ -9,8 +9,8 @@ export const performanceService: ServiceContent = {
   hero: {
     word: "profitable",
     paragraphs: [
-      "Performance isn't a metric. It's a commitment. Every channel, creative, and budget decision is accountable to one thing — whether the campaign is profitable.",
-      "We don't tick boxes in the ads manager. We connect analytics, media buying, and CRO into a performance engine. From the first traffic test to stable, predictable lead flow with a clear ROI on every channel.",
+      "Performance isn’t a metric. It’s a commitment. Every channel, creative, and budget decision is accountable to one thing — whether the campaign is profitable.",
+      "We don’t tick boxes in the ads manager. We connect analytics, media buying, and CRO into a performance engine. From the first traffic test to stable, predictable lead flow with a clear ROI on every channel.",
     ],
     primaryCta: "Test my campaigns",
   },
@@ -23,8 +23,8 @@ export const performanceService: ServiceContent = {
         {
           heading: "Where we dig",
           items: [
-            "Current campaigns: what's live, what's wasting budget, what has potential.",
-            "Analytics & tracking: is the data you're acting on solid and accurate.",
+            "Current campaigns: what’s live, what’s wasting budget, what has potential.",
+            "Analytics & tracking: is the data you’re acting on solid and accurate.",
             "Active funnel: where leads drop off and why.",
             "Optimization: what to fix, cut, or scale before launch.",
           ],
@@ -47,10 +47,10 @@ export const performanceService: ServiceContent = {
           items: [
             "Creative briefs: specs and direction for every new creative, ready for production.",
             "Campaign launches: new campaigns deployed within agreed budgets, on schedule.",
-            "Optimization: scaling what works, cutting what doesn't, refreshing creatives.",
+            "Optimization: scaling what works, cutting what doesn’t, refreshing creatives.",
             "Performance analytics: ongoing tracking across all active campaigns.",
             "Funnel briefs: specs for new landing pages and funnel updates based on live data.",
-            "Reporting: clear breakdown of what ran, what performed, and what's coming next.",
+            "Reporting: clear breakdown of what ran, what performed, and what’s coming next.",
           ],
         },
         {
@@ -88,7 +88,7 @@ export const performanceService: ServiceContent = {
       },
       {
         title: "Scaling stopped being a trade-off",
-        body: "Daily lead volume went from 30 to 90. CPA dropped from $50 to $30. Controlled growth shouldn't come at the cost of quality. Or budget.",
+        body: "Daily lead volume went from 30 to 90. CPA dropped from $50 to $30. Controlled growth shouldn’t come at the cost of quality. Or budget.",
       },
       {
         title: "Market entry that pays for itself",
@@ -116,7 +116,7 @@ export const performanceService: ServiceContent = {
       },
       {
         quote:
-          "Everyone told us the US market would eat our budget for at least six months before we'd see a dime. We broke even in week three.",
+          "Everyone told us the US market would eat our budget for at least six months before we’d see a dime. We broke even in week three.",
         attribution: "NDA",
         metrics: [
           {

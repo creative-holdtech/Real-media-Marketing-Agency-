@@ -9,8 +9,8 @@ export const seoService: ServiceContent = {
   hero: {
     word: "found",
     paragraphs: [
-      "Someone is searching exactly what you sell. Right now. They'll click the first relevant result and close with whoever shows up.",
-      "We don't chase page rankings. We build an organic demand engine by fusing SEO, Google Business Profile, and GEO optimization. A system that doesn't invoice you every time it brings in a lead.",
+      "Someone is searching exactly what you sell. Right now. They’ll click the first relevant result and close with whoever shows up.",
+      "We don’t chase page rankings. We build an organic demand engine by fusing SEO, Google Business Profile, and GEO optimization. A system that doesn’t invoice you every time it brings in a lead.",
       "Your website matures from a business card into an acquisition channel: stable inbound flow in 4–6 months, CAC 2–4× lower than paid channels, and a sales team working with leads that are already warm.",
     ],
     primaryCta: "Check my website",
@@ -33,7 +33,7 @@ export const seoService: ServiceContent = {
         {
           heading: "Things we find in B2B SaaS",
           items: [
-            "Wrong server responses, broken or missing site structure, key pages not indexed, broken buttons and links, forms that don't submit, keyword-stuffed copy, product pages blocked by robots.txt.",
+            "Wrong server responses, broken or missing site structure, key pages not indexed, broken buttons and links, forms that don’t submit, keyword-stuffed copy, product pages blocked by robots.txt.",
           ],
         },
       ],
@@ -82,7 +82,7 @@ export const seoService: ServiceContent = {
     items: [
       {
         title: "Organic becomes the top source",
-        body: "Pipeline grows. Ad budget doesn't. Within 6 months, organic generates 30–50% of all MQLs. 12 inbound demos became 40 — 12 from paid, 28 from organic. 2.3× more demos. Same spend.",
+        body: "Pipeline grows. Ad budget doesn’t. Within 6 months, organic generates 30–50% of all MQLs. 12 inbound demos became 40 — 12 from paid, 28 from organic. 2.3× more demos. Same spend.",
       },
       {
         title: "Leads get cheaper every month",
@@ -90,7 +90,7 @@ export const seoService: ServiceContent = {
       },
       {
         title: "Prospects arrive already sold",
-        body: 'Top-3 on commercial queries, present in AI Overviews. Prospects tell your sales team: "I read your article on X — that\'s why I booked the demo." Deals close faster. Trust is built before the first call.',
+        body: 'Top-3 on commercial queries, present in AI Overviews. Prospects tell your sales team: "I read your article on X — that’s why I booked the demo." Deals close faster. Trust is built before the first call.',
       },
     ],
     extra: {
@@ -102,11 +102,11 @@ export const seoService: ServiceContent = {
         },
         {
           title: "Auction Independence",
-          body: "When a heavy-funded competitor invades your niche, your CAC doesn't spike. When Apple changes its privacy rules again, your marketing doesn't break. You simply step out of the bidding war.",
+          body: "When a heavy-funded competitor invades your niche, your CAC doesn’t spike. When Apple changes its privacy rules again, your marketing doesn’t break. You simply step out of the bidding war.",
         },
         {
           title: "Winning AI Overviews",
-          body: "We know how to get your brand inside Google's AI answers. Paid ads can't buy their way in there. AI only cares about real authority. Getting featured gives you a free 17–35% boost in high-intent traffic.",
+          body: "We know how to get your brand inside Google’s AI answers. Paid ads can’t buy their way in there. AI only cares about real authority. Getting featured gives you a free 17–35% boost in high-intent traffic.",
         },
       ],
     },
@@ -116,7 +116,7 @@ export const seoService: ServiceContent = {
     cases: [
       {
         quote:
-          "We were shown something we'd been ignoring for too long. Positions started climbing almost immediately after the changes.",
+          "We were shown something we’d been ignoring for too long. Positions started climbing almost immediately after the changes.",
         attribution: "Marketing Team Lead, Nux",
         metrics: [
           {

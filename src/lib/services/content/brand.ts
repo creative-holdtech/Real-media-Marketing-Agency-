@@ -9,8 +9,8 @@ export const brandService: ServiceContent = {
   hero: {
     word: "chosen",
     paragraphs: [
-      "Many companies have a product worth buying. Few can explain why it's the one worth choosing, trying to be everything to everyone.",
-      'We don\'t sell marketing strategies. We build positioning your market remembers and, most importantly, your team can easily explain. By aligning your brand with market reality, we give an answer to "Why you?" question.',
+      "Many companies have a product worth buying. Few can explain why it’s the one worth choosing, trying to be everything to everyone.",
+      'We don’t sell marketing strategies. We build positioning your market remembers and, most importantly, your team can easily explain. By aligning your brand with market reality, we give an answer to “Why you?” question.',
     ],
     primaryCta: "Test my brand",
   },
@@ -111,7 +111,7 @@ export const brandService: ServiceContent = {
       },
       {
         title: "Sales cycles cut down",
-        body: "You don't waste time explaining who you are. The system sparks immediate interest in the product, making you memorable and clearly separated from competition.",
+        body: "You don’t waste time explaining who you are. The system sparks immediate interest in the product, making you memorable and clearly separated from competition.",
       },
     ],
   },
@@ -120,7 +120,7 @@ export const brandService: ServiceContent = {
     cases: [
       {
         quote:
-          "We finally look and sound like ourselves. It feels like we jumped three levels up. We've finally moved out of the old setup and running on a completely different engine now.",
+          "We finally look and sound like ourselves. It feels like we jumped three levels up. We’ve finally moved out of the old setup and running on a completely different engine now.",
         attribution: "NDA",
         metrics: [
           { value: "84%", label: "Employee LTV · Up from 60% with genuine pride in the brand" },

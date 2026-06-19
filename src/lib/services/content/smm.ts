@@ -9,8 +9,8 @@ export const smmService: ServiceContent = {
   hero: {
     word: "seen",
     paragraphs: [
-      "You may not believe that social media impacts your deals. That's ok. We can show you.",
-      "But if you just want posting to simulate activity — that's not us.",
+      "You may not believe that social media impacts your deals. That’s ok. We can show you.",
+      "But if you just want posting to simulate activity — that’s not us.",
       "We tactically choose platforms and turn them into a channel for comms, reputation, and sales. When decision-makers check your profiles, they see a future partner, not another generic page.",
     ],
     primaryCta: "Test my socials",
@@ -33,21 +33,21 @@ export const smmService: ServiceContent = {
           heading: "How we build",
           items: [
             "Content pillars: 4–6 core topics translated into specific formats.",
-            "Channel plan: adapted, incl. the CEO/Head's personal brand (if needed).",
+            "Channel plan: adapted, incl. the CEO/Head’s personal brand (if needed).",
             "Strategy reviews: quarterly analytics and updating the tactics.",
           ],
         },
         {
           heading: "What you keep",
           items: [
-            'Your Tone of Voice: a practical guide with 3–5 brand voice traits and clear "Do / Don\'t" examples.',
+            'Your Tone of Voice: a practical guide with 3–5 brand voice traits and clear "Do / Don’t" examples.',
             "Creative solutions: ready-to-use templates, patterns, font pairings, Reels covers, highlights, and motion.",
           ],
         },
       ],
       notes: [
         "Our team covers every role and niche from start to finish.",
-        "We don't wait for the quarter to end. If something stops converting, we rewire the strategy and test new hypotheses immediately.",
+        "We don’t wait for the quarter to end. If something stops converting, we rewire the strategy and test new hypotheses immediately.",
       ],
     },
     {
@@ -93,7 +93,7 @@ export const smmService: ServiceContent = {
           ],
         },
       ],
-      notes: ["Executive summary + next month's action plan."],
+      notes: ["Executive summary + next month’s action plan."],
       cta: "Free SMM audit",
     },
   ],
@@ -109,7 +109,7 @@ export const smmService: ServiceContent = {
         body: "Partnerships and client inquiries come to you directly. You see exactly what triggered the request, with a clear ROI on every channel.",
       },
       {
-        title: "You don't fund theories",
+        title: "You don’t fund theories",
         body: "A hypothesis-tested plan for the upcoming quarter. You get a stop-list to protect your budget, and a clean funnel with a measurable CPL.",
       },
       {
@@ -144,7 +144,7 @@ export const smmService: ServiceContent = {
       {
         label: "Personal brand launch · Bringing the Head of Affiliate into the spotlight",
         quote:
-          "Launching on multiple platforms all at once really paid off. Our Insta reach grew nearly fourfold in just a month, and the ad performance was way ahead of what we've seen before.",
+          "Launching on multiple platforms all at once really paid off. Our Insta reach grew nearly fourfold in just a month, and the ad performance was way ahead of what we’ve seen before.",
         attribution: "NDA",
         metrics: [
           { value: "46,700 → 175,500", label: "Monthly Instagram reach growth (×3.7)" },

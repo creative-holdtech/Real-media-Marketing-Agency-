@@ -9,8 +9,8 @@ export const designService: ServiceContent = {
   hero: {
     word: "expressive",
     paragraphs: [
-      "Anyone can hire a designer and churn out templates. But true visual authority is a luxury. If you don't stand out in the market noise, your whole style is just pixels.",
-      "We don't sell colors and fonts. Instead, we engineer a visual ecosystem that helps your brand look stronger, move faster, and sell more convincingly.",
+      "Anyone can hire a designer and churn out templates. But true visual authority is a luxury. If you don’t stand out in the market noise, your whole style is just pixels.",
+      "We don’t sell colors and fonts. Instead, we engineer a visual ecosystem that helps your brand look stronger, move faster, and sell more convincingly.",
       "Without it, every new deck, ad, or landing page turns into endless manual fixes, dragging down your marketing speed.",
       "We replace the chaos with a centralized framework. You launch campaigns instantly, eliminate routine updates, and maintain a consistent brand presence across every single touchpoint.",
     ],
@@ -34,7 +34,7 @@ export const designService: ServiceContent = {
           heading: "How we build",
           items: [
             "Core visual engine: crafting the logo ecosystem and responsive variations.",
-            "Style guide: locking down the brand's color system and typography.",
+            "Style guide: locking down the brand’s color system and typography.",
             "Asset library: creating patterns, custom iconography, and brand elements.",
           ],
         },
@@ -151,7 +151,7 @@ export const designService: ServiceContent = {
     ],
   },
   socialProof: {
-    title: "You're eye-catching…",
+    title: "You’re eye-catching…",
     cases: [
       {
         quote:

@@ -10,7 +10,7 @@ export const prService: ServiceContent = {
     word: "trusted",
     paragraphs: [
       "An opinion about your brand forms regardless. The question is who shapes the context. Either you control the narrative — or someone else will.",
-      "We don't sell PR as a list of paid media links. We build the market trust that cuts your sales cycle and makes your brand recognized.",
+      "We don’t sell PR as a list of paid media links. We build the market trust that cuts your sales cycle and makes your brand recognized.",
       "Prospects respond faster. Partnership conversations start warmer. Enterprise clients already know who you are before the call. Recruiting gets easier because the market already trusts your brand.",
     ],
     primaryCta: "Check my reputation",
@@ -43,7 +43,7 @@ export const prService: ServiceContent = {
           heading: "How we choose media",
           items: [
             "One well-placed article in the right media creates more business impact than dozens of random publications.",
-            "We evaluate who reads it, how it's perceived inside the market, whether the audience aligns with your goals, and how the placement supports sales and partnerships.",
+            "We evaluate who reads it, how it’s perceived inside the market, whether the audience aligns with your goals, and how the placement supports sales and partnerships.",
           ],
         },
       ],
@@ -68,7 +68,7 @@ export const prService: ServiceContent = {
         {
           heading: "How we work with media",
           items: [
-            "We don't show up in an editor's inbox only when we need coverage.",
+            "We don’t show up in an editor’s inbox only when we need coverage.",
             "Between campaigns, we provide quick commentary, help with industry insights, and bring fresh topics to the table. So your next publication feels earned rather than paid for.",
             "In high-risk industries, the market spots fakes immediately.",
           ],
@@ -107,7 +107,7 @@ export const prService: ServiceContent = {
         body: "Opportunities, partnerships, invitations, media requests, and strong candidates start coming in without active outreach. Your brand gets pulled into conversations.",
       },
       {
-        title: "You've entered the room",
+        title: "You’ve entered the room",
         body: "Your brand is no longer perceived like another unknown project without reputation. People treat you like a serious long-term market player.",
       },
       {
@@ -117,11 +117,11 @@ export const prService: ServiceContent = {
     ],
   },
   socialProof: {
-    title: "You're in the narrative…",
+    title: "You’re in the narrative…",
     cases: [
       {
         quote:
-          "For the first time, PR didn't feel like a separate marketing thing. It became a growth tool for our business.",
+          "For the first time, PR didn’t feel like a separate marketing thing. It became a growth tool for our business.",
         attribution: "NDA, Fintech / payment solution brand",
         metrics: [
           { value: "External positioning", label: "Full strategy built from the ground up" },
