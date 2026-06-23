@@ -33,13 +33,14 @@ export type CaseRichContent = {
     heading: string;
     body: string;
     scope: string[];
+    startingMetrics?: CaseMetric[];
   };
   problem: {
     heading: string;
     body: string;
     cards: { title: string; body: string }[];
   };
-  identity: {
+  identity?: {
     heading: string;
     typeface: { label: string; body: string };
     colors: {
@@ -170,70 +171,58 @@ export const cases: CaseStudy[] = [
         status: "Live · tequila.cpa",
       },
       overview: {
-        heading: "Project overview",
-        body: "Tequila is a CPA network with in-house media buying, specialising in the iGaming vertical and featuring over 300 brands across Tier 1, Tier 2, and Tier 3 regions, including Africa.\n\nWe built the brand from the ground up — identity, web, and a performance creative engine that helps the network stand out to solo buyers and teams alike.",
+        heading: "Project intro",
+        body: "TEQUILA CPA: in-house media buying, iGaming-focused; 300+ brands, 500+ offers.",
+        startingMetrics: [
+          { value: "21%", label: "Brand awareness in niche" },
+          { value: "317", label: "Social media followers" },
+          { value: "~6,000", label: "Avg content views" },
+          { value: "3", label: "Media placements" },
+        ],
         scope: ["Identity & Branding", "Web & Landing Design", "Performance Creatives and SMM"],
       },
       problem: {
         heading: "The challenge",
-        body: "Conduct a comprehensive audit of brand communications and develop a core go-to-market strategy aligned with key business objectives: increasing brand awareness and attracting new partners to the CPA network.\n\nTequila needed a brand partners could trust before the first deal — not another generic network look in a crowded iGaming market.",
+        body: "The iGaming affiliate market has a trust problem. Networks ghosting partners, offers going in unchecked, support tickets disappearing into the void. Buyers got burned enough times to develop a simple rule: stick to the names you know. Or work solo.\n\nTequila needed a brand partners could trust before the first deal — not another generic network look in a crowded iGaming market.\n\nTequila had vetted offers, infrastructure, and the team. But no recognition. In a market where reputation is the price of entry, that was the only thing that mattered.",
         cards: [
           {
             title: "Brand awareness",
-            body: "Raise visibility across Tier 1, Tier 2, and Tier 3 GEOs with a distinctive voice that reads instantly as Tequila — not interchangeable CPA noise.",
+            body: "Raise visibility across Tier 1, Tier 2, and Tier 3 — with a voice the market recognises as Tequila, not interchangeable CPA noise.",
           },
           {
             title: "Partner acquisition",
-            body: "Translate the network offer into a GTM system that attracts new partners and supports in-house media buying at scale.",
+            body: "Turn brand visibility into inbound partner requests — new affiliates and teams coming in without cold outreach.",
           },
           {
-            title: "Buyer Awards recognition",
-            body: "Build a brand presence strong enough to earn nominations for Best PR Campaign and Best Corporate Style at Buyer Awards 2023.",
+            title: "Community recognition",
+            body: "Build a strong presence inside the iGaming and Affiliate community — among buyers, networks, and industry players.",
           },
           {
             title: "Performance at volume",
-            body: "Ship paid social and performance creatives at volume without losing the core message: run traffic without risks.",
+            body: "Produce paid social and performance creatives at scale — consistent and on-brand across every campaign.",
           },
         ],
-      },
-      identity: {
-        heading: "Visual execution",
-        typeface: {
-          label: "Block display + system sans",
-          body: "A pixel-adjacent display wordmark paired with clean sans typography — built to work on hoodies, landing pages, and Instagram carousels at equal weight.",
-        },
-        colors: {
-          principle: "Desert green, high contrast, restraint without decoration.",
-          items: [
-            { name: "Green", meaning: "cactus motif, iGaming energy, recognition" },
-            { name: "Black", meaning: "authority, performance, night-market tone" },
-            { name: "White", meaning: "clarity in dense offer copy" },
-          ],
-        },
-        logo: "Tequila wordmark in a distinctive pixel block display — built for hoodies, landing pages, and Instagram carousels at equal weight.",
-        keyVisual:
-          "Desert green, high contrast, no decoration — a campaign world built for tequila.cpa across Tier 1–3 without generic CPA noise.",
       },
       deliverables: {
         heading: "Three deliverable tracks. One GTM system.",
         items: [
           {
             title: "Identity & Branding",
-            body: "Logo system, brand guidelines, and merch-ready applications — from Buyer Awards campaigns to partner-facing decks.",
+            body: "Logo system, brand guidelines, merch-ready applications — all the team needs to show up consistently, from partner decks to conference booths.",
           },
           {
             title: "Web & Landing Design",
-            body: "Conversion-focused site and landing system that explains the offer to solo buyers and teams — TRAFIK as the hero message.",
+            body: "A site and landing system built around one goal: make the Tequila offer impossible to misread — whether it's a solo buyer or a full team.",
           },
           {
             title: "Performance Creatives and SMM",
-            body: "High-volume Instagram and paid creative — campaign series, infrastructure storytelling, and localized variants across Tier 1–3.",
+            body: "Paid social at volume. Campaign series, expert content, infrastructure storytelling, inside- and cross-niche collabs.",
           },
         ],
       },
       platform: {
-        heading: "Results the team still runs on",
-        body: "The brand system shipped as a partner acquisition engine — not a one-off launch deck.",
+        heading: "The engine that keeps running",
+        body: "Every part of this system focuses on one thing: driving long-term partnership value.",
         features: [
           {
             title: "+35% brand growth",
@@ -244,12 +233,12 @@ export const cases: CaseStudy[] = [
             body: "Network scale across Tier 1, Tier 2, and Tier 3 regions including Africa.",
           },
           {
-            title: "Buyer Awards 2023",
-            body: "Nominated for Best PR Campaign and Best Corporate Style — brand proof in the iGaming buyer community.",
+            title: "Industry recognition",
+            body: "Nominated for Best: PR Campaign, Corporate Style, CPA Network. A continuous track record since 2023 across independent industry awards.",
           },
           {
-            title: "In-house creative system",
-            body: "Performance and SMM templates the team extends without losing Tequila’s voice.",
+            title: "System handover",
+            body: "Tequila in-house team took over the SMM and performance templates, scaling them freely while keeping the original voice intact.",
           },
         ],
       },

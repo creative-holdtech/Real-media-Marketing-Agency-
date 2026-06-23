@@ -73,10 +73,12 @@ type TocItem = { id: string; label: string };
 
 function buildToc(rich: CaseRichContent): TocItem[] {
   const items: TocItem[] = [
-    { id: "case-overview", label: "Overview" },
+    { id: "case-overview", label: rich.overview.heading },
     { id: "case-challenge", label: "The challenge" },
-    { id: "case-identity", label: "Identity" },
   ];
+  if (rich.identity) {
+    items.push({ id: "case-identity", label: "Identity" });
+  }
   if (rich.gallery?.length) {
     items.push({ id: "case-campaign", label: "Campaign" });
   }
@@ -331,7 +333,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const deliverablesVisual = rich.visuals?.deliverables;
   const hasGallery = Boolean(rich.gallery?.length);
   const isLogoCover = c.coverTreatment === "logo";
-  const showIdentityLogo = Boolean(rich.logo) && !isLogoCover;
+  const showIdentityLogo = Boolean(rich.logo) && !isLogoCover && Boolean(rich.identity);
   const identityCompact = !showIdentityLogo && !identityVisual;
 
   return (
@@ -654,6 +656,17 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       </div>
                     ) : null}
 
+                    {rich.overview.startingMetrics?.length ? (
+                      <dl className="reveal mt-8 grid grid-cols-2 gap-x-10 gap-y-6 sm:grid-cols-4">
+                        {rich.overview.startingMetrics.map((m) => (
+                          <div key={m.label}>
+                            <dd className="rm-case-study__metric">{m.value}</dd>
+                            <dt className="rm-case-study__eyebrow mt-1">{m.label}</dt>
+                          </div>
+                        ))}
+                      </dl>
+                    ) : null}
+
                     <dl
                       className={cn(
                         "rm-case-study__meta reveal mt-10 grid gap-x-10 gap-y-7 border-y border-[var(--rm-border-soft)] py-8",
@@ -699,7 +712,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     </div>
                   </section>
 
-                  <section
+                  {rich.identity && <section
                     id="case-identity"
                     aria-labelledby="case-identity-heading"
                     className={caseSection}
@@ -849,7 +862,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                         </div>
                       </div>
                     )}
-                  </section>
+                  </section>}
 
                   {hasGallery ? (
                     <section
