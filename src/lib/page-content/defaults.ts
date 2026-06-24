@@ -166,8 +166,8 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
     slug: "cases",
     sections: {
       work: {
-        tag: "System specs",
-        heading: "Three core runs. Pure performance.",
+        tag: "Case studies",
+        heading: "Three engagements.",
       },
     },
     metaTitle: "Case Studies — Work That Ships | R-M",
@@ -180,11 +180,12 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
         "Identity, websites, funnels, and platforms for Fintech, iGaming, and Web3 brands.",
       ctaPrimaryLabel: "Book free audit →",
       ctaPrimaryUrl: "/audit",
-      ctaSecondaryLabel: "Check our cases",
+      ctaSecondaryLabel: "See the work",
       ctaSecondaryUrl: "#work",
     },
     cta: {
       title: "Tell us what needs fixing",
+      titleAccent: "New launch, a raise, or marketing that doesn\u2019t perform.",
       primaryLabel: "Get free audit",
       primaryUrl: "/audit",
       secondaryLabel: "See services",

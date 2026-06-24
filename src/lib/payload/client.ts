@@ -8,11 +8,37 @@ function resolvePayloadUrl(): string {
   return fromProcess.replace(/\/$/, "");
 }
 
+function isLocalHostUrl(url: string): boolean {
+  try {
+    const { hostname } = new URL(url);
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "[::1]";
+  } catch {
+    return false;
+  }
+}
+
+/** Localhost CMS URLs are only valid on the same machine (dev). */
+function isPayloadUrlReachable(url: string): boolean {
+  if (!url) return false;
+  if (!isLocalHostUrl(url)) return true;
+
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    return host === "localhost" || host === "127.0.0.1";
+  }
+
+  if (process.env.VERCEL === "1" || process.env.NODE_ENV === "production") {
+    return false;
+  }
+
+  return true;
+}
+
 const PAYLOAD_URL = resolvePayloadUrl();
 const PAYLOAD_FETCH_TIMEOUT_MS = 3_000;
 
 export function isPayloadEnabled(): boolean {
-  return PAYLOAD_URL.length > 0;
+  return PAYLOAD_URL.length > 0 && isPayloadUrlReachable(PAYLOAD_URL);
 }
 
 export function getPayloadUrl(): string {

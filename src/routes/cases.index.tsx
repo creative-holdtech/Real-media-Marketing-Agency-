@@ -1,28 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 import insightsBg from "@/assets/insights-bg.png";
 import { CasesCarouselSkeleton } from "@/components/cases-carousel-skeleton";
 import { CasesGallerySection } from "@/components/cases-gallery-section";
+import { CmsFallbackBanner } from "@/components/cms-fallback-banner";
+import { EditorialHeroCopy } from "@/components/editorial-hero-copy";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { PagePreloader } from "@/components/page-preloader";
-import {
-  bodyCopy,
-  btnOutline,
-  btnPrimary,
-  FramerTag,
-  heroSubcopyStrong,
-  pageHeroContainer,
-} from "@/components/framer-section";
+import { bodyCopy, pageHeroContainer } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { getPageDefaults } from "@/lib/page-content/defaults";
 import { getCasesWithMeta } from "@/lib/payload/cases-cms";
-import { casesGalleryHeaderProps } from "@/lib/cases-gallery-config";
+import { casesGalleryHeaderProps, CASES_SUBPAGE_HERO_ATMOSPHERE } from "@/lib/cases-gallery-config";
 import { getPageContent } from "@/lib/payload/pages";
 import { buildPageHead } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/cases/")({
   loader: async () => {
@@ -62,16 +56,15 @@ function AmbientBlobs() {
 
 function CasesPage() {
   useReveal();
-  const { page, cases: caseList } = Route.useLoaderData();
+  const { page, cases: caseList, cmsFailed } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
   const casesDefaults = getPageDefaults("cases");
 
-  const titleLines = casesDefaults.hero?.titleLines ?? [
-    "Work that ships",
-    "for founders who build to scale",
-  ];
-  const heroSubheading = casesDefaults.hero?.subheading ?? casesDefaults.hero?.body;
+  const titleLines = hero?.titleLines ??
+    casesDefaults.hero?.titleLines ?? ["Selected work", "proven to ship"];
+  const heroSubheading =
+    hero?.subheading ?? hero?.body ?? casesDefaults.hero?.subheading ?? casesDefaults.hero?.body;
   const heroTag = hero?.tag ?? casesDefaults.hero?.tag ?? "Case studies · R—M";
   const workSection = casesDefaults.sections?.work;
   const heroDefaults = casesDefaults.hero;
@@ -92,63 +85,35 @@ function CasesPage() {
       <HeroAtmosphere
         imageSrc={hero?.image || insightsBg}
         underHeader
-        className="rm-hero-atmosphere--about-photo rm-hero-atmosphere--compact"
+        className={CASES_SUBPAGE_HERO_ATMOSPHERE}
       >
         <section
           aria-labelledby="page-title"
           className="relative z-10 flex flex-1 items-center pb-12 pt-[var(--rm-header-offset)] md:pb-16"
         >
           <div className={pageHeroContainer}>
-            <div className="rm-hero-copy mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
-              <p className="reveal mb-8 w-fit">
-                <FramerTag>{heroTag}</FramerTag>
-              </p>
-              <h1
-                id="page-title"
-                className="reveal w-full max-w-[16ch] text-balance text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:max-w-[18ch] md:text-[58px] lg:text-[64px]"
-              >
-                {titleLines.map((line) => (
-                  <span key={line} className="block text-pretty">
-                    {line}
-                  </span>
-                ))}
-              </h1>
-              {heroSubheading ? (
-                <p
-                  className={cn(
-                    "reveal mt-7 max-w-[34ch] text-balance text-center",
-                    heroSubcopyStrong,
-                  )}
-                  data-delay="2"
-                >
-                  {heroSubheading}
-                </p>
-              ) : null}
-              <div
-                className="reveal mt-10 flex flex-wrap items-center justify-center gap-4"
-                data-delay="3"
-              >
-                {ctaPrimaryLabel ? (
-                  <Link to={ctaPrimaryUrl} className={btnPrimary}>
-                    {ctaPrimaryLabel}
-                  </Link>
-                ) : null}
-                {ctaSecondaryLabel ? (
-                  ctaSecondaryUrl?.startsWith("#") ? (
-                    <a href={ctaSecondaryUrl} className={btnOutline}>
-                      {ctaSecondaryLabel}
-                    </a>
-                  ) : (
-                    <Link to={ctaSecondaryUrl} className={btnOutline}>
-                      {ctaSecondaryLabel}
-                    </Link>
-                  )
-                ) : null}
-              </div>
-            </div>
+            <EditorialHeroCopy
+              id="page-title"
+              reveal
+              tag={heroTag}
+              titleLines={titleLines}
+              subheading={heroSubheading}
+              primaryCta={
+                ctaPrimaryLabel ? { label: ctaPrimaryLabel, to: ctaPrimaryUrl } : undefined
+              }
+              secondaryCta={
+                ctaSecondaryLabel
+                  ? ctaSecondaryUrl?.startsWith("#")
+                    ? { label: ctaSecondaryLabel, href: ctaSecondaryUrl }
+                    : { label: ctaSecondaryLabel, to: ctaSecondaryUrl }
+                  : undefined
+              }
+            />
           </div>
         </section>
       </HeroAtmosphere>
+
+      {cmsFailed ? <CmsFallbackBanner /> : null}
 
       <main id="main">
         {caseList.length === 0 ? (

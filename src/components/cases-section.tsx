@@ -6,23 +6,19 @@ import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } 
 import {
   bodyCopy,
   btnGhostLink,
-  FramerTag,
   sectionContainer,
   sectionContentGrid,
   sectionHeadline,
   sectionIntroStack,
   sectionShell,
+  textMeta,
 } from "@/components/framer-section";
 import { cases as staticCases } from "@/lib/cases";
-import { casesGalleryHeaderProps } from "@/lib/cases-gallery-config";
+import { casesHomeTeaserHeaderProps } from "@/lib/cases-gallery-config";
 import { cn } from "@/lib/utils";
 
 export function CasesSection() {
-  const header = casesGalleryHeaderProps({
-    tag: "Selected case studies",
-    heading: "Results we deliver.",
-    subheading: "Identity, product, and growth systems for founders who build to scale.",
-  });
+  const header = casesHomeTeaserHeaderProps();
   const featuredCases = staticCases.slice(0, 3);
 
   const reduce = useReducedMotion();
@@ -60,13 +56,10 @@ export function CasesSection() {
         <div className="rm-work reveal">
           <div className={cn(sectionContentGrid, "items-start")}>
             <div className="md:col-start-1 md:self-start">
-              <FramerTag>{header.tag}</FramerTag>
+              <span className={textMeta}>{header.tag}</span>
             </div>
             <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
-              <h2
-                id="cases-heading"
-                className={cn(sectionHeadline, "max-w-[18ch] text-balance text-white")}
-              >
+              <h2 id="cases-heading" className={cn(sectionHeadline, "max-w-[18ch] text-balance")}>
                 {header.heading}
               </h2>
               {header.subheading ? (

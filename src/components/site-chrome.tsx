@@ -31,23 +31,27 @@ function chromeLink(light: boolean) {
 export function SiteHeader({
   variant = "dark",
   overlay = false,
+  solid = false,
 }: {
   variant?: "light" | "dark";
   overlay?: boolean;
+  /** When true, header uses an opaque surface (e.g. after scroll on overlay heroes). */
+  solid?: boolean;
 }) {
   const light = variant === "light";
   const siteNav = useSiteNav();
+  const transparent = overlay && !solid;
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 pt-5",
+        "sticky top-0 z-50 pt-5 transition-[background-color,backdrop-filter] duration-200",
         siteGutter,
-        overlay
+        transparent
           ? "bg-transparent"
           : light
             ? "bg-[var(--rm-light-surface)]/90 backdrop-blur-md"
-            : "bg-rm-page/80 backdrop-blur-md",
+            : "bg-rm-page/92 backdrop-blur-md",
       )}
     >
       <nav

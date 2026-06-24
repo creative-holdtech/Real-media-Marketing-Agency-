@@ -3,19 +3,13 @@ import type { CaseRichContent } from "@/lib/cases";
 export type CaseTocItem = { id: string; label: string };
 
 export const CASE_SECTION_CONTEXT: Record<string, string> = {
-  "case-overview": "Scope, metrics, and what we built together.",
+  "case-overview": "Client, scope, and engagement results.",
   "case-challenge": "The GTM gap the network needed to close.",
   "case-identity": "Type, colour, and recognition system.",
   "case-campaign": "Live mockups and performance frames.",
   "case-deliverables": "Identity, web, and creative tracks in one system.",
   "case-results": "Outcomes, proof, and partner voice.",
 };
-
-export const CASE_READER_PATHS: { label: string; sectionId: string; intent: string }[] = [
-  { label: "Full story", sectionId: "case-overview", intent: "Narrative from brief to system" },
-  { label: "Creative proof", sectionId: "case-campaign", intent: "Mockups and SMM gallery" },
-  { label: "Outcomes", sectionId: "case-results", intent: "Results and partner quote" },
-];
 
 type ContextualCta = {
   message: string;

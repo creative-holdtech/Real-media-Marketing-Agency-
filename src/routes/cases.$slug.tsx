@@ -4,7 +4,7 @@ import { CaseRichDetail } from "@/components/case-rich-detail";
 import { JsonLd } from "@/components/json-ld";
 import { btnOutline, sectionHeadline, textMeta } from "@/components/framer-section";
 import { getCase, getCases } from "@/lib/payload/cases-cms";
-import { cases as staticCases } from "@/lib/cases";
+import { cases as staticCases, getCase as getStaticCase } from "@/lib/cases";
 import { breadcrumbJsonLd, buildPageHead, caseStudyJsonLd } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/cases/$slug")({
     return { study, allCases };
   },
   head: ({ loaderData, params }) => {
-    const s = loaderData?.study;
+    const s = loaderData?.study ?? getStaticCase(params.slug);
     if (!s) return { meta: [{ title: "Case not found — R-M" }] };
     const title = `${s.client} — ${s.headline} | R-M`;
     const description = s.rich?.subline ?? s.headline;

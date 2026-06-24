@@ -101,6 +101,20 @@ export type CaseStudy = {
   rich?: CaseRichContent;
 };
 
+/** Display-normalized engagement length (sentence case, months label). */
+export function formatCaseDuration(duration: string): string {
+  const trimmed = duration.trim();
+  if (!trimmed) return trimmed;
+
+  const months = trimmed.match(/^(\d+)\s*months?$/i);
+  if (months) return `${months[1]} months`;
+
+  const upperMonths = trimmed.match(/^(\d+)\s*MONTHS?$/);
+  if (upperMonths) return `${upperMonths[1]} months`;
+
+  return trimmed;
+}
+
 export const cases: CaseStudy[] = [
   {
     slug: "tequila-cpa",
@@ -295,7 +309,7 @@ export const cases: CaseStudy[] = [
     client: "Empresex",
     niche: "Fintech",
     format: "Marathon",
-    duration: "2024",
+    duration: "11 months",
     preview:
       "Licensed crypto exchange — brand identity, marketing site, mobile app, and web trading platform.",
     headline: "Not just an exchange. A new standard.",

@@ -16,7 +16,7 @@ import {
   textMeta,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
-import type { CaseStudy } from "@/lib/cases";
+import { formatCaseDuration, type CaseMetric, type CaseStudy } from "@/lib/cases";
 import { cn } from "@/lib/utils";
 
 type CasesGallerySectionProps = {
@@ -27,22 +27,24 @@ type CasesGallerySectionProps = {
   chapter?: string;
   viewAllHref?: string;
   viewAllLabel?: string;
-  viewCaseLabel?: string;
   animateHeading?: boolean;
 };
 
 const galleryLinkFocus =
   "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-black";
 
-const galleryActionLink = cn(
+const galleryViewLabel = cn(
   btnGhostLink,
-  "w-fit px-0 text-[var(--rm-ink)] hover:text-white",
-  galleryLinkFocus,
+  "pointer-events-none w-fit px-0 text-[var(--rm-ink)] group-hover:text-white",
 );
 
 const galleryRowGrid = cn("grid grid-cols-1 items-start", sectionGap, "md:grid-cols-3");
 
-const galleryContentGrid = cn("grid grid-cols-1 md:col-span-2 md:grid-cols-2", sectionGap);
+const galleryCardGrid = cn(
+  "grid grid-cols-1 items-start",
+  sectionGap,
+  "md:col-span-2 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)_auto]",
+);
 
 const COVER_OBJECT_POSITION: Partial<Record<string, string>> = {
   empresex: "center 42%",
@@ -58,17 +60,31 @@ function revealDelay(order: number) {
   return String((order % 5) + 1);
 }
 
+function formatMetricValue(value: string) {
+  return value === "LATAM" ? "Latam" : value;
+}
+
+function GalleryRowMetric({ metric }: { metric: CaseMetric }) {
+  return (
+    <div className="rm-cases-gallery__metric">
+      <span className="rm-cases-gallery__metric-value">{formatMetricValue(metric.value)}</span>
+      <span className="rm-cases-gallery__metric-label">{metric.label}</span>
+    </div>
+  );
+}
+
 function CaseGalleryRow({
   study,
   index,
   revealOrder,
-  viewCaseLabel,
 }: {
   study: CaseStudy;
   index: number;
   revealOrder: number;
-  viewCaseLabel: string;
 }) {
+  const durationLabel = formatCaseDuration(study.duration);
+  const metric = study.primaryMetric;
+
   return (
     <article
       className="rm-cases-gallery__row reveal border-b border-[var(--rm-border-soft)]"
@@ -80,20 +96,22 @@ function CaseGalleryRow({
           <span className={cn(textMeta, "md:mt-auto")}>{study.niche}</span>
         </div>
 
-        <div className={galleryContentGrid}>
-          <Link
-            to="/cases/$slug"
-            params={{ slug: study.slug }}
-            aria-label={`${study.client}: ${study.preview}`}
+        <Link
+          to="/cases/$slug"
+          params={{ slug: study.slug }}
+          aria-label={`${study.client} — ${metric.value} ${metric.label}. ${study.preview}`}
+          className={cn(galleryCardGrid, "rm-cases-gallery__card-link group", galleryLinkFocus)}
+        >
+          <div
             className={cn(
-              "rm-cases-gallery__cover block aspect-[16/10] overflow-hidden rounded-md border border-[var(--rm-border-soft)]",
+              "rm-cases-gallery__cover aspect-[16/10] overflow-hidden rounded-md border border-[var(--rm-border-soft)]",
               study.coverTreatment === "logo" && "rm-cases-gallery__cover--logo",
-              galleryLinkFocus,
             )}
           >
             <img
               src={study.coverImage}
-              alt={`${study.client} case study cover`}
+              alt=""
+              aria-hidden
               className={cn(
                 "rm-cases-gallery__cover-img h-full w-full",
                 study.coverImage.startsWith("/cases/") ||
@@ -114,23 +132,18 @@ function CaseGalleryRow({
                 }
               }}
             />
-          </Link>
-
-          <div className={cn(sectionInnerStack, "min-h-full")}>
-            <h3 className={surfaceCardTitle}>{study.client}</h3>
-            <p className={cn(textCardBody, "max-w-[38ch]")}>{study.preview}</p>
-            <p className={cn(textMeta, "normal-case tracking-[0.04em]")}>
-              {study.format} · {study.duration}
-            </p>
-            <Link
-              to="/cases/$slug"
-              params={{ slug: study.slug }}
-              className={cn(galleryActionLink, "rm-cases-gallery__view mt-auto")}
-            >
-              {viewCaseLabel}
-            </Link>
           </div>
-        </div>
+
+          <div className={cn(sectionInnerStack, "min-h-full min-w-0")}>
+            <h3 className={surfaceCardTitle}>{study.client}</h3>
+            <p className={cn(textCardBody, "max-w-[38ch] text-pretty")}>{study.preview}</p>
+            <p className={textMeta}>
+              {study.format} · {durationLabel}
+            </p>
+          </div>
+
+          <GalleryRowMetric metric={metric} />
+        </Link>
       </div>
     </article>
   );
@@ -167,16 +180,13 @@ function GallerySectionHeader({
       )}
       <div className={cn(sectionHeadlineLead, "md:col-span-2")}>
         <span className={textMeta}>{tag}</span>
-        <h2 id={headingId} className={sectionHeadline}>
-          {animateHeading ? (
-            <TextReveal
-              text={heading}
-              className="font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-            />
-          ) : (
-            heading
-          )}
-        </h2>
+        {animateHeading ? (
+          <TextReveal as="h2" id={headingId} text={heading} className={sectionHeadline} />
+        ) : (
+          <h2 id={headingId} className={sectionHeadline}>
+            {heading}
+          </h2>
+        )}
         {subheading ? <p className={cn(bodyCopy, "max-w-prose")}>{subheading}</p> : null}
       </div>
     </div>
@@ -185,13 +195,12 @@ function GallerySectionHeader({
 
 export function CasesGallerySection({
   cases,
-  tag = "Selected work",
-  heading = "Three engagements. One standard.",
+  tag = "Case studies",
+  heading = "Three engagements.",
   subheading,
   chapter,
   viewAllHref,
   viewAllLabel = "View all case studies →",
-  viewCaseLabel = "View case →",
   animateHeading = false,
 }: CasesGallerySectionProps) {
   const headingId = "cases-gallery-heading";
@@ -210,13 +219,7 @@ export function CasesGallerySection({
 
         <div className="rm-cases-gallery__list border-t border-[var(--rm-border-soft)]">
           {cases.map((study, order) => (
-            <CaseGalleryRow
-              key={study.slug}
-              study={study}
-              index={order}
-              revealOrder={order}
-              viewCaseLabel={viewCaseLabel}
-            />
+            <CaseGalleryRow key={study.slug} study={study} index={order} revealOrder={order} />
           ))}
         </div>
 
@@ -224,7 +227,10 @@ export function CasesGallerySection({
           <div className={cn(sectionHeaderGrid, "reveal items-center")} data-delay="2">
             <div className={sectionGridSpacer} aria-hidden />
             <div className="flex justify-end md:col-span-2">
-              <Link to={viewAllHref} className={cn(galleryActionLink, "inline-flex")}>
+              <Link
+                to={viewAllHref}
+                className={cn(galleryViewLabel, "pointer-events-auto inline-flex")}
+              >
                 {viewAllLabel}
               </Link>
             </div>

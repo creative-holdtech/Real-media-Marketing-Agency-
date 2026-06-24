@@ -1,5 +1,5 @@
 import type { CaseStudy } from "@/lib/cases";
-import { cases as staticCases, getCase as getStaticCase } from "@/lib/cases";
+import { cases as staticCases, formatCaseDuration, getCase as getStaticCase } from "@/lib/cases";
 import type { PayloadCaseDoc } from "@/lib/page-content/types";
 import { isPayloadEnabled, payloadFetch } from "@/lib/payload/client";
 import { mediaUrl } from "@/lib/payload/media";
@@ -37,7 +37,7 @@ function mapPayloadCase(doc: PayloadCaseDoc): CaseStudy {
     client: doc.client,
     niche: doc.niche,
     format: doc.format,
-    duration: doc.duration,
+    duration: formatCaseDuration(doc.duration),
     preview: doc.preview,
     headline: doc.headline,
     heroMetrics: doc.heroMetrics ?? [],
@@ -93,7 +93,13 @@ export async function getCases(): Promise<CaseStudy[]> {
 }
 
 export async function getCase(slug: string): Promise<CaseStudy | undefined> {
-  if (!isPayloadEnabled()) return getStaticCase(slug);
+  const staticFallback = getStaticCase(slug);
+  if (!isPayloadEnabled()) return staticFallback;
+
   const remote = await fetchCaseBySlug(slug);
-  return remote ?? getStaticCase(slug);
+  if (!remote) return staticFallback;
+
+  const merged = mergeWithStatic(remote, false);
+  if (merged.rich) return merged;
+  return staticFallback;
 }

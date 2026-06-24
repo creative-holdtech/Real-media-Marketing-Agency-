@@ -4,26 +4,28 @@ import { Link } from "@tanstack/react-router";
 import { CaseCampaignGallery } from "@/components/case-campaign-gallery";
 import { CasesGallerySection } from "@/components/cases-gallery-section";
 import {
+  BtnArrow,
   btnOutline,
+  btnOutlineOnDark,
   btnPrimary,
   pageHeroContainer,
   sectionContainer,
   sectionShell,
+  textMeta,
 } from "@/components/framer-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
-import type { CaseRichContent, CaseSectionVisual, CaseStudy } from "@/lib/cases";
+import { formatCaseDuration, type CaseRichContent, type CaseSectionVisual, type CaseStudy } from "@/lib/cases";
 import {
-  CASE_READER_PATHS,
-  CASE_SECTION_CONTEXT,
   clearSavedScroll,
   estimateCaseReadMinutes,
   getContextualCta,
   persistScroll,
   readSavedScroll,
 } from "@/lib/case-reading";
+import { relatedCasesGalleryProps } from "@/lib/cases-gallery-config";
 import { cn } from "@/lib/utils";
 
 function isDeckAsset(src: string) {
@@ -112,35 +114,58 @@ function HeroMetric({ metric }: { metric: { value: string; label: string } }) {
   );
 }
 
-function OverviewMetrics({ metrics }: { metrics: CaseStudy["heroMetrics"] }) {
-  if (metrics.length === 0) return null;
+function CaseStudyMetrics({
+  items,
+  label,
+  className,
+}: {
+  items?: { value: string; label: string }[];
+  label?: string;
+  className?: string;
+}) {
+  if (!items?.length) return null;
 
   return (
-    <dl
+    <div
       className={cn(
-        "reveal rm-case-study__metrics mt-8 grid grid-cols-2 gap-x-8 gap-y-6 border-t border-[var(--rm-border-soft)] pt-8 md:grid-cols-4",
+        "reveal rm-case-study__metrics-band border-t border-[var(--rm-border-soft)] pt-8",
+        className,
       )}
     >
-      {metrics.map((m) => (
-        <div key={m.label}>
-          <dt className="rm-case-study__metric-value">{m.value}</dt>
-          <dd className="rm-case-study__metric-label">{m.label}</dd>
-        </div>
-      ))}
-    </dl>
+      {label ? <p className="rm-case-study__metrics-group-label">{label}</p> : null}
+      <dl className="grid grid-cols-2 gap-x-8 gap-y-6 sm:grid-cols-4">
+        {items.map((m) => (
+          <div key={m.label}>
+            <dt className="rm-case-study__metric-value">{m.value}</dt>
+            <dd className="rm-case-study__metric-label">{m.label}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   );
 }
 
+const MOBILE_TOC_SHORT: Record<string, string> = {
+  "case-overview": "Intro",
+  "case-challenge": "Challenge",
+  "case-identity": "Identity",
+  "case-campaign": "Campaign",
+  "case-deliverables": "Delivered",
+  "case-results": "Results",
+};
+
 const caseSection = "rm-case-study__section";
+const caseSectionTitle = cn("rm-case-study__section-title reveal", "sr-only lg:not-sr-only");
+const caseSectionLead = "mt-0 lg:mt-6";
 
 function MetaItem({ label, value }: { label: string; value: string }) {
   const domainMatch = value.match(/([\w-]+\.(?:cpa|com|io|net|org|co))/i);
   const hasExternalLink = domainMatch && value.includes("·");
 
   return (
-    <>
+    <div className="rm-case-study__meta-item">
       <dt>{label}</dt>
-      <dd className="mt-1 text-[var(--rm-ink)]">
+      <dd className="text-[var(--rm-ink)]">
         {hasExternalLink && domainMatch ? (
           <>
             {value.slice(0, value.indexOf(domainMatch[0])).trim()}{" "}
@@ -157,7 +182,7 @@ function MetaItem({ label, value }: { label: string; value: string }) {
           value
         )}
       </dd>
-    </>
+    </div>
   );
 }
 
@@ -226,11 +251,10 @@ function TocLink({
       className={cn("rm-case-study__toc-link", isActive && "rm-case-study__toc-link--active")}
       aria-current={isActive ? "location" : undefined}
     >
-      <span className="rm-case-study__toc-index">{String(index + 1).padStart(2, "0")}</span>
-      {section.label}
-      {isActive ? (
-        <span className="rm-case-study__toc-context">{CASE_SECTION_CONTEXT[section.id]}</span>
-      ) : null}
+      <span className="rm-case-study__toc-link-row">
+        <span className="rm-case-study__toc-index">{String(index + 1).padStart(2, "0")}</span>
+        <span className="rm-case-study__toc-link-label">{section.label}</span>
+      </span>
     </a>
   );
 }
@@ -255,6 +279,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const toc = useMemo(() => (rich ? buildToc(rich) : []), [rich]);
   const readMinutes = useMemo(() => (rich ? estimateCaseReadMinutes(rich) : 0), [rich]);
   const [progress, setProgress] = useState(0);
+  const [headerSolid, setHeaderSolid] = useState(false);
   const [activeId, setActiveId] = useState<string>(toc[0]?.id ?? "case-overview");
   const [visitedIds, setVisitedIds] = useState<string[]>([]);
   const [resumeScroll, setResumeScroll] = useState<number | null>(null);
@@ -274,8 +299,12 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       const nextProgress = max > 0 ? (h.scrollTop / max) * 100 : 0;
-      setProgress(nextProgress);
+      setProgress((prev) => (Math.abs(prev - nextProgress) < 0.5 ? prev : nextProgress));
 
+      const solid = h.scrollTop > 96;
+      setHeaderSolid((prev) => (prev === solid ? prev : solid));
+
+      const scrollAnchor = window.innerWidth >= 1024 ? 140 : 168;
       const offsets = toc
         .map((s) => {
           const el = document.getElementById(s.id);
@@ -284,13 +313,17 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
         })
         .filter(Boolean) as { id: string; top: number }[];
 
-      const above = offsets.filter((o) => o.top <= 140);
+      const above = offsets.filter((o) => o.top <= scrollAnchor);
       const current = above.length ? above[above.length - 1] : offsets[0];
-      if (current) {
-        setActiveId(current.id);
+      if (!current) return;
+
+      setActiveId((prev) => (prev === current.id ? prev : current.id));
+      setVisitedIds((prev) => {
         const currentIndex = toc.findIndex((s) => s.id === current.id);
-        setVisitedIds(toc.slice(0, currentIndex + 1).map((s) => s.id));
-      }
+        const next = toc.slice(0, currentIndex + 1).map((s) => s.id);
+        if (prev.length === next.length && prev.every((id, i) => id === next[i])) return prev;
+        return next;
+      });
 
       clearTimeout(persistTimer);
       persistTimer = setTimeout(() => persistScroll(c.slug, h.scrollTop), 400);
@@ -308,7 +341,6 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const showContextBar = progress > 12 && progress < 92;
   const showResume =
     resumeScroll !== null && !resumeDismissed && progress < 8 && resumeScroll > 480;
-  const activeSectionLabel = toc.find((s) => s.id === activeId)?.label ?? "Overview";
 
   const handleResume = () => {
     if (resumeScroll === null) return;
@@ -337,12 +369,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const identityCompact = !showIdentityLogo && !identityVisual;
 
   return (
-    <div
-      className={cn(
-        "rm-page rm-case-study selection:bg-rm-accent selection:text-black",
-        showContextBar && "pb-24",
-      )}
-    >
+    <div className="rm-page rm-case-study selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -360,7 +387,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
         />
       </div>
 
-      <SiteHeader variant="dark" overlay />
+      <SiteHeader variant="dark" overlay solid={headerSolid} />
 
       <main id="main">
         {isLogoCover ? (
@@ -391,17 +418,19 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     <span aria-current="page">{c.client}</span>
                   </nav>
 
-                  <p className="rm-case-study__eyebrow reveal mb-5">
-                    {c.niche} · {c.format} · {c.duration}
+                  <p className={cn(textMeta, "reveal mb-5 normal-case")}>
+                    {c.niche} · {c.format} · {formatCaseDuration(c.duration)}
                   </p>
 
-                  <h1 id="case-title" className="reveal rm-case-study__title">
-                    {rich.titleLines[0]}{" "}
-                    <span className="rm-case-study__title-muted">{rich.titleLines[1]}</span>
+                  <h1 id="case-title" className="reveal rm-title-hero-lead rm-title-hero-lead--case">
+                    <span className="block text-pretty">{rich.titleLines[0]}</span>
+                    <span className="block text-pretty rm-type-display-muted">
+                      {rich.titleLines[1]}
+                    </span>
                   </h1>
 
                   <p
-                    className="rm-case-study__prose rm-case-study__hero-lead reveal mt-7"
+                    className="rm-copy-standfirst rm-case-study__hero-lead reveal mt-7"
                     data-delay="1"
                   >
                     {rich.subline}
@@ -421,11 +450,13 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   </div>
 
                   <div className="reveal mt-10 flex flex-wrap items-center gap-3" data-delay="3">
-                    <Link to="/contact" className={btnOutline}>
+                    <Link to="/contact" className={cn(btnOutlineOnDark, "group gap-2")}>
                       Consultation
+                      <BtnArrow />
                     </Link>
-                    <Link to={rich.closing.primaryTo} className={btnPrimary}>
+                    <Link to={rich.closing.primaryTo} className={cn(btnPrimary, "group gap-2")}>
                       {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                      <BtnArrow />
                     </Link>
                   </div>
                   <a
@@ -484,19 +515,21 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     <span aria-current="page">{c.client}</span>
                   </nav>
 
-                  <p className="rm-case-study__eyebrow reveal mb-4">
-                    {c.niche} · {c.format} · {c.duration}
+                  <p className={cn(textMeta, "reveal mb-4 normal-case")}>
+                    {c.niche} · {c.format} · {formatCaseDuration(c.duration)}
                   </p>
 
                   <h1
                     id="case-title"
-                    className="reveal rm-case-study__title max-w-[20ch] md:max-w-[18ch]"
+                    className="reveal rm-title-hero-lead rm-title-hero-lead--case max-w-[20ch] md:max-w-[18ch]"
                   >
-                    {rich.titleLines[0]}{" "}
-                    <span className="rm-case-study__title-muted">{rich.titleLines[1]}</span>
+                    <span className="block text-pretty">{rich.titleLines[0]}</span>
+                    <span className="block text-pretty rm-type-display-muted">
+                      {rich.titleLines[1]}
+                    </span>
                   </h1>
 
-                  <p className="rm-case-study__prose reveal mt-6" data-delay="1">
+                  <p className="rm-copy-standfirst reveal mt-6 max-w-[42ch]" data-delay="1">
                     {rich.subline}
                   </p>
 
@@ -519,11 +552,13 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   >
                     <span className="rm-case-study__eyebrow">{c.client} case study</span>
                     <div className="flex flex-wrap items-center gap-3">
-                      <Link to="/contact" className={btnOutline}>
+                      <Link to="/contact" className={cn(btnOutlineOnDark, "group gap-2")}>
                         Consultation
+                        <BtnArrow />
                       </Link>
-                      <Link to={rich.closing.primaryTo} className={btnPrimary}>
+                      <Link to={rich.closing.primaryTo} className={cn(btnPrimary, "group gap-2")}>
                         {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                        <BtnArrow />
                       </Link>
                     </div>
                   </div>
@@ -534,7 +569,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
         )}
 
         <div className={cn(sectionShell, "border-b-0 py-0 md:py-0")}>
-          <div className={cn(sectionContainer, "pt-12 pb-8 md:pt-16 md:pb-10")}>
+          <div className={cn(sectionContainer, "gap-0 pt-8 pb-8 md:pt-10 md:pb-10")}>
             <div className="rm-case-study__layout grid grid-cols-12 gap-8 lg:gap-12">
               <aside aria-label="Table of contents" className="hidden lg:col-span-3 lg:block">
                 <div className="rm-case-study__toc-nav">
@@ -598,48 +633,41 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     </div>
                   ) : null}
 
-                  <nav aria-label="Reading paths" className="rm-case-study__reading-paths reveal">
-                    {CASE_READER_PATHS.map((path) => (
-                      <a
-                        key={path.sectionId}
-                        href={`#${path.sectionId}`}
-                        className="rm-case-study__reading-path"
-                        title={path.intent}
-                      >
-                        <span className="rm-case-study__reading-path-label">{path.label}</span>
-                        <span className="rm-case-study__reading-path-intent">{path.intent}</span>
-                      </a>
-                    ))}
-                  </nav>
-
-                  <nav
-                    aria-label="Section navigation"
-                    className="rm-case-study__mobile-nav lg:hidden"
-                  >
-                    {toc.map((s) => (
-                      <a
-                        key={s.id}
-                        href={`#${s.id}`}
-                        className={cn(
-                          "rm-case-study__mobile-nav-link",
-                          activeId === s.id && "rm-case-study__mobile-nav-link--active",
-                        )}
-                      >
-                        {s.label}
-                      </a>
-                    ))}
-                  </nav>
+                  <div className="rm-case-study__mobile-toc lg:hidden">
+                    <p className="rm-case-study__mobile-meta">
+                      <strong>{readMinutes} min read</strong>
+                      <span aria-hidden>·</span>
+                      <span>{Math.round(progress)}% complete</span>
+                    </p>
+                    <nav aria-label="Section navigation" className="rm-case-study__mobile-nav">
+                      {toc.map((s) => (
+                        <a
+                          key={s.id}
+                          href={`#${s.id}`}
+                          className={cn(
+                            "rm-case-study__mobile-nav-link",
+                            activeId === s.id && "rm-case-study__mobile-nav-link--active",
+                          )}
+                          aria-current={activeId === s.id ? "location" : undefined}
+                        >
+                          {MOBILE_TOC_SHORT[s.id] ?? s.label}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
                   <section
                     id="case-overview"
                     aria-labelledby="case-overview-heading"
                     className={caseSection}
                   >
-                    <h2 id="case-overview-heading" className="rm-case-study__section-title reveal">
+                    <h2 id="case-overview-heading" className={caseSectionTitle}>
                       {rich.overview.heading}
                     </h2>
 
                     {overviewLead ? (
-                      <p className="rm-case-study__prose reveal mt-6">{overviewLead}</p>
+                      <p className={cn("rm-case-study__prose reveal", caseSectionLead)}>
+                        {overviewLead}
+                      </p>
                     ) : null}
 
                     {overviewVisual ? (
@@ -656,21 +684,15 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       </div>
                     ) : null}
 
-                    {rich.overview.startingMetrics?.length ? (
-                      <dl className="reveal mt-8 grid grid-cols-2 gap-x-10 gap-y-6 sm:grid-cols-4">
-                        {rich.overview.startingMetrics.map((m) => (
-                          <div key={m.label}>
-                            <dd className="rm-case-study__metric">{m.value}</dd>
-                            <dt className="rm-case-study__eyebrow mt-1">{m.label}</dt>
-                          </div>
-                        ))}
-                      </dl>
-                    ) : null}
+                    <CaseStudyMetrics
+                      className="mt-8"
+                      items={c.heroMetrics}
+                      label="Engagement results"
+                    />
 
                     <dl
                       className={cn(
-                        "rm-case-study__meta reveal mt-10 grid gap-x-10 gap-y-7 border-y border-[var(--rm-border-soft)] py-8",
-                        isLogoCover ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-2 sm:grid-cols-4",
+                        "rm-case-study__meta reveal mt-8 grid grid-cols-1 gap-x-10 gap-y-4 border-y border-[var(--rm-border-soft)] py-6 sm:grid-cols-2 lg:grid-cols-4",
                       )}
                       data-delay="1"
                     >
@@ -679,16 +701,6 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       <MetaItem label="Year" value={rich.meta.year} />
                       <MetaItem label="Status" value={rich.meta.status} />
                     </dl>
-
-                    <OverviewMetrics metrics={c.heroMetrics} />
-
-                    <div className="reveal mt-6 flex flex-wrap gap-2">
-                      {rich.overview.scope.map((item) => (
-                        <span key={item} className="rm-case-study__scope-pill">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
                   </section>
 
                   {/* Challenge */}
@@ -697,16 +709,23 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     aria-labelledby="case-challenge-heading"
                     className={caseSection}
                   >
-                    <h2 id="case-challenge-heading" className="rm-case-study__section-title reveal">
+                    <h2 id="case-challenge-heading" className={caseSectionTitle}>
                       {rich.problem.heading}
                     </h2>
-                    <div className="mt-6 space-y-6">
+                    <div className={cn(caseSectionLead, "space-y-6")}>
                       {rich.problem.body.split("\n\n").map((paragraph) => (
                         <p key={paragraph.slice(0, 24)} className="rm-case-study__prose reveal">
                           {paragraph}
                         </p>
                       ))}
                     </div>
+                    {rich.overview.startingMetrics?.length ? (
+                      <CaseStudyMetrics
+                        className="mt-8"
+                        items={rich.overview.startingMetrics}
+                        label="Starting point"
+                      />
+                    ) : null}
                     <div className="mt-8">
                       <DividerList items={rich.problem.cards} />
                     </div>
@@ -717,13 +736,13 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     aria-labelledby="case-identity-heading"
                     className={caseSection}
                   >
-                    <h2 id="case-identity-heading" className="rm-case-study__section-title reveal">
+                    <h2 id="case-identity-heading" className={caseSectionTitle}>
                       {rich.identity.heading}
                     </h2>
                     {showIdentityLogo || identityVisual ? (
                       <div
                         className={cn(
-                          "mt-8",
+                          caseSectionLead,
                           showIdentityLogo && identityVisual
                             ? "grid gap-6 md:grid-cols-[minmax(0,200px)_minmax(0,1fr)] md:items-start"
                             : undefined,
@@ -870,14 +889,13 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       aria-labelledby="case-campaign-heading"
                       className={cn(caseSection, "rm-case-campaign")}
                     >
-                      <h2
-                        id="case-campaign-heading"
-                        className="rm-case-study__section-title reveal"
-                      >
+                      <h2 id="case-campaign-heading" className={caseSectionTitle}>
                         {rich.galleryHeading ?? "Campaign gallery"}
                       </h2>
                       {rich.galleryLead ? (
-                        <p className="rm-case-study__prose reveal mt-6">{rich.galleryLead}</p>
+                        <p className={cn("rm-case-study__prose reveal", caseSectionLead)}>
+                          {rich.galleryLead}
+                        </p>
                       ) : null}
                       <CaseCampaignGallery
                         items={rich.gallery ?? []}
@@ -893,10 +911,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     aria-labelledby="case-deliverables-heading"
                     className={caseSection}
                   >
-                    <h2
-                      id="case-deliverables-heading"
-                      className="rm-case-study__section-title reveal"
-                    >
+                    <h2 id="case-deliverables-heading" className={caseSectionTitle}>
                       {rich.deliverables.heading}
                     </h2>
                     {deliverablesVisual ? (
@@ -928,10 +943,12 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     aria-labelledby="case-results-heading"
                     className={caseSection}
                   >
-                    <h2 id="case-results-heading" className="rm-case-study__section-title reveal">
+                    <h2 id="case-results-heading" className={caseSectionTitle}>
                       {rich.platform.heading}
                     </h2>
-                    <p className="rm-case-study__prose reveal mt-6">{rich.platform.body}</p>
+                    <p className={cn("rm-case-study__prose reveal", caseSectionLead)}>
+                      {rich.platform.body}
+                    </p>
 
                     <dl className="reveal mt-10 divide-y divide-[var(--rm-border-soft)] border-y border-[var(--rm-border-soft)]">
                       {rich.platform.features.map((feature, i) => (
@@ -968,12 +985,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
         </div>
 
         {others.length > 0 ? (
-          <CasesGallerySection
-            tag="More work"
-            heading="Other case studies."
-            cases={others}
-            animateHeading={false}
-          />
+          <CasesGallerySection {...relatedCasesGalleryProps()} cases={others} />
         ) : null}
 
         <UnifiedCTA
@@ -996,10 +1008,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
         )}
       >
         <div className="rm-case-study__context-bar-inner px-4 md:px-6">
-          <p className="rm-case-study__context-bar-message">
-            <span className="text-[var(--cs-text-muted)]">{activeSectionLabel} · </span>
-            {contextualCta.message}
-          </p>
+          <p className="rm-case-study__context-bar-message">{contextualCta.message}</p>
           <div className="rm-case-study__context-bar-actions">
             {contextualCta.secondaryLabel && contextualCta.secondaryTo ? (
               <Link to={contextualCta.secondaryTo} className={btnOutline}>
