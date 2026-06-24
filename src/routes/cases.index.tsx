@@ -7,7 +7,7 @@ import { CmsFallbackBanner } from "@/components/cms-fallback-banner";
 import { EditorialHeroCopy } from "@/components/editorial-hero-copy";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { PagePreloader } from "@/components/page-preloader";
-import { bodyCopy, pageHeroContainer } from "@/components/framer-section";
+import { bodyCopy, pageHeroContainer, siteChromeBand } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
@@ -91,7 +91,8 @@ function CasesPage() {
           aria-labelledby="page-title"
           className="relative z-10 flex flex-1 items-center pb-12 pt-[var(--rm-header-offset)] md:pb-16"
         >
-          <div className={pageHeroContainer}>
+          <div className={siteChromeBand}>
+            <div className={pageHeroContainer}>
             <EditorialHeroCopy
               id="page-title"
               reveal
@@ -109,6 +110,7 @@ function CasesPage() {
                   : undefined
               }
             />
+            </div>
           </div>
         </section>
       </HeroAtmosphere>

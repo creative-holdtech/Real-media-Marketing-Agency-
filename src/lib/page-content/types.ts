@@ -24,6 +24,8 @@ export type PageSectionItem = {
 export type PageSectionContent = {
   tag?: string;
   heading?: string;
+  /** Two-line section headline — line 2 renders muted like Engage. */
+  headingLines?: string[];
   subheading?: string;
   body?: string;
   bullets?: string[];

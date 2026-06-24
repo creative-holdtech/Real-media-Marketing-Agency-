@@ -4,10 +4,14 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
 import {
+  bandSubtitle,
   btnGhostLink,
   FramerTag,
-  sectionContainer,
+  sectionActionsOffset,
+  sectionGap,
   sectionHeadline,
+  sectionInner,
+  sectionIntroStack,
   sectionShell,
   textMeta,
 } from "@/components/framer-section";
@@ -132,10 +136,10 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
 
   return (
     <section className={cn(sectionShell, "rm-section-insights")} aria-labelledby="insights-heading">
-      <div className={cn(sectionContainer, "items-center")}>
-        <div className="reveal rm-insights-stack flex w-full flex-col items-center">
-          <header className="rm-insights-intro">
-            <div className="flex flex-col items-center gap-3 text-center">
+      <div className={sectionInner}>
+        <div className={cn("reveal rm-insights-stack flex w-full flex-col items-center", sectionGap)}>
+          <header className="rm-insights-intro flex w-full flex-col items-center text-center">
+            <div className={cn(sectionIntroStack, "items-center")}>
               <FramerTag>Insights</FramerTag>
               <h2
                 id="insights-heading"
@@ -147,7 +151,10 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
                 Field notes on building brands that last.
               </h2>
             </div>
-            <Link to="/blog" className={cn(btnGhostLink, "mx-auto w-fit")}>
+            <Link
+              to="/blog"
+              className={cn(btnGhostLink, sectionActionsOffset, "mx-auto w-fit")}
+            >
               All articles
               <span
                 aria-hidden
@@ -192,7 +199,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
                     className="rm-insights-meta__article"
                   >
                     <span className="rm-insights-meta__kicker">{activePost.label}</span>
-                    <span className="rm-insights-meta__title">{activePost.title}</span>
+                    <span className={cn("rm-insights-meta__title", bandSubtitle)}>{activePost.title}</span>
                     <span className={cn(textMeta, "rm-insights-meta__line")}>
                       {activePost.date} · {activePost.read}
                     </span>

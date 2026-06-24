@@ -8,6 +8,8 @@ import {
   chromeLightMuted,
   chromeLightSurface,
   siteGutter,
+  sectionInner,
+  siteChromeBand,
   textFaint,
   textGhost,
   textMeta,
@@ -56,70 +58,79 @@ export function SiteHeader({
     >
       <nav
         className={cn(
-          "mx-auto grid h-14 w-full max-w-[var(--rm-grid-max)] grid-cols-[1fr_auto_1fr] items-center px-5",
+          "mx-auto flex h-14 w-full max-w-[var(--rm-grid-max)] items-center pl-4 pr-3 md:py-1 md:pl-5 md:pr-1",
           light
             ? cn("rounded-lg border bg-white/90", chromeLightBorder)
             : "rounded-full border border-white/[0.08] bg-rm-surface/40",
         )}
       >
-        <Link to="/" aria-label="Real Media — home" className="justify-self-start">
-          <img
-            src={logoUrl}
-            alt="Real Media"
-            width={90}
-            height={65}
-            className={cn("h-8 w-auto", light && "[filter:invert(1)]")}
-          />
-        </Link>
+        <div className="flex shrink-0 items-center">
+          <Link to="/" aria-label="Real Media — home" className="shrink-0">
+            <img
+              src={logoUrl}
+              alt="Real Media"
+              width={90}
+              height={65}
+              className={cn("block h-8 w-auto", light && "[filter:invert(1)]")}
+            />
+          </Link>
+        </div>
 
-        <ul className={cn("hidden items-center justify-center gap-5 md:flex", textNav)}>
-          {siteNav.map((n) => (
-            <li key={n.label}>
-              {n.to ? (
-                <Link
-                  to={n.to}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    triggerPageTransition(n.to!);
-                  }}
-                  className={cn(
-                    "relative inline-flex flex-col items-center gap-1.5",
-                    light
-                      ? cn(chromeLightMuted, "hover:text-[var(--rm-light-ink)]")
-                      : "text-[var(--rm-text-muted)] hover:text-white",
-                  )}
-                  activeProps={{
-                    className: light
-                      ? "nav-active !text-[var(--rm-light-ink)]"
-                      : "nav-active !text-white",
-                  }}
-                >
-                  {n.label}
-                  <span
-                    aria-hidden
+        <div className="flex min-w-0 flex-1 items-center justify-center px-4 md:px-6">
+          <ul
+            className={cn(
+              "hidden min-w-0 items-center justify-center gap-5 lg:gap-6 md:flex",
+              textNav,
+            )}
+          >
+            {siteNav.map((n) => (
+              <li key={n.label} className="shrink-0">
+                {n.to ? (
+                  <Link
+                    to={n.to}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      triggerPageTransition(n.to!);
+                    }}
                     className={cn(
-                      "nav-dot block h-[3px] w-[3px] scale-0 rounded-full opacity-0 transition-[opacity,transform] duration-200",
-                      light ? "bg-[var(--rm-light-accent)]" : "bg-rm-accent",
+                      "relative inline-flex items-center whitespace-nowrap px-0.5 py-1",
+                      light
+                        ? cn(chromeLightMuted, "hover:text-[var(--rm-light-ink)]")
+                        : "text-[var(--rm-text-muted)] hover:text-white",
                     )}
-                  />
-                </Link>
-              ) : (
-                <a href={n.href} className={chromeLink(light)}>
-                  {n.label}
-                </a>
-              )}
-            </li>
-          ))}
-        </ul>
+                    activeProps={{
+                      className: light
+                        ? "nav-active !text-[var(--rm-light-ink)]"
+                        : "nav-active !text-white",
+                    }}
+                  >
+                    {n.label}
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "nav-dot pointer-events-none absolute -bottom-0.5 left-1/2 block h-[3px] w-[3px] -translate-x-1/2 scale-0 rounded-full opacity-0 transition-[opacity,transform] duration-200",
+                        light ? "bg-[var(--rm-light-accent)]" : "bg-rm-accent",
+                      )}
+                    />
+                  </Link>
+                ) : (
+                  <a href={n.href} className={cn(chromeLink(light), "whitespace-nowrap px-0.5 py-1")}>
+                    {n.label}
+                  </a>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-        <div className="col-start-3 flex items-center justify-end gap-1">
+        <div className="flex shrink-0 items-center justify-end gap-3 md:gap-0">
           <Link
             to="/audit"
             onClick={(e) => {
               e.preventDefault();
               triggerPageTransition("/audit");
             }}
-            className={cn(btnPrimarySm, "hidden md:inline-flex")}
+            className={cn(btnPrimarySm, "hidden shrink-0 md:inline-flex")}
           >
             Get Audit
           </Link>
@@ -136,11 +147,12 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
   return (
     <footer
       className={cn(
-        "mx-auto max-w-[var(--rm-grid-max)] pb-12 pt-12",
-        siteGutter,
+        siteChromeBand,
+        "pb-12 pt-12",
         light && cn("border-t", chromeLightBorder, chromeLightInk),
       )}
     >
+      <div className={sectionInner}>
       <div className="grid grid-cols-12 gap-6 md:gap-8">
         <div className="col-span-12 md:col-span-5">
           <img
@@ -247,12 +259,13 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
       <div
         className={cn(
           "mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[var(--rm-border-soft)] pt-5",
-          textMeta,
-          light ? chromeLightMuted : textGhost,
         )}
       >
-        <span>© R-M 2026</span>
-        <span className="opacity-60">Privacy Policy</span>
+        <span className={cn(textMeta, light ? chromeLightMuted : textGhost)}>© R-M 2026</span>
+        <a href="/privacy" className={cn("rm-type-body", chromeLink(light))}>
+          Privacy Policy
+        </a>
+      </div>
       </div>
     </footer>
   );

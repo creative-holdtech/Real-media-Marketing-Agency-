@@ -11,6 +11,7 @@ import {
   sectionInnerStack,
   sectionShell,
   SectionHeader,
+  textSubtle,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
 import { cn } from "@/lib/utils";
@@ -34,8 +35,8 @@ export function MarketingSection({
   );
 }
 
-/** Watermark chapter numeral in content grid (home studio pattern). */
-export function ChapterSpacer({ chapter, className }: { chapter: string; className?: string }) {
+/** Empty grid cell preserving studio chapter layout (optional watermark numeral). */
+export function ChapterSpacer({ chapter, className }: { chapter?: string; className?: string }) {
   return (
     <div
       className={cn(
@@ -45,9 +46,11 @@ export function ChapterSpacer({ chapter, className }: { chapter: string; classNa
       )}
       aria-hidden
     >
-      <span className="pointer-events-none select-none text-[clamp(5rem,8vw,8rem)] font-bold leading-none tracking-[-0.06em] text-white/[0.05]">
-        {chapter}
-      </span>
+      {chapter ? (
+        <span className="pointer-events-none select-none text-[clamp(5rem,8vw,8rem)] font-bold leading-none tracking-[-0.06em] text-white/[0.05]">
+          {chapter}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -56,22 +59,44 @@ export function ChapterSpacer({ chapter, className }: { chapter: string; classNa
 export function MarketingSectionIntro({
   tag,
   title,
+  titleLines,
   titleId,
   srTitle,
   lead,
+  contentClassName,
 }: {
   tag: string;
   title: string;
+  titleLines?: string[];
   titleId?: string;
   srTitle?: string;
   lead?: ReactNode;
+  contentClassName?: string;
 }) {
-  const headline = (
+  const lines =
+    titleLines && titleLines.length >= 2
+      ? titleLines
+      : title.includes(". ")
+        ? [title.slice(0, title.indexOf(". ") + 1), title.slice(title.indexOf(". ") + 2)]
+        : null;
+
+  const headline = lines ? (
+    <h2
+      id={titleId}
+      className={cn(sectionHeadline, "m-0 max-w-[22ch] text-balance")}
+      aria-label={srTitle ?? lines.join(" ")}
+    >
+      <span className="block text-pretty">
+        <TextReveal text={lines[0]} as="span" className="text-inherit" ariaLabel={lines[0]} />
+      </span>
+      <span className={cn("block text-pretty", textSubtle)}>{lines[1]}</span>
+    </h2>
+  ) : (
     <TextReveal id={titleId} text={title} className={sectionHeadline} ariaLabel={srTitle} />
   );
 
   return (
-    <SectionHeader tag={tag}>
+    <SectionHeader tag={tag} contentClassName={contentClassName}>
       {lead ? (
         <div className={sectionHeadlineLead}>
           {headline}

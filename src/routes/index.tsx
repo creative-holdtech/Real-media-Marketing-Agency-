@@ -6,7 +6,11 @@ import {
   BtnArrow,
   btnOutlineOnDark,
   btnPrimary,
+  heroEyebrowOffset,
+  heroHeadlineLead,
   pageHeroContainer,
+  sectionHeroActionsRow,
+  siteChromeBand,
 } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
@@ -108,51 +112,58 @@ function Index() {
 
       <SiteHeader variant="dark" overlay />
 
-      {/* HERO — editorial split: copy on a hard left edge + framed photo */}
+      {/* HERO — full-bleed photo, centered editorial copy */}
       <HeroAtmosphere imageSrc={hero?.image || heroBg} underHeader>
-        {/* HERO — full-bleed photo, left-aligned editorial copy block */}
         <section
           aria-labelledby="home-hero-title"
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
         >
-          <div className={pageHeroContainer}>
+          <div className={siteChromeBand}>
+            <div className={pageHeroContainer}>
             <motion.div
-              className="rm-hero-copy flex w-full max-w-[36rem] flex-col items-start text-left"
+              className="rm-hero-copy mx-auto flex w-full max-w-[36rem] flex-col items-center text-center"
               variants={heroStage}
               initial={reduce ? false : "hidden"}
               animate="show"
             >
               {hero?.tag ? (
-                <motion.p className="mb-8 flex items-center gap-3" variants={heroFade}>
+                <motion.p className={cn(heroEyebrowOffset, "flex items-center justify-center gap-3")} variants={heroFade}>
                   <motion.span
                     aria-hidden
-                    className="h-px w-12 origin-left bg-white/60"
+                    className="h-px w-12 shrink-0 origin-center bg-white/60"
                     variants={heroLineDraw}
                   />
                   <span className="rm-type-meta text-[var(--rm-text-body)]">{hero.tag}</span>
+                  <motion.span
+                    aria-hidden
+                    className="h-px w-12 shrink-0 origin-center bg-white/60"
+                    variants={heroLineDraw}
+                  />
                 </motion.p>
               ) : null}
-              <motion.h1 id="home-hero-title" className="rm-title-hero-lead" variants={heroTitle}>
-                <span className="block">
-                  <motion.span className="block" variants={heroTitleLine}>
-                    {titleLines[0]}
-                  </motion.span>
-                </span>
-                {titleLines.length > 1 ? (
+              <div className={heroHeadlineLead}>
+                <motion.h1 id="home-hero-title" className="rm-title-hero-lead text-balance" variants={heroTitle}>
                   <span className="block">
-                    <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
-                      {titleLines.slice(1).join(" ")}
+                    <motion.span className="block" variants={heroTitleLine}>
+                      {titleLines[0]}
                     </motion.span>
                   </span>
+                  {titleLines.length > 1 ? (
+                    <span className="block">
+                      <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
+                        {titleLines.slice(1).join(" ")}
+                      </motion.span>
+                    </span>
+                  ) : null}
+                </motion.h1>
+                {hero?.subheading ? (
+                  <motion.p className="rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance" variants={heroRise}>
+                    {hero.subheading}
+                  </motion.p>
                 ) : null}
-              </motion.h1>
-              {hero?.subheading ? (
-                <motion.p className="rm-copy-standfirst mt-6 max-w-[42ch]" variants={heroRise}>
-                  {hero.subheading}
-                </motion.p>
-              ) : null}
+              </div>
 
-              <motion.div className="mt-10 flex flex-wrap items-center gap-4" variants={heroRise}>
+              <motion.div className={cn(sectionHeroActionsRow, "justify-center")} variants={heroRise}>
                 {hero?.ctaPrimaryLabel ? (
                   <Link
                     to={hero.ctaPrimaryUrl ?? "/contact"}
@@ -173,6 +184,7 @@ function Index() {
                 ) : null}
               </motion.div>
             </motion.div>
+            </div>
           </div>
         </section>
       </HeroAtmosphere>

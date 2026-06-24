@@ -37,16 +37,14 @@ export function MetaCard({
       ) : null}
       <CardContent
         className={cn(
-          "relative z-[1] flex h-full flex-col justify-between gap-0",
+          "relative z-[1] flex h-full flex-col gap-4 md:gap-5",
           surfaceCardPadding,
         )}
       >
         <p className={textLabel}>{label}</p>
-        <div className="rm-plan-card__divider mt-auto border-t border-[var(--rm-border-soft)] pt-5">
-          <p className="rm-type-subsection whitespace-pre-line font-normal text-[var(--rm-ink)]">
-            {value}
-          </p>
-        </div>
+        <p className="rm-plan-card__value rm-type-subsection mt-auto whitespace-pre-line font-normal text-[var(--rm-ink)]">
+          {value}
+        </p>
       </CardContent>
     </SurfaceCard>
   );

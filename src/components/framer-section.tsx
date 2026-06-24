@@ -4,15 +4,19 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /* ——— Layout (4 / 8 / 16 / 24 / 32 / 48 scale) ——— */
-/** Shared horizontal gutter — all sections, hero, header, footer */
+/** Shared horizontal gutter — outer full-bleed band only (never pair with max-w on the same node) */
 export const siteGutter = "px-6 md:px-10";
-/** Full-width page band aligned to editorial grid */
-export const pageBand = `mx-auto w-full max-w-[var(--rm-grid-max)] ${siteGutter}`;
+/** Full-width chrome band — gutter on the outside of the grid column */
+export const siteChromeBand = `w-full ${siteGutter}`;
+/** Grid-aligned inner column — max-width only; parent must be siteChromeBand or sectionShell */
+export const sectionInner = "mx-auto w-full max-w-[var(--rm-grid-max)]";
+/** @deprecated Use sectionInner — padding belongs on siteChromeBand / sectionShell */
+export const pageBand = sectionInner;
 export const sectionShell = `border-b border-[var(--rm-border-soft)] bg-[var(--rm-surface-raised)] py-16 md:py-20 ${siteGutter}`;
-export const sectionContainer =
-  "mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col gap-8 md:gap-12";
-/** Hero band — same grid as section blocks */
-export const pageHeroContainer = `relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ${siteGutter}`;
+/** Hero inner column — wrap with siteChromeBand on the parent */
+export const pageHeroInner = cn(sectionInner, "relative pb-10 pt-2 md:pb-20 md:pt-8");
+/** @deprecated Wrap with siteChromeBand; do not use alone on a padded band */
+export const pageHeroContainer = pageHeroInner;
 export const proseContainer = "mx-auto w-full max-w-[var(--rm-prose-max)]";
 export const formContainer = "mx-auto w-full max-w-[var(--rm-form-max)]";
 export const sectionGap = "gap-6 md:gap-8";
@@ -27,6 +31,28 @@ export const sectionContentGrid = `grid grid-cols-1 ${sectionGap} md:grid-cols-3
 export const sectionCardGrid = sectionContentGrid;
 export const sectionGridSpacer = "hidden md:block";
 export const sectionActionRow = "flex justify-end pt-2";
+/** Vertical stack of 2+ section blocks — one gap source (24px / 32px) */
+export const sectionStack = cn(sectionInner, "flex flex-col", sectionGap);
+/** @deprecated Prefer sectionStack (multi-child) or sectionInner (single child) */
+export const sectionContainer = sectionStack;
+/** Copy block → action buttons — 32px; use once (not with parent flex/grid gap on the same axis) */
+export const sectionActionsOffset = "mt-8";
+export const sectionActionsRow = cn(
+  sectionActionsOffset,
+  "flex flex-wrap items-center gap-3 md:gap-4",
+);
+/** Hero-scale copy → actions — 40px (larger type band) */
+export const sectionHeroActionsRow = cn(
+  "mt-10 flex flex-wrap items-center gap-4",
+);
+/** Hero eyebrow (tag + rule) → headline — 32px */
+export const heroEyebrowOffset = "mb-8";
+/** Hero headline → standfirst — 24px (larger than sectionHeadlineLead) */
+export const heroHeadlineLead = "flex w-full flex-col gap-6";
+/** Shared section divider — one token sitewide */
+export const borderSoft = "border-[var(--rm-border-soft)]";
+/** List row separators — pair with divide-y */
+export const divideSoft = "divide-[var(--rm-border-soft)]";
 
 /* ——— Typography — 8px grid via .rm-type-* (styles.css) ——— */
 export const textDisplay = "rm-type-display text-[var(--rm-ink)]";
@@ -42,10 +68,20 @@ export const textBlogMeta = textMeta;
 export const sectionChapterNumeral = "rm-type-meta tabular-nums text-[var(--rm-text-ghost)]";
 export const bodyCopy = "rm-type-body max-w-prose text-[var(--rm-text-body)]";
 export const bodyCopyStrong = "rm-type-body rm-type-body-strong max-w-prose";
+const standfirstType = "rm-type-body rm-type-body-strong text-balance text-white/90";
+/** Centered band subtitle — insights meta title, CTA accent (42ch) */
+export const bandSubtitle = cn(standfirstType, "mx-auto block max-w-[42ch]");
+/** Left-aligned section standfirst — studio intro body */
+export const sectionStandfirst = cn(standfirstType, "block w-full");
 export const textSubtle = "text-[var(--rm-text-subtle)]";
 export const textFaint = "text-[var(--rm-text-faint)]";
 export const textGhost = "text-[var(--rm-text-ghost)]";
-/** Hero / centered band subcopy */
+/** Hero centered copy column */
+export const heroCopyLayout =
+  "mx-auto flex w-full max-w-[36rem] flex-col items-center text-center";
+/** Hero / CTA standfirst under display headline */
+export const heroStandfirst =
+  "rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance";
 export const heroSubcopy = "rm-type-body text-[var(--rm-text-body)]";
 export const heroSubcopyStrong = "rm-type-body rm-type-body-strong text-[var(--rm-ink)]";
 /** Section intro block — tag column + headline column */
@@ -86,7 +122,7 @@ export const btnPrimary = cn(
 );
 export const btnPrimarySm = cn(
   btnBase,
-  "bg-white px-5 py-2.5 text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)]",
+  "shrink-0 bg-white px-4 py-2 text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-float)]",
 );
 export const btnOutline = cn(
   btnBase,
@@ -198,17 +234,21 @@ export function SectionHeader({
   tag,
   children,
   className,
+  contentClassName,
 }: {
   tag: string;
   children?: ReactNode;
   className?: string;
+  contentClassName?: string;
 }) {
   return (
     <div className={cn(sectionHeaderGrid, className)}>
       <div className="reveal">
         <FramerTag>{tag}</FramerTag>
       </div>
-      {children ? <div className={sectionHeaderContent}>{children}</div> : null}
+      {children ? (
+        <div className={cn(sectionHeaderContent, contentClassName)}>{children}</div>
+      ) : null}
     </div>
   );
 }

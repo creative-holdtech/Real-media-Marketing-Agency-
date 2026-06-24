@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
 import {
   bodyCopy,
+  borderSoft,
+  BtnArrow,
   btnGhostLink,
-  sectionContainer,
   sectionContentGrid,
+  sectionInner,
   sectionHeadline,
   sectionIntroStack,
   sectionShell,
+  subsectionTitle,
+  textGhost,
   textMeta,
 } from "@/components/framer-section";
-import { cases as staticCases } from "@/lib/cases";
+import { cases as staticCases, getCaseHomePreviewImage, getCaseHomePreviewPosition, isCaseHomePreviewPhoto } from "@/lib/cases";
 import { casesHomeTeaserHeaderProps } from "@/lib/cases-gallery-config";
 import { cn } from "@/lib/utils";
 
@@ -46,57 +50,77 @@ export function CasesSection() {
 
   const activeCase = active >= 0 ? featuredCases[active] : null;
 
+  useEffect(() => {
+    featuredCases.forEach((study) => {
+      const img = new Image();
+      img.src = getCaseHomePreviewImage(study);
+    });
+  }, [featuredCases]);
+
   return (
     <section
       id="work"
       aria-labelledby="cases-heading"
       className={cn(sectionShell, "rm-section-work")}
     >
-      <div className={sectionContainer}>
-        <div className="rm-work reveal">
-          <div className={cn(sectionContentGrid, "items-start")}>
-            <div className="md:col-start-1 md:self-start">
-              <span className={textMeta}>{header.tag}</span>
-            </div>
-            <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
-              <h2 id="cases-heading" className={cn(sectionHeadline, "max-w-[18ch] text-balance")}>
-                {header.heading}
-              </h2>
-              {header.subheading ? (
-                <p className={cn(bodyCopy, "max-w-[46ch] text-[var(--rm-text-body)]")}>
-                  {header.subheading}
-                </p>
-              ) : null}
-            </header>
+      <div className={sectionInner}>
+        <div className={cn("rm-work reveal", sectionContentGrid, "items-start")}>
+          <div className="md:col-start-1 md:self-start">
+            <span className={textMeta}>{header.tag}</span>
           </div>
+          <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
+            <h2 id="cases-heading" className={cn(sectionHeadline, "max-w-[18ch] text-balance")}>
+              {header.heading}
+            </h2>
+            {header.subheading ? (
+              <p className={cn(bodyCopy, "max-w-[46ch] text-[var(--rm-text-body)]")}>
+                {header.subheading}
+              </p>
+            ) : null}
+          </header>
 
           <div
-            className="rm-index"
-            data-active={active >= 0}
+            className="rm-index md:col-span-2 md:col-start-2"
             onPointerMove={handleMove}
             onPointerLeave={() => setActive(-1)}
           >
-            {featuredCases.map((study, index) => (
+            {featuredCases.map((study, index) => {
+              const previewSrc = getCaseHomePreviewImage(study);
+              const previewPhoto = isCaseHomePreviewPhoto(previewSrc);
+
+              return (
               <Link
                 key={study.slug}
                 to="/cases/$slug"
                 params={{ slug: study.slug }}
-                className="rm-index__row"
+                className={cn("rm-index__row rm-touch group border-b last:border-b-0", borderSoft)}
                 data-on={active === index}
                 onPointerEnter={() => setActive(index)}
                 onFocus={() => setActive(index)}
                 aria-label={`${study.client} — ${study.primaryMetric.value} ${study.primaryMetric.label}`}
               >
-                <span className="rm-index__num" aria-hidden>
+                <span className={cn("rm-index__num", textGhost)} aria-hidden>
                   {String(index + 1).padStart(2, "0")}
                 </span>
 
                 <span className="rm-index__main">
-                  <span className="rm-index__thumb" aria-hidden>
-                    <img src={study.coverImage} alt="" loading="lazy" decoding="async" />
+                  <span
+                    className={cn(
+                      "rm-index__thumb",
+                      previewPhoto && "rm-index__thumb--photo",
+                    )}
+                    aria-hidden
+                  >
+                    <img
+                      src={previewSrc}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: getCaseHomePreviewPosition(study) }}
+                    />
                   </span>
-                  <span className="rm-index__name">{study.client}</span>
-                  <span className="rm-index__meta">
+                  <span className={cn("rm-index__name", subsectionTitle)}>{study.client}</span>
+                  <span className={cn("rm-index__meta", textMeta)}>
                     {study.niche} · {study.format}
                   </span>
                 </span>
@@ -105,46 +129,53 @@ export function CasesSection() {
                   <span className="rm-index__metric-value">
                     {study.primaryMetric.value === "LATAM" ? "Latam" : study.primaryMetric.value}
                   </span>
-                  <span className="rm-index__metric-label">{study.primaryMetric.label}</span>
+                  <span className={cn("rm-index__metric-label", textMeta)}>{study.primaryMetric.label}</span>
                 </span>
 
-                <span className="rm-index__arrow" aria-hidden>
-                  →
+                <span className={cn("rm-index__arrow", textGhost)} aria-hidden>
+                  <BtnArrow />
                 </span>
               </Link>
-            ))}
+            );
+            })}
           </div>
 
-          <div className="rm-work__footer">
-            <Link to="/cases" className={btnGhostLink}>
-              View all case studies
-              <span
-                aria-hidden
-                className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-              >
-                →
-              </span>
-            </Link>
-          </div>
+          <Link
+            to="/cases"
+            className={cn(
+              btnGhostLink,
+              "justify-self-end whitespace-nowrap md:col-span-2 md:col-start-2",
+            )}
+          >
+            View all case studies
+            <BtnArrow />
+          </Link>
         </div>
       </div>
 
       <motion.div className="rm-index__cursor" style={{ x, y }} aria-hidden>
         <div className={cn("rm-index__anchor", previewBelow && "rm-index__anchor--below")}>
-          <AnimatePresence mode="popLayout">
+          <AnimatePresence mode="wait">
             {activeCase ? (
               <motion.div
                 key={activeCase.slug}
                 className={cn(
                   "rm-index__preview",
-                  activeCase.previewImage ? "rm-index__preview--photo" : undefined,
+                  isCaseHomePreviewPhoto(getCaseHomePreviewImage(activeCase))
+                    ? "rm-index__preview--photo"
+                    : undefined,
                 )}
-                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 12 }}
-                animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-                exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 8 }}
-                transition={{ type: "spring", stiffness: 260, damping: 24 }}
+                initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={reduce ? undefined : { opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
               >
-                <img src={activeCase.previewImage ?? activeCase.coverImage} alt="" />
+                <img
+                  src={getCaseHomePreviewImage(activeCase)}
+                  alt=""
+                  decoding="async"
+                  style={{ objectPosition: getCaseHomePreviewPosition(activeCase) }}
+                />
               </motion.div>
             ) : null}
           </AnimatePresence>

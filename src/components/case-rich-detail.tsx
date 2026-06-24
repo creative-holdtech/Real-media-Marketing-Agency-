@@ -9,6 +9,7 @@ import {
   btnOutlineOnDark,
   btnPrimary,
   pageHeroContainer,
+  siteChromeBand,
   sectionContainer,
   sectionShell,
   textMeta,
@@ -396,12 +397,13 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
             className="rm-case-hero-logo relative isolate border-b border-[var(--rm-border-soft)]"
             style={{ "--case-accent": c.accent } as CSSProperties}
           >
-            <div
-              className={cn(
-                pageHeroContainer,
-                "relative z-10 pb-[clamp(2.5rem,6vw,4rem)] pt-[var(--rm-header-offset)] md:pb-16",
-              )}
-            >
+            <div className={siteChromeBand}>
+              <div
+                className={cn(
+                  pageHeroContainer,
+                  "relative z-10 pb-[clamp(2.5rem,6vw,4rem)] pt-[var(--rm-header-offset)] md:pb-16",
+                )}
+              >
               <div className="grid grid-cols-1 items-end gap-10 lg:grid-cols-12 lg:gap-14">
                 <div className="lg:col-span-7 xl:col-span-6">
                   <nav
@@ -486,6 +488,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   </figure>
                 </div>
               </div>
+              </div>
             </div>
           </section>
         ) : (
@@ -499,7 +502,8 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
               aria-labelledby="case-title"
               className="relative z-10 flex flex-1 items-end pb-12 pt-[var(--rm-header-offset)] md:pb-16"
             >
-              <div className={pageHeroContainer}>
+              <div className={siteChromeBand}>
+                <div className={pageHeroContainer}>
                 <div className="mx-auto w-full max-w-[720px]">
                   <nav
                     aria-label="Breadcrumb"
@@ -562,6 +566,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                       </Link>
                     </div>
                   </div>
+                </div>
                 </div>
               </div>
             </section>

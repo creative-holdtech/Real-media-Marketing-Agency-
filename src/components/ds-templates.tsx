@@ -4,6 +4,7 @@ import {
   bodyCopy,
   FramerTag,
   pageHeroContainer,
+  siteChromeBand,
   sectionContainer,
   sectionHeadline,
   sectionShell,
@@ -56,7 +57,8 @@ export function PageHero({
   return (
     <section className={cn("relative isolate", className)}>
       {ambient}
-      <div className={cn(pageHeroContainer, "pb-14 md:pb-20")}>
+      <div className={siteChromeBand}>
+        <div className={cn(pageHeroContainer, "pb-14 md:pb-20")}>
         {tag ? (
           <p className="reveal mb-6 md:mb-8">
             <FramerTag>{tag}</FramerTag>
@@ -65,6 +67,7 @@ export function PageHero({
         {titleLines ? <SplitDisplayTitle lines={titleLines} className="reveal" /> : null}
         {title ? <div className="reveal">{title}</div> : null}
         {children}
+        </div>
       </div>
     </section>
   );

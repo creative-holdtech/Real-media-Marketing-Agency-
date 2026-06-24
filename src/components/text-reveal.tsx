@@ -43,7 +43,7 @@ type TextRevealProps = {
   id?: string;
   ariaLabel?: string;
   /** Semantic element — use h2 for section headings in long-form pages. */
-  as?: "p" | "h2" | "h3";
+  as?: "p" | "h2" | "h3" | "span";
 };
 
 const CHUNK_SIZE = 3;

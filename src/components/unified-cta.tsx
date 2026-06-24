@@ -3,12 +3,13 @@ import { Link } from "@tanstack/react-router";
 import { MagneticButton, Reveal } from "@/components/motion-bits";
 import {
   BtnArrow,
-  bodyCopy,
+  bandSubtitle,
   btnOutline,
   btnPrimary,
-  sectionContainer,
+  sectionActionsRow,
   sectionHeadline,
   sectionHeadlineLead,
+  sectionInner,
   sectionShell,
   textMeta,
 } from "@/components/framer-section";
@@ -39,10 +40,10 @@ export function UnifiedCTA({
 }: Partial<CTAProps> & { title?: string }) {
   return (
     <section id="cta" aria-labelledby="unified-cta-heading" className={sectionShell}>
-      <div className={cn(sectionContainer, "items-center text-center")}>
+      <div className={cn(sectionInner, "flex flex-col items-center text-center")}>
         {eyebrow ? (
           <Reveal duration={0.5}>
-            <p className={cn("mb-2", textMeta)}>{eyebrow}</p>
+            <p className={cn(textMeta, "mb-4")}>{eyebrow}</p>
           </Reveal>
         ) : null}
         <Reveal duration={0.5}>
@@ -51,11 +52,11 @@ export function UnifiedCTA({
             className={cn("mx-auto max-w-lg text-balance", sectionHeadlineLead)}
           >
             <span className={cn("block", sectionHeadline)}>{title}</span>
-            {titleAccent ? <span className={cn("block", bodyCopy)}>{titleAccent}</span> : null}
+            {titleAccent ? <span className={bandSubtitle}>{titleAccent}</span> : null}
           </h2>
         </Reveal>
         <Reveal delay={0.1} duration={0.5}>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className={cn(sectionActionsRow, "justify-center")}>
             {primaryHref ? (
               <MagneticButton
                 href={primaryHref}

@@ -6,7 +6,8 @@ import {
   BtnArrow,
   btnPrimary,
   sectionHeadline,
-  siteGutter,
+  sectionInner,
+  siteChromeBand,
   surfaceCardTitle,
   textCardBody,
   textFaint,
@@ -116,12 +117,8 @@ function AuditPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section
-        className={cn(
-          "relative mx-auto max-w-[var(--rm-grid-max)] pt-16 md:pt-24 pb-12 md:pb-20",
-          siteGutter,
-        )}
-      >
+      <section className={cn(siteChromeBand, "relative pt-16 pb-12 md:pt-24 md:pb-20")}>
+        <div className={cn(sectionInner, "relative")}>
         <div
           aria-hidden
           className="absolute inset-0 -z-10"
@@ -154,15 +151,14 @@ function AuditPage() {
             </li>
           ))}
         </ul>
+        </div>
       </section>
 
       <section
         id="what-included"
-        className={cn(
-          "border-y border-[var(--rm-border-soft)] mx-auto max-w-[var(--rm-grid-max)] py-24",
-          siteGutter,
-        )}
+        className={cn(siteChromeBand, "border-y border-[var(--rm-border-soft)] py-24")}
       >
+        <div className={sectionInner}>
         <div className="reveal max-w-4xl">
           <h2 className={sectionHeadline}>
             Pick the channel that's most urgent.{" "}
@@ -182,14 +178,11 @@ function AuditPage() {
             </div>
           ))}
         </div>
+        </div>
       </section>
 
-      <section
-        className={cn(
-          "mx-auto max-w-[var(--rm-grid-max)] py-24 border-b border-[var(--rm-border-soft)]",
-          siteGutter,
-        )}
-      >
+      <section className={cn(siteChromeBand, "border-b border-[var(--rm-border-soft)] py-24")}>
+        <div className={sectionInner}>
         <div className="reveal max-w-4xl">
           <p className="rm-eyebrow mb-6">How it works</p>
           <h2 className={sectionHeadline}>
@@ -215,9 +208,11 @@ function AuditPage() {
             </li>
           ))}
         </ol>
+        </div>
       </section>
 
-      <section id="audit-form" className={cn("mx-auto max-w-[820px] py-24 md:py-36", siteGutter)}>
+      <section id="audit-form" className={cn(siteChromeBand, "py-24 md:py-36")}>
+        <div className="mx-auto w-full max-w-[820px]">
         <div className="reveal mb-16 md:mb-20">
           <h2 className={sectionHeadline}>What are you interested in?</h2>
           <p className={cn("mt-5 rm-type-body", textFaint)}>
@@ -285,6 +280,7 @@ function AuditPage() {
             </button>
           </div>
         </form>
+        </div>
       </section>
 
       <SiteFooter />

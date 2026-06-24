@@ -3,6 +3,7 @@ import { editorialHeroCopyLayout } from "@/components/editorial-hero-copy";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import {
   pageHeroContainer,
+  siteChromeBand,
   sectionContainer,
   sectionGap,
   sectionHeaderGrid,
@@ -19,7 +20,8 @@ export function CasesCarouselSkeleton() {
 
       <HeroAtmosphere imageSrc={insightsBg} underHeader className={CASES_SUBPAGE_HERO_ATMOSPHERE}>
         <section className="relative z-10 flex flex-1 items-center pb-12 pt-[var(--rm-header-offset)] md:pb-16">
-          <div className={pageHeroContainer}>
+          <div className={siteChromeBand}>
+            <div className={pageHeroContainer}>
             <div className={cn(editorialHeroCopyLayout, "gap-6")}>
               <div className="flex items-center gap-3">
                 <div className="h-px w-12 shrink-0 bg-white/[0.06]" aria-hidden />
@@ -29,6 +31,7 @@ export function CasesCarouselSkeleton() {
                 <div className="h-10 w-full max-w-[14ch] rounded-md bg-white/[0.06] sm:h-12" />
                 <div className="h-10 w-full max-w-[18ch] rounded-md bg-white/[0.05] sm:h-12" />
               </div>
+            </div>
             </div>
           </div>
         </section>

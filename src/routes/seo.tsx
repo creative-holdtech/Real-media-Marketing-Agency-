@@ -5,7 +5,8 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
 import {
   sectionHeadline,
-  siteGutter,
+  sectionInner,
+  siteChromeBand,
   textCardBody,
   textFaint,
   textGhost,
@@ -165,12 +166,8 @@ function SeoPage() {
             }}
           />
 
-          <div
-            className={cn(
-              "relative mx-auto max-w-[var(--rm-grid-max)] w-full text-center",
-              siteGutter,
-            )}
-          >
+          <div className={cn(siteChromeBand, "relative text-center")}>
+            <div className={sectionInner}>
             <h1 id="page-title" className="rm-title-hero mx-auto max-w-6xl">
               SEO built on{" "}
               <span className="relative inline-block align-baseline w-[6.2ch] md:w-[7.6ch] h-[1em] text-left overflow-hidden">
@@ -204,6 +201,7 @@ function SeoPage() {
                 How we work
               </MagneticButton>
             </div>
+            </div>
           </div>
         </section>
 
@@ -232,7 +230,8 @@ function SeoPage() {
 
         {/* ANTI-POSITION */}
         <section className="border-b border-[var(--rm-border-soft)]">
-          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24 md:py-36", siteGutter)}>
+          <div className={cn(siteChromeBand, "py-24 md:py-36")}>
+            <div className={sectionInner}>
             <Reveal duration={0.5}>
               <p className="rm-eyebrow mb-8 tabular-nums">Our position</p>
             </Reveal>
@@ -252,6 +251,7 @@ function SeoPage() {
                 reward.
               </p>
             </Reveal>
+            </div>
           </div>
         </section>
 
@@ -261,9 +261,8 @@ function SeoPage() {
             const reverse = i % 2 === 1;
             return (
               <article key={s.n} className="border-b border-[var(--rm-border-soft)]">
-                <div
-                  className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24 md:py-36", siteGutter)}
-                >
+                <div className={cn(siteChromeBand, "py-24 md:py-36")}>
+                  <div className={sectionInner}>
                   <div
                     className={`grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16 items-center ${reverse ? "md:[&>div:first-child]:order-2" : ""}`}
                   >
@@ -292,6 +291,7 @@ function SeoPage() {
                       <ServiceArt kind={s.art as "intent" | "content" | "authority"} />
                     </Reveal>
                   </div>
+                  </div>
                 </div>
               </article>
             );
@@ -303,7 +303,8 @@ function SeoPage() {
           aria-labelledby="outcomes-heading"
           className="border-b border-[var(--rm-border-soft)] bg-rm-surface"
         >
-          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-24", siteGutter)}>
+          <div className={cn(siteChromeBand, "py-24")}>
+            <div className={sectionInner}>
             <Reveal duration={0.5}>
               <h2 id="outcomes-heading" className={cn(sectionHeadline, "max-w-4xl")}>
                 What changes in the business.{" "}
@@ -349,6 +350,7 @@ function SeoPage() {
                 );
               })}
             </div>
+            </div>
           </div>
         </section>
 
@@ -362,7 +364,8 @@ function SeoPage() {
                 "radial-gradient(50% 60% at 30% 40%, rgba(80,60,255,0.18), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-28", siteGutter)}>
+          <div className={cn(siteChromeBand, "py-28")}>
+            <div className={sectionInner}>
             <Reveal duration={0.5}>
               <blockquote className={cn(sectionHeadline, "max-w-[22ch] md:max-w-[26ch]")}>
                 <span className="text-[var(--rm-text-ghost)]">"</span>
@@ -385,6 +388,7 @@ function SeoPage() {
                 </div>
               </div>
             </Reveal>
+            </div>
           </div>
         </section>
 
@@ -398,7 +402,8 @@ function SeoPage() {
                 "radial-gradient(70% 60% at 50% 50%, rgba(255,75,40,0.22), transparent 70%), var(--rm-surface)",
             }}
           />
-          <div className={cn("mx-auto max-w-[var(--rm-grid-max)] py-28 text-center", siteGutter)}>
+          <div className={cn(siteChromeBand, "py-28 text-center")}>
+            <div className={sectionInner}>
             <Reveal duration={0.5}>
               <h2 id="cta-heading" className="mx-auto max-w-5xl rm-title-hero">
                 Ready to own the search?{" "}
@@ -419,6 +424,7 @@ function SeoPage() {
                 </MagneticButton>
               </div>
             </Reveal>
+            </div>
           </div>
         </section>
       </main>

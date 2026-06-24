@@ -2,12 +2,11 @@ import { useRef } from "react";
 
 import {
   bodyCopy,
-  bodyCopyStrong,
+  sectionStandfirst,
   sectionCardGrid,
-  sectionContainer,
-  sectionGap,
-  sectionInnerStack,
   sectionShell,
+  sectionStack,
+  sectionInnerStack,
   textGhost,
 } from "@/components/framer-section";
 import { ChapterSpacer, MarketingSectionIntro } from "@/components/marketing-section";
@@ -56,8 +55,8 @@ export function AboutSection({ page }: { page?: PageContent }) {
       />
 
       <div className="rm-studio-chapter__body">
-        <div className={sectionShell}>
-          <div className={cn(sectionContainer, "rm-plan-scene")}>
+        <div className={cn(sectionShell, "pt-0")}>
+          <div className={cn(sectionStack, "rm-plan-scene")}>
             <div className="rm-plan-scene__ambient" aria-hidden="true">
               <div className="rm-plan-scene__grid" />
               <div className="rm-plan-scene__glow" />
@@ -67,11 +66,13 @@ export function AboutSection({ page }: { page?: PageContent }) {
             <MarketingSectionIntro
               tag={studio?.tag ?? "Marketing agency"}
               title={studio?.heading ?? ""}
+              titleLines={studio?.headingLines}
               srTitle={studio?.heading ?? ""}
+              contentClassName="md:max-w-[46ch]"
               lead={
                 <div className={sectionInnerStack}>
                   {studio?.body ? (
-                    <p className={cn(bodyCopyStrong, "reveal-fade")} data-delay="1">
+                    <p className={cn(sectionStandfirst, "reveal-fade")} data-delay="1">
                       {studio.body}
                     </p>
                   ) : null}
@@ -97,10 +98,10 @@ export function AboutSection({ page }: { page?: PageContent }) {
             />
 
             <div
-              className={cn("reveal-fade rm-plan-scene__cards", sectionCardGrid, sectionGap)}
+              className={cn("reveal-fade rm-plan-scene__cards", sectionCardGrid)}
               data-delay="3"
             >
-              <ChapterSpacer chapter="02" className="rm-plan-chapter" />
+              <ChapterSpacer className="rm-plan-chapter" />
               {metaCards.map((card, index) => (
                 <MetaCard
                   key={card.label}

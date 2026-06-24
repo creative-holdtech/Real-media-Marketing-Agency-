@@ -21,6 +21,7 @@ import {
   btnPrimary,
   FramerTag,
   pageHeroContainer,
+  siteChromeBand,
   sectionGap,
   sectionHeaderGrid,
   sectionHeadline,
@@ -113,7 +114,8 @@ function AboutPage() {
           aria-labelledby="page-title"
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
         >
-          <div className={pageHeroContainer}>
+          <div className={siteChromeBand}>
+            <div className={pageHeroContainer}>
             <div className="rm-hero-copy flex w-full max-w-[40rem] flex-col items-start text-left">
               {hero?.tag ? (
                 <motion.p
@@ -167,6 +169,7 @@ function AboutPage() {
                   </a>
                 ) : null}
               </motion.div>
+            </div>
             </div>
           </div>
         </section>

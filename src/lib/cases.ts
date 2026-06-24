@@ -89,6 +89,8 @@ export type CaseStudy = {
   coverImage: string;
   /** Full-bleed photo shown on home index hover (falls back to coverImage) */
   previewImage?: string;
+  /** object-position for home hover card — crops deck chrome (title bars, footer rules) */
+  homePreviewPosition?: string;
   heroImage: string;
   /** Used when deck PNG is not exported yet */
   fallbackCover?: string;
@@ -358,8 +360,9 @@ export const cases: CaseStudy[] = [
     accent: "#d4a853",
     coverImage: caseAsset("empresex", "logo.svg"),
     previewImage: deckImage("empresex", "platform"),
+    homePreviewPosition: "50% 42%",
     coverTreatment: "logo",
-    heroImage: deckImage("empresex", "platform"),
+    heroImage: deckImage("empresex", "cover"),
     fallbackCover: engageBg,
     fallbackHero: aboutHero,
     coverScope: ["Identity", "Web", "Mobile app", "Exchange"],
@@ -523,9 +526,9 @@ export const cases: CaseStudy[] = [
     },
     accent: "#f43f5e",
     coverImage: caseAsset("progresivo", "logo.svg"),
-    previewImage: deckImage("progresivo", "platform"),
+    homePreviewPosition: "center center",
     coverTreatment: "logo",
-    heroImage: deckImage("progresivo", "platform"),
+    heroImage: nicheFintech,
     fallbackCover: nicheFintech,
     fallbackHero: aboutHero,
     coverScope: ["Visual identity", "Design system", "LATAM creatives"],
@@ -645,6 +648,23 @@ export type CaseNiche = (typeof caseNiches)[number];
 
 export function getCase(slug: string) {
   return cases.find((c) => c.slug === slug);
+}
+
+/** Home #work index — hover card + mobile thumb (deck/gallery photo, not logo). */
+export function getCaseHomePreviewImage(study: CaseStudy): string {
+  if (study.previewImage) return study.previewImage;
+  const gallery = study.rich?.gallery?.[0]?.src;
+  if (gallery) return gallery;
+  if (study.fallbackCover) return study.fallbackCover;
+  return deckImage(study.slug, "cover");
+}
+
+export function getCaseHomePreviewPosition(study: CaseStudy): string {
+  return study.homePreviewPosition ?? "center center";
+}
+
+export function isCaseHomePreviewPhoto(src: string): boolean {
+  return !/logo\.(svg|png)$/i.test(src) && !src.endsWith(".svg");
 }
 
 export function getCaseCoverScope(study: CaseStudy): string[] {

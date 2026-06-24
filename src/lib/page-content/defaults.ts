@@ -19,6 +19,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
       studio: {
         tag: "Marketing agency",
         heading: "We don't bring ideas. We come with a plan.",
+        headingLines: ["We don't bring ideas.", "We come with a plan."],
         body: "A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming inside out.",
         bullets: [
           "10 practitioners to make your product seen, trusted, and bought.",

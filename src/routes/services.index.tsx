@@ -8,6 +8,8 @@ import {
   interactiveSurfaceCard,
   pageBand,
   pageHeroContainer,
+  sectionInner,
+  siteChromeBand,
   sectionPill,
   sectionShell,
   surfaceCardPadding,
@@ -51,8 +53,9 @@ function ServicesIndex() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section className={cn(pageHeroContainer, "rm-services-hero pb-14 md:pb-20")}>
+      <section className={cn(siteChromeBand, "rm-services-hero relative pb-14 md:pb-20")}>
         <div aria-hidden className="rm-services-hero__ambient" />
+        <div className={cn(pageHeroContainer, "relative")}>
         <div className="relative flex flex-col gap-6 md:gap-8">
           <p className="reveal">
             <FramerTag>{hero?.tag ?? `Services · ${servicesList.length} disciplines`}</FramerTag>
@@ -67,10 +70,11 @@ function ServicesIndex() {
             </p>
           ) : null}
         </div>
+        </div>
       </section>
 
-      <section className={cn(sectionShell, "border-t border-[var(--rm-border-soft)] px-0 md:px-0")}>
-        <div className={cn(pageBand, "flex flex-col gap-8 pt-2 md:gap-12 md:pt-4")}>
+      <section className={cn(sectionShell, "border-t border-[var(--rm-border-soft)]")}>
+        <div className={cn(sectionInner, "flex flex-col gap-8 pt-2 md:gap-12 md:pt-4")}>
           <div className="reveal flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-8">
             <div className="flex flex-col gap-3">
               <p className={textMeta}>Choose your entry point</p>

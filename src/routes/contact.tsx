@@ -7,7 +7,8 @@ import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import {
   BtnArrow,
   btnPrimary,
-  siteGutter,
+  sectionInner,
+  siteChromeBand,
   textCardBody,
   textFaint,
 } from "@/components/framer-section";
@@ -65,12 +66,8 @@ function ContactPage() {
     <div className="rm-page selection:bg-rm-accent selection:text-black">
       <SiteHeader variant="dark" />
 
-      <section
-        className={cn(
-          "relative mx-auto max-w-[var(--rm-grid-max)] pt-24 pb-24 md:pb-36",
-          siteGutter,
-        )}
-      >
+      <section className={cn(siteChromeBand, "relative pt-24 pb-24 md:pb-36")}>
+        <div className={cn(sectionInner, "relative")}>
         <div
           aria-hidden
           className="absolute inset-0 -z-10 opacity-60"
@@ -194,6 +191,7 @@ function ContactPage() {
               </div>
             </form>
           </div>
+        </div>
         </div>
       </section>
 

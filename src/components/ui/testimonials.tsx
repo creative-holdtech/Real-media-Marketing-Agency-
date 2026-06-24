@@ -5,7 +5,7 @@ import { useRef, useState, useSyncExternalStore } from "react";
 import quoteBg from "@/assets/engage-bg.jpg";
 import {
   FramerTag,
-  sectionContainer,
+  sectionInner,
   sectionContentGrid,
   siteGutter,
   textGhost,
@@ -90,7 +90,7 @@ export function QuoteGradientSection({
       )}
     >
       {background === "image" ? <QuoteBackground /> : null}
-      <div className={cn("relative z-[1]", sectionContainer)}>{children}</div>
+      <div className={cn("relative z-[1]", sectionInner)}>{children}</div>
     </section>
   );
 }

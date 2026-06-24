@@ -7,6 +7,7 @@ import {
   btnOutline,
   btnPrimary,
   pageHeroContainer,
+  siteChromeBand,
   sectionContainer,
   sectionHeadline,
   sectionShell,
@@ -66,7 +67,8 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
       <main id="main">
         <section aria-labelledby="service-title" className="relative isolate overflow-hidden">
           <div aria-hidden className="rm-service-hero__ambient" />
-          <div className={cn(pageHeroContainer, "pb-14 text-center md:pb-20")}>
+          <div className={siteChromeBand}>
+            <div className={cn(pageHeroContainer, "pb-14 text-center md:pb-20")}>
             <Link
               to="/services"
               className={cn(
@@ -100,6 +102,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                 How we work
                 <BtnArrow />
               </a>
+            </div>
             </div>
           </div>
         </section>

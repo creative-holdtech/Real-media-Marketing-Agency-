@@ -5,17 +5,19 @@ import { Link } from "@tanstack/react-router";
 import {
   FramerTag,
   BtnArrow,
+  btnGhostLink,
   btnPrimary,
-  sectionContainer,
+  sectionActionsRow,
   sectionContentGrid,
   sectionHeadline,
   sectionIntroStack,
+  sectionInner,
+  borderSoft,
   sectionShell,
   subsectionTitle,
   textCardBody,
   textMeta,
   textSubtle,
-  textFaint,
   textGhost,
 } from "@/components/framer-section";
 import { homepageEngagements, type Engagement } from "@/lib/engagements";
@@ -65,7 +67,7 @@ export function ServicesSection() {
       aria-labelledby="engage-heading"
       className={cn(sectionShell, "relative overflow-hidden bg-black")}
     >
-      <div className={sectionContainer}>
+      <div className={sectionInner}>
         <div className={cn(sectionContentGrid, "items-start")}>
           <div className="md:col-start-1 md:self-start">
             <FramerTag>Engagement formats</FramerTag>
@@ -81,7 +83,10 @@ export function ServicesSection() {
           <div
             role="tablist"
             aria-label="Engagement formats"
-            className="mt-12 flex flex-wrap items-end gap-x-10 gap-y-1 border-b border-white/12 md:col-span-2 md:col-start-2"
+            className={cn(
+              "flex flex-wrap items-end gap-x-10 gap-y-1 border-b md:col-span-2 md:col-start-2",
+              borderSoft,
+            )}
           >
             {homepageEngagements.map((e) => {
               const isActive = active === e.id;
@@ -120,7 +125,7 @@ export function ServicesSection() {
             id={panelId}
             role="tabpanel"
             aria-labelledby={activeTabId}
-            className="mt-12 md:col-span-2 md:col-start-2"
+            className="md:col-span-2 md:col-start-2"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -129,7 +134,7 @@ export function ServicesSection() {
                 animate={{ opacity: 1 }}
                 exit={reduce ? undefined : { opacity: 0 }}
                 transition={{ duration: 0.2, ease: EASE }}
-                className="grid gap-x-16 gap-y-12 md:grid-cols-[0.82fr_1fr]"
+                className="grid items-start gap-x-12 gap-y-8 md:grid-cols-[0.82fr_1fr] md:gap-x-16"
               >
                 {/* Left: supporting metric, emphasized intro, CTA */}
                 <motion.div
@@ -147,12 +152,12 @@ export function ServicesSection() {
                   </p>
 
                   <p
-                    className={cn("mt-5 max-w-[34ch] rm-type-body rm-type-body-strong text-white")}
+                    className={cn("mt-4 max-w-[34ch] rm-type-body rm-type-body-strong text-white")}
                   >
                     {engagement.intro}
                   </p>
 
-                  <div className="mt-auto flex flex-wrap items-end gap-x-6 gap-y-3 pt-8">
+                  <div className={cn(sectionActionsRow, "justify-start")}>
                     <Link
                       to="/contact"
                       search={{ engagement: engagement.id }}
@@ -163,21 +168,17 @@ export function ServicesSection() {
                     </Link>
                     <Link
                       to="/products"
-                      className={cn(
-                        "group inline-flex items-center gap-2 rm-type-body font-medium",
-                        textFaint,
-                        "transition-colors duration-300 hover:text-white motion-reduce:transition-none",
-                      )}
+                      className={btnGhostLink}
                       title={engagement.compareHint}
                     >
                       Compare formats
-                      <BtnArrow className="group-hover:translate-x-1" />
+                      <BtnArrow />
                     </Link>
                   </div>
                 </motion.div>
 
                 {/* Right: numbered steps */}
-                <dl className="m-0 flex flex-col border-t border-white/10">
+                <dl className={cn("m-0 flex flex-col border-t", borderSoft)}>
                   {engagement.steps.map((step, i) => (
                     <motion.div
                       key={step.code}
@@ -188,7 +189,10 @@ export function ServicesSection() {
                           ? { duration: 0 }
                           : { duration: 0.5, ease: EASE, delay: 0.12 + i * 0.07 }
                       }
-                      className="grid grid-cols-[2.25rem_1fr] gap-x-5 gap-y-1.5 border-b border-white/10 py-5 last:border-b-0 sm:grid-cols-[6.5rem_1fr]"
+                      className={cn(
+                        "grid grid-cols-[2.25rem_1fr] items-start gap-x-5 gap-y-1.5 border-b py-4 last:border-b-0 sm:grid-cols-[6.5rem_1fr] sm:items-baseline sm:gap-y-0",
+                        borderSoft,
+                      )}
                     >
                       <dt className="flex items-baseline gap-2.5">
                         <span className={cn(textMeta, textGhost)}>{step.code}</span>
@@ -196,7 +200,7 @@ export function ServicesSection() {
                           {step.title}
                         </span>
                       </dt>
-                      <div className="flex flex-col gap-1.5">
+                      <div className="flex flex-col gap-1.5 sm:contents">
                         <span className={cn(textMeta, "sm:hidden", textSubtle)}>{step.title}</span>
                         <StepBody engagementId={engagement.id} step={step} />
                       </div>
