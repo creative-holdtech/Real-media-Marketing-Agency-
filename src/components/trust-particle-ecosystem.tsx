@@ -45,6 +45,43 @@ function smoothStep(current: number, target: number, dt: number, rate: number) {
   return current + (target - current) * blend;
 }
 
+/**
+ * Scroll-story smoothing — caps forward velocity so fast flings don't skip acts.
+ * Keep in sync with `--rm-trust-scene-vh` in styles.css (longer scene = more runway).
+ */
+const SCROLL_STORY_MAX_ADVANCE_PER_SEC = 0.32;
+const SCROLL_STORY_FOLLOW_RATE = 2.2;
+const SCROLL_STORY_RETREAT_RATE = 3.4;
+
+/** Count-up and stat enter — lag behind scroll so digits don't flash past.
+ * Caps are a *fraction of the run per second* (magnitude-independent) clamped
+ * onto an eased follow, so the value glides in fast on reveal but still settles
+ * — never crawls, never teleports. */
+const COUNT_VALUE_FOLLOW_RATE = 6;
+const COUNT_VALUE_MAX_FRACTION_PER_SEC = 1.8;
+const STAT_HERO_FOLLOW_RATE = 6;
+const STAT_HERO_MAX_ADVANCE_PER_SEC = 2.4;
+
+/** Ease toward target, then clamp only the forward step to a velocity cap. */
+function smoothCapped(current: number, target: number, dt: number, rate: number, maxStep: number) {
+  const eased = smoothStep(current, target, dt, rate);
+  if (eased <= current) return eased;
+  return Math.min(eased, current + maxStep);
+}
+
+function smoothSceneScroll(current: number, target: number, dt: number) {
+  const step = Math.max(0.001, dt);
+  if (target <= current) {
+    return smoothStep(current, target, step, SCROLL_STORY_RETREAT_RATE);
+  }
+  // Ease toward the real target, then clamp only the *forward step* to the
+  // velocity cap. (Capping the target first and easing on top of it compounds
+  // the two and crawls ~30× too slow — the story would never reach its beats.)
+  const eased = smoothStep(current, target, step, SCROLL_STORY_FOLLOW_RATE);
+  const maxStep = SCROLL_STORY_MAX_ADVANCE_PER_SEC * step;
+  return Math.min(eased, current + maxStep);
+}
+
 function snapPx(value: number) {
   return Math.round(value * 100) / 100;
 }
@@ -58,8 +95,8 @@ const TOTAL_PARTICLES = TRUST_BRANDS.length;
 const STORY = {
   enter: [0, 0.1],
   constellation: [0.02, 0.16],
-  finale: [0.84, 0.92],
-  exit: [0.9, 1],
+  finale: [0.87, 0.94],
+  exit: [0.94, 1],
 } as const;
 
 /** Stagger spread — ~55ms perceived gap between constellation nodes. */
@@ -68,16 +105,16 @@ const CONSTELLATION_ENTRANCE_WINDOW = 0.62;
 
 const BEATS = {
   stat0: {
-    anticipate: [0.17, 0.22],
-    morph: [0.22, 0.36],
-    hold: [0.36, 0.43],
-    dissolve: [0.43, 0.5],
+    anticipate: [0.16, 0.23],
+    morph: [0.23, 0.39],
+    hold: [0.39, 0.47],
+    dissolve: [0.47, 0.55],
   },
   stat1: {
-    anticipate: [0.47, 0.53],
-    morph: [0.53, 0.67],
-    hold: [0.67, 0.75],
-    dissolve: [0.75, 0.83],
+    anticipate: [0.49, 0.57],
+    morph: [0.57, 0.73],
+    hold: [0.73, 0.81],
+    dissolve: [0.81, 0.89],
   },
 } as const;
 
@@ -395,6 +432,8 @@ export function TrustParticleEcosystem({
     new Map(),
   );
   const smoothScrollRef = useRef(0);
+  const countValueRef = useRef<Map<number, number>>(new Map());
+  const statHeroRef = useRef<Map<number, number>>(new Map());
   const isMobileRef = useRef(false);
   const [sceneVisible, setSceneVisible] = useState(false);
   const displayedActRef = useRef({ label: "01 — Orbit", sub: "Trusted by teams who ship" });
@@ -534,9 +573,8 @@ export function TrustParticleEcosystem({
       last = now;
       const t = now * 0.001;
       const scrollRaw = sceneRef.current ? computeTrustSceneProgress(sceneRef.current) : 0;
-      // Snap on cold start / tab resume so scroll-driven beats don't ease in from zero.
-      smoothScrollRef.current =
-        dt > 0.12 ? scrollRaw : smoothStep(smoothScrollRef.current, scrollRaw, dt, 4.8);
+      const scrollDt = dt > 0.12 ? 0.12 : dt;
+      smoothScrollRef.current = smoothSceneScroll(smoothScrollRef.current, scrollRaw, scrollDt);
       const scroll = smoothScrollRef.current;
       const story = storyProgress(scroll);
 
@@ -756,14 +794,28 @@ export function TrustParticleEcosystem({
         const vis = statVisibility(index, b0, b1);
         const stat = stats[index];
         if (!stat?.countUp || vis < 0.1) {
+          countValueRef.current.set(index, 0);
           el.textContent = stat?.countUp
             ? `${stat.countUp.prefix ?? ""}0${stat.countUp.suffix ?? ""}`
             : String(stat?.value ?? "");
           return;
         }
-        const countT = EASE_PREMIUM_OUT(Math.max(0, (beat.heroReveal - 0.12) / 0.88));
-        const value = Math.round(stat.countUp.to * countT);
-        el.textContent = `${stat.countUp.prefix ?? ""}${value}${stat.countUp.suffix ?? ""}`;
+        const countTargetT = EASE_PREMIUM_OUT(Math.max(0, (beat.heroReveal - 0.12) / 0.88));
+        const targetValue = stat.countUp.to * countTargetT;
+        let displayed = countValueRef.current.get(index) ?? 0;
+        if (targetValue < displayed) {
+          displayed = smoothStep(displayed, targetValue, dt, 4.5);
+        } else {
+          displayed = smoothCapped(
+            displayed,
+            targetValue,
+            dt,
+            COUNT_VALUE_FOLLOW_RATE,
+            stat.countUp.to * COUNT_VALUE_MAX_FRACTION_PER_SEC * dt,
+          );
+        }
+        countValueRef.current.set(index, displayed);
+        el.textContent = `${stat.countUp.prefix ?? ""}${Math.round(displayed)}${stat.countUp.suffix ?? ""}`;
       });
 
       for (const p of particlesRef.current) {
@@ -859,12 +911,28 @@ export function TrustParticleEcosystem({
             ? EASE_PREMIUM_OUT(clamp(0, 1, (beat.morphT - 0.38) / 0.62))
             : EASE_PREMIUM_OUT(clamp(0, 1, (beat.morphT - 0.46) / 0.54));
         const emerge = EASE_PREMIUM_OUT(clamp(0, 1, (beat.heroReveal - 0.02) / 0.98));
-        const hero = clusterReady * emerge * vis * (1 - story.exit * 0.9);
+        const heroTarget = clusterReady * emerge * vis * (1 - story.exit * 0.9);
+        let hero = statHeroRef.current.get(index) ?? 0;
+        if (heroTarget < 0.02) {
+          hero = smoothStep(hero, 0, dt, 5);
+        } else if (heroTarget < hero) {
+          hero = smoothStep(hero, heroTarget, dt, 4.2);
+        } else {
+          hero = smoothCapped(
+            hero,
+            heroTarget,
+            dt,
+            STAT_HERO_FOLLOW_RATE,
+            STAT_HERO_MAX_ADVANCE_PER_SEC * dt,
+          );
+        }
+        statHeroRef.current.set(index, hero);
+
         const copy = EASE_PREMIUM_OUT(beat.copyReveal) * vis * (1 - story.exit);
         const exitLift = beat.dissolveT > 0 ? -14 * EASE_PREMIUM_OUT(beat.dissolveT) : 0;
         const emergeScale = EASE_PREMIUM_OUT(hero);
-        const enterLift = (1 - emergeScale) * 18;
-        const scale = 0.94 + emergeScale * 0.06;
+        const enterLift = (1 - emergeScale) * 22;
+        const scale = 0.93 + emergeScale * 0.07;
         const bloom = hero * 0.38;
         const statBlur = hero > 0 && hero < 0.42 ? (1 - hero / 0.42) * 2.5 : 0;
 

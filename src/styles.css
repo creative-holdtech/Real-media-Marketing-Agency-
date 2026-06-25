@@ -1253,7 +1253,7 @@ button {
 /* ============ Trust — fullscreen scroll scene ============ */
 .rm-trust-scene {
   position: relative;
-  --rm-trust-scene-vh: 420;
+  --rm-trust-scene-vh: 520;
   min-height: calc(var(--rm-trust-scene-vh) * 1vh);
   min-height: calc(var(--rm-trust-scene-vh) * 1dvh);
   background: #000;
@@ -1927,7 +1927,7 @@ button {
 
 @media (max-width: 767px) {
   .rm-trust-scene {
-    --rm-trust-scene-vh: 300;
+    --rm-trust-scene-vh: 400;
   }
 
   .rm-trust-ecosystem__fg-stat-value {
@@ -3907,7 +3907,16 @@ html.rm-premium-cursor * {
 
 .rm-hero-atmosphere--under-header .rm-hero-atmosphere__bg::after {
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 28%, rgba(0, 0, 0, 0.72) 100%),
+    /* Bottom edge dissolves fully into pure #000 so the hero melts seamlessly
+       into the black trust scene below — no seam where photo meets the void. */
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.1) 28%,
+      rgba(0, 0, 0, 0.66) 82%,
+      rgba(0, 0, 0, 0.92) 94%,
+      #000 100%
+    ),
     radial-gradient(ellipse 90% 80% at 50% 40%, transparent 0%, rgba(0, 0, 0, 0.22) 100%);
 }
 

@@ -1,5 +1,5 @@
-const TRUST_SCENE_VH_DESKTOP = 420;
-const TRUST_SCENE_VH_MOBILE = 360;
+export const TRUST_SCENE_VH_DESKTOP = 520;
+export const TRUST_SCENE_VH_MOBILE = 400;
 
 function sceneVhForViewport() {
   if (typeof window === "undefined") return TRUST_SCENE_VH_DESKTOP;
