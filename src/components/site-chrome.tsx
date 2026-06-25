@@ -58,10 +58,13 @@ export function SiteHeader({
     >
       <nav
         className={cn(
-          "mx-auto flex h-14 w-full max-w-[var(--rm-grid-max)] items-center pl-4 pr-3 md:py-1 md:pl-5 md:pr-1",
+          "mx-auto flex h-14 w-full max-w-[var(--rm-grid-max)] items-center pl-4 pr-3 transition-[background-color,backdrop-filter] duration-200 md:py-1 md:pl-5 md:pr-1",
           light
-            ? cn("rounded-lg border bg-white/90", chromeLightBorder)
-            : "rounded-full border border-white/[0.08] bg-rm-surface/40",
+            ? cn(
+                "rounded-lg border bg-white/85 backdrop-blur-sm backdrop-saturate-150",
+                chromeLightBorder,
+              )
+            : "rounded-full border border-white/[0.08] bg-rm-surface/35 backdrop-blur-sm backdrop-saturate-150",
         )}
       >
         <div className="flex shrink-0 items-center">

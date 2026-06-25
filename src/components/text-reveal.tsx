@@ -1,5 +1,6 @@
 import {
   motion,
+  useMotionTemplate,
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
@@ -37,6 +38,8 @@ type TextRevealProps = {
   revealColor?: string;
   /** Color wipe (headlines) or opacity fade (long-form quotes). */
   variant?: "color" | "opacity";
+  /** Lift, deblur, and brighter cascade — editorial quotes. */
+  expressive?: boolean;
   /** Fires once when scroll reveal completes or when motion is skipped. */
   onComplete?: () => void;
   /** When set, used as the visible heading id for `aria-labelledby` on the section. */
@@ -47,7 +50,9 @@ type TextRevealProps = {
 };
 
 const CHUNK_SIZE = 3;
+const EXPRESSIVE_CHUNK_SIZE = 2;
 const OPACITY_BASE = 0.34;
+const OPACITY_BASE_EXPRESSIVE = 0.14;
 const OPACITY_REVEAL = 1;
 
 function chunkWords(words: string[], size: number) {
@@ -65,6 +70,7 @@ function RevealChunk({
   variant,
   baseColor,
   revealColor,
+  expressive,
 }: {
   children: string;
   progress: MotionValue<number>;
@@ -72,12 +78,28 @@ function RevealChunk({
   variant: "color" | "opacity";
   baseColor: string;
   revealColor: string;
+  expressive?: boolean;
 }) {
   const color = useTransform(progress, range, [baseColor, revealColor]);
-  const opacity = useTransform(progress, range, [OPACITY_BASE, OPACITY_REVEAL]);
+  const opacity = useTransform(
+    progress,
+    range,
+    [expressive ? OPACITY_BASE_EXPRESSIVE : OPACITY_BASE, OPACITY_REVEAL],
+  );
+  const y = useTransform(progress, range, expressive ? [18, 0] : [0, 0]);
+  const blur = useTransform(progress, range, expressive ? [10, 0] : [0, 0]);
+  const brightness = useTransform(progress, range, expressive ? [0.72, 1.18] : [1, 1]);
+  const filter = useMotionTemplate`blur(${blur}px) brightness(${brightness})`;
+
+  const style =
+    variant === "color"
+      ? { color }
+      : expressive
+        ? { opacity, y, filter }
+        : { opacity };
 
   return (
-    <motion.span style={variant === "opacity" ? { opacity } : { color }} className="inline">
+    <motion.span style={style} className="inline">
       {children}{" "}
     </motion.span>
   );
@@ -89,6 +111,7 @@ export function TextReveal({
   baseColor = "rgb(153, 153, 153)",
   revealColor = "rgb(255, 255, 255)",
   variant = "color",
+  expressive = false,
   onComplete,
   id,
   ariaLabel,
@@ -100,11 +123,14 @@ export function TextReveal({
   const [complete, setComplete] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.92", "start 0.35"],
+    offset: expressive ? ["start 0.9", "start 0.36"] : ["start 0.92", "start 0.35"],
     layoutEffect: false,
   });
 
-  const chunks = useMemo(() => chunkWords(text.trim().split(/\s+/), CHUNK_SIZE), [text]);
+  const chunks = useMemo(
+    () => chunkWords(text.trim().split(/\s+/), expressive ? EXPRESSIVE_CHUNK_SIZE : CHUNK_SIZE),
+    [text, expressive],
+  );
   const HeadingTag = Tag as ElementType;
   const skipMotion = reduce || mobile;
 
@@ -144,7 +170,7 @@ export function TextReveal({
     >
       {chunks.map((chunk, index) => {
         const start = index / chunks.length;
-        const end = Math.min(1, (index + 1.2) / chunks.length);
+        const end = Math.min(1, (index + (expressive ? 1.5 : 1.2)) / chunks.length);
         return (
           <RevealChunk
             key={`${chunk}-${index}`}
@@ -153,6 +179,7 @@ export function TextReveal({
             variant={variant}
             baseColor={baseColor}
             revealColor={revealColor}
+            expressive={expressive && variant === "opacity"}
           >
             {chunk}
           </RevealChunk>

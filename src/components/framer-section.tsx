@@ -106,7 +106,7 @@ export const surfaceCardTitleLg = surfaceCardTitle;
 export const sectionPill =
   "rm-type-tag inline-flex max-w-full rounded-full border border-[var(--rm-border-soft)] px-3 py-1 normal-case text-[var(--rm-text-muted)]";
 export const interactiveSurfaceCard =
-  "rm-interactive-surface cursor-pointer transition-[border-color,background-color,transform] duration-200 ease-out hover:border-[var(--rm-border-strong)] motion-safe:hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)] active:translate-y-0";
+  "rm-interactive-surface cursor-pointer transition-[border-color,background-color] duration-200 ease-out hover:border-[var(--rm-border-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)]";
 
 /** @deprecated Use surfaceCardShell */
 export const pricingCardSurface = surfaceCardShell;

@@ -25,6 +25,7 @@ export function MetaCard({
       data-plan-motion={motionId}
       className={cn(
         "rm-plan-card relative min-h-0 overflow-hidden md:min-h-[200px]",
+        "hover:border-[var(--rm-border-soft)] focus-visible:ring-0 focus-visible:ring-offset-0",
         motionId && `rm-plan-card--${motionId}`,
         className,
       )}

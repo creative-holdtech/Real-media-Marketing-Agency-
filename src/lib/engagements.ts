@@ -12,7 +12,6 @@ export type Engagement = {
   intro: string;
   steps: EngagementStep[];
   ctaLabel: string;
-  compareHint: string;
   metricBig: string;
   metricUnitLabel: string;
   metricUnitSub: string;
@@ -47,7 +46,6 @@ export const homepageEngagements: Engagement[] = [
       },
     ],
     ctaLabel: "Scope a Sprint →",
-    compareHint: "Tactical retainer",
   },
   {
     id: "marathon",
@@ -77,7 +75,6 @@ export const homepageEngagements: Engagement[] = [
       },
     ],
     ctaLabel: "Plan a Marathon →",
-    compareHint: "Strategic partnership",
   },
 ];
 

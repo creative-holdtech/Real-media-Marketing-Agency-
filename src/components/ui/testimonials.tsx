@@ -173,6 +173,7 @@ function QuoteEditorial({
             ariaLabel={quoteAriaLabel}
             className={quoteStatementClass}
             variant="opacity"
+            expressive
             onComplete={() => setQuoteComplete(true)}
           />
         </div>

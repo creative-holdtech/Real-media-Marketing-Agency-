@@ -25,10 +25,19 @@ const TRUST_BRANDS = [
 /** Hero tier — larger, brighter, anchored on the golden-ratio orbit. */
 const HERO_BRANDS = new Set<string>(["WHITEBIT", "CAPITAL.COM", "1inch"]);
 
-/** Premium signature — MD3 standard decelerate + smoothstep for on-screen */
-const EASE_OUT = (t: number) => 1 - Math.pow(1 - t, 3);
-const EASE_IN = (t: number) => t * t * t;
-const EASE_SOFT = (t: number) => t * t * (3 - 2 * t);
+/** Premium signature — strong decelerate (Emil: cubic-bezier(0.23, 1, 0.32, 1)). */
+const EASE_PREMIUM_OUT = (t: number) => 1 - Math.pow(1 - clamp(0, 1, t), 4);
+/** On-screen movement — deliberate acceleration/deceleration. */
+const EASE_PREMIUM_IN_OUT = (t: number) => {
+  const x = clamp(0, 1, t);
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+};
+const EASE_OUT = EASE_PREMIUM_OUT;
+const EASE_IN = (t: number) => Math.pow(clamp(0, 1, t), 3.2);
+const EASE_SOFT = (t: number) => {
+  const x = clamp(0, 1, t);
+  return x * x * (3 - 2 * x);
+};
 
 /** Frame-rate independent exponential smoothing (Premium — no spring overshoot). */
 function smoothStep(current: number, target: number, dt: number, rate: number) {
@@ -40,36 +49,35 @@ function snapPx(value: number) {
   return Math.round(value * 100) / 100;
 }
 
+const ANCHOR_X = 0.5;
 const ANCHOR_Y = 0.5;
-const ANCHOR_LEFT_X = 0.26;
-const ANCHOR_RIGHT_X = 0.74;
 const MOBILE_BREAKPOINT = 768;
 const TOTAL_PARTICLES = TRUST_BRANDS.length;
 
 /** Story acts on scroll timeline (0–1) */
 const STORY = {
-  enter: [0, 0.05],
-  constellation: [0, 0.1],
-  interlude: [0.48, 0.54],
-  finale: [0.84, 0.9],
+  enter: [0, 0.1],
+  constellation: [0.02, 0.16],
+  finale: [0.84, 0.92],
   exit: [0.9, 1],
 } as const;
 
-/** Stagger spread for constellation entrance (lower = faster wave). */
-const CONSTELLATION_STAGGER = 0.28;
+/** Stagger spread — ~55ms perceived gap between constellation nodes. */
+const CONSTELLATION_STAGGER = 0.38;
+const CONSTELLATION_ENTRANCE_WINDOW = 0.62;
 
 const BEATS = {
   stat0: {
     anticipate: [0.17, 0.22],
     morph: [0.22, 0.36],
     hold: [0.36, 0.43],
-    dissolve: [0.43, 0.48],
+    dissolve: [0.43, 0.5],
   },
   stat1: {
-    anticipate: [0.54, 0.6],
-    morph: [0.6, 0.7],
-    hold: [0.7, 0.78],
-    dissolve: [0.78, 0.84],
+    anticipate: [0.47, 0.53],
+    morph: [0.53, 0.67],
+    hold: [0.67, 0.75],
+    dissolve: [0.75, 0.83],
   },
 } as const;
 
@@ -175,7 +183,7 @@ function beatState(
   const antStart = beat.anticipate[0];
   const antEnd = beat.anticipate[1];
   const antSplit = antStart + (antEnd - antStart) * 0.4;
-  const morphT = EASE_SOFT(segmentT(scroll, beat.morph[0], beat.morph[1]));
+  const morphT = EASE_PREMIUM_IN_OUT(segmentT(scroll, beat.morph[0], beat.morph[1]));
   const dissolveT = EASE_IN(segmentT(scroll, beat.dissolve[0], beat.dissolve[1]));
   const inHold = scroll >= beat.hold[0] && scroll < beat.dissolve[0];
 
@@ -187,19 +195,19 @@ function beatState(
   } else if (scroll >= beat.morph[0] && scroll < beat.dissolve[0]) {
     pull = inHold ? 1 : morphT;
   } else if (scroll >= beat.dissolve[0] && scroll < beat.dissolve[1]) {
-    pull = 1 - EASE_IN(Math.pow(dissolveT, 0.88));
+    pull = 1 - EASE_PREMIUM_OUT(Math.pow(dissolveT, 0.92));
   }
 
   let statReveal = 0;
   if (scroll >= beat.morph[0] && scroll < beat.dissolve[0]) {
     statReveal = inHold ? 1 : EASE_SOFT(Math.max(0, (morphT - 0.22) / 0.78));
   } else if (scroll >= beat.dissolve[0] && scroll < beat.dissolve[1]) {
-    statReveal = 1 - EASE_IN(Math.pow(dissolveT, 0.75));
+    statReveal = 1 - EASE_PREMIUM_OUT(Math.pow(dissolveT, 0.82));
   }
 
-  const clusterForm = EASE_SOFT(Math.max(0, (morphT - 0.38) / 0.62));
-  const heroReveal = EASE_SOFT(Math.max(0, (statReveal - 0.05) / 0.95)) * clusterForm;
-  const copyReveal = EASE_SOFT(Math.max(0, (heroReveal - 0.18) / 0.82));
+  const clusterForm = EASE_PREMIUM_OUT(Math.max(0, (morphT - 0.32) / 0.68));
+  const heroReveal = EASE_PREMIUM_OUT(Math.max(0, (statReveal - 0.04) / 0.96)) * clusterForm;
+  const copyReveal = EASE_PREMIUM_OUT(Math.max(0, (heroReveal - 0.22) / 0.78));
 
   return {
     pull,
@@ -220,21 +228,12 @@ function statVisibility(index: number, b0: BeatState, b1: BeatState): number {
   return clamp(0, 1, beat.statReveal - other.statReveal * 0.88);
 }
 
-function easeInOut(t: number): number {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
-
 function storyProgress(scroll: number) {
   const enter = EASE_OUT(segmentT(scroll, STORY.enter[0], STORY.enter[1]));
   const constellation = EASE_OUT(segmentT(scroll, STORY.constellation[0], STORY.constellation[1]));
-  const interlude = easeInOut(segmentT(scroll, STORY.interlude[0], STORY.interlude[1]));
-  const interludePeak =
-    scroll >= STORY.interlude[0] && scroll <= STORY.interlude[1]
-      ? Math.sin(segmentT(scroll, STORY.interlude[0], STORY.interlude[1]) * Math.PI)
-      : 0;
   const finale = EASE_OUT(segmentT(scroll, STORY.finale[0], STORY.finale[1]));
   const exit = EASE_IN(segmentT(scroll, STORY.exit[0], STORY.exit[1]));
-  return { enter, constellation, interlude, interludePeak, finale, exit };
+  return { enter, constellation, finale, exit };
 }
 
 type SceneAct = {
@@ -258,10 +257,6 @@ function resolveSceneAct(
     label = "02 — Volume";
     sub = "Projects that landed";
     actOpacity = Math.max(b0.heroReveal, b0.statReveal * 0.5) * (1 - b0.dissolveT);
-  } else if (scroll >= STORY.interlude[0] && scroll < STORY.interlude[1]) {
-    label = "—";
-    sub = "Then the impact";
-    actOpacity = story.interludePeak;
   } else if (scroll >= BEATS.stat1.anticipate[0] && scroll < BEATS.stat1.dissolve[1]) {
     label = "03 — Capital";
     sub = "Raised with our partners";
@@ -319,9 +314,8 @@ function buildParticles(width: number, height: number): Particle[] {
   });
 }
 
-function anchorForIndex(index: number, width: number) {
-  if (width < MOBILE_BREAKPOINT) return { x: 0.5, y: ANCHOR_Y };
-  return { x: index === 1 ? ANCHOR_RIGHT_X : ANCHOR_LEFT_X, y: ANCHOR_Y };
+function anchorForIndex(_index: number, _width: number) {
+  return { x: ANCHOR_X, y: ANCHOR_Y };
 }
 
 function applyHeroMorphPull(
@@ -334,8 +328,8 @@ function applyHeroMorphPull(
   anchorY: number,
   w: number,
 ): [number, number] {
-  const stagger = p.morphOrder * 0.1;
-  const travel = EASE_SOFT(clamp(0, 1, pull * 0.96 - stagger));
+  const stagger = p.morphOrder * 0.11;
+  const travel = EASE_PREMIUM_IN_OUT(clamp(0, 1, pull * 0.96 - stagger));
   if (travel <= 0.001) return [x, y];
 
   const angle = p.morphOrder * Math.PI * 2 + hash(p.id) * 0.35 - Math.PI / 2;
@@ -363,43 +357,9 @@ function applyHeroMorphPull(
 function heroMorphParticleScale(p: Particle, beat: BeatState): number {
   const travel = EASE_SOFT(clamp(0, 1, beat.pull * 0.96 - p.morphOrder * 0.1));
   const collapse = EASE_SOFT(clamp(0, 1, (beat.morphT - 0.62) / 0.38));
-  const clusterScale = 1 - travel * 0.36 - collapse * 0.22;
-  const statPinch = beat.heroReveal * 0.32;
-  return Math.max(0.12, clusterScale - statPinch * clusterScale * 0.55);
-}
-
-function applyBeatPull(
-  p: Particle,
-  x: number,
-  y: number,
-  pull: number,
-  anchor: { x: number; y: number },
-  anchorX: number,
-  anchorY: number,
-  w: number,
-  h: number,
-  clusterSpread: number,
-): [number, number] {
-  let targetX = x;
-  let targetY = y;
-
-  if (pull < -0.005) {
-    const push = Math.abs(pull);
-    targetX += (p.homeX - anchor.x) * w * push * 1.5;
-    targetY += (p.homeY - anchor.y) * h * push * 1.1;
-  } else if (pull > 0.01) {
-    const stagger = p.morphOrder * 0.065;
-    const particlePull = EASE_OUT(Math.max(0, Math.min(1, pull * 1.03 - stagger)));
-    const sideSign = p.homeX > anchor.x ? 1 : -1;
-    const arcX = Math.sin(particlePull * Math.PI) * sideSign * (32 + p.depth * 20);
-    const arcY = Math.sin(particlePull * Math.PI) * -(20 + p.depth * 12);
-    const jitterX = (hash(p.id) - 0.5) * clusterSpread * (1 - particlePull);
-    const jitterY = (hash(`${p.id}-y`) - 0.5) * clusterSpread * 0.32 * (1 - particlePull);
-    targetX = targetX * (1 - particlePull) + (anchorX + arcX + jitterX) * particlePull;
-    targetY = targetY * (1 - particlePull) + (anchorY + arcY + jitterY) * particlePull;
-  }
-
-  return [targetX, targetY];
+  const clusterScale = 1 - travel * 0.32 - collapse * 0.18;
+  const statPinch = beat.heroReveal * 0.28;
+  return Math.max(0.22, clusterScale - statPinch * clusterScale * 0.48);
 }
 
 function statDisplayValue(stat: TrustStat): ReactNode {
@@ -411,6 +371,7 @@ function statDisplayValue(stat: TrustStat): ReactNode {
 
 export function TrustParticleEcosystem({
   stats,
+  inView = true,
   active = true,
   sceneRef,
   chapterRef,
@@ -427,20 +388,18 @@ export function TrustParticleEcosystem({
   const curtainTopRef = useRef<HTMLDivElement>(null);
   const curtainBottomRef = useRef<HTMLDivElement>(null);
   const chapterActRef = useRef<HTMLDivElement>(null);
-  const interludeRef = useRef<HTMLDivElement>(null);
   const fieldShellRef = useRef<HTMLDivElement>(null);
 
-  const [particles, setParticles] = useState<Particle[]>(() => buildParticles(960, 720));
-  const [isMobile, setIsMobile] = useState(false);
+  const particleElMapRef = useRef<Map<string, HTMLElement>>(new Map());
+  const particleVisualRef = useRef<Map<string, { opacity: number; scale: number; blur: number }>>(
+    new Map(),
+  );
+  const smoothScrollRef = useRef(0);
   const isMobileRef = useRef(false);
   const [sceneVisible, setSceneVisible] = useState(false);
   const displayedActRef = useRef({ label: "01 — Orbit", sub: "Trusted by teams who ship" });
   const actPhaseRef = useRef<"idle" | "out" | "in">("idle");
   const actEnterRef = useRef(1);
-  const pendingActRef = useRef<SceneAct | null>(null);
-  const particleElMapRef = useRef<Map<string, HTMLElement>>(new Map());
-  const particleVisualRef = useRef<Map<string, { opacity: number; scale: number }>>(new Map());
-  const smoothScrollRef = useRef(0);
 
   const syncParticleElements = useCallback(() => {
     const field = fieldRef.current;
@@ -460,9 +419,8 @@ export function TrustParticleEcosystem({
     particleVisualRef.current.clear();
     const mobile = w < MOBILE_BREAKPOINT;
     isMobileRef.current = mobile;
-    setParticles(particlesRef.current);
-    setIsMobile(mobile);
-  }, []);
+    syncParticleElements();
+  }, [syncParticleElements]);
 
   useLayoutEffect(() => {
     if (reduce) return;
@@ -472,12 +430,7 @@ export function TrustParticleEcosystem({
     syncParticles(width || 960, height || 720);
   }, [reduce, syncParticles]);
 
-  useLayoutEffect(() => {
-    if (reduce) return;
-    syncParticleElements();
-  }, [reduce, particles, syncParticleElements]);
-
-  const shouldAnimate = !reduce && active && sceneVisible;
+  const shouldAnimate = !reduce && active && inView && sceneVisible;
 
   useEffect(() => {
     if (reduce) return;
@@ -488,20 +441,16 @@ export function TrustParticleEcosystem({
       if (rect.width < 1 || rect.height < 1) return;
       cursorRef.current.x = (e.clientX - rect.left) / rect.width;
       cursorRef.current.y = (e.clientY - rect.top) / rect.height;
-      cursorRef.current.inside =
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom;
+      cursorRef.current.inside = true;
     };
     const onLeave = () => {
       cursorRef.current.inside = false;
     };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerleave", onLeave);
+    field.addEventListener("pointermove", onMove, { passive: true });
+    field.addEventListener("pointerleave", onLeave);
     return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerleave", onLeave);
+      field.removeEventListener("pointermove", onMove);
+      field.removeEventListener("pointerleave", onLeave);
     };
   }, [reduce]);
 
@@ -543,7 +492,7 @@ export function TrustParticleEcosystem({
       const scrollRaw = sceneRef.current ? computeTrustSceneProgress(sceneRef.current) : 0;
       // Snap on cold start / tab resume so scroll-driven beats don't ease in from zero.
       smoothScrollRef.current =
-        dt > 0.12 ? scrollRaw : smoothStep(smoothScrollRef.current, scrollRaw, dt, 7.5);
+        dt > 0.12 ? scrollRaw : smoothStep(smoothScrollRef.current, scrollRaw, dt, 4.8);
       const scroll = smoothScrollRef.current;
       const story = storyProgress(scroll);
 
@@ -570,24 +519,17 @@ export function TrustParticleEcosystem({
       // How strongly a hero stat currently owns the frame (0 = pure constellation).
       const statFocusAmt = clamp(0, 1, Math.max(b0.heroReveal, b1.heroReveal));
 
-      const leftAnchor = anchorForIndex(0, w);
-      const rightAnchor = anchorForIndex(1, w);
-      const leftX = leftAnchor.x * w;
-      const leftY = leftAnchor.y * h;
-      const rightX = rightAnchor.x * w;
-      const rightY = rightAnchor.y * h;
+      const centerAnchor = anchorForIndex(0, w);
+      const centerX = centerAnchor.x * w;
+      const centerY = centerAnchor.y * h;
 
       const morphBeat =
         b1.pull > b0.pull + 0.04 || (b1.statReveal > b0.statReveal + 0.1 && b1.pull > 0)
-          ? { b: b1, anchor: rightAnchor, ax: rightX, ay: rightY }
-          : { b: b0, anchor: leftAnchor, ax: leftX, ay: leftY };
+          ? b1
+          : b0;
 
-      const focusAnchor = b1.heroReveal > b0.heroReveal + 0.08 ? rightAnchor : leftAnchor;
-      const anchorX = focusAnchor.x * w;
-      const anchorY = focusAnchor.y * h;
+      const focusAnchor = centerAnchor;
       const floatCalm = floatPhase * (0.38 + (1 - pull * 0.85) * 0.62);
-      const holdQuiet = b0.inHold || b1.inHold ? 0.22 : 1;
-      const clusterSpread = Math.max(2, 26 * (1 - Math.max(0, pull)));
       const stagingDim = clamp(0, 0.5, pull * 0.36 + morphT * 0.2);
       for (const p of particlesRef.current) {
         const depthFloat = 0.5 + p.depth * 0.5;
@@ -596,9 +538,9 @@ export function TrustParticleEcosystem({
         // drifting arc that doesn't repeat tightly instead of a synced ellipse.
         // Mobile keeps the lift small so the wide wordmarks never swing into the
         // narrow viewport's edges; the desktop field has room to breathe more.
-        const driftAmp = isMobileRef.current ? 0.5 : 1;
-        const ampX = (9 + finaleExpand * 16) * depthFloat * floatCalm * driftAmp;
-        const ampY = (7.5 + finaleExpand * 12) * depthFloat * floatCalm * driftAmp;
+        const driftAmp = isMobileRef.current ? 0.42 : 0.78;
+        const ampX = (6.5 + finaleExpand * 12) * depthFloat * floatCalm * driftAmp;
+        const ampY = (5.5 + finaleExpand * 9) * depthFloat * floatCalm * driftAmp;
         const floatX =
           (Math.sin(t * p.freqX + p.drift) * 0.72 +
             Math.sin(t * p.freqX * 1.93 + p.drift * 1.7) * 0.28) *
@@ -623,16 +565,10 @@ export function TrustParticleEcosystem({
         targetX = clamp(w * padX, w * (1 - padX), targetX);
         targetY = clamp(h * SAFE_PAD_Y, h * (1 - SAFE_PAD_Y), targetY);
 
-        if (p.keeper && statFocusAmt > 0.02 && w >= MOBILE_BREAKPOINT) {
-          // Keepers drift to the opposite side of the active stat so the frame
-          // stays balanced instead of leaving two-thirds of it black.
-          const focusLeft = focusAnchor.x < 0.5;
-          const oppX = w * (focusLeft ? 0.74 : 0.26);
-          const blend = EASE_SOFT(statFocusAmt) * 0.82;
-          const keepX = oppX + (p.homeY - 0.5) * w * 0.06;
-          const keepY = h * (0.26 + p.morphOrder * 0.5);
-          targetX = targetX * (1 - blend) + keepX * blend;
-          targetY = targetY * (1 - blend) + keepY * blend;
+        if (p.keeper && statFocusAmt > 0.02) {
+          const push = EASE_SOFT(statFocusAmt) * 0.16;
+          targetX = p.homeX * w + (p.homeX - 0.5) * w * push;
+          targetY = p.homeY * h + (p.homeY - 0.5) * h * push;
         } else if (b0.pull > 0.01 && b0.dissolveT < 0.02) {
           [targetX, targetY] = applyHeroMorphPull(
             p,
@@ -640,8 +576,8 @@ export function TrustParticleEcosystem({
             targetY,
             b0.pull,
             b0.morphT,
-            leftX,
-            leftY,
+            centerX,
+            centerY,
             w,
           );
         } else if (b1.pull > 0.01 && b1.dissolveT < 0.02) {
@@ -651,53 +587,46 @@ export function TrustParticleEcosystem({
             targetY,
             b1.pull,
             b1.morphT,
-            rightX,
-            rightY,
+            centerX,
+            centerY,
             w,
           );
         }
 
         if (!p.keeper && b0.dissolveT > 0.02) {
           const scatter = EASE_SOFT(b0.dissolveT);
-          targetX += (p.homeX - leftAnchor.x) * w * scatter * 0.32;
-          targetY += (p.homeY - leftAnchor.y) * h * scatter * 0.2;
+          targetX += (p.homeX - 0.5) * w * scatter * 0.36;
+          targetY += (p.homeY - 0.5) * h * scatter * 0.22;
         }
         if (!p.keeper && b1.dissolveT > 0.02) {
           const scatter = EASE_SOFT(b1.dissolveT);
-          targetX += (p.homeX - rightAnchor.x) * w * scatter * 0.32;
-          targetY += (p.homeY - rightAnchor.y) * h * scatter * 0.2;
+          targetX += (p.homeX - 0.5) * w * scatter * 0.36;
+          targetY += (p.homeY - 0.5) * h * scatter * 0.22;
         }
 
         const heroMorphActive =
           !p.keeper &&
           ((b0.pull > 0.04 && b0.dissolveT < 0.04) || (b1.pull > 0.04 && b1.dissolveT < 0.04));
-        const morphSpringBeat = b1.pull > b0.pull + 0.02 ? b1 : b0;
+        const morphSpringBeat = morphBeat;
         const orbitDrift = !heroMorphActive && pull < 0.08;
         if (orbitDrift) {
-          // Orbit: exponential follow tracks the sine drift without spring lag or micro-bounce.
-          const follow = 1 - Math.exp(-dt * 5.4);
+          const follow = 1 - Math.exp(-dt * 3.4);
           p.x += (targetX - p.x) * follow;
           p.y += (targetY - p.y) * follow;
-          p.vx *= 0.42;
-          p.vy *= 0.42;
+          p.vx = 0;
+          p.vy = 0;
         } else if (heroMorphActive) {
-          const spring = 2.1 + morphSpringBeat.pull * 1.1;
-          const damping = 0.84;
-          p.vx += (targetX - p.x) * spring * dt;
-          p.vy += (targetY - p.y) * spring * dt;
-          p.vx *= damping;
-          p.vy *= damping;
-          p.x += p.vx * dt;
-          p.y += p.vy * dt;
+          const follow = 1 - Math.exp(-dt * (2.9 + morphSpringBeat.pull * 0.85));
+          p.x += (targetX - p.x) * follow;
+          p.y += (targetY - p.y) * follow;
+          p.vx = 0;
+          p.vy = 0;
         } else {
-          const spring = pull > 0.1 ? 4.4 : 3.1;
-          const damping = pull > 0.1 ? 0.85 : 0.89;
-          p.vx += (targetX - p.x) * spring * dt;
-          p.vy += (targetY - p.y) * spring * dt;
-          p.vx *= damping;
-          p.vy *= damping;
-          p.x += p.vx * dt;
-          p.y += p.vy * dt;
+          const follow = 1 - Math.exp(-dt * (pull > 0.1 ? 4.2 : 3.4));
+          p.x += (targetX - p.x) * follow;
+          p.y += (targetY - p.y) * follow;
+          p.vx *= 0.35;
+          p.vy *= 0.35;
         }
 
         // Hard safety clamp — overshoot from the spring can never clip an edge.
@@ -709,7 +638,7 @@ export function TrustParticleEcosystem({
       const cursor = cursorRef.current;
       const energyTarget = cursor.inside ? 1 : 0;
       // Asymmetric in/out — fast highlight on enter, gentle release on leave.
-      const energyRate = 1 - Math.exp(-dt * (cursor.inside ? 9 : 3.2));
+      const energyRate = 1 - Math.exp(-dt * (cursor.inside ? 6.5 : 2.4));
       cursor.energy += (energyTarget - cursor.energy) * energyRate;
       const cursorPx = cursor.x * w;
       const cursorPy = cursor.y * h;
@@ -738,8 +667,12 @@ export function TrustParticleEcosystem({
           // Glowing node "stars" anchored to every particle.
           const staggerBase = story.constellation;
           for (const p of ps) {
-            const staggerIn = EASE_SOFT(
-              clamp(0, 1, (staggerBase - p.morphOrder * CONSTELLATION_STAGGER) / 0.45),
+            const staggerIn = EASE_PREMIUM_OUT(
+              clamp(
+                0,
+                1,
+                (staggerBase - p.morphOrder * CONSTELLATION_STAGGER) / CONSTELLATION_ENTRANCE_WINDOW,
+              ),
             );
             if (staggerIn < 0.02) continue;
             const cd = Math.hypot(p.x - cursorPx, p.y - cursorPy);
@@ -748,10 +681,7 @@ export function TrustParticleEcosystem({
             // Slow breathe only — fast twinkle reads as flicker on canvas.
             // Per-node frequency (reuses the drift clock) so the field never
             // pulses in unison, plus a faint second wave for organic shimmer.
-            const twinkle =
-              0.9 +
-              0.07 * Math.sin(t * (0.12 + p.freqX) + p.drift * 2) +
-              0.035 * Math.sin(t * (0.31 + p.freqY) + p.drift * 5);
+            const twinkle = 0.94 + 0.06 * Math.sin(t * (0.1 + p.freqX) + p.drift * 2);
             const base =
               (0.42 + p.depth * 0.45) * staggerIn * (1 - story.exit) * twinkle + keeperBoost;
             const nodeAlpha = clamp(0, 1, base + near * 0.5);
@@ -787,7 +717,7 @@ export function TrustParticleEcosystem({
             : String(stat?.value ?? "");
           return;
         }
-        const countT = EASE_SOFT(Math.max(0, (beat.heroReveal - 0.15) / 0.85));
+        const countT = EASE_PREMIUM_OUT(Math.max(0, (beat.heroReveal - 0.12) / 0.88));
         const value = Math.round(stat.countUp.to * countT);
         el.textContent = `${stat.countUp.prefix ?? ""}${value}${stat.countUp.suffix ?? ""}`;
       });
@@ -796,14 +726,19 @@ export function TrustParticleEcosystem({
         const el = particleElMapRef.current.get(p.id);
         if (!el) continue;
 
-        const staggerIn = EASE_SOFT(
+        const staggerIn = EASE_PREMIUM_OUT(
           Math.max(
             0,
-            Math.min(1, (story.constellation - p.morphOrder * CONSTELLATION_STAGGER) / 0.45),
+            Math.min(
+              1,
+              (story.constellation - p.morphOrder * CONSTELLATION_STAGGER) /
+                CONSTELLATION_ENTRANCE_WINDOW,
+            ),
           ),
         );
+        const entranceLift = (1 - staggerIn) * 10;
         const depthScale = 0.82 + p.depth * 0.26;
-        let scale = depthScale * p.size * (p.hero ? 1.12 : 1);
+        let scale = (0.96 + staggerIn * 0.04) * depthScale * p.size * (p.hero ? 1.12 : 1);
         let opacity = (0.68 + p.depth * 0.32) * staggerIn * (p.hero ? 1.08 : 1);
         if (staggerIn > 0.04) {
           opacity = Math.max(p.hero ? 0.58 : 0.5, opacity);
@@ -838,33 +773,33 @@ export function TrustParticleEcosystem({
           );
         }
 
-        const enterBlur =
-          b0MorphActive || b1MorphActive || staggerIn > 0.92 ? 0 : (1 - staggerIn) * 0.8;
-
         const morphActive = b0MorphActive || b1MorphActive;
         const statFocus = Math.max(b0.heroReveal, b1.heroReveal);
-        let targetOpacity = Math.max(0, opacity);
+        let targetOpacity = Math.max(0, opacity * (0.55 + staggerIn * 0.45));
         if (morphActive && statFocus > 0.12 && !p.keeper) {
-          targetOpacity = Math.max(0, opacity * Math.max(0.05, 1 - statFocus * 1.15));
+          targetOpacity = Math.max(0, opacity * Math.max(0.08, 1 - statFocus * 1.05));
         }
 
-        const visState = particleVisualRef.current.get(p.id) ?? { opacity: targetOpacity, scale };
-        const particleOrbitDrift =
-          !p.keeper &&
-          pull < 0.08 &&
-          !morphActive &&
-          (b0.pull <= 0.04 || b0.dissolveT >= 0.04) &&
-          (b1.pull <= 0.04 || b1.dissolveT >= 0.04);
-        const visRate = particleOrbitDrift ? 9.5 : morphActive ? 11 : 8;
-        visState.opacity = smoothStep(visState.opacity, targetOpacity, dt, visRate);
-        visState.scale = smoothStep(visState.scale, scale, dt, visRate);
+        const morphBlur =
+          morphActive && !p.keeper && statFocus > 0.06
+            ? clamp(0, 3.5, statFocus * 3.2 * (1 - Math.max(b0.dissolveT, b1.dissolveT)))
+            : 0;
+
+        const visState = particleVisualRef.current.get(p.id) ?? {
+          opacity: targetOpacity,
+          scale,
+          blur: 0,
+        };
+        visState.opacity = smoothStep(visState.opacity, targetOpacity, dt, 5);
+        visState.scale = smoothStep(visState.scale, scale, dt, 6.5);
+        visState.blur = smoothStep(visState.blur, morphBlur, dt, 7.5);
         particleVisualRef.current.set(p.id, visState);
 
         const rx = snapPx(p.x);
-        const ry = snapPx(p.y);
+        const ry = snapPx(p.y - entranceLift * (1 - pull * 0.85));
         el.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${visState.scale.toFixed(4)})`;
         el.style.opacity = visState.opacity.toFixed(4);
-        el.style.filter = enterBlur > 0.35 ? `blur(${enterBlur.toFixed(2)}px)` : "none";
+        el.style.filter = visState.blur > 0.12 ? `blur(${visState.blur.toFixed(2)}px)` : "none";
         let layerZ = 4 + Math.round(p.depth * 2);
         if (morphActive && statFocus > 0.12 && !p.keeper) {
           layerZ = 1;
@@ -877,27 +812,29 @@ export function TrustParticleEcosystem({
         const vis = statVisibility(index, b0, b1);
         const clusterReady =
           index === 0
-            ? EASE_SOFT(clamp(0, 1, (beat.morphT - 0.42) / 0.58))
-            : EASE_SOFT(clamp(0, 1, (beat.morphT - 0.5) / 0.5));
-        const emerge = EASE_SOFT(clamp(0, 1, (beat.heroReveal - 0.04) / 0.96));
+            ? EASE_PREMIUM_OUT(clamp(0, 1, (beat.morphT - 0.38) / 0.62))
+            : EASE_PREMIUM_OUT(clamp(0, 1, (beat.morphT - 0.46) / 0.54));
+        const emerge = EASE_PREMIUM_OUT(clamp(0, 1, (beat.heroReveal - 0.02) / 0.98));
         const hero = clusterReady * emerge * vis * (1 - story.exit * 0.9);
-        const copy = beat.copyReveal * vis * (1 - story.exit);
-        const holdBreathe = beat.inHold && hero > 0.88 ? 1 + Math.sin(t * 1.2) * 0.005 : 1;
-        const exitLift = beat.dissolveT > 0 ? -16 * EASE_IN(beat.dissolveT) : 0;
-        const emergeScale = EASE_SOFT(hero);
-        const enterLift = (1 - emergeScale) * 6;
-        const scale = (0.92 + emergeScale * 0.08) * holdBreathe;
-        const bloom = beat.inHold && hero > 0.9 ? 0.55 + Math.sin(t * 1.35) * 0.1 : hero * 0.28;
+        const copy = EASE_PREMIUM_OUT(beat.copyReveal) * vis * (1 - story.exit);
+        const exitLift = beat.dissolveT > 0 ? -14 * EASE_PREMIUM_OUT(beat.dissolveT) : 0;
+        const emergeScale = EASE_PREMIUM_OUT(hero);
+        const enterLift = (1 - emergeScale) * 18;
+        const scale = 0.94 + emergeScale * 0.06;
+        const bloom = hero * 0.38;
+        const statBlur = hero > 0 && hero < 0.42 ? (1 - hero / 0.42) * 2.5 : 0;
 
         slot.style.opacity = String(hero);
         slot.style.transform = `translate(-50%, calc(-50% + ${enterLift + exitLift}px)) scale(${scale})`;
-        slot.style.filter = "none";
+        slot.style.zIndex = hero > 0.05 ? String(10 + index) : "1";
+        slot.style.filter = statBlur > 0.1 ? `blur(${statBlur.toFixed(2)}px)` : "none";
         slot.style.setProperty("--stat-bloom", String(bloom));
 
         const copyEl = slot.querySelector<HTMLElement>(".rm-trust-ecosystem__fg-stat-copy");
         if (copyEl) {
+          const copyLift = (1 - copy) * 12;
           copyEl.style.opacity = String(copy);
-          copyEl.style.transform = `translateY(${(1 - copy) * 8}px)`;
+          copyEl.style.transform = `translateY(${copyLift}px)`;
           copyEl.style.filter = "none";
         }
       });
@@ -907,19 +844,20 @@ export function TrustParticleEcosystem({
           b0.heroReveal * (1 - b0.dissolveT),
           b1.heroReveal * (1 - b1.dissolveT),
         );
-        const counterShift = (focusAnchor.x - 0.5) * pull * -20;
-        ambientRef.current.style.transform = `translateX(${counterShift}%) scale(${1 - stagingDim * 0.05})`;
+        const ambientIn = EASE_SOFT(story.constellation);
+        ambientRef.current.style.transform = `translate(-50%, -50%) scale(${0.96 + ambientIn * 0.06 - stagingDim * 0.04})`;
         ambientRef.current.style.opacity = String(
-          (0.26 + scroll * 0.1 + actGlow * 0.24 - stagingDim * 0.18) * (1 - story.exit * 0.7),
+          (0.08 + ambientIn * 0.16 + actGlow * 0.2 - stagingDim * 0.14) * (1 - story.exit * 0.7),
         );
       }
 
       if (ambientSecondaryRef.current) {
-        const driftX = Math.sin(t * 0.16) * 4 - parallaxCenter * 12;
-        const driftY = Math.cos(t * 0.14) * 3;
-        ambientSecondaryRef.current.style.transform = `translate(${driftX}%, ${driftY}%) scale(${0.92 + scroll * 0.08 + finaleExpand})`;
+        const ambientIn = EASE_SOFT(clamp(0, 1, (story.constellation - 0.12) / 0.88));
+        const driftX = Math.sin(t * 0.12) * 1.5;
+        const driftY = Math.cos(t * 0.1) * 1.2;
+        ambientSecondaryRef.current.style.transform = `translate(calc(-50% + ${driftX}%), calc(-50% + ${driftY}%)) scale(${0.9 + scroll * 0.06 + finaleExpand})`;
         ambientSecondaryRef.current.style.opacity = String(
-          (0.22 + floatPhase * 0.28 - stagingDim * 0.12) * (1 - story.exit * 0.6),
+          (0.06 + ambientIn * 0.14 + floatPhase * 0.12 - stagingDim * 0.1) * (1 - story.exit * 0.6),
         );
       }
 
@@ -932,8 +870,8 @@ export function TrustParticleEcosystem({
       if (vignetteRef.current) {
         // Compositor-only: shift the (oversized, static-gradient) vignette via
         // transform and breathe its darkness via opacity — never repaint bg.
-        const focusBiasX = (focusAnchor.x - 0.5) * pull + (cursor.x - 0.5) * cursor.energy * 0.5;
-        const focusBiasY = (focusAnchor.y - 0.5) * pull + (cursor.y - 0.5) * cursor.energy * 0.4;
+        const focusBiasX = (cursor.x - 0.5) * cursor.energy * 0.35;
+        const focusBiasY = (focusAnchor.y - 0.5) * pull * 0.25 + (cursor.y - 0.5) * cursor.energy * 0.3;
         const orbitLift = story.constellation * (1 - pull * 0.55);
         const edge = 0.62 + story.enter * 0.08 + stagingDim * 0.2 - orbitLift * 0.16;
         vignetteRef.current.style.transform = `translate3d(${(focusBiasX * 7).toFixed(2)}%, ${(focusBiasY * 6).toFixed(2)}%, 0)`;
@@ -941,24 +879,25 @@ export function TrustParticleEcosystem({
       }
 
       if (curtainTopRef.current) {
-        const topLift = (1 - story.enter) * 100;
-        curtainTopRef.current.style.transform = `translateY(${-topLift}%)`;
-        curtainTopRef.current.style.opacity = String(1 - story.enter);
+        const curtainFade = 1 - EASE_PREMIUM_OUT(story.enter);
+        curtainTopRef.current.style.transform = "none";
+        curtainTopRef.current.style.opacity = String(curtainFade);
       }
 
       if (curtainBottomRef.current) {
-        curtainBottomRef.current.style.opacity = String(story.exit * 0.95);
-        curtainBottomRef.current.style.transform = `translateY(${(1 - story.exit) * 30}%)`;
+        const exitT = EASE_PREMIUM_OUT(story.exit);
+        curtainBottomRef.current.style.opacity = String(exitT * 0.95);
+        curtainBottomRef.current.style.transform = `translateY(${(1 - exitT) * 24}%)`;
       }
 
       if (fieldShellRef.current) {
-        fieldShellRef.current.style.opacity = String(1 - story.exit * 0.92);
-        fieldShellRef.current.style.transform = `scale(${1 - story.exit * 0.035})`;
+        const exitT = EASE_PREMIUM_OUT(story.exit);
+        fieldShellRef.current.style.opacity = String(1 - exitT * 0.92);
+        fieldShellRef.current.style.transform = `scale(${1 - exitT * 0.028})`;
       }
 
       if (chapterActRef.current) {
         const targetAct = resolveSceneAct(scroll, b0, b1, story, pull);
-        pendingActRef.current = targetAct;
 
         if (
           actPhaseRef.current === "idle" &&
@@ -969,7 +908,7 @@ export function TrustParticleEcosystem({
         }
 
         if (actPhaseRef.current === "out") {
-          actEnterRef.current = Math.max(0, actEnterRef.current - dt * 2.1);
+          actEnterRef.current = Math.max(0, actEnterRef.current - dt * 3.4);
           if (actEnterRef.current <= 0.001) {
             displayedActRef.current = {
               label: targetAct.label,
@@ -978,7 +917,7 @@ export function TrustParticleEcosystem({
             actPhaseRef.current = "in";
           }
         } else if (actPhaseRef.current === "in") {
-          actEnterRef.current = Math.min(1, actEnterRef.current + dt * 1.7);
+          actEnterRef.current = Math.min(1, actEnterRef.current + dt * 1.25);
           if (actEnterRef.current >= 0.999) {
             actPhaseRef.current = "idle";
             actEnterRef.current = 1;
@@ -986,8 +925,11 @@ export function TrustParticleEcosystem({
         }
 
         const actReveal =
-          actPhaseRef.current === "out" ? actEnterRef.current : EASE_OUT(actEnterRef.current);
-        const actLift = (1 - actReveal) * 8;
+          actPhaseRef.current === "out"
+            ? actEnterRef.current
+            : EASE_PREMIUM_OUT(actEnterRef.current);
+        const actLift = (1 - actReveal) * 10;
+        const actBlur = actPhaseRef.current === "out" ? (1 - actEnterRef.current) * 2.5 : 0;
 
         chapterActRef.current.style.opacity = String(
           targetAct.actOpacity * actReveal * (1 - story.exit),
@@ -1001,25 +943,15 @@ export function TrustParticleEcosystem({
         );
         if (labelEl) {
           labelEl.textContent = displayedActRef.current.label;
-          labelEl.style.opacity = String(0.55 + actReveal * 0.45);
+          labelEl.style.opacity = String(0.5 + actReveal * 0.5);
           labelEl.style.transform = `translateY(${actLift}px)`;
-          labelEl.style.filter = "none";
+          labelEl.style.filter = actBlur > 0.1 ? `blur(${actBlur.toFixed(2)}px)` : "none";
         }
         if (subEl) {
           subEl.textContent = displayedActRef.current.sub;
           subEl.style.opacity = String(actReveal);
-          subEl.style.transform = `translateY(${actLift * 0.65}px)`;
-          subEl.style.filter = "none";
-        }
-      }
-
-      if (interludeRef.current) {
-        const interludeSpan = interludeRef.current.querySelector<HTMLElement>("span");
-        interludeRef.current.style.opacity = String(story.interludePeak * 0.85 * (1 - story.exit));
-        interludeRef.current.style.transform = `translate(-50%, calc(-50% + ${(1 - story.interludePeak) * 18}px)) scale(${0.96 + story.interludePeak * 0.04})`;
-        if (interludeSpan) {
-          interludeSpan.style.letterSpacing = `${-0.03 + story.interludePeak * 0.05}em`;
-          interludeSpan.style.filter = "none";
+          subEl.style.transform = `translateY(${actLift * 0.6}px)`;
+          subEl.style.filter = actBlur > 0.1 ? `blur(${(actBlur * 0.85).toFixed(2)}px)` : "none";
         }
       }
 
@@ -1029,13 +961,11 @@ export function TrustParticleEcosystem({
           b0.heroReveal * (1 - b0.dissolveT),
           b1.heroReveal * (1 - b1.dissolveT),
         );
-        const actFocusX =
-          b1.heroReveal > b0.heroReveal + 0.06 ? 78 : b0.heroReveal > 0.04 ? 22 : 50;
         chapter.style.setProperty("--trust-scroll", String(scroll));
         chapter.style.setProperty("--trust-enter", String(story.enter));
         chapter.style.setProperty("--trust-exit", String(story.exit));
         chapter.style.setProperty("--trust-act-glow", String(actGlow));
-        chapter.style.setProperty("--trust-act-x", `${actFocusX}%`);
+        chapter.style.setProperty("--trust-act-x", "50%");
       }
 
       raf = requestAnimationFrame(loop);
@@ -1073,7 +1003,7 @@ export function TrustParticleEcosystem({
         </div>
         <div className="rm-trust-ecosystem__stats-static">
           {stats.map((stat, index) => (
-            <div key={index} className="rm-trust-stats__stat flex flex-col gap-3 text-left">
+            <div key={index} className="rm-trust-stats__stat flex flex-col items-center gap-3 text-center">
               <p className="rm-trust-stats__stat-value">{statDisplayValue(stat)}</p>
               <p className="rm-trust-ecosystem__stat-copy">{stat.copy}</p>
             </div>
@@ -1082,15 +1012,6 @@ export function TrustParticleEcosystem({
       </div>
     );
   }
-
-  const positions = isMobile
-    ? stats.map((_, index) => ({ left: "50%", top: index === 0 ? "46%" : "54%" }))
-    : stats.length > 1
-      ? [
-          { left: "26%", top: "50%" },
-          { left: "74%", top: "50%" },
-        ]
-      : [{ left: "50%", top: "50%" }];
 
   return (
     <div ref={fieldRef} className="rm-trust-ecosystem" aria-label="Client logos and studio metrics">
@@ -1111,24 +1032,17 @@ export function TrustParticleEcosystem({
           <p className="rm-trust-ecosystem__chapter-sub">Trusted by teams who ship</p>
         </div>
 
-        <div ref={interludeRef} className="rm-trust-ecosystem__interlude" aria-hidden="true">
-          <span>Then the impact</span>
-        </div>
-
         <div ref={scrollCueRef} className="rm-trust-ecosystem__scroll-cue" aria-hidden="true">
           <span>Scroll the story</span>
         </div>
 
         <div className="rm-trust-ecosystem__fg-stats">
-          {stats.map((stat, index) => {
-            const pos = positions[index] ?? positions[0];
-            const align = isMobile ? "center" : index === 1 ? "right" : "left";
-            return (
-              <div key={index} className="rm-trust-ecosystem__stat-anchor">
-                <div
-                  className={`rm-trust-ecosystem__fg-stat rm-trust-ecosystem__fg-stat--${align}`}
-                  style={{ left: pos.left, top: pos.top }}
-                >
+          {stats.map((stat, index) => (
+            <div key={index} className="rm-trust-ecosystem__stat-anchor">
+              <div
+                className="rm-trust-ecosystem__fg-stat rm-trust-ecosystem__fg-stat--center"
+                style={{ left: "50%", top: "50%" }}
+              >
                   <p className="rm-trust-ecosystem__fg-stat-value" data-count-stat={index}>
                     {stat.countUp
                       ? `${stat.countUp.prefix ?? ""}0${stat.countUp.suffix ?? ""}`
@@ -1137,26 +1051,25 @@ export function TrustParticleEcosystem({
                   <p className="rm-trust-ecosystem__fg-stat-copy">{stat.copy}</p>
                 </div>
               </div>
-            );
-          })}
+            ))}
         </div>
 
         <div className="rm-trust-ecosystem__particles">
-          {particles.map((p) => (
+          {TRUST_BRANDS.map((brand) => (
             <span
-              key={p.id}
-              data-particle-id={p.id}
+              key={brand}
+              data-particle-id={brand}
               className={
-                p.hero
+                HERO_BRANDS.has(brand)
                   ? "rm-trust-ecosystem__particle rm-trust-ecosystem__particle--hero"
                   : "rm-trust-ecosystem__particle"
               }
               style={{
                 opacity: 0,
-                transform: `translate3d(${p.x}px, ${p.y}px, 0) translate(-50%, -50%)`,
+                transform: "translate3d(0, 0, 0) translate(-50%, -50%) scale(0.96)",
               }}
             >
-              {p.label}
+              {brand}
             </span>
           ))}
         </div>

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 
 import {
   bodyCopy,
-  borderSoft,
   BtnArrow,
   btnGhostLink,
+  FramerTag,
   sectionContentGrid,
   sectionInner,
   sectionHeadline,
@@ -28,27 +28,53 @@ export function CasesSection() {
   const reduce = useReducedMotion();
   const [active, setActive] = useState(-1);
   const [previewBelow, setPreviewBelow] = useState(false);
+  const [finePointer, setFinePointer] = useState(false);
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
-  const springConfig = { stiffness: 150, damping: 20, mass: 0.4 };
+  const springConfig = reduce
+    ? { stiffness: 1000, damping: 100, mass: 0.1 }
+    : { stiffness: 420, damping: 52, mass: 0.3 };
   const x = useSpring(px, springConfig);
   const y = useSpring(py, springConfig);
+  const cursorTransform = useMotionTemplate`translate(${x}px, ${y}px)`;
 
-  if (featuredCases.length === 0) return null;
+  const PREVIEW_EASE = [0.23, 1, 0.32, 1] as const;
 
-  const finePointer =
-    typeof window !== "undefined" &&
-    window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  const updatePreviewBelow = useCallback((clientY: number) => {
+    setPreviewBelow((prev) => {
+      if (!prev && clientY < 260) return true;
+      if (prev && clientY > 340) return false;
+      return prev;
+    });
+  }, []);
 
-  const handleMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (reduce || !finePointer) return;
-    px.set(event.clientX);
-    py.set(event.clientY);
-    setPreviewBelow(event.clientY < 300);
-  };
+  useEffect(() => {
+    setFinePointer(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }, []);
 
-  const activeCase = active >= 0 ? featuredCases[active] : null;
+  const activateRow = useCallback(
+    (index: number, clientX?: number, clientY?: number) => {
+      setActive(index);
+      if (reduce || !finePointer) return;
+      if (clientX != null) px.set(clientX);
+      if (clientY != null) {
+        py.set(clientY);
+        updatePreviewBelow(clientY);
+      }
+    },
+    [finePointer, px, py, reduce, updatePreviewBelow],
+  );
+
+  const handleMove = useCallback(
+    (event: ReactPointerEvent<HTMLDivElement>) => {
+      if (reduce || !finePointer) return;
+      px.set(event.clientX);
+      py.set(event.clientY);
+      updatePreviewBelow(event.clientY);
+    },
+    [finePointer, px, py, reduce, updatePreviewBelow],
+  );
 
   useEffect(() => {
     featuredCases.forEach((study) => {
@@ -57,6 +83,10 @@ export function CasesSection() {
     });
   }, [featuredCases]);
 
+  if (featuredCases.length === 0) return null;
+
+  const activeCase = active >= 0 ? featuredCases[active] : null;
+
   return (
     <section
       id="work"
@@ -64,11 +94,11 @@ export function CasesSection() {
       className={cn(sectionShell, "rm-section-work")}
     >
       <div className={sectionInner}>
-        <div className={cn("rm-work reveal", sectionContentGrid, "items-start")}>
-          <div className="md:col-start-1 md:self-start">
-            <span className={textMeta}>{header.tag}</span>
+        <div className={cn("rm-work", sectionContentGrid, "items-start")}>
+          <div className="reveal-fade md:col-start-1 md:self-start">
+            <FramerTag>{header.tag}</FramerTag>
           </div>
-          <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
+          <header className={cn("reveal-fade", sectionIntroStack, "md:col-span-2 md:col-start-2")}>
             <h2 id="cases-heading" className={cn(sectionHeadline, "max-w-[18ch] text-balance")}>
               {header.heading}
             </h2>
@@ -93,10 +123,19 @@ export function CasesSection() {
                 key={study.slug}
                 to="/cases/$slug"
                 params={{ slug: study.slug }}
-                className={cn("rm-index__row rm-touch group border-b last:border-b-0", borderSoft)}
+                className="rm-index__row rm-touch group"
                 data-on={active === index}
-                onPointerEnter={() => setActive(index)}
-                onFocus={() => setActive(index)}
+                onPointerEnter={(event) =>
+                  activateRow(index, event.clientX, event.clientY)
+                }
+                onFocus={(event) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  activateRow(
+                    index,
+                    rect.left + rect.width * 0.62,
+                    rect.top + rect.height * 0.5,
+                  );
+                }}
                 aria-label={`${study.client} — ${study.primaryMetric.value} ${study.primaryMetric.label}`}
               >
                 <span className={cn("rm-index__num", textGhost)} aria-hidden>
@@ -126,9 +165,7 @@ export function CasesSection() {
                 </span>
 
                 <span className="rm-index__metric">
-                  <span className="rm-index__metric-value">
-                    {study.primaryMetric.value === "LATAM" ? "Latam" : study.primaryMetric.value}
-                  </span>
+                  <span className="rm-index__metric-value">{study.primaryMetric.value}</span>
                   <span className={cn("rm-index__metric-label", textMeta)}>{study.primaryMetric.label}</span>
                 </span>
 
@@ -153,34 +190,43 @@ export function CasesSection() {
         </div>
       </div>
 
-      <motion.div className="rm-index__cursor" style={{ x, y }} aria-hidden>
-        <div className={cn("rm-index__anchor", previewBelow && "rm-index__anchor--below")}>
-          <AnimatePresence mode="wait">
-            {activeCase ? (
-              <motion.div
-                key={activeCase.slug}
-                className={cn(
-                  "rm-index__preview",
-                  isCaseHomePreviewPhoto(getCaseHomePreviewImage(activeCase))
-                    ? "rm-index__preview--photo"
-                    : undefined,
-                )}
-                initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={reduce ? undefined : { opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <img
-                  src={getCaseHomePreviewImage(activeCase)}
-                  alt=""
-                  decoding="async"
-                  style={{ objectPosition: getCaseHomePreviewPosition(activeCase) }}
-                />
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-        </div>
-      </motion.div>
+      {finePointer && !reduce ? (
+        <motion.div
+          className="rm-index__cursor"
+          style={{ transform: cursorTransform }}
+          aria-hidden
+        >
+          <div className={cn("rm-index__anchor", previewBelow && "rm-index__anchor--below")}>
+            <AnimatePresence initial={false}>
+              {activeCase ? (
+                <motion.div
+                  key={activeCase.slug}
+                  className={cn(
+                    "rm-index__preview",
+                    isCaseHomePreviewPhoto(getCaseHomePreviewImage(activeCase))
+                      ? "rm-index__preview--photo"
+                      : undefined,
+                  )}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{
+                    opacity: 0,
+                    transition: { duration: 0.12, ease: PREVIEW_EASE },
+                  }}
+                  transition={{ duration: 0.18, ease: PREVIEW_EASE }}
+                >
+                  <img
+                    src={getCaseHomePreviewImage(activeCase)}
+                    alt=""
+                    decoding="async"
+                    style={{ objectPosition: getCaseHomePreviewPosition(activeCase) }}
+                  />
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      ) : null}
     </section>
   );
 }

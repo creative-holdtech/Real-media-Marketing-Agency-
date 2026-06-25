@@ -7,11 +7,9 @@ import {
   bandSubtitle,
   btnGhostLink,
   FramerTag,
-  sectionActionsOffset,
   sectionGap,
   sectionHeadline,
   sectionInner,
-  sectionIntroStack,
   sectionShell,
   textMeta,
 } from "@/components/framer-section";
@@ -138,22 +136,20 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
     <section className={cn(sectionShell, "rm-section-insights")} aria-labelledby="insights-heading">
       <div className={sectionInner}>
         <div className={cn("reveal rm-insights-stack flex w-full flex-col items-center", sectionGap)}>
-          <header className="rm-insights-intro flex w-full flex-col items-center text-center">
-            <div className={cn(sectionIntroStack, "items-center")}>
-              <FramerTag>Insights</FramerTag>
-              <h2
-                id="insights-heading"
-                className={cn(
-                  sectionHeadline,
-                  "mx-auto max-w-[18ch] text-balance text-center text-white",
-                )}
-              >
-                Field notes on building brands that last.
-              </h2>
-            </div>
+          <header className="rm-insights-intro flex w-full flex-col items-center gap-4 text-center">
+            <FramerTag>Insights</FramerTag>
+            <h2
+              id="insights-heading"
+              className={cn(
+                sectionHeadline,
+                "m-0 mx-auto max-w-[18ch] text-balance text-center text-white",
+              )}
+            >
+              Field notes on building brands that last.
+            </h2>
             <Link
               to="/blog"
-              className={cn(btnGhostLink, sectionActionsOffset, "mx-auto w-fit")}
+              className={cn(btnGhostLink, "min-h-0 w-fit py-0")}
             >
               All articles
               <span

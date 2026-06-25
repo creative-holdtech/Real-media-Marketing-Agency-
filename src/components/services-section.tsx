@@ -7,7 +7,6 @@ import {
   BtnArrow,
   btnGhostLink,
   btnPrimary,
-  sectionActionsRow,
   sectionContentGrid,
   sectionHeadline,
   sectionIntroStack,
@@ -68,7 +67,7 @@ export function ServicesSection() {
       className={cn(sectionShell, "relative overflow-hidden bg-black")}
     >
       <div className={sectionInner}>
-        <div className={cn(sectionContentGrid, "items-start")}>
+        <div className={cn(sectionContentGrid, "items-start md:items-stretch")}>
           <div className="md:col-start-1 md:self-start">
             <FramerTag>Engagement formats</FramerTag>
           </div>
@@ -84,7 +83,7 @@ export function ServicesSection() {
             role="tablist"
             aria-label="Engagement formats"
             className={cn(
-              "flex flex-wrap items-end gap-x-10 gap-y-1 border-b md:col-span-2 md:col-start-2",
+              "flex flex-wrap items-end gap-x-8 gap-y-1 border-b md:col-span-2 md:col-start-2",
               borderSoft,
             )}
           >
@@ -134,14 +133,14 @@ export function ServicesSection() {
                 animate={{ opacity: 1 }}
                 exit={reduce ? undefined : { opacity: 0 }}
                 transition={{ duration: 0.2, ease: EASE }}
-                className="grid items-start gap-x-12 gap-y-8 md:grid-cols-[0.82fr_1fr] md:gap-x-16"
+                className="grid items-stretch gap-x-8 gap-y-8 md:grid-cols-[1.35fr_1fr] md:gap-x-10 lg:gap-x-12"
               >
-                {/* Left: supporting metric, emphasized intro, CTA */}
+                {/* Left: supporting metric + intro */}
                 <motion.div
                   initial={reduce ? false : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={reduce ? { duration: 0 } : { duration: 0.5, ease: EASE, delay: 0.04 }}
-                  className="flex flex-col"
+                  className="min-w-0 max-md:order-1"
                 >
                   <p className={textMeta}>
                     <span className={cn("tabular-nums", textSubtle)}>
@@ -156,29 +155,10 @@ export function ServicesSection() {
                   >
                     {engagement.intro}
                   </p>
-
-                  <div className={cn(sectionActionsRow, "justify-start")}>
-                    <Link
-                      to="/contact"
-                      search={{ engagement: engagement.id }}
-                      className={cn(btnPrimary, "group gap-2")}
-                    >
-                      {engagement.ctaLabel.replace(/\s*→$/, "")}
-                      <BtnArrow />
-                    </Link>
-                    <Link
-                      to="/products"
-                      className={btnGhostLink}
-                      title={engagement.compareHint}
-                    >
-                      Compare formats
-                      <BtnArrow />
-                    </Link>
-                  </div>
                 </motion.div>
 
                 {/* Right: numbered steps */}
-                <dl className={cn("m-0 flex flex-col border-t", borderSoft)}>
+                <dl className="m-0 flex max-md:order-3 flex-col md:order-2">
                   {engagement.steps.map((step, i) => (
                     <motion.div
                       key={step.code}
@@ -190,7 +170,7 @@ export function ServicesSection() {
                           : { duration: 0.5, ease: EASE, delay: 0.12 + i * 0.07 }
                       }
                       className={cn(
-                        "grid grid-cols-[2.25rem_1fr] items-start gap-x-5 gap-y-1.5 border-b py-4 last:border-b-0 sm:grid-cols-[6.5rem_1fr] sm:items-baseline sm:gap-y-0",
+                        "grid grid-cols-[2.25rem_1fr] items-start gap-x-5 gap-y-1.5 border-b py-5 first:pt-0 last:border-b-0 md:py-6 sm:grid-cols-[6.5rem_1fr] sm:items-baseline sm:gap-y-0",
                         borderSoft,
                       )}
                     >
@@ -207,6 +187,30 @@ export function ServicesSection() {
                     </motion.div>
                   ))}
                 </dl>
+
+                {/* Actions — full panel width for side-by-side CTAs on all breakpoints */}
+                <motion.div
+                  initial={reduce ? false : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={reduce ? { duration: 0 } : { duration: 0.5, ease: EASE, delay: 0.2 }}
+                  className="flex max-w-full flex-row flex-nowrap items-center gap-3 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] max-md:order-2 md:order-3 md:col-span-2 md:gap-4 [&::-webkit-scrollbar]:hidden"
+                >
+                  <Link
+                    to="/contact"
+                    search={{ engagement: engagement.id }}
+                    className={cn(btnPrimary, "group shrink-0 gap-2 whitespace-nowrap")}
+                  >
+                    {engagement.ctaLabel.replace(/\s*→$/, "")}
+                    <BtnArrow />
+                  </Link>
+                  <Link
+                    to="/products"
+                    className={cn(btnGhostLink, "shrink-0 whitespace-nowrap")}
+                  >
+                    Compare formats
+                    <BtnArrow />
+                  </Link>
+                </motion.div>
               </motion.div>
             </AnimatePresence>
           </div>
