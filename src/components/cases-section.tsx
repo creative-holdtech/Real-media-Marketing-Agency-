@@ -91,7 +91,7 @@ export function CasesSection() {
     <section
       id="work"
       aria-labelledby="cases-heading"
-      className={cn(sectionShell, "rm-section-work")}
+      className={cn(sectionShell, "rm-section-work pt-0")}
     >
       <div className={sectionInner}>
         <div className={cn("rm-work", sectionContentGrid, "items-start")}>

@@ -468,6 +468,50 @@ export function TrustParticleEcosystem({
     return () => io.disconnect();
   }, [reduce, sceneRef]);
 
+  // Keep chapter handoff vars in sync even when the scene IO stops the particle loop
+  // mid-exit — otherwise blur/opacity freeze and leave a bright seam above the body.
+  useEffect(() => {
+    if (reduce) return;
+    const scene = sceneRef.current;
+    if (!scene) return;
+
+    const syncChapterHandoff = () => {
+      const chapter = chapterRef?.current ?? scene.closest("#studio");
+      if (!(chapter instanceof HTMLElement)) return;
+
+      const progress = computeTrustSceneProgress(scene);
+      const sceneRect = scene.getBoundingClientRect();
+      const bodyEl = chapter.querySelector(".rm-studio-chapter__body");
+      const bodyRect = bodyEl?.getBoundingClientRect();
+      const bodyInView =
+        bodyRect != null &&
+        bodyRect.top < window.innerHeight * 0.72 &&
+        bodyRect.bottom > window.innerHeight * 0.12;
+      const handoffComplete =
+        progress >= 0.92 ||
+        sceneRect.bottom <= window.innerHeight * 0.42 ||
+        bodyInView;
+
+      if (handoffComplete) {
+        chapter.style.setProperty("--trust-scroll", "1");
+        chapter.style.setProperty("--trust-enter", "1");
+        chapter.style.setProperty("--trust-exit", "1");
+        chapter.classList.add("rm-studio-chapter--handoff-complete");
+      } else {
+        chapter.classList.remove("rm-studio-chapter--handoff-complete");
+      }
+    };
+
+    syncChapterHandoff();
+    requestAnimationFrame(syncChapterHandoff);
+    window.addEventListener("scroll", syncChapterHandoff, { passive: true });
+    window.addEventListener("resize", syncChapterHandoff, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", syncChapterHandoff);
+      window.removeEventListener("resize", syncChapterHandoff);
+    };
+  }, [reduce, sceneRef, chapterRef]);
+
   useEffect(() => {
     if (!shouldAnimate) return;
     const field = fieldRef.current;

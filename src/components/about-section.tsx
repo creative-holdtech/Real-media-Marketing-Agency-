@@ -55,7 +55,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
       />
 
       <div className="rm-studio-chapter__body">
-        <div className={cn(sectionShell, "pt-0")}>
+        <div className={cn(sectionShell, "bg-black pt-0")}>
           <div className={cn(sectionStack, "rm-plan-scene")}>
             <div className="rm-plan-scene__ambient" aria-hidden="true">
               <div className="rm-plan-scene__grid" />

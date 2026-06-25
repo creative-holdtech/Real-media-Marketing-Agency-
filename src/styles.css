@@ -1326,8 +1326,8 @@ button {
     to bottom,
     transparent 0%,
     rgba(0, 0, 0, 0.55) 35%,
-    #000 72%,
-    var(--rm-surface-raised, #111) 100%
+    #000 88%,
+    #000 100%
   );
   will-change: transform, opacity;
   pointer-events: none;
@@ -2490,10 +2490,6 @@ html.rm-premium-cursor * {
   cursor: pointer;
   border-bottom: 1px solid var(--rm-border-soft);
   transition: background-color 0.15s ease-out;
-}
-
-.rm-index__row:last-child {
-  border-bottom-width: 0;
 }
 
 @media (min-width: 768px) {
@@ -6403,12 +6399,40 @@ a.block:focus-visible .rm-points-card__read {
 .rm-studio-chapter__body {
   position: relative;
   z-index: 1;
+  margin-top: -1px;
   padding-top: clamp(1.5rem, 4vh, 3rem);
   opacity: calc(0.15 + var(--trust-exit, 0) * 0.85);
-  transform: translateY(calc((1 - var(--trust-exit, 0)) * 56px));
-  filter: blur(calc((1 - var(--trust-exit, 0)) * 6px));
-  will-change: transform, opacity, filter;
-  background: linear-gradient(to bottom, #000 0%, var(--rm-surface-raised) clamp(3rem, 8vh, 5rem));
+  transform: translateY(calc((1 - var(--trust-exit, 0)) * 40px));
+  will-change: transform, opacity;
+  background-color: #000;
+}
+
+/* Match trust scene — flat #000, no raised-surface tint or ambient glow. */
+.rm-studio-chapter__body > * {
+  background-color: #000;
+}
+
+.rm-studio-chapter .rm-plan-scene__glow,
+.rm-studio-chapter .rm-plan-scene:has(.rm-plan-scene__cards.is-visible) .rm-plan-scene__glow {
+  opacity: 0;
+  animation: none;
+}
+
+/* Cover the 1px compositor seam between the trust scene and chapter body. */
+.rm-studio-chapter__body::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #000;
+  pointer-events: none;
+}
+
+.rm-studio-chapter--handoff-complete .rm-studio-chapter__body {
+  opacity: 1;
+  transform: none;
 }
 
 /* On phones the scroll-scrubbed focus-pull reads as permanently blurred/faded
@@ -6417,7 +6441,6 @@ a.block:focus-visible .rm-points-card__read {
   .rm-studio-chapter__body {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 }
 
@@ -6425,7 +6448,6 @@ a.block:focus-visible .rm-points-card__read {
   .rm-studio-chapter__body {
     opacity: 1;
     transform: none;
-    filter: none;
   }
 
   .rm-trust-ecosystem__field,
