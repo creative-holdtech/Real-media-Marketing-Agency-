@@ -5,7 +5,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
 import {
   bandSubtitle,
-  btnGhostLink,
+  BtnArrow,
+  btnOutlineOnDark,
   FramerTag,
   sectionGap,
   sectionHeadline,
@@ -149,15 +150,10 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
             </h2>
             <Link
               to="/blog"
-              className={cn(btnGhostLink, "min-h-0 w-fit py-0")}
+              className={cn(btnOutlineOnDark, "group w-fit gap-2")}
             >
               All articles
-              <span
-                aria-hidden
-                className="inline-block transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
-              >
-                →
-              </span>
+              <BtnArrow />
             </Link>
           </header>
 

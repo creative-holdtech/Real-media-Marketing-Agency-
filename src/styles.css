@@ -680,8 +680,7 @@ button {
    value to animate. */
 /* Scoped off media-bearing reveals (:not(:has(img…))) — blurring large images
    is an expensive Safari paint, and the rack-focus reads best on type anyway. */
-.rm-home
-  :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)) {
+.rm-home :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)) {
   filter: blur(6px);
 }
 .rm-home
@@ -1301,12 +1300,7 @@ button {
 .rm-trust-scene__bridge--top {
   top: 0;
   height: clamp(4rem, 10vh, 7rem);
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.28) 55%,
-    #000 100%
-  );
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.28) 55%, #000 100%);
   opacity: 0.65;
 }
 
@@ -1371,49 +1365,6 @@ button {
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   mix-blend-mode: soft-light;
-}
-
-@media (min-width: 768px) {
-  .rm-trust-ecosystem__chapter {
-    left: max(
-      var(--rm-grid-gutter-md),
-      calc((100vw - var(--rm-grid-max)) / 2 + var(--rm-grid-gutter-md))
-    );
-  }
-}
-
-.rm-trust-ecosystem__chapter {
-  position: absolute;
-  top: clamp(7rem, 16vh, 10rem);
-  /* Align to the site's editorial grid (1280px container + gutter). */
-  left: max(var(--rm-grid-gutter), calc((100vw - var(--rm-grid-max)) / 2 + var(--rm-grid-gutter)));
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  max-width: 16rem;
-  opacity: 0;
-  will-change: opacity;
-  pointer-events: none;
-}
-
-.rm-trust-ecosystem__chapter-label {
-  margin: 0;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
-  will-change: transform, opacity, filter;
-}
-
-.rm-trust-ecosystem__chapter-sub {
-  margin: 0;
-  font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: rgba(255, 255, 255, 0.62);
-  will-change: transform, opacity, filter;
 }
 
 .rm-trust-ecosystem__interlude {
@@ -1512,7 +1463,8 @@ button {
   height: 1.75rem;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.35), transparent);
   transform-origin: top center;
-  animation: rm-trust-cue-pulse 2.8s var(--rm-ease-premium-in-out, cubic-bezier(0.77, 0, 0.175, 1)) infinite;
+  animation: rm-trust-cue-pulse 2.8s var(--rm-ease-premium-in-out, cubic-bezier(0.77, 0, 0.175, 1))
+    infinite;
 }
 
 @keyframes rm-trust-cue-pulse {
@@ -1542,7 +1494,8 @@ button {
     transparent 76%
   );
   filter: blur(40px);
-  animation: rm-trust-ambient-breathe 20s var(--rm-ease-premium-in-out, cubic-bezier(0.77, 0, 0.175, 1)) infinite;
+  animation: rm-trust-ambient-breathe 20s
+    var(--rm-ease-premium-in-out, cubic-bezier(0.77, 0, 0.175, 1)) infinite;
   pointer-events: none;
   will-change: transform, opacity;
   z-index: 0;
@@ -2211,8 +2164,51 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 .rm-engage-panel__lead {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  max-width: 38ch;
+  max-width: 48ch;
+}
+
+/* Interactive process rail — vertical timeline + hover emphasis */
+@media (min-width: 768px) {
+  .rm-engage-steps:has(.rm-engage-step:hover) .rm-engage-step:not(:hover),
+  .rm-engage-steps:has(.rm-engage-step:focus-within) .rm-engage-step:not(:focus-within) {
+    opacity: 0.38;
+    transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .rm-engage-step {
+    transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .rm-engage-step:hover .rm-engage-step__dot,
+  .rm-engage-step:focus-within .rm-engage-step__dot {
+    transform: scale(1.35);
+    background-color: rgba(255, 255, 255, 0.95);
+  }
+
+  .rm-engage-step:hover .rm-engage-step__code,
+  .rm-engage-step:focus-within .rm-engage-step__code,
+  .rm-engage-step:hover .rm-engage-step__title,
+  .rm-engage-step:focus-within .rm-engage-step__title {
+    color: var(--rm-ink);
+  }
+
+  .rm-engage-step__dot {
+    transition:
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .rm-engage-step__code,
+  .rm-engage-step__title {
+    transition: color 0.2s ease-out;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-engage-steps:has(.rm-engage-step:hover) .rm-engage-step:not(:hover),
+  .rm-engage-steps:has(.rm-engage-step:focus-within) .rm-engage-step:not(:focus-within) {
+    opacity: 1;
+  }
 }
 
 .rm-engage-time {
@@ -2289,67 +2285,72 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   outline: none;
 }
 
-.rm-engage-steps {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
+/* Layout for the engage steps is owned by the component (Tailwind grid).
+   Entrance is CSS-driven below so it stays reliable under the section's
+   `content-visibility: auto` (which Motion's `whileInView` does not). */
 
-@media (min-width: 768px) {
-  .rm-engage-steps {
-    border-top: 0;
-    padding-top: 0.125rem;
+@media (prefers-reduced-motion: no-preference) {
+  .rm-engage-panel__lead,
+  .rm-engage-panel__actions,
+  .rm-engage-step {
+    opacity: 0;
+    animation: rm-engage-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .rm-engage-panel__lead {
+    animation-delay: 0.05s;
+  }
+
+  .rm-engage-step {
+    animation-delay: calc(0.12s + var(--i, 0) * 0.09s);
+  }
+
+  .rm-engage-panel__actions {
+    animation-delay: 0.4s;
+  }
+
+  .rm-engage-rail__fill {
+    transform-origin: left;
+    animation: rm-engage-draw 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: 0.1s;
+  }
+
+  .rm-engage-step__dot {
+    animation: rm-engage-dot 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc(0.22s + var(--i, 0) * 0.09s);
   }
 }
 
-.rm-engage-step {
-  display: flex;
-  gap: 1.25rem;
-  padding-block: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  opacity: 0;
-  transform: translateY(10px);
-  animation: rm-engage-step-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--engage-step-i, 0) * 80ms + 80ms);
-}
-
-.rm-engage-step:last-child {
-  border-bottom: 0;
-}
-
-@keyframes rm-engage-step-in {
+@keyframes rm-engage-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-.rm-engage-step__code {
-  flex-shrink: 0;
-  width: 1.5rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.28);
-  font-variant-numeric: tabular-nums;
-}
-
-.rm-engage-step__body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-  min-width: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rm-engage-step {
+@keyframes rm-engage-draw {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
     opacity: 1;
-    transform: none;
-    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes rm-engage-dot {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -2699,7 +2700,6 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   object-position: center;
   filter: none;
 }
-
 
 @media (hover: none), (max-width: 768px) {
   .rm-index__cursor {

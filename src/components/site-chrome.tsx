@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 import logoUrl from "@/assets/logo.svg";
 import {
+  BtnArrow,
   btnPrimarySm,
   chromeLightBorder,
   chromeLightInk,
@@ -133,9 +134,10 @@ export function SiteHeader({
               e.preventDefault();
               triggerPageTransition("/audit");
             }}
-            className={cn(btnPrimarySm, "hidden shrink-0 md:inline-flex")}
+            className={cn(btnPrimarySm, "group hidden shrink-0 gap-2 md:inline-flex")}
           >
             Get Audit
+            <BtnArrow />
           </Link>
           <MobileMenu />
         </div>

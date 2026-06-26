@@ -133,7 +133,7 @@ export const cases: CaseStudy[] = [
       { value: "Tier 1–3", label: "GEO coverage" },
       { value: "6 mo", label: "Engagement" },
     ],
-    primaryMetric: { value: "+35%", label: "Brand growth in 6 mo" },
+    primaryMetric: { value: "+35%", label: "Brand growth in 6 mo." },
     situation:
       "Tequila is a CPA network with in-house media buying, specialising in iGaming with 300+ brands across Tier 1, Tier 2, and Tier 3 regions — including Africa.",
     challenge:

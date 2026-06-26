@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { bodyCopy, surfaceCardPadding, textLabel } from "@/components/framer-section";
+import { bodyCopy, surfaceCardPadding, textLabel, textMeta } from "@/components/framer-section";
 import { SurfaceCard } from "@/components/surface-card";
 import { CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -42,7 +42,7 @@ export function MetaCard({
           surfaceCardPadding,
         )}
       >
-        <p className={textLabel}>{label}</p>
+        <p className={textMeta}>{label}</p>
         <p className="rm-plan-card__value rm-type-subsection mt-auto whitespace-pre-line font-normal text-[var(--rm-ink)]">
           {value}
         </p>

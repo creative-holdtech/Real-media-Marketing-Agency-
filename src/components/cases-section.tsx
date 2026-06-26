@@ -6,9 +6,10 @@ import { AnimatePresence, motion, useMotionTemplate, useMotionValue, useReducedM
 import {
   bodyCopy,
   BtnArrow,
-  btnGhostLink,
+  btnOutlineOnDark,
   FramerTag,
   sectionContentGrid,
+  sectionGridSpacer,
   sectionInner,
   sectionHeadline,
   sectionIntroStack,
@@ -194,16 +195,16 @@ export function CasesSection() {
             })}
           </div>
 
-          <Link
-            to="/cases"
-            className={cn(
-              btnGhostLink,
-              "justify-self-end whitespace-nowrap md:col-span-2 md:col-start-2",
-            )}
-          >
-            View all case studies
-            <BtnArrow />
-          </Link>
+          <div className={sectionGridSpacer} aria-hidden />
+          <div className="reveal-fade flex justify-end md:col-span-2 md:col-start-2">
+            <Link
+              to="/cases"
+              className={cn(btnOutlineOnDark, "group w-fit gap-2")}
+            >
+              View all case studies
+              <BtnArrow />
+            </Link>
+          </div>
         </div>
       </div>
 

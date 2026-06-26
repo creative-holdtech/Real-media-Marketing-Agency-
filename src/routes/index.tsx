@@ -6,8 +6,8 @@ import {
   BtnArrow,
   btnOutlineOnDark,
   btnPrimary,
-  heroEyebrowOffset,
   heroHeadlineLead,
+  heroIntroStack,
   pageHeroContainer,
   sectionHeroActionsRow,
   siteChromeBand,
@@ -126,8 +126,9 @@ function Index() {
               initial={reduce ? false : "hidden"}
               animate="show"
             >
+              <div className={cn(heroIntroStack, "w-full")}>
               {hero?.tag ? (
-                <motion.p className={cn(heroEyebrowOffset, "flex items-center justify-center gap-3")} variants={heroFade}>
+                <motion.p className="flex items-center justify-center gap-3" variants={heroFade}>
                   <motion.span
                     aria-hidden
                     className="h-px w-12 shrink-0 origin-center bg-white/60"
@@ -142,25 +143,26 @@ function Index() {
                 </motion.p>
               ) : null}
               <div className={heroHeadlineLead}>
-                <motion.h1 id="home-hero-title" className="rm-title-hero-lead text-balance" variants={heroTitle}>
+              <motion.h1 id="home-hero-title" className="rm-title-hero-lead w-full text-balance" variants={heroTitle}>
+                <span className="block">
+                  <motion.span className="block" variants={heroTitleLine}>
+                    {titleLines[0]}
+                  </motion.span>
+                </span>
+                {titleLines.length > 1 ? (
                   <span className="block">
-                    <motion.span className="block" variants={heroTitleLine}>
-                      {titleLines[0]}
+                    <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
+                      {titleLines.slice(1).join(" ")}
                     </motion.span>
                   </span>
-                  {titleLines.length > 1 ? (
-                    <span className="block">
-                      <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
-                        {titleLines.slice(1).join(" ")}
-                      </motion.span>
-                    </span>
-                  ) : null}
-                </motion.h1>
-                {hero?.subheading ? (
-                  <motion.p className="rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance" variants={heroRise}>
-                    {hero.subheading}
-                  </motion.p>
                 ) : null}
+              </motion.h1>
+              {hero?.subheading ? (
+                <motion.p className="rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance" variants={heroRise}>
+                  {hero.subheading}
+                </motion.p>
+              ) : null}
+              </div>
               </div>
 
               <motion.div className={cn(sectionHeroActionsRow, "justify-center")} variants={heroRise}>

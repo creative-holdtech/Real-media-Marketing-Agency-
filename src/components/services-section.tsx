@@ -1,14 +1,16 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 
 import {
   FramerTag,
   BtnArrow,
-  btnGhostLink,
+  btnOutlineOnDark,
   btnPrimary,
   sectionContentGrid,
+  sectionGap,
   sectionHeadline,
+  sectionHeadlineLead,
   sectionIntroStack,
   sectionInner,
   borderSoft,
@@ -24,8 +26,14 @@ import { cn } from "@/lib/utils";
 
 type FormatId = "sprint" | "marathon";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
 const UNDERLINE_SPRING = { type: "spring", stiffness: 380, damping: 34 } as const;
+
+/* Entrance is CSS-driven (see `.rm-engage-*` keyframes in styles.css). CSS
+   animations start on first paint, and `content-visibility: auto` on the
+   wrapping section defers that paint until the block scrolls into view — which
+   makes the reveal reliable. (Motion's `whileInView` does NOT fire reliably
+   inside a `content-visibility: auto` subtree — it freezes mid-animation.)
+   Switching tabs swaps the text instantly; only the active underline animates. */
 
 function StepBody({
   engagementId,
@@ -99,7 +107,7 @@ export function ServicesSection() {
                   aria-controls={panelId}
                   onClick={() => setActive(e.id)}
                   className={cn(
-                    "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-3",
+                    "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-2",
                     subsectionTitle,
                     "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
@@ -119,29 +127,17 @@ export function ServicesSection() {
             })}
           </div>
 
-          {/* Content */}
+          {/* Content — stable scaffold; entrance reveals once on scroll-in (CSS) */}
           <div
             id={panelId}
             role="tabpanel"
             aria-labelledby={activeTabId}
             className="md:col-span-2 md:col-start-2"
           >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={engagement.id}
-                initial={reduce ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={reduce ? undefined : { opacity: 0 }}
-                transition={{ duration: 0.2, ease: EASE }}
-                className="grid items-stretch gap-x-8 gap-y-8 md:grid-cols-[1.35fr_1fr] md:gap-x-10 lg:gap-x-12"
-              >
-                {/* Left: supporting metric + intro */}
-                <motion.div
-                  initial={reduce ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.5, ease: EASE, delay: 0.04 }}
-                  className="min-w-0 max-md:order-1"
-                >
+            <div className={cn("rm-engage-panel__grid flex flex-col", sectionGap)}>
+              {/* Copy + timeline — one group; the steps' top margin sets the lead gap */}
+              <div className="flex flex-col">
+                <div className={cn("rm-engage-panel__lead min-w-0", sectionHeadlineLead)}>
                   <p className={textMeta}>
                     <span className={cn("tabular-nums", textSubtle)}>
                       {engagement.metricBig} {engagement.metricUnitLabel}
@@ -150,69 +146,81 @@ export function ServicesSection() {
                     {engagement.metricUnitSub}
                   </p>
 
-                  <p
-                    className={cn("mt-4 max-w-[34ch] rm-type-body rm-type-body-strong text-white")}
-                  >
+                  <p className="max-w-[48ch] rm-type-body rm-type-body-strong text-white">
                     {engagement.intro}
                   </p>
-                </motion.div>
+                </div>
 
-                {/* Right: numbered steps */}
-                <dl className="m-0 flex max-md:order-3 flex-col md:order-2">
-                  {engagement.steps.map((step, i) => (
-                    <motion.div
-                      key={step.code}
-                      initial={reduce ? false : { opacity: 0, y: 14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={
-                        reduce
-                          ? { duration: 0 }
-                          : { duration: 0.5, ease: EASE, delay: 0.12 + i * 0.07 }
-                      }
-                      className={cn(
-                        "grid grid-cols-[2.25rem_1fr] items-start gap-x-5 gap-y-1.5 border-b py-5 first:pt-0 last:border-b-0 md:py-6 sm:grid-cols-[6.5rem_1fr] sm:items-baseline sm:gap-y-0",
-                        borderSoft,
-                      )}
-                    >
-                      <dt className="flex items-baseline gap-2.5">
-                        <span className={cn(textMeta, textGhost)}>{step.code}</span>
-                        <span className={cn(textMeta, "hidden sm:inline", textSubtle)}>
-                          {step.title}
-                        </span>
-                      </dt>
-                      <div className="flex flex-col gap-1.5 sm:contents">
-                        <span className={cn(textMeta, "sm:hidden", textSubtle)}>{step.title}</span>
+                {/* Steps — horizontal timeline. mt separates from the lead; pt
+                    reserves the rail band above the step text (the rail is
+                    absolutely positioned, so mt — not pt — sets the lead gap). */}
+                <div className="rm-engage-steps relative mt-10 pt-6 md:mt-14 md:pt-8">
+                  <div
+                    className="rm-engage-rail pointer-events-none absolute inset-x-0 top-[0.3125rem] hidden h-px md:block"
+                    aria-hidden
+                  >
+                    <div className="h-full w-full bg-white/[0.08]" />
+                    <div className="rm-engage-rail__fill absolute inset-0 origin-left bg-gradient-to-r from-white/45 via-white/25 to-white/10" />
+                  </div>
+
+                  <div className="grid gap-x-8 md:grid-cols-3 lg:gap-x-12">
+                    {engagement.steps.map((step, i) => (
+                      <dl
+                        key={step.code}
+                        style={{ "--i": i } as CSSProperties}
+                        role="group"
+                        aria-label={`${step.code} ${step.title}`}
+                        className={cn(
+                          "rm-engage-step group/step relative m-0 flex flex-col gap-1.5 py-5 first:pt-0 md:gap-2 md:py-0",
+                          // Horizontal dividers only on mobile, where the rail is hidden.
+                          "max-md:border-b max-md:last:border-b-0",
+                          borderSoft,
+                        )}
+                      >
+                        <span
+                          aria-hidden
+                          className="rm-engage-step__dot absolute left-0 top-[0.35rem] hidden size-1.5 rounded-full bg-white/25 ring-[3px] ring-black md:block md:-top-[1.95rem]"
+                        />
+                        <dt className="flex items-baseline gap-2.5">
+                          <span className={cn(textMeta, textGhost, "rm-engage-step__code")}>
+                            {step.code}
+                          </span>
+                          <span className={cn(textMeta, textSubtle, "rm-engage-step__title")}>
+                            {step.title}
+                          </span>
+                        </dt>
                         <StepBody engagementId={engagement.id} step={step} />
-                      </div>
-                    </motion.div>
-                  ))}
-                </dl>
+                      </dl>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-                {/* Actions — full panel width for side-by-side CTAs on all breakpoints */}
-                <motion.div
-                  initial={reduce ? false : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={reduce ? { duration: 0 } : { duration: 0.5, ease: EASE, delay: 0.2 }}
-                  className="flex max-w-full flex-row flex-nowrap items-center gap-3 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] max-md:order-2 md:order-3 md:col-span-2 md:gap-4 [&::-webkit-scrollbar]:hidden"
+              {/* Actions — one sectionGap below copy+process group */}
+              <div className="rm-engage-panel__actions flex max-w-full flex-wrap items-center justify-end gap-3 md:gap-4">
+                <Link
+                  to="/contact"
+                  search={{ engagement: engagement.id }}
+                  className={cn(
+                    btnPrimary,
+                    "group w-fit gap-2 bg-[#efeeea] hover:bg-white motion-safe:hover:translate-y-0",
+                  )}
                 >
-                  <Link
-                    to="/contact"
-                    search={{ engagement: engagement.id }}
-                    className={cn(btnPrimary, "group shrink-0 gap-2 whitespace-nowrap")}
-                  >
-                    {engagement.ctaLabel.replace(/\s*→$/, "")}
-                    <BtnArrow />
-                  </Link>
-                  <Link
-                    to="/products"
-                    className={cn(btnGhostLink, "shrink-0 whitespace-nowrap")}
-                  >
-                    Compare formats
-                    <BtnArrow />
-                  </Link>
-                </motion.div>
-              </motion.div>
-            </AnimatePresence>
+                  {engagement.ctaLabel.replace(/\s*→$/, "")}
+                  <BtnArrow />
+                </Link>
+                <Link
+                  to="/products"
+                  className={cn(
+                    btnOutlineOnDark,
+                    "group w-fit gap-2 motion-safe:hover:translate-y-0",
+                  )}
+                >
+                  Compare formats
+                  <BtnArrow />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

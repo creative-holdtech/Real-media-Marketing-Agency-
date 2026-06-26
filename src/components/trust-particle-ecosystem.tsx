@@ -274,40 +274,6 @@ function storyProgress(scroll: number) {
   return { enter, constellation, finale, exit };
 }
 
-type SceneAct = {
-  label: string;
-  sub: string;
-  actOpacity: number;
-};
-
-function resolveSceneAct(
-  scroll: number,
-  b0: BeatState,
-  b1: BeatState,
-  story: ReturnType<typeof storyProgress>,
-  pull: number,
-): SceneAct {
-  let label = "01 — Orbit";
-  let sub = "Trusted by teams who ship";
-  let actOpacity = Math.max(0.48, story.constellation * (1 - pull * 0.8));
-
-  if (scroll >= BEATS.stat0.anticipate[0] && scroll < BEATS.stat0.dissolve[1]) {
-    label = "02 — Volume";
-    sub = "Projects that landed";
-    actOpacity = Math.max(b0.heroReveal, b0.statReveal * 0.5) * (1 - b0.dissolveT);
-  } else if (scroll >= BEATS.stat1.anticipate[0] && scroll < BEATS.stat1.dissolve[1]) {
-    label = "03 — Capital";
-    sub = "Raised with our partners";
-    actOpacity = Math.max(b1.heroReveal, b1.statReveal * 0.5) * (1 - b1.dissolveT);
-  } else if (scroll >= STORY.finale[0]) {
-    label = "04 — Field";
-    sub = "Back to the constellation";
-    actOpacity = story.finale * (1 - story.exit);
-  }
-
-  return { label, sub, actOpacity };
-}
-
 function buildParticles(width: number, height: number): Particle[] {
   return TRUST_BRANDS.map((brand, brandIndex) => {
     const id = brand;
@@ -425,7 +391,6 @@ export function TrustParticleEcosystem({
   const vignetteRef = useRef<HTMLDivElement>(null);
   const curtainTopRef = useRef<HTMLDivElement>(null);
   const curtainBottomRef = useRef<HTMLDivElement>(null);
-  const chapterActRef = useRef<HTMLDivElement>(null);
   const fieldShellRef = useRef<HTMLDivElement>(null);
 
   const particleElMapRef = useRef<Map<string, HTMLElement>>(new Map());
@@ -440,9 +405,6 @@ export function TrustParticleEcosystem({
   const perfRef = useRef(getTrustScenePerformanceProfile());
   const isMobileRef = useRef(false);
   const [sceneVisible, setSceneVisible] = useState(false);
-  const displayedActRef = useRef({ label: "01 — Orbit", sub: "Trusted by teams who ship" });
-  const actPhaseRef = useRef<"idle" | "out" | "in">("idle");
-  const actEnterRef = useRef(1);
 
   const syncParticleElements = useCallback(() => {
     const field = fieldRef.current;
@@ -1046,65 +1008,6 @@ export function TrustParticleEcosystem({
         fieldShellRef.current.style.transform = `scale(${1 - exitT * 0.028})`;
       }
 
-      if (chapterActRef.current) {
-        const targetAct = resolveSceneAct(scroll, b0, b1, story, pull);
-
-        if (
-          actPhaseRef.current === "idle" &&
-          (targetAct.label !== displayedActRef.current.label ||
-            targetAct.sub !== displayedActRef.current.sub)
-        ) {
-          actPhaseRef.current = "out";
-        }
-
-        if (actPhaseRef.current === "out") {
-          actEnterRef.current = Math.max(0, actEnterRef.current - dt * 3.4);
-          if (actEnterRef.current <= 0.001) {
-            displayedActRef.current = {
-              label: targetAct.label,
-              sub: targetAct.sub,
-            };
-            actPhaseRef.current = "in";
-          }
-        } else if (actPhaseRef.current === "in") {
-          actEnterRef.current = Math.min(1, actEnterRef.current + dt * 1.25);
-          if (actEnterRef.current >= 0.999) {
-            actPhaseRef.current = "idle";
-            actEnterRef.current = 1;
-          }
-        }
-
-        const actReveal =
-          actPhaseRef.current === "out"
-            ? actEnterRef.current
-            : EASE_PREMIUM_OUT(actEnterRef.current);
-        const actLift = (1 - actReveal) * 10;
-        const actBlur = actPhaseRef.current === "out" ? (1 - actEnterRef.current) * 2.5 : 0;
-
-        chapterActRef.current.style.opacity = String(
-          targetAct.actOpacity * actReveal * (1 - story.exit),
-        );
-
-        const labelEl = chapterActRef.current.querySelector<HTMLElement>(
-          ".rm-trust-ecosystem__chapter-label",
-        );
-        const subEl = chapterActRef.current.querySelector<HTMLElement>(
-          ".rm-trust-ecosystem__chapter-sub",
-        );
-        if (labelEl) {
-          labelEl.textContent = displayedActRef.current.label;
-          labelEl.style.opacity = String(0.5 + actReveal * 0.5);
-          labelEl.style.transform = `translateY(${actLift}px)`;
-          labelEl.style.filter = actBlur > 0.1 ? `blur(${actBlur.toFixed(2)}px)` : "none";
-        }
-        if (subEl) {
-          subEl.textContent = displayedActRef.current.sub;
-          subEl.style.opacity = String(actReveal);
-          subEl.style.transform = `translateY(${actLift * 0.6}px)`;
-          subEl.style.filter = actBlur > 0.1 ? `blur(${(actBlur * 0.85).toFixed(2)}px)` : "none";
-        }
-      }
-
       const chapter = chapterRef?.current ?? sceneRef.current?.closest("#studio");
       if (chapter instanceof HTMLElement) {
         const actGlow = Math.max(
@@ -1182,11 +1085,6 @@ export function TrustParticleEcosystem({
         <canvas ref={linkCanvasRef} className="rm-trust-ecosystem__links" aria-hidden="true" />
         <div ref={vignetteRef} className="rm-trust-ecosystem__vignette" aria-hidden="true" />
         <div className="rm-trust-ecosystem__grain" aria-hidden="true" />
-
-        <div ref={chapterActRef} className="rm-trust-ecosystem__chapter" aria-hidden="true">
-          <p className="rm-trust-ecosystem__chapter-label">01 — Orbit</p>
-          <p className="rm-trust-ecosystem__chapter-sub">Trusted by teams who ship</p>
-        </div>
 
         <div ref={scrollCueRef} className="rm-trust-ecosystem__scroll-cue" aria-hidden="true">
           <span>Scroll the story</span>

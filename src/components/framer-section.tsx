@@ -45,7 +45,16 @@ export const sectionActionsRow = cn(
 export const sectionHeroActionsRow = cn(
   "mt-10 flex flex-wrap items-center gap-4",
 );
-/** Hero eyebrow (tag + rule) → headline — 32px */
+/** Flex stack — tag → headline uses the same gap as sectionContentGrid rows. */
+export const sectionTagLeadStack = cn("flex flex-col", sectionGap);
+/**
+ * Hero lines eyebrow → headline — 16px at all breakpoints.
+ * Centered hero can't mirror desktop 3-col (tag beside headline); md:gap-8 reads too loose.
+ */
+export const heroTagLeadStack = "flex flex-col gap-4";
+/** Centered hero intro — lines eyebrow + display headline. */
+export const heroIntroStack = cn(heroTagLeadStack, "items-center text-center");
+/** @deprecated Use sectionTagLeadStack / heroIntroStack */
 export const heroEyebrowOffset = "mb-8";
 /** Hero headline → standfirst — 24px (larger than sectionHeadlineLead) */
 export const heroHeadlineLead = "flex w-full flex-col gap-6";
