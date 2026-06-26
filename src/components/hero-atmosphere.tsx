@@ -8,6 +8,7 @@ import {
 } from "react";
 import {
   motion,
+  useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useScroll,
@@ -99,11 +100,18 @@ export function HeroAtmosphere({
     pointerY.set(0);
   }, [pointerX, pointerY]);
 
+  // Drive a full `transform` string (not Motion's `x`/`y`/`scale` shorthands,
+  // which animate on the main thread via rAF). `translate3d` promotes the image
+  // to its own GPU layer so the parallax stays smooth even while the page is
+  // still loading/painting. translateZ(0) keeps the about-photo on the same layer.
+  const scrollDrift = useMotionTemplate`translate3d(0, ${y}, 0) scale(${scale})`;
+  // Tiny baseline scale (1.035) gives the pointer drift headroom so no black edge shows.
+  const pointerDrift = useMotionTemplate`translate3d(${pointerX}px, ${pointerY}px, 0) scale(1.035)`;
+
   const imgStyle = parallax
     ? isAboutPhoto
-      ? // Tiny baseline scale gives the drift headroom so no black edge shows.
-        { x: pointerX, y: pointerY, scale: 1.035 }
-      : { y, scale }
+      ? { transform: pointerDrift }
+      : { transform: scrollDrift }
     : undefined;
 
   return (

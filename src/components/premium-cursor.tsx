@@ -40,6 +40,7 @@ export function PremiumCursor() {
     let hoverTarget = 0;
     let pressTarget = 0;
     let raf = 0;
+    let idleFrames = 0;
 
     const enableCustomCursor = () => {
       if (state.ready) return;
@@ -51,6 +52,7 @@ export function PremiumCursor() {
     const onMove = (event: PointerEvent) => {
       state.tx = event.clientX;
       state.ty = event.clientY;
+      idleFrames = 0;
 
       if (!state.ready) {
         state.cx = event.clientX;
@@ -81,6 +83,22 @@ export function PremiumCursor() {
     };
 
     const loop = () => {
+      const moved =
+        Math.abs(state.tx - state.cx) > 0.4 ||
+        Math.abs(state.ty - state.cy) > 0.4 ||
+        Math.abs(hoverTarget - state.hover) > 0.02 ||
+        pressTarget > 0;
+
+      if (!moved) {
+        idleFrames += 1;
+        if (idleFrames > 8) {
+          raf = requestAnimationFrame(loop);
+          return;
+        }
+      } else {
+        idleFrames = 0;
+      }
+
       state.cx += (state.tx - state.cx) * CORE_LERP;
       state.cy += (state.ty - state.cy) * CORE_LERP;
       state.rx += (state.tx - state.rx) * RING_LERP;

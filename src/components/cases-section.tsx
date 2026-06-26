@@ -49,9 +49,20 @@ export function CasesSection() {
     });
   }, []);
 
+  const [readySlugs, setReadySlugs] = useState<Set<string>>(new Set());
+
   useEffect(() => {
     setFinePointer(window.matchMedia("(hover: hover) and (pointer: fine)").matches);
   }, []);
+
+  // Quiet the global premium cursor while a preview is up — otherwise its ring
+  // (which enlarges over links) punches through the floating card.
+  useEffect(() => {
+    if (reduce || !finePointer) return;
+    const root = document.documentElement;
+    root.classList.toggle("rm-cursor-quiet", active >= 0);
+    return () => root.classList.remove("rm-cursor-quiet");
+  }, [active, finePointer, reduce]);
 
   const activateRow = useCallback(
     (index: number, clientX?: number, clientY?: number) => {
@@ -76,10 +87,16 @@ export function CasesSection() {
     [finePointer, px, py, reduce, updatePreviewBelow],
   );
 
+  // Preload + track decode so the card never flashes an empty frame before the
+  // image paints.
   useEffect(() => {
     featuredCases.forEach((study) => {
+      const markReady = () =>
+        setReadySlugs((prev) => (prev.has(study.slug) ? prev : new Set(prev).add(study.slug)));
       const img = new Image();
+      img.onload = markReady;
       img.src = getCaseHomePreviewImage(study);
+      if (img.complete) markReady();
     });
   }, [featuredCases]);
 
@@ -198,7 +215,7 @@ export function CasesSection() {
         >
           <div className={cn("rm-index__anchor", previewBelow && "rm-index__anchor--below")}>
             <AnimatePresence initial={false}>
-              {activeCase ? (
+              {activeCase && readySlugs.has(activeCase.slug) ? (
                 <motion.div
                   key={activeCase.slug}
                   className={cn(
@@ -207,13 +224,15 @@ export function CasesSection() {
                       ? "rm-index__preview--photo"
                       : undefined,
                   )}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, scale: 0.96, filter: "blur(4px)" }}
+                  animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                   exit={{
                     opacity: 0,
+                    scale: 0.985,
+                    filter: "blur(2px)",
                     transition: { duration: 0.12, ease: PREVIEW_EASE },
                   }}
-                  transition={{ duration: 0.18, ease: PREVIEW_EASE }}
+                  transition={{ duration: 0.2, ease: PREVIEW_EASE }}
                 >
                   <img
                     src={getCaseHomePreviewImage(activeCase)}

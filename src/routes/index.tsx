@@ -103,7 +103,7 @@ function Index() {
   const titleLines = hero?.titleLines ?? [];
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page rm-home selection:bg-rm-accent selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>

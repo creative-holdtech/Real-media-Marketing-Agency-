@@ -3,6 +3,8 @@ import { useRouterState } from "@tanstack/react-router";
 import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
 import { cancelFrame, frame } from "motion/react";
 
+import { prefersNativeScroll } from "@/lib/performance-tier";
+
 /** Lenis default lerp — buttery continuous scroll (not duration easing). */
 const lenisOptions = {
   lerp: 0.075,
@@ -39,11 +41,15 @@ function usePrefersReducedMotion() {
 function subscribeNativeScroll(onChange: () => void) {
   const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
   mq.addEventListener("change", onChange);
-  return () => mq.removeEventListener("change", onChange);
+  window.addEventListener("resize", onChange);
+  return () => {
+    mq.removeEventListener("change", onChange);
+    window.removeEventListener("resize", onChange);
+  };
 }
 
 function getNativeScroll() {
-  return window.matchMedia("(max-width: 991px), (pointer: coarse)").matches;
+  return prefersNativeScroll();
 }
 
 function getNativeScrollServer() {

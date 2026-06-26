@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import logoUrl from "@/assets/logo.svg";
+
 const STORAGE_KEY = "rm-preloader-seen";
 /** Logo + tagline finish ~1.7s; hold, then exit as one layer */
 const SHOW_MS = 2000;
@@ -11,7 +13,10 @@ export function PagePreloader() {
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const seen = sessionStorage.getItem(STORAGE_KEY) === "1";
+    const force =
+      new URLSearchParams(window.location.search).get("preloader") === "1" ||
+      new URLSearchParams(window.location.search).get("preloader") === "true";
+    const seen = !force && sessionStorage.getItem(STORAGE_KEY) === "1";
 
     if (reduced || seen) {
       setMounted(false);
@@ -31,7 +36,7 @@ export function PagePreloader() {
 
       finishTimer = window.setTimeout(() => {
         document.documentElement.classList.remove("rm-is-loading");
-        sessionStorage.setItem(STORAGE_KEY, "1");
+        if (!force) sessionStorage.setItem(STORAGE_KEY, "1");
         window.dispatchEvent(new Event("rm:loading-end"));
         setMounted(false);
       }, EXIT_MS);
@@ -54,7 +59,14 @@ export function PagePreloader() {
       <div className="rm-preloader__veil" />
       <div className="rm-preloader__inner">
         <div className="rm-preloader__logo" data-preloader-logo>
-          R—M<span className="text-rm-accent">.</span>
+          <img
+            src={logoUrl}
+            alt="Real Media"
+            width={90}
+            height={65}
+            className="rm-preloader__logo-img"
+            decoding="async"
+          />
         </div>
         <p className="rm-preloader__tagline">
           <span className="rm-preloader__char">S</span>

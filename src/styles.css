@@ -673,6 +673,28 @@ button {
   }
 }
 
+/* Home — shared "settle" signature: every reveal racks into focus the same
+   way the hero headline does (blur(6px) → 0), so the whole page reads as one
+   continuous story. Pure motion: the resting state is unchanged. The `filter`
+   transition is already declared on .reveal above, so this just gives it a
+   value to animate. */
+/* Scoped off media-bearing reveals (:not(:has(img…))) — blurring large images
+   is an expensive Safari paint, and the rack-focus reads best on type anyway. */
+.rm-home
+  :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)) {
+  filter: blur(6px);
+}
+.rm-home
+  :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)).is-visible {
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-home :is(.reveal, .reveal-fade, .reveal-scale) {
+    filter: none;
+  }
+}
+
 /* Stagger helpers */
 .reveal[data-delay="1"].is-visible {
   transition-delay: 80ms;
@@ -1248,6 +1270,14 @@ button {
 .ambient-blob-b,
 .ambient-blob-c {
   display: none;
+}
+
+.rm-trust-ecosystem[data-trust-lite="true"] .rm-trust-ecosystem__links {
+  display: none;
+}
+
+.rm-trust-ecosystem[data-trust-lite="true"] .rm-trust-ecosystem__particle {
+  filter: none !important;
 }
 
 /* ============ Trust — fullscreen scroll scene ============ */
@@ -2002,6 +2032,15 @@ html.rm-premium-cursor * {
 .rm-premium-cursor__core {
   width: 24px;
   height: 24px;
+  transition: opacity 0.2s ease;
+}
+
+/* While a rich pointer-follow preview is active (e.g. cases teaser), quiet the
+   premium cursor so its ring doesn't collide with the floating card. The
+   preview becomes the sole object anchored to the pointer. */
+html.rm-cursor-quiet .rm-premium-cursor__ring,
+html.rm-cursor-quiet .rm-premium-cursor__core {
+  opacity: 0 !important;
 }
 
 .rm-premium-cursor__cross {
@@ -4979,13 +5018,18 @@ html.rm-is-loading {
 }
 
 .rm-preloader__logo {
-  font-size: clamp(2rem, 6vw, 2.75rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0;
   filter: blur(16px);
   animation: rm-preloader-logo-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.rm-preloader__logo-img {
+  display: block;
+  width: auto;
+  height: clamp(3.25rem, 11vw, 4.75rem);
 }
 
 @keyframes rm-preloader-logo-in {

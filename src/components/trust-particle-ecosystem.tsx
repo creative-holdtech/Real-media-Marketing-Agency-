@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import { computeTrustSceneProgress } from "@/lib/trust-scene-scroll";
+import { getTrustScenePerformanceProfile } from "@/lib/performance-tier";
 
 const TRUST_BRANDS = [
   "Empresex",
@@ -434,6 +435,9 @@ export function TrustParticleEcosystem({
   const smoothScrollRef = useRef(0);
   const countValueRef = useRef<Map<number, number>>(new Map());
   const statHeroRef = useRef<Map<number, number>>(new Map());
+  const countStatElsRef = useRef<HTMLElement[]>([]);
+  const fgStatElsRef = useRef<HTMLElement[]>([]);
+  const perfRef = useRef(getTrustScenePerformanceProfile());
   const isMobileRef = useRef(false);
   const [sceneVisible, setSceneVisible] = useState(false);
   const displayedActRef = useRef({ label: "01 — Orbit", sub: "Trusted by teams who ship" });
@@ -449,6 +453,10 @@ export function TrustParticleEcosystem({
       if (id) map.set(id, el);
     });
     particleElMapRef.current = map;
+    countStatElsRef.current = Array.from(field.querySelectorAll<HTMLElement>("[data-count-stat]"));
+    fgStatElsRef.current = Array.from(
+      field.querySelectorAll<HTMLElement>(".rm-trust-ecosystem__fg-stat"),
+    );
   }, []);
 
   const syncParticles = useCallback((width: number, height: number) => {
@@ -558,9 +566,35 @@ export function TrustParticleEcosystem({
 
     let raf = 0;
     let last = performance.now();
+    let lastFrame = 0;
     let cancelled = false;
+    const perf = perfRef.current;
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!raf) {
+        last = performance.now();
+        raf = requestAnimationFrame(loop);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
     const loop = (now: number) => {
       if (cancelled) return;
+
+      if (document.hidden) {
+        raf = 0;
+        return;
+      }
+
+      if (perf.minFrameMs > 0 && now - lastFrame < perf.minFrameMs) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
+      lastFrame = now;
+
       const rect = field.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
@@ -726,8 +760,8 @@ export function TrustParticleEcosystem({
       const cursorPy = cursor.y * h;
       const cursorReach = w * 0.26;
 
-      // --- Constellation connective tissue (canvas) ---
-      const canvas = linkCanvasRef.current;
+      // --- Constellation node glow (canvas) — skip on Safari / low-memory Mac ---
+      const canvas = perf.canvasGlow ? linkCanvasRef.current : null;
       if (canvas) {
         const dpr = Math.min(2, window.devicePixelRatio || 1);
         const cw = Math.round(w * dpr);
@@ -788,7 +822,7 @@ export function TrustParticleEcosystem({
         }
       }
 
-      field.querySelectorAll<HTMLElement>("[data-count-stat]").forEach((el) => {
+      countStatElsRef.current.forEach((el) => {
         const index = Number(el.dataset.countStat ?? 0);
         const beat = index === 1 ? b1 : b0;
         const vis = statVisibility(index, b0, b1);
@@ -877,7 +911,10 @@ export function TrustParticleEcosystem({
         }
 
         const morphBlur =
-          morphActive && !p.keeper && statFocus > 0.06
+          perf.particleMorphBlur &&
+          morphActive &&
+          !p.keeper &&
+          statFocus > 0.06
             ? clamp(0, 3.5, statFocus * 3.2 * (1 - Math.max(b0.dissolveT, b1.dissolveT)))
             : 0;
 
@@ -903,7 +940,7 @@ export function TrustParticleEcosystem({
         el.style.zIndex = String(layerZ);
       }
 
-      field.querySelectorAll<HTMLElement>(".rm-trust-ecosystem__fg-stat").forEach((slot, index) => {
+      fgStatElsRef.current.forEach((slot, index) => {
         const beat = index === 1 ? b1 : b0;
         const vis = statVisibility(index, b0, b1);
         const clusterReady =
@@ -934,7 +971,8 @@ export function TrustParticleEcosystem({
         const enterLift = (1 - emergeScale) * 22;
         const scale = 0.93 + emergeScale * 0.07;
         const bloom = hero * 0.38;
-        const statBlur = hero > 0 && hero < 0.42 ? (1 - hero / 0.42) * 2.5 : 0;
+        const statBlur =
+          perf.particleMorphBlur && hero > 0 && hero < 0.42 ? (1 - hero / 0.42) * 2.5 : 0;
 
         slot.style.opacity = String(hero);
         slot.style.transform = `translate(-50%, calc(-50% + ${enterLift + exitLift}px)) scale(${scale})`;
@@ -1097,6 +1135,7 @@ export function TrustParticleEcosystem({
 
     return () => {
       cancelled = true;
+      document.removeEventListener("visibilitychange", onVisibility);
       window.clearTimeout(resizeTimer);
       cancelAnimationFrame(raf);
       ro.disconnect();
@@ -1126,7 +1165,12 @@ export function TrustParticleEcosystem({
   }
 
   return (
-    <div ref={fieldRef} className="rm-trust-ecosystem" aria-label="Client logos and studio metrics">
+    <div
+      ref={fieldRef}
+      className="rm-trust-ecosystem"
+      data-trust-lite={perfRef.current.canvasGlow ? undefined : "true"}
+      aria-label="Client logos and studio metrics"
+    >
       <div ref={curtainTopRef} className="rm-trust-ecosystem__curtain-top" aria-hidden="true" />
       <div ref={fieldShellRef} className="rm-trust-ecosystem__field">
         <div ref={ambientRef} className="rm-trust-ecosystem__ambient" aria-hidden="true" />
