@@ -129,6 +129,22 @@ test.describe("Work scene — sticky preview crossfade", () => {
     expect(page.url()).not.toMatch(/\/cases\/empresex/);
   });
 
+  test("second click on active row opens case page", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(300);
+
+    const empresex = page.locator(".rm-index__row").filter({ hasText: "Empresex" });
+    await empresex.click();
+    await page.waitForTimeout(700);
+    await empresex.click();
+    await page.waitForURL(/\/cases\/empresex/, { timeout: 8000 });
+    expect(page.url()).toMatch(/\/cases\/empresex/);
+  });
+
   test("ArrowDown advances active case in view", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 870 });
     await page.goto("/#work");
