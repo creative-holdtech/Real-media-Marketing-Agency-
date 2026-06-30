@@ -2134,7 +2134,7 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 42ch;
+  max-width: 52ch;
 }
 
 /* Interactive process rail — line through dot centres (shared Y axis) */
