@@ -70,12 +70,14 @@ export function QuoteGradientSection({
   ariaLabelledBy,
   children,
   className,
+  innerClassName,
   background = "image",
 }: {
   ariaLabel?: string;
   ariaLabelledBy?: string;
   children: ReactNode;
   className?: string;
+  innerClassName?: string;
   /** `solid` — no photo/gradient backdrop (e.g. About manifesto). */
   background?: "image" | "solid";
 }) {
@@ -84,13 +86,21 @@ export function QuoteGradientSection({
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       className={cn(
-        `relative flex min-h-[min(560px,72svh)] flex-col justify-center overflow-hidden border-b border-[var(--rm-border-soft)] py-20 md:py-28 ${siteGutter}`,
+        `relative flex min-h-[min(560px,72svh)] flex-col overflow-hidden border-b border-[var(--rm-border-soft)] ${siteGutter}`,
         background === "solid" && "bg-[var(--rm-surface-raised)]",
         className,
       )}
     >
       {background === "image" ? <QuoteBackground /> : null}
-      <div className={cn("relative z-[1]", sectionInner)}>{children}</div>
+      <div
+        className={cn(
+          "relative z-[1] flex w-full flex-1 flex-col justify-center py-20 md:py-28",
+          sectionInner,
+          innerClassName,
+        )}
+      >
+        {children}
+      </div>
     </section>
   );
 }
@@ -103,8 +113,39 @@ export function QuoteMark({ className }: { className?: string }) {
   );
 }
 
+function QuoteEditorialLead({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLParagraphElement>(null);
+  const inView = useInView(ref, { once: true, margin: QUOTE_IN_VIEW_MARGIN });
+  const showChrome = reduce || inView;
+  const motionOff = { duration: 0 } as const;
+  const enterFast = { duration: 0.22, ease: QUOTE_MOTION_EASE } as const;
+
+  return (
+    <motion.p
+      ref={ref}
+      className={cn("rm-quote-editorial__lead", className)}
+      initial={false}
+      animate={
+        showChrome
+          ? { opacity: 1, transform: "translateY(0)" }
+          : { opacity: 0, transform: "translateY(8px)" }
+      }
+      transition={reduce ? motionOff : enterFast}
+    >
+      {children}
+    </motion.p>
+  );
+}
+
 type QuoteEditorialProps = {
-  lead: ReactNode;
+  lead?: ReactNode;
   quote: string;
   quoteId?: string;
   quoteAriaLabel?: string;
@@ -135,28 +176,26 @@ function QuoteEditorial({
   const enterQuote = { duration: 0.28, ease: QUOTE_MOTION_EASE } as const;
 
   const isManifesto = editorialClassName?.includes("manifesto");
+  const isTestimonial = editorialClassName?.includes("testimonial");
+  const blockquoteCols =
+    lead || isTestimonial ? "md:col-span-2 md:col-start-2" : "md:col-span-3 md:col-start-1";
 
   return (
     <div className={cn("rm-quote-editorial w-full", sectionContentGrid, editorialClassName)}>
-      <motion.p
-        className={cn(
-          "rm-quote-editorial__lead md:col-start-1 md:row-start-1 md:self-start",
-          isManifesto && "flex flex-col gap-6 md:gap-8",
-        )}
-        initial={false}
-        animate={
-          showChrome
-            ? { opacity: 1, transform: "translateY(0)" }
-            : { opacity: 0, transform: "translateY(8px)" }
-        }
-        transition={reduce ? motionOff : enterFast}
-      >
-        {lead}
-      </motion.p>
+      {lead ? (
+        <QuoteEditorialLead
+          className={cn(
+            "md:col-start-1 md:row-start-1 md:self-start",
+            isManifesto && "flex flex-col gap-6 md:gap-8",
+          )}
+        >
+          {lead}
+        </QuoteEditorialLead>
+      ) : null}
 
       <blockquote
         ref={blockRef}
-        className="rm-quote-editorial__blockquote md:col-span-2 md:col-start-2 md:row-start-1"
+        className={cn("rm-quote-editorial__blockquote md:row-start-1", blockquoteCols)}
       >
         <div className="rm-quote-editorial__text-wrap">
           <motion.span
@@ -215,8 +254,13 @@ export default function TestimonialSection({
   authorRole = "PR, FinUp",
 }: TestimonialSectionProps) {
   return (
-    <QuoteGradientSection aria-label="Client testimonial" className="rm-testimonial">
+    <QuoteGradientSection
+      aria-label="Client testimonial"
+      className="rm-testimonial"
+      innerClassName="rm-testimonial__inner"
+    >
       <QuoteEditorial
+        editorialClassName="rm-quote-editorial--testimonial"
         lead={
           <>
             <FramerTag className="rm-quote-editorial__tag">Client voice</FramerTag>

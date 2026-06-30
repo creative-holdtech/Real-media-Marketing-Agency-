@@ -1,14 +1,14 @@
 import { Link } from "@tanstack/react-router";
 
-import { MagneticButton, Reveal } from "@/components/motion-bits";
+import { Reveal } from "@/components/motion-bits";
 import {
   BtnArrow,
   bandSubtitle,
   btnOutline,
   btnPrimary,
-  sectionActionsRow,
+  ctaBandCopyStack,
   sectionHeadline,
-  sectionHeadlineLead,
+  sectionHeroActionsRow,
   sectionInner,
   sectionShell,
   textMeta,
@@ -47,25 +47,20 @@ export function UnifiedCTA({
           </Reveal>
         ) : null}
         <Reveal duration={0.5}>
-          <h2
-            id="unified-cta-heading"
-            className={cn("mx-auto max-w-lg text-balance", sectionHeadlineLead)}
-          >
-            <span className={cn("block", sectionHeadline)}>{title}</span>
-            {titleAccent ? <span className={bandSubtitle}>{titleAccent}</span> : null}
-          </h2>
+          <div className={cn("mx-auto w-full max-w-lg", ctaBandCopyStack)}>
+            <h2 id="unified-cta-heading" className={cn("m-0", sectionHeadline)}>
+              {title}
+            </h2>
+            {titleAccent ? <p className={cn("m-0", bandSubtitle)}>{titleAccent}</p> : null}
+          </div>
         </Reveal>
         <Reveal delay={0.1} duration={0.5}>
-          <div className={cn(sectionActionsRow, "justify-center")}>
+          <div className={cn(sectionHeroActionsRow, "justify-center")}>
             {primaryHref ? (
-              <MagneticButton
-                href={primaryHref}
-                strength={8}
-                className={cn(btnPrimary, "group gap-2")}
-              >
+              <a href={primaryHref} className={cn(btnPrimary, "group gap-2")}>
                 {primaryLabel?.replace(/\s*→$/, "")}
                 <BtnArrow />
-              </MagneticButton>
+              </a>
             ) : (
               <Link to={primaryTo ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
                 {primaryLabel?.replace(/\s*→$/, "")}
@@ -73,14 +68,10 @@ export function UnifiedCTA({
               </Link>
             )}
             {secondaryHref ? (
-              <MagneticButton
-                href={secondaryHref}
-                strength={6}
-                className={cn(btnOutline, "group gap-2")}
-              >
+              <a href={secondaryHref} className={cn(btnOutline, "group gap-2")}>
                 {secondaryLabel?.replace(/\s*→$/, "")}
                 <BtnArrow />
-              </MagneticButton>
+              </a>
             ) : (
               <Link to={secondaryTo ?? "/cases"} className={cn(btnOutline, "group gap-2")}>
                 {secondaryLabel?.replace(/\s*→$/, "")}

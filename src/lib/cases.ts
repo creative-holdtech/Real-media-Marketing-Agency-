@@ -101,6 +101,8 @@ export type CaseStudy = {
   coverTreatment?: "logo" | "photo";
   layout?: "standard" | "rich";
   rich?: CaseRichContent;
+  /** When false, hidden from home `#work` teaser (case page stays live). */
+  homeFeatured?: boolean;
 };
 
 /** Display-normalized engagement length (sentence case, months label). */
@@ -168,6 +170,7 @@ export const cases: CaseStudy[] = [
     accent: "#4ade80",
     coverImage: caseAsset("tequila-cpa", "logo.png"),
     previewImage: caseAsset("tequila-cpa", "hover.png"),
+    homePreviewPosition: "50% 50%",
     coverTreatment: "logo",
     heroImage: nicheHospitality,
     fallbackCover: engageBg,
@@ -359,8 +362,8 @@ export const cases: CaseStudy[] = [
     },
     accent: "#d4a853",
     coverImage: caseAsset("empresex", "logo.svg"),
-    previewImage: deckImage("empresex", "platform"),
-    homePreviewPosition: "50% 42%",
+    previewImage: caseAsset("empresex", "hover.png"),
+    homePreviewPosition: "50% 50%",
     coverTreatment: "logo",
     heroImage: deckImage("empresex", "cover"),
     fallbackCover: engageBg,
@@ -649,6 +652,11 @@ export type CaseNiche = (typeof caseNiches)[number];
 
 export function getCase(slug: string) {
   return cases.find((c) => c.slug === slug);
+}
+
+/** Cases shown in home `#work` scroll scene and index. */
+export function getHomeFeaturedCases(): CaseStudy[] {
+  return cases.filter((c) => c.homeFeatured !== false);
 }
 
 /** Home #work index — hover card + mobile thumb (deck/gallery photo, not logo). */

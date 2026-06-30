@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Dribbble, Instagram, Linkedin } from "lucide-react";
 
 import logoUrl from "@/assets/logo.svg";
 import {
@@ -175,25 +176,28 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
               href="https://www.linkedin.com/company/real-media-corp/"
               target="_blank"
               rel="noopener noreferrer"
-              className={chromeLink(light)}
+              aria-label="LinkedIn"
+              className={cn(chromeLink(light), "inline-flex")}
             >
-              LinkedIn
+              <Linkedin className="size-[18px]" strokeWidth={1.5} aria-hidden />
             </a>
             <a
               href="https://dribbble.com/realmedia26"
               target="_blank"
               rel="noopener noreferrer"
-              className={chromeLink(light)}
+              aria-label="Dribbble"
+              className={cn(chromeLink(light), "inline-flex")}
             >
-              Dribbble
+              <Dribbble className="size-[18px]" strokeWidth={1.5} aria-hidden />
             </a>
             <a
               href="https://www.instagram.com/realmedia.corp"
               target="_blank"
               rel="noopener noreferrer"
-              className={chromeLink(light)}
+              aria-label="Instagram"
+              className={cn(chromeLink(light), "inline-flex")}
             >
-              Instagram
+              <Instagram className="size-[18px]" strokeWidth={1.5} aria-hidden />
             </a>
           </div>
         </div>

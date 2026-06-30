@@ -7,12 +7,12 @@ import {
   btnPrimary,
   bodyCopy,
   sectionHeadline,
-  sectionHeadlineLead,
-  sectionInnerStack,
+  sectionLabelHeadlineStack,
   surfaceCardTitle,
   textCardBody,
   textMeta,
 } from "@/components/framer-section";
+import { BlogPostImage } from "@/components/blog-post-image";
 import { MarketingSection } from "@/components/marketing-section";
 import { TextReveal } from "@/components/text-reveal";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
@@ -142,17 +142,12 @@ function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
               containImage && "flex items-center justify-center",
             )}
           >
-            <img
-              src={post.image}
-              alt={post.imageAlt ?? ""}
-              loading="lazy"
+            <BlogPostImage
+              post={post}
+              frame="landscape"
               width={1024}
               height={768}
-              className={cn(
-                containImage
-                  ? "max-h-full max-w-full object-contain p-4"
-                  : "h-full w-full object-cover",
-              )}
+              className={containImage ? "p-4" : undefined}
             />
           </figure>
           <PostMetaLine post={post} />
@@ -215,30 +210,32 @@ function BlogPage() {
       <main id="main" className="pt-[var(--rm-header-offset)]">
         <MarketingSection ariaLabelledBy="page-title" className="rm-blog-hero !pb-12 md:!pb-16">
           <div className="rm-blog-hero__grid reveal">
-            <div className={cn("flex w-full flex-col items-start", sectionInnerStack)}>
-              <div className="flex flex-col items-start gap-2">
-                <p className={textMeta}>{copy.seasonLabel}</p>
-                <p className={textMeta}>{copy.issuedBy}</p>
+            <div className="flex w-full flex-col items-start">
+              <div className={cn(sectionLabelHeadlineStack, "w-full items-start")}>
+                <div className="flex flex-col items-start gap-2">
+                  <p className={textMeta}>{copy.seasonLabel}</p>
+                  <p className={textMeta}>{copy.issuedBy}</p>
+                </div>
+                <h1 className="w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-[var(--rm-ink)] sm:text-[48px] md:text-[58px] lg:text-[64px]">
+                  <TextReveal
+                    id="page-title"
+                    text={copy.titleLine1 ?? "Field notes on"}
+                    className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
+                    revealColor="rgb(255, 255, 255)"
+                  />
+                  <TextReveal
+                    text={copy.titleLine2 ?? "building brands that last."}
+                    className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
+                    revealColor="rgb(255, 255, 255)"
+                  />
+                </h1>
               </div>
-              <h1 className="w-full text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-[var(--rm-ink)] sm:text-[48px] md:text-[58px] lg:text-[64px]">
-                <TextReveal
-                  id="page-title"
-                  text={copy.titleLine1 ?? "Field notes on"}
-                  className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                  revealColor="rgb(255, 255, 255)"
-                />
-                <TextReveal
-                  text={copy.titleLine2 ?? "building brands that last."}
-                  className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                  revealColor="rgb(255, 255, 255)"
-                />
-              </h1>
-              <p className={cn(bodyCopy, "m-0 max-w-[42rem] text-pretty")}>{copy.lead}</p>
+              <p className={cn(bodyCopy, "m-0 mt-4 max-w-[42rem] text-pretty")}>{copy.lead}</p>
               <TopicFilter
                 active={active}
                 onChange={setActive}
                 resultsId={resultsId}
-                className="w-full"
+                className="mt-6 w-full"
               />
             </div>
           </div>
@@ -259,12 +256,11 @@ function BlogPage() {
                 <span className="sr-only">{featured.title}</span>
               </Link>
               <figure className="hover-zoom card-cover relative aspect-[5/4] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]">
-                <img
-                  src={featured.image}
-                  alt=""
+                <BlogPostImage
+                  post={featured}
+                  frame="portrait"
                   width={1280}
                   height={1024}
-                  className="h-full w-full object-cover"
                 />
               </figure>
               <div className="flex flex-col justify-center">
@@ -280,7 +276,7 @@ function BlogPage() {
         ) : null}
 
         <MarketingSection ariaLabelledBy="archive-heading">
-          <div className={sectionHeadlineLead}>
+          <div className={sectionLabelHeadlineStack}>
             <p className={textMeta}>{copy.archiveLabel}</p>
             <h2 id="archive-heading" className={sectionHeadline}>
               {active === "All" ? copy.allEntriesLabel : active}

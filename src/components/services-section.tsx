@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Link } from "@tanstack/react-router";
 
+import { triggerPageTransition } from "@/components/page-transition";
 import {
   FramerTag,
   BtnArrow,
@@ -9,10 +10,11 @@ import {
   btnPrimary,
   sectionContentGrid,
   sectionGap,
-  sectionHeadline,
-  sectionHeadlineLead,
-  sectionIntroStack,
   sectionInner,
+  sectionHeadline,
+  sectionHeadlineAccent,
+  sectionIntroStack,
+  sectionPanelLead,
   borderSoft,
   sectionShell,
   subsectionTitle,
@@ -28,12 +30,10 @@ type FormatId = "sprint" | "marathon";
 
 const UNDERLINE_SPRING = { type: "spring", stiffness: 380, damping: 34 } as const;
 
-/* Entrance is CSS-driven (see `.rm-engage-*` keyframes in styles.css). CSS
-   animations start on first paint, and `content-visibility: auto` on the
-   wrapping section defers that paint until the block scrolls into view — which
-   makes the reveal reliable. (Motion's `whileInView` does NOT fire reliably
-   inside a `content-visibility: auto` subtree — it freezes mid-animation.)
-   Switching tabs swaps the text instantly; only the active underline animates. */
+/* Entrance is CSS-driven (see `.rm-engage-*` keyframes in styles.css) but gated
+   on `.engage-in-view` — auto-start keyframes fire when `content-visibility: auto`
+   unlocks paint on the deferred wrapper, often long before the user scrolls here,
+   which leaves steps stuck at opacity 0 or skips the reveal entirely. */
 
 function StepBody({
   engagementId,
@@ -53,6 +53,10 @@ function StepBody({
       <Link
         to="/audit"
         className="font-medium text-white underline decoration-white/30 underline-offset-[3px] transition-colors duration-200 hover:decoration-white/70"
+        onClick={(event) => {
+          event.preventDefault();
+          triggerPageTransition("/audit");
+        }}
       >
         Free audit
       </Link>
@@ -62,17 +66,43 @@ function StepBody({
 }
 
 export function ServicesSection() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState<FormatId>("sprint");
   const reduce = useReducedMotion();
+  const [inView, setInView] = useState(() => !!reduce);
   const engagement = homepageEngagements.find((e) => e.id === active)!;
   const activeTabId = `engage-tab-${active}`;
   const panelId = "engage-panel";
 
+  useEffect(() => {
+    if (reduce) {
+      setInView(true);
+      return;
+    }
+
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -4% 0px" },
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, [reduce]);
+
   return (
     <section
+      ref={sectionRef}
       id="engage"
       aria-labelledby="engage-heading"
-      className={cn(sectionShell, "relative overflow-hidden bg-black")}
+      className={cn(sectionShell, "relative overflow-hidden bg-black", inView && "engage-in-view")}
     >
       <div className={sectionInner}>
         <div className={cn(sectionContentGrid, "items-start md:items-stretch")}>
@@ -82,7 +112,7 @@ export function ServicesSection() {
           <header className={cn(sectionIntroStack, "md:col-span-2 md:col-start-2")}>
             <h2 id="engage-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
               <span className="block">Two ways to work with us.</span>
-              <span className={cn("block", textSubtle)}>Both end in shipped revenue.</span>
+              <span className={sectionHeadlineAccent}>Both end in shipped revenue.</span>
             </h2>
           </header>
 
@@ -137,8 +167,8 @@ export function ServicesSection() {
             <div className={cn("rm-engage-panel__grid flex flex-col", sectionGap)}>
               {/* Copy + timeline — one group; the steps' top margin sets the lead gap */}
               <div className="flex flex-col">
-                <div className={cn("rm-engage-panel__lead min-w-0", sectionHeadlineLead)}>
-                  <p className={textMeta}>
+                <div className={cn("rm-engage-panel__lead min-w-0", sectionPanelLead)}>
+                  <p className={cn("m-0", textMeta)}>
                     <span className={cn("tabular-nums", textSubtle)}>
                       {engagement.metricBig} {engagement.metricUnitLabel}
                     </span>
@@ -146,9 +176,7 @@ export function ServicesSection() {
                     {engagement.metricUnitSub}
                   </p>
 
-                  <p className="max-w-[48ch] rm-type-body rm-type-body-strong text-white">
-                    {engagement.intro}
-                  </p>
+                  <p className="m-0 rm-copy-standfirst whitespace-pre-line">{engagement.intro}</p>
                 </div>
 
                 {/* Steps — horizontal timeline. mt separates from the lead; pt
@@ -156,7 +184,7 @@ export function ServicesSection() {
                     absolutely positioned, so mt — not pt — sets the lead gap). */}
                 <div className="rm-engage-steps relative mt-10 pt-6 md:mt-14 md:pt-8">
                   <div
-                    className="rm-engage-rail pointer-events-none absolute inset-x-0 top-[0.3125rem] hidden h-px md:block"
+                    className="rm-engage-rail pointer-events-none absolute inset-x-0 hidden md:block"
                     aria-hidden
                   >
                     <div className="h-full w-full bg-white/[0.08]" />
@@ -179,7 +207,7 @@ export function ServicesSection() {
                       >
                         <span
                           aria-hidden
-                          className="rm-engage-step__dot absolute left-0 top-[0.35rem] hidden size-1.5 rounded-full bg-white/25 ring-[3px] ring-black md:block md:-top-[1.95rem]"
+                          className="rm-engage-step__dot absolute left-0 z-[1] hidden size-1.5 rounded-full bg-white ring-[3px] ring-black md:block"
                         />
                         <dt className="flex items-baseline gap-2.5">
                           <span className={cn(textMeta, textGhost, "rm-engage-step__code")}>
@@ -198,27 +226,27 @@ export function ServicesSection() {
 
               {/* Actions — one sectionGap below copy+process group */}
               <div className="rm-engage-panel__actions flex max-w-full flex-wrap items-center justify-end gap-3 md:gap-4">
-                <Link
-                  to="/contact"
-                  search={{ engagement: engagement.id }}
-                  className={cn(
-                    btnPrimary,
-                    "group w-fit gap-2 bg-[#efeeea] hover:bg-white motion-safe:hover:translate-y-0",
-                  )}
+                <button
+                  type="button"
+                  className={cn(btnPrimary, "group gap-2")}
+                  onClick={() =>
+                    triggerPageTransition({
+                      to: "/contact",
+                      search: { engagement: engagement.id },
+                    })
+                  }
                 >
                   {engagement.ctaLabel.replace(/\s*→$/, "")}
                   <BtnArrow />
-                </Link>
-                <Link
-                  to="/products"
-                  className={cn(
-                    btnOutlineOnDark,
-                    "group w-fit gap-2 motion-safe:hover:translate-y-0",
-                  )}
+                </button>
+                <button
+                  type="button"
+                  className={cn(btnOutlineOnDark, "group gap-2")}
+                  onClick={() => triggerPageTransition("/products")}
                 >
                   Compare formats
                   <BtnArrow />
-                </Link>
+                </button>
               </div>
             </div>
           </div>

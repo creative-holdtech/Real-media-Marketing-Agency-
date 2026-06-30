@@ -8,7 +8,8 @@ export const getRouter = () => {
   const router = createRouter({
     routeTree,
     context: { queryClient },
-    scrollRestoration: true,
+    // Lenis + ScrollResetOnNavigate handle scroll; built-in restoration scrolls too early during pending navigations.
+    scrollRestoration: false,
     defaultPreloadStaleTime: 0,
   });
 

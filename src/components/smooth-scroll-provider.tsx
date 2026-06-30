@@ -1,4 +1,4 @@
-import { useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
 import { cancelFrame, frame } from "motion/react";
@@ -78,29 +78,52 @@ export function LenisLayoutSync() {
   return null;
 }
 
-/** Reset scroll position when client-side route changes (Lenis keeps old scroll otherwise). */
-function LenisScrollOnNavigate() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const lenis = useLenis();
+/** Reset scroll after navigation settles; lock position while a route is loading. */
+function resetScrollTop(lenis?: ReturnType<typeof useLenis>) {
+  lenis?.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
 
-  useEffect(() => {
-    if (!lenis) return;
-    lenis.scrollTo(0, { immediate: true, force: true });
-    window.scrollTo(0, 0);
-  }, [pathname, lenis]);
+function ScrollResetOnNavigate({ lenis }: { lenis?: ReturnType<typeof useLenis> }) {
+  const locationKey = useRouterState({
+    select: (s) => `${s.location.pathname}${JSON.stringify(s.location.search ?? {})}`,
+  });
+  const status = useRouterState({ select: (s) => s.status });
+  const scrollLockY = useRef<number | null>(null);
+  const settledLocationKey = useRef(locationKey);
+
+  useLayoutEffect(() => {
+    if (status === "pending") {
+      scrollLockY.current ??= window.scrollY;
+      const y = scrollLockY.current;
+      lenis?.scrollTo(y, { immediate: true, force: true });
+      window.scrollTo(0, y);
+      return;
+    }
+
+    if (status !== "idle") return;
+
+    if (locationKey !== settledLocationKey.current) {
+      settledLocationKey.current = locationKey;
+      scrollLockY.current = null;
+      resetScrollTop(lenis);
+      requestAnimationFrame(() => resetScrollTop(lenis));
+    }
+  }, [locationKey, status, lenis]);
 
   return null;
 }
 
+function LenisScrollOnNavigate() {
+  const lenis = useLenis();
+  return <ScrollResetOnNavigate lenis={lenis} />;
+}
+
 /** Same reset when Lenis is off (mobile / touch). */
 function NativeScrollOnNavigate() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
+  return <ScrollResetOnNavigate />;
 }
 
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {

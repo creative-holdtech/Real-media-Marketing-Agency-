@@ -1,3 +1,5 @@
+import { getHomeFeaturedCases } from "@/lib/cases";
+
 export const CASES_GALLERY_CHAPTER = "04";
 
 /** One-line context for home `#work` teaser only — listing hero already sets the frame. */
@@ -28,7 +30,10 @@ export function casesGalleryHeaderProps(work?: {
 
 /** Home `#work` teaser — same tag/heading, optional subheading for context. */
 export function casesHomeTeaserHeaderProps() {
-  const full = casesGalleryHeaderProps();
+  const count = getHomeFeaturedCases().length;
+  const heading =
+    count === 2 ? "Two engagements." : count === 3 ? "Three engagements." : `${count} engagements.`;
+  const full = casesGalleryHeaderProps({ heading });
   return {
     tag: full.tag,
     heading: full.heading,

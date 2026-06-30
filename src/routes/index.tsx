@@ -6,8 +6,10 @@ import {
   BtnArrow,
   btnOutlineOnDark,
   btnPrimary,
+  heroCopyLayout,
   heroHeadlineLead,
   heroIntroStack,
+  heroStandfirst,
   pageHeroContainer,
   sectionHeroActionsRow,
   siteChromeBand,
@@ -121,12 +123,12 @@ function Index() {
           <div className={siteChromeBand}>
             <div className={pageHeroContainer}>
             <motion.div
-              className="rm-hero-copy mx-auto flex w-full max-w-[36rem] flex-col items-center text-center"
+              className={heroCopyLayout}
               variants={heroStage}
               initial={reduce ? false : "hidden"}
               animate="show"
             >
-              <div className={cn(heroIntroStack, "w-full")}>
+              <div className={heroIntroStack}>
               {hero?.tag ? (
                 <motion.p className="flex items-center justify-center gap-3" variants={heroFade}>
                   <motion.span
@@ -158,7 +160,7 @@ function Index() {
                 ) : null}
               </motion.h1>
               {hero?.subheading ? (
-                <motion.p className="rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance" variants={heroRise}>
+                <motion.p className={heroStandfirst} variants={heroRise}>
                   {hero.subheading}
                 </motion.p>
               ) : null}

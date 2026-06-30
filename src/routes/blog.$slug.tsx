@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 
+import { BlogPostImage } from "@/components/blog-post-image";
 import {
   btnOutline,
   btnPrimary,
@@ -270,14 +271,20 @@ function ArticlePage() {
                     <p className={cn("reveal mb-10", bodyCopy)}>{post.excerpt}</p>
 
                     <figure className="reveal mb-12 overflow-hidden rounded-3xl border border-[var(--rm-border-soft)]">
-                      <div className="relative aspect-[16/10] bg-[var(--rm-surface-float)]">
+                      <div
+                        className={cn(
+                          "relative aspect-[16/10] bg-[var(--rm-surface-float)]",
+                          post.imageFit === "contain" && "flex items-center justify-center",
+                        )}
+                      >
                         {post.image ? (
-                          <img
-                            src={post.image}
+                          <BlogPostImage
+                            post={post}
+                            frame="landscape"
                             alt={post.imageAlt ?? post.title}
                             width={1280}
                             height={800}
-                            className="h-full w-full object-cover"
+                            className={post.imageFit === "contain" ? "p-6" : undefined}
                           />
                         ) : null}
                       </div>

@@ -56,7 +56,7 @@ export const homepageEngagements: Engagement[] = [
     metricUnitSub: "minimum runway",
     time: "From 6 months",
     intro:
-      "Strategy followed by execution. For brands launching, rebranding, or new markets. We build positioning and run your marketing channels.",
+      "Strategy followed by execution.\nFor brands launching, rebranding, or new markets. We build positioning and run your marketing channels.",
     steps: [
       {
         code: "01",

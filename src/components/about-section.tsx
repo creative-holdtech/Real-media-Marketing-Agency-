@@ -1,13 +1,13 @@
 import { useRef } from "react";
 
 import {
-  bodyCopy,
-  sectionStandfirst,
+  borderSoft,
   sectionCardGrid,
-  sectionShell,
   sectionStack,
-  sectionInnerStack,
+  sectionSubheading,
+  siteGutter,
   textGhost,
+  textSubtle,
 } from "@/components/framer-section";
 import { ChapterSpacer, MarketingSectionIntro } from "@/components/marketing-section";
 import { MetaCard, type PlanCardMotion } from "@/components/meta-card";
@@ -55,7 +55,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
       />
 
       <div className="rm-studio-chapter__body">
-        <div className={cn(sectionShell, "bg-black pt-0")}>
+        <div className={cn("border-b bg-black pb-16 md:pb-20", borderSoft, siteGutter)}>
           <div className={cn(sectionStack, "rm-plan-scene")}>
             <div className="rm-plan-scene__ambient" aria-hidden="true">
               <div className="rm-plan-scene__grid" />
@@ -70,14 +70,14 @@ export function AboutSection({ page }: { page?: PageContent }) {
               srTitle={studio?.heading ?? ""}
               contentClassName="md:max-w-[46ch]"
               lead={
-                <div className={sectionInnerStack}>
+                <>
                   {studio?.body ? (
-                    <p className={cn(sectionStandfirst, "reveal-fade")} data-delay="1">
+                    <p className={cn(sectionSubheading, "reveal-fade m-0")} data-delay="1">
                       {studio.body}
                     </p>
                   ) : null}
                   {studio?.bullets?.length ? (
-                    <ul className="rm-plan-bullets reveal flex flex-col gap-3 pt-1" data-delay="2">
+                    <ul className="rm-plan-bullets reveal flex w-full flex-col gap-2" data-delay="2">
                       {studio.bullets.map((item) => (
                         <li key={item} className="rm-plan-bullets__item flex items-start gap-3">
                           <span
@@ -88,12 +88,12 @@ export function AboutSection({ page }: { page?: PageContent }) {
                           >
                             —
                           </span>
-                          <span className={bodyCopy}>{item}</span>
+                          <span className={cn("rm-type-body w-full", textSubtle)}>{item}</span>
                         </li>
                       ))}
                     </ul>
                   ) : null}
-                </div>
+                </>
               }
             />
 

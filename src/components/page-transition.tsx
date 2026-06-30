@@ -1,12 +1,29 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useRouterState } from "@tanstack/react-router";
+import { useLenis } from "lenis/react";
 
 type Phase = "idle" | "covering" | "covered" | "revealing";
 
-let _triggerFn: ((to: string) => void) | null = null;
+export type PageTransitionTarget =
+  | string
+  | {
+      to: string;
+      search?: Record<string, unknown>;
+      params?: Record<string, string>;
+    };
 
-export function triggerPageTransition(to: string) {
-  _triggerFn?.(to);
+let _triggerFn: ((target: PageTransitionTarget) => void) | null = null;
+
+export function triggerPageTransition(target: PageTransitionTarget) {
+  _triggerFn?.(target);
+}
+
+/** Hard reset — Lenis virtual scroll and native window must agree before paint. */
+function resetScrollTop(lenis?: ReturnType<typeof useLenis>) {
+  lenis?.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
 }
 
 function animateClipPath(
@@ -53,19 +70,44 @@ function animateClipPath(
 export function PageTransitionCurtain() {
   const curtainRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const lenis = useLenis();
   const routerStatus = useRouterState({ select: (s) => s.status });
   const [phase, setPhase] = useState<Phase>("idle");
   const phaseRef = useRef<Phase>("idle");
+  const scrollLockY = useRef<number | null>(null);
 
   useEffect(() => {
     phaseRef.current = phase;
   }, [phase]);
 
   useEffect(() => {
-    _triggerFn = async (to: string) => {
+    if (phase === "idle" || phase === "revealing") {
+      scrollLockY.current = null;
+      return;
+    }
+
+    const lock = () => {
+      const y = scrollLockY.current;
+      if (y == null) return;
+      lenis?.scrollTo(y, { immediate: true, force: true });
+      window.scrollTo(0, y);
+    };
+
+    lock();
+    window.addEventListener("scroll", lock, { passive: true });
+    return () => window.removeEventListener("scroll", lock);
+  }, [phase, lenis]);
+
+  useEffect(() => {
+    _triggerFn = async (target: PageTransitionTarget) => {
       if (phaseRef.current !== "idle") return;
       const el = curtainRef.current;
       if (!el) return;
+
+      const y = window.scrollY;
+      scrollLockY.current = y;
+      lenis?.scrollTo(y, { immediate: true, force: true });
+      window.scrollTo(0, y);
 
       phaseRef.current = "covering";
       setPhase("covering");
@@ -73,9 +115,17 @@ export function PageTransitionCurtain() {
 
       await animateClipPath(el, "inset(100% 0% 0% 0%)", "inset(0% 0% 0% 0%)", 0.5);
 
+      // Reset under the curtain so the destination always opens at the top.
+      scrollLockY.current = 0;
+      resetScrollTop(lenis);
+
       phaseRef.current = "covered";
       setPhase("covered");
-      router.navigate({ to: to as never });
+      router.navigate(
+        typeof target === "string"
+          ? { to: target as never }
+          : { to: target.to as never, search: target.search, params: target.params },
+      );
     };
 
     return () => {
@@ -93,6 +143,7 @@ export function PageTransitionCurtain() {
 
     animateClipPath(el, "inset(0% 0% 0% 0%)", "inset(0% 0% 100% 0%)", 0.6).then(() => {
       el.style.display = "none";
+      resetScrollTop(lenis);
       phaseRef.current = "idle";
       setPhase("idle");
     });

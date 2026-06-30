@@ -7,11 +7,12 @@ import {
   sectionCardGrid,
   sectionGridSpacer,
   sectionHeadline,
+  sectionHeadlineAccent,
   sectionHeadlineLead,
   sectionInnerStack,
+  sectionLeadStack,
   sectionShell,
   SectionHeader,
-  textSubtle,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
 import { cn } from "@/lib/utils";
@@ -89,7 +90,7 @@ export function MarketingSectionIntro({
       <span className="block text-pretty">
         <TextReveal text={lines[0]} as="span" className="text-inherit" ariaLabel={lines[0]} />
       </span>
-      <span className={cn("block text-pretty", textSubtle)}>{lines[1]}</span>
+      <span className={cn(sectionHeadlineAccent)}>{lines[1]}</span>
     </h2>
   ) : (
     <TextReveal id={titleId} text={title} className={sectionHeadline} ariaLabel={srTitle} />
@@ -100,7 +101,7 @@ export function MarketingSectionIntro({
       {lead ? (
         <div className={sectionHeadlineLead}>
           {headline}
-          {lead}
+          <div className={sectionLeadStack}>{lead}</div>
         </div>
       ) : (
         headline

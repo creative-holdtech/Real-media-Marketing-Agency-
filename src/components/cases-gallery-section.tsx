@@ -8,8 +8,10 @@ import {
   sectionGridSpacer,
   sectionHeadline,
   sectionHeadlineLead,
+  sectionLeadStack,
+  sectionSubheading,
   sectionHeaderGrid,
-  sectionInnerStack,
+  sectionTagHeadlineColumn,
   sectionShell,
   surfaceCardTitle,
   textCardBody,
@@ -47,7 +49,7 @@ const galleryCardGrid = cn(
 );
 
 const COVER_OBJECT_POSITION: Partial<Record<string, string>> = {
-  empresex: "center 42%",
+  empresex: "center center",
   "tequila-cpa": "center center",
   progresivo: "center 40%",
 };
@@ -134,7 +136,7 @@ function CaseGalleryRow({
             />
           </div>
 
-          <div className={cn(sectionInnerStack, "min-h-full min-w-0")}>
+          <div className={cn(sectionLeadStack, "min-h-full min-w-0")}>
             <h3 className={surfaceCardTitle}>{study.client}</h3>
             <p className={cn(textCardBody, "max-w-[38ch] text-pretty")}>{study.preview}</p>
             <p className={textMeta}>
@@ -178,16 +180,18 @@ function GallerySectionHeader({
       ) : (
         <div className={sectionGridSpacer} aria-hidden />
       )}
-      <div className={cn(sectionHeadlineLead, "md:col-span-2")}>
+      <div className={cn(sectionTagHeadlineColumn, "md:col-span-2")}>
         <span className={textMeta}>{tag}</span>
-        {animateHeading ? (
-          <TextReveal as="h2" id={headingId} text={heading} className={sectionHeadline} />
-        ) : (
-          <h2 id={headingId} className={sectionHeadline}>
-            {heading}
-          </h2>
-        )}
-        {subheading ? <p className={cn(bodyCopy, "max-w-prose")}>{subheading}</p> : null}
+        <div className={sectionHeadlineLead}>
+          {animateHeading ? (
+            <TextReveal as="h2" id={headingId} text={heading} className={sectionHeadline} />
+          ) : (
+            <h2 id={headingId} className={cn(sectionHeadline, "m-0")}>
+              {heading}
+            </h2>
+          )}
+          {subheading ? <p className={cn("m-0", sectionSubheading)}>{subheading}</p> : null}
+        </div>
       </div>
     </div>
   );

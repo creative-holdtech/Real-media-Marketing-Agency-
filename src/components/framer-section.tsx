@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 /* ——— Layout (4 / 8 / 16 / 24 / 32 / 48 scale) ——— */
+/** Motion tokens: --rm-ease-out, --rm-ease-enter, --rm-motion-ui (160ms), --rm-motion-standard (240ms), --rm-motion-editorial (480ms) — see styles.css :root */
 /** Shared horizontal gutter — outer full-bleed band only (never pair with max-w on the same node) */
 export const siteGutter = "px-6 md:px-10";
 /** Full-width chrome band — gutter on the outside of the grid column */
@@ -21,8 +22,12 @@ export const proseContainer = "mx-auto w-full max-w-[var(--rm-prose-max)]";
 export const formContainer = "mx-auto w-full max-w-[var(--rm-form-max)]";
 export const sectionGap = "gap-6 md:gap-8";
 export const sectionInnerStack = "flex flex-col gap-4 md:gap-6";
-/** Title → body spacing — 16px (8px grid) */
-export const sectionHeadlineLead = "flex w-full flex-col gap-4";
+/** Standfirst → supporting list — 16px; stays tighter than sectionHeadlineLead (24px) */
+export const sectionLeadStack = "flex flex-col gap-4";
+/** Section headline → standfirst / lead block — 24px */
+export const sectionHeadlineLead = "flex w-full flex-col gap-6";
+/** In-panel kicker (meta, metric) → standfirst — 16px */
+export const sectionPanelLead = "flex flex-col gap-4";
 export const sectionHeaderGrid = `grid grid-cols-1 items-start ${sectionGap} md:grid-cols-3`;
 export const sectionHeaderContent = "reveal flex flex-col items-start md:col-span-2 md:max-w-prose";
 /** 3-col editorial grid — intro + card blocks share one rhythm */
@@ -41,23 +46,28 @@ export const sectionActionsRow = cn(
   sectionActionsOffset,
   "flex flex-wrap items-center gap-3 md:gap-4",
 );
-/** Hero-scale copy → actions — 40px (larger type band) */
+/** Hero-scale copy → standfirst/CTA row — 24px */
 export const sectionHeroActionsRow = cn(
-  "mt-10 flex flex-wrap items-center gap-4",
+  "mt-6 flex flex-wrap items-center gap-4",
 );
 /** Flex stack — tag → headline uses the same gap as sectionContentGrid rows. */
 export const sectionTagLeadStack = cn("flex flex-col", sectionGap);
 /**
- * Hero lines eyebrow → headline — 16px at all breakpoints.
- * Centered hero can't mirror desktop 3-col (tag beside headline); md:gap-8 reads too loose.
+ * Hero eyebrow → headline block — 4px.
+ * Centered hero intro; do not use heroTagLeadStack (16px) here.
  */
-export const heroTagLeadStack = "flex flex-col gap-4";
-/** Centered hero intro — lines eyebrow + display headline. */
-export const heroIntroStack = cn(heroTagLeadStack, "items-center text-center");
+export const heroEyebrowStack = "flex flex-col gap-1";
+export const heroIntroStack = cn(heroEyebrowStack, "w-full items-center text-center");
 /** @deprecated Use sectionTagLeadStack / heroIntroStack */
 export const heroEyebrowOffset = "mb-8";
-/** Hero headline → standfirst — 24px (larger than sectionHeadlineLead) */
-export const heroHeadlineLead = "flex w-full flex-col gap-6";
+/** Hero display headline → standfirst — 16px */
+export const heroHeadlineLead = "flex w-full flex-col gap-4";
+/** Centered CTA band — h2 → standfirst — 8px */
+export const ctaBandCopyStack = "flex w-full flex-col gap-2 text-balance";
+/** Meta / label → headline in one column — 4px */
+export const sectionLabelHeadlineStack = "flex flex-col gap-1";
+/** Meta tag → headline block when stacked in one grid column — 16px */
+export const sectionTagHeadlineColumn = "flex flex-col gap-4";
 /** Shared section divider — one token sitewide */
 export const borderSoft = "border-[var(--rm-border-soft)]";
 /** List row separators — pair with divide-y */
@@ -68,6 +78,8 @@ export const textDisplay = "rm-type-display text-[var(--rm-ink)]";
 export const textDisplayMuted = "rm-type-display-muted";
 export const textNav = "rm-type-nav";
 export const sectionHeadline = "rm-type-section-headline text-[var(--rm-ink)]";
+/** h2 line 2 — same scale as sectionHeadline, muted ink only (not a subheading) */
+export const sectionHeadlineAccent = "block text-pretty text-[var(--rm-text-subtle)]";
 export const textMeta = "rm-type-meta";
 export const textLabel = "rm-type-body rm-type-body-strong text-[var(--rm-text-muted)]";
 export const textValue = "rm-type-body text-[var(--rm-ink)]";
@@ -77,11 +89,13 @@ export const textBlogMeta = textMeta;
 export const sectionChapterNumeral = "rm-type-meta tabular-nums text-[var(--rm-text-ghost)]";
 export const bodyCopy = "rm-type-body max-w-prose text-[var(--rm-text-body)]";
 export const bodyCopyStrong = "rm-type-body rm-type-body-strong max-w-prose";
-const standfirstType = "rm-type-body rm-type-body-strong text-balance text-white/90";
-/** Centered band subtitle — insights meta title, CTA accent (42ch) */
-export const bandSubtitle = cn(standfirstType, "mx-auto block max-w-[42ch]");
-/** Left-aligned section standfirst — studio intro body */
-export const sectionStandfirst = cn(standfirstType, "block w-full");
+/** Paragraph under section h2 — lead standfirst; width comes from section header column */
+export const sectionSubheading = "rm-copy-standfirst block w-full";
+/** Centered band standfirst — CTA, insights meta (42ch) */
+export const bandSubtitle =
+  "rm-copy-standfirst rm-copy-standfirst--band mx-auto block max-w-[42ch] text-balance";
+/** @deprecated Use sectionSubheading */
+export const sectionStandfirst = sectionSubheading;
 export const textSubtle = "text-[var(--rm-text-subtle)]";
 export const textFaint = "text-[var(--rm-text-faint)]";
 export const textGhost = "text-[var(--rm-text-ghost)]";
@@ -93,8 +107,8 @@ export const heroStandfirst =
   "rm-copy-standfirst mx-auto max-w-[36ch] text-pretty text-balance";
 export const heroSubcopy = "rm-type-body text-[var(--rm-text-body)]";
 export const heroSubcopyStrong = "rm-type-body rm-type-body-strong text-[var(--rm-ink)]";
-/** Section intro block — tag column + headline column */
-export const sectionIntroStack = "flex flex-col gap-4";
+/** @deprecated Use sectionHeadlineLead */
+export const sectionIntroStack = sectionHeadlineLead;
 
 /* ——— Chrome (light header/footer variant) ——— */
 export const chromeLightInk = "text-[var(--rm-light-ink)]";

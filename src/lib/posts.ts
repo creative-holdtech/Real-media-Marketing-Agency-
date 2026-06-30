@@ -1,9 +1,10 @@
-import blog01 from "@/assets/blog-01.jpg";
-import blog02 from "@/assets/blog-02.jpg";
 import blog03 from "@/assets/blog-03.jpg";
 import blog04 from "@/assets/blog-04.jpg";
-import blog05 from "@/assets/blog-05.jpg";
-import blog06 from "@/assets/blog-06.jpg";
+
+/** Public cover art — synced to /public/blog/{slug}.jpg */
+function blogCover(slug: string): string {
+  return `/blog/${slug}.jpg`;
+}
 
 export type PostSection = {
   id: string;
@@ -22,11 +23,21 @@ export type Post = {
   dateISO: string;
   read: string;
   title: string;
+  /** Optional editorial line break for carousel / display headings. */
+  titleLines?: string[];
   excerpt: string;
   image: string;
   imageAlt?: string;
   /** Card framing — use contain for tall mockups (e.g. phone screenshots). */
   imageFit?: "cover" | "contain";
+  /**
+   * Crop anchors so one asset works in portrait (home carousel) and landscape (blog cards).
+   * Compose art center-weighted when possible — see CLAUDE.md blog image notes.
+   */
+  imageLayout?: {
+    portrait?: string;
+    landscape?: string;
+  };
   author: string;
   featured?: boolean;
   body: string[];
@@ -51,6 +62,7 @@ export const posts: Post[] = [
     image: blog04,
     imageAlt:
       "Brutalist exhibition poster with bold typography and architectural installation photography",
+    imageLayout: { portrait: "50% 45%", landscape: "50% 48%" },
     author: "R-M Editorial",
     featured: true,
     body: [
@@ -69,10 +81,16 @@ export const posts: Post[] = [
     dateISO: "2026-05-05",
     read: "6 min read",
     title: "Building trust in cybersecurity: Why technical features alone won't sell",
+    titleLines: [
+      "Building trust in cybersecurity:",
+      "Why technical features alone won't sell",
+    ],
     excerpt:
       "In a category where every vendor claims best-in-class detection rates, the brands that win are the ones that make buyers feel safe before the demo.",
-    image: blog05,
-    imageAlt: "Abstract orange and black grain texture with interlocking geometric mark",
+    image: blogCover("cybersecurity-trust-building"),
+    imageAlt:
+      "Editorial photograph — figure at a crossroads with location pins on a winding floor path",
+    imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
       "The cybersecurity buyer is the most skeptical buyer in B2B. They have been burned by vendors who overpromised, by platforms that created new attack surfaces, by dashboards that showed activity without producing safety. By the time they reach your website, they are already waiting to be disappointed.",
@@ -92,8 +110,10 @@ export const posts: Post[] = [
     title: "B2B performance marketing is broken: How to track pipeline instead of clicks",
     excerpt:
       "Clicks, impressions, and MQLs are metrics of activity, not outcomes. Here is what pipeline-attributed reporting actually looks like — and why most teams resist it.",
-    image: blog06,
-    imageAlt: "Warm amber light trails on black — editorial performance marketing visual",
+    image: blogCover("b2b-performance-marketing"),
+    imageAlt:
+      "Editorial photograph — metallic funnel sculpture with radiating floor lines in dramatic light",
+    imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
       "The performance marketing dashboard looks healthy. CTR is up. CPL is down. The weekly report shows green everywhere. And yet the sales team is complaining that leads don't convert, and the CFO is asking why revenue isn't moving. This is not a coincidence. It is a measurement problem.",
@@ -113,8 +133,10 @@ export const posts: Post[] = [
     title: 'How buyers compare options and the real cost of "safe" decisions',
     excerpt:
       "The market is flooded with identical promises. What is the only way out — and how to decode the deeper context of how your specific audience perceives value.",
-    image: blog01,
-    imageAlt: "Distressed editorial poster with burnt-orange glow and motivational typography",
+    image: blogCover("buyers-compare-safe-decisions"),
+    imageAlt:
+      "Editorial photograph — Wassily chair in a shaft of light with a standing silhouette on the wall",
+    imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
       "Sophisticated buyers rarely choose the best product. They choose the option that feels least risky to defend in a meeting. That gap — between actual superiority and perceived safety — is where most B2B brands lose deals they never knew were competitive.",
@@ -134,8 +156,10 @@ export const posts: Post[] = [
     title: "How to measure marketing when buyers leave no footprints",
     excerpt:
       "Buyers research products in dark social and hit your site ready to buy. We explained how to implement self-reported attribution to save your best channels.",
-    image: blog02,
-    imageAlt: "Frosted glass agency branding card with minimal sans-serif typography",
+    image: blogCover("marketing-dark-social-attribution"),
+    imageAlt:
+      "Editorial photograph — concrete spiral staircase emerging from shadow into a single light beam",
+    imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
       "Most of your pipeline arrives with a blank attribution field and a firm opinion already formed. They did not discover you in a keyword auction. They were sent a screenshot in a founder group chat, watched two podcast clips, and asked a peer who already uses you.",
@@ -158,6 +182,7 @@ export const posts: Post[] = [
     image: blog03,
     imageAlt: "Mobile portfolio mockup with abstract 3D sculpture and warm studio lighting",
     imageFit: "contain",
+    imageLayout: { portrait: "50% 28%", landscape: "50% 35%" },
     author: "R-M Editorial",
     body: [
       "Early-stage teams are told to find a wedge. Later-stage teams are told to defend a moat. Almost nobody is told the middle truth: most markets reward a clear point of view long before they reward product superiority.",

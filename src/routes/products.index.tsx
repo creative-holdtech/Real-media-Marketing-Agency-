@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   motion,
   useScroll,
@@ -44,7 +44,7 @@ import { cn } from "@/lib/utils";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
-import { Reveal, MagneticButton } from "@/components/motion-bits";
+import { Reveal } from "@/components/motion-bits";
 import { TextReveal } from "@/components/text-reveal";
 import { useReveal } from "@/hooks/use-reveal";
 import heroBg from "@/assets/hero-bg.png";
@@ -470,9 +470,9 @@ function ProductsPage() {
                     <p className="rm-copy-lead">{data.lead}</p>
                   </Reveal>
                   <Reveal delay={0.2}>
-                    <MagneticButton as="a" href="/contact" strength={8} className={btnPrimary}>
+                    <Link to="/contact" className={btnPrimary}>
                       {data.cta}
-                    </MagneticButton>
+                    </Link>
                   </Reveal>
                 </div>
               </div>
