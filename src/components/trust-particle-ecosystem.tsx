@@ -382,13 +382,8 @@ export function TrustParticleEcosystem({
 }: TrustParticleEcosystemProps) {
   const reduce = useReducedMotion();
   const fieldRef = useRef<HTMLDivElement>(null);
-  const linkCanvasRef = useRef<HTMLCanvasElement>(null);
-  const cursorRef = useRef({ x: 0.5, y: 0.5, inside: false, energy: 0 });
   const particlesRef = useRef<Particle[]>(buildParticles(960, 720));
-  const ambientRef = useRef<HTMLDivElement>(null);
-  const ambientSecondaryRef = useRef<HTMLDivElement>(null);
   const scrollCueRef = useRef<HTMLDivElement>(null);
-  const vignetteRef = useRef<HTMLDivElement>(null);
   const curtainTopRef = useRef<HTMLDivElement>(null);
   const curtainBottomRef = useRef<HTMLDivElement>(null);
   const fieldShellRef = useRef<HTMLDivElement>(null);
@@ -440,28 +435,6 @@ export function TrustParticleEcosystem({
   }, [reduce, syncParticles]);
 
   const shouldAnimate = !reduce && active && inView && sceneVisible;
-
-  useEffect(() => {
-    if (reduce) return;
-    const field = fieldRef.current;
-    if (!field) return;
-    const onMove = (e: PointerEvent) => {
-      const rect = field.getBoundingClientRect();
-      if (rect.width < 1 || rect.height < 1) return;
-      cursorRef.current.x = (e.clientX - rect.left) / rect.width;
-      cursorRef.current.y = (e.clientY - rect.top) / rect.height;
-      cursorRef.current.inside = true;
-    };
-    const onLeave = () => {
-      cursorRef.current.inside = false;
-    };
-    field.addEventListener("pointermove", onMove, { passive: true });
-    field.addEventListener("pointerleave", onLeave);
-    return () => {
-      field.removeEventListener("pointermove", onMove);
-      field.removeEventListener("pointerleave", onLeave);
-    };
-  }, [reduce]);
 
   useEffect(() => {
     if (reduce) return;
@@ -606,7 +579,6 @@ export function TrustParticleEcosystem({
           ? b1
           : b0;
 
-      const focusAnchor = centerAnchor;
       const floatCalm = floatPhase * (0.38 + (1 - pull * 0.85) * 0.62);
       const stagingDim = clamp(0, 0.5, pull * 0.36 + morphT * 0.2);
       for (const p of particlesRef.current) {
@@ -712,78 +684,6 @@ export function TrustParticleEcosystem({
         p.y = clamp(h * HARD_PAD_Y, h * (1 - HARD_PAD_Y), p.y);
       }
 
-      // --- Cursor energy (eased) drives the vignette focus + node highlight ---
-      const cursor = cursorRef.current;
-      const energyTarget = cursor.inside ? 1 : 0;
-      // Asymmetric in/out — fast highlight on enter, gentle release on leave.
-      const energyRate = 1 - Math.exp(-dt * (cursor.inside ? 6.5 : 2.4));
-      cursor.energy += (energyTarget - cursor.energy) * energyRate;
-      const cursorPx = cursor.x * w;
-      const cursorPy = cursor.y * h;
-      const cursorReach = w * 0.26;
-
-      // --- Constellation node glow (canvas) — skip on Safari / low-memory Mac ---
-      const canvas = perf.canvasGlow ? linkCanvasRef.current : null;
-      if (canvas) {
-        const dpr = Math.min(2, window.devicePixelRatio || 1);
-        const cw = Math.round(w * dpr);
-        const ch = Math.round(h * dpr);
-        if (canvas.width !== cw || canvas.height !== ch) {
-          canvas.width = cw;
-          canvas.height = ch;
-        }
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx.clearRect(0, 0, w, h);
-
-          // Node glows only — constellation link strokes removed for a cleaner field.
-          const statRevealAmt = Math.max(b0.statReveal, b1.statReveal);
-          const ps = particlesRef.current;
-          const orbitLabels = story.constellation > 0.2 && statRevealAmt < 0.1;
-
-          // Glowing node "stars" anchored to every particle.
-          const staggerBase = story.constellation;
-          for (const p of ps) {
-            const staggerIn = EASE_PREMIUM_OUT(
-              clamp(
-                0,
-                1,
-                (staggerBase - p.morphOrder * CONSTELLATION_STAGGER) / CONSTELLATION_ENTRANCE_WINDOW,
-              ),
-            );
-            if (staggerIn < 0.02) continue;
-            const cd = Math.hypot(p.x - cursorPx, p.y - cursorPy);
-            const near = cursor.energy * Math.max(0, 1 - cd / cursorReach);
-            const keeperBoost = p.keeper ? statFocusAmt * 0.3 : 0;
-            // Slow breathe only — fast twinkle reads as flicker on canvas.
-            // Per-node frequency (reuses the drift clock) so the field never
-            // pulses in unison, plus a faint second wave for organic shimmer.
-            const twinkle = 0.94 + 0.06 * Math.sin(t * (0.1 + p.freqX) + p.drift * 2);
-            const base =
-              (0.42 + p.depth * 0.45) * staggerIn * (1 - story.exit) * twinkle + keeperBoost;
-            const nodeAlpha = clamp(0, 1, base + near * 0.5);
-            if (nodeAlpha < 0.02) continue;
-            const orbitDim = orbitLabels ? 0.32 : 1;
-            const r = (1.8 + p.depth * 1.9) * (1 + near * 1.2) * (1 + keeperBoost);
-            const halo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r * 5);
-            halo.addColorStop(0, `rgba(255, 255, 255, ${nodeAlpha * 0.34 * orbitDim})`);
-            halo.addColorStop(0.45, `rgba(255, 255, 255, ${nodeAlpha * 0.1 * orbitDim})`);
-            halo.addColorStop(1, "rgba(255, 255, 255, 0)");
-            ctx.fillStyle = halo;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, r * 5, 0, Math.PI * 2);
-            ctx.fill();
-            if (!orbitLabels || near > 0.2) {
-              ctx.fillStyle = `rgba(255, 255, 255, ${nodeAlpha * orbitDim})`;
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, r * 0.85, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-        }
-      }
-
       countStatElsRef.current.forEach((el) => {
         const index = Number(el.dataset.countStat ?? 0);
         const beat = index === 1 ? b1 : b0;
@@ -872,14 +772,6 @@ export function TrustParticleEcosystem({
           targetOpacity = Math.max(0, opacity * Math.max(0.08, 1 - statFocus * 1.05));
         }
 
-        const morphBlur =
-          perf.particleMorphBlur &&
-          morphActive &&
-          !p.keeper &&
-          statFocus > 0.06
-            ? clamp(0, 3.5, statFocus * 3.2 * (1 - Math.max(b0.dissolveT, b1.dissolveT)))
-            : 0;
-
         const visState = particleVisualRef.current.get(p.id) ?? {
           opacity: targetOpacity,
           scale,
@@ -887,14 +779,14 @@ export function TrustParticleEcosystem({
         };
         visState.opacity = smoothStep(visState.opacity, targetOpacity, dt, 5);
         visState.scale = smoothStep(visState.scale, scale, dt, 6.5);
-        visState.blur = smoothStep(visState.blur, morphBlur, dt, 7.5);
+        visState.blur = 0;
         particleVisualRef.current.set(p.id, visState);
 
         const rx = snapPx(p.x);
         const ry = snapPx(p.y - entranceLift * (1 - pull * 0.85));
         el.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${visState.scale.toFixed(4)})`;
         el.style.opacity = visState.opacity.toFixed(4);
-        el.style.filter = visState.blur > 0.12 ? `blur(${visState.blur.toFixed(2)}px)` : "none";
+        el.style.filter = "none";
         let layerZ = 4 + Math.round(p.depth * 2);
         if (morphActive && statFocus > 0.12 && !p.keeper) {
           layerZ = 1;
@@ -932,15 +824,11 @@ export function TrustParticleEcosystem({
         const emergeScale = EASE_PREMIUM_OUT(hero);
         const enterLift = (1 - emergeScale) * 22;
         const scale = 0.93 + emergeScale * 0.07;
-        const bloom = hero * 0.38;
-        const statBlur =
-          perf.particleMorphBlur && hero > 0 && hero < 0.42 ? (1 - hero / 0.42) * 2.5 : 0;
 
         slot.style.opacity = String(hero);
         slot.style.transform = `translate(-50%, calc(-50% + ${enterLift + exitLift}px)) scale(${scale})`;
         slot.style.zIndex = hero > 0.05 ? String(10 + index) : "1";
-        slot.style.filter = statBlur > 0.1 ? `blur(${statBlur.toFixed(2)}px)` : "none";
-        slot.style.setProperty("--stat-bloom", String(bloom));
+        slot.style.filter = "none";
 
         const copyEl = slot.querySelector<HTMLElement>(".rm-trust-ecosystem__fg-stat-copy");
         if (copyEl) {
@@ -951,43 +839,10 @@ export function TrustParticleEcosystem({
         }
       });
 
-      if (ambientRef.current) {
-        const actGlow = Math.max(
-          b0.heroReveal * (1 - b0.dissolveT),
-          b1.heroReveal * (1 - b1.dissolveT),
-        );
-        const ambientIn = EASE_SOFT(story.constellation);
-        ambientRef.current.style.transform = `translate(-50%, -50%) scale(${0.96 + ambientIn * 0.06 - stagingDim * 0.04})`;
-        ambientRef.current.style.opacity = String(
-          (0.08 + ambientIn * 0.16 + actGlow * 0.2 - stagingDim * 0.14) * (1 - story.exit * 0.7),
-        );
-      }
-
-      if (ambientSecondaryRef.current) {
-        const ambientIn = EASE_SOFT(clamp(0, 1, (story.constellation - 0.12) / 0.88));
-        const driftX = Math.sin(t * 0.12) * 1.5;
-        const driftY = Math.cos(t * 0.1) * 1.2;
-        ambientSecondaryRef.current.style.transform = `translate(calc(-50% + ${driftX}%), calc(-50% + ${driftY}%)) scale(${0.9 + scroll * 0.06 + finaleExpand})`;
-        ambientSecondaryRef.current.style.opacity = String(
-          (0.06 + ambientIn * 0.14 + floatPhase * 0.12 - stagingDim * 0.1) * (1 - story.exit * 0.6),
-        );
-      }
-
       if (scrollCueRef.current) {
         const cue = clamp(0, 1, 1 - scroll * 2.6) * (1 - story.exit);
         scrollCueRef.current.style.opacity = String(cue * 0.55);
         scrollCueRef.current.style.transform = `translate(-50%, ${cue * 10}px)`;
-      }
-
-      if (vignetteRef.current) {
-        // Compositor-only: shift the (oversized, static-gradient) vignette via
-        // transform and breathe its darkness via opacity — never repaint bg.
-        const focusBiasX = (cursor.x - 0.5) * cursor.energy * 0.35;
-        const focusBiasY = (focusAnchor.y - 0.5) * pull * 0.25 + (cursor.y - 0.5) * cursor.energy * 0.3;
-        const orbitLift = story.constellation * (1 - pull * 0.55);
-        const edge = 0.62 + story.enter * 0.08 + stagingDim * 0.2 - orbitLift * 0.16;
-        vignetteRef.current.style.transform = `translate3d(${(focusBiasX * 7).toFixed(2)}%, ${(focusBiasY * 6).toFixed(2)}%, 0)`;
-        vignetteRef.current.style.opacity = clamp(0, 1, edge).toFixed(3);
       }
 
       if (curtainTopRef.current) {
@@ -1071,21 +926,11 @@ export function TrustParticleEcosystem({
     <div
       ref={fieldRef}
       className="rm-trust-ecosystem"
-      data-trust-lite={perfRef.current.canvasGlow ? undefined : "true"}
+      data-trust-lite="true"
       aria-label="Client logos and studio metrics"
     >
       <div ref={curtainTopRef} className="rm-trust-ecosystem__curtain-top" aria-hidden="true" />
       <div ref={fieldShellRef} className="rm-trust-ecosystem__field">
-        <div ref={ambientRef} className="rm-trust-ecosystem__ambient" aria-hidden="true" />
-        <div
-          ref={ambientSecondaryRef}
-          className="rm-trust-ecosystem__ambient rm-trust-ecosystem__ambient--secondary"
-          aria-hidden="true"
-        />
-        <canvas ref={linkCanvasRef} className="rm-trust-ecosystem__links" aria-hidden="true" />
-        <div ref={vignetteRef} className="rm-trust-ecosystem__vignette" aria-hidden="true" />
-        <div className="rm-trust-ecosystem__grain" aria-hidden="true" />
-
         <div ref={scrollCueRef} className="rm-trust-ecosystem__scroll-cue" aria-hidden="true">
           <span>Scroll the story</span>
         </div>

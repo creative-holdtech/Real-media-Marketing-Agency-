@@ -1369,13 +1369,7 @@ button {
 }
 
 .rm-trust-ecosystem__grain {
-  position: absolute;
-  inset: 0;
-  z-index: 9;
-  opacity: 0.045;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: soft-light;
+  display: none;
 }
 
 .rm-trust-ecosystem__interlude {
@@ -1441,14 +1435,7 @@ button {
 }
 
 .rm-trust-ecosystem__ambient--secondary {
-  top: 46%;
-  left: 50%;
-  width: min(64vw, 36rem);
-  height: min(46vh, 24rem);
-  opacity: 0.2;
-  filter: blur(48px);
-  animation-duration: 20s;
-  animation-direction: reverse;
+  display: none;
 }
 
 .rm-trust-ecosystem__scroll-cue {
@@ -1492,24 +1479,7 @@ button {
 }
 
 .rm-trust-ecosystem__ambient {
-  position: absolute;
-  top: 44%;
-  left: 50%;
-  width: min(72vw, 42rem);
-  height: min(52vh, 28rem);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.07) 0%,
-    rgba(255, 255, 255, 0.02) 42%,
-    transparent 76%
-  );
-  filter: blur(40px);
-  animation: rm-trust-ambient-breathe 20s
-    var(--rm-ease-premium-in-out, cubic-bezier(0.77, 0, 0.175, 1)) infinite;
-  pointer-events: none;
-  will-change: transform, opacity;
-  z-index: 0;
+  display: none;
 }
 
 .rm-trust-ecosystem__horizon {
@@ -1541,14 +1511,7 @@ button {
 }
 
 .rm-trust-ecosystem__vignette {
-  position: absolute;
-  /* Oversized so the JS focus-shift transform never reveals an unpainted edge. */
-  inset: -10%;
-  background: radial-gradient(circle at 50% 50%, transparent 26%, #000 100%);
-  pointer-events: none;
-  /* Compositor-only animation: opacity (darkness) + transform (focus shift). */
-  will-change: opacity, transform;
-  z-index: 1;
+  display: none;
 }
 
 .rm-trust-ecosystem__bg-stats {
@@ -1680,10 +1643,7 @@ button {
   letter-spacing: -0.075em;
   font-variant-numeric: tabular-nums;
   color: #fff;
-  text-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.85),
-    0 8px 64px rgba(0, 0, 0, 0.7),
-    0 0 calc(48px * var(--stat-bloom, 0)) rgba(255, 255, 255, calc(var(--stat-bloom, 0) * 0.4));
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
 }
 
 .rm-trust-ecosystem__fg-stat-copy {
@@ -1765,6 +1725,7 @@ button {
   position: absolute;
   inset: 0;
   z-index: 5;
+  background: #000;
 }
 
 .rm-trust-ecosystem__particle {
@@ -1781,9 +1742,7 @@ button {
   text-transform: uppercase;
   color: rgba(245, 244, 240, 0.78);
   white-space: nowrap;
-  text-shadow:
-    0 0 1px rgba(0, 0, 0, 0.6),
-    0 0 22px rgba(255, 255, 255, 0.22);
+  text-shadow: none;
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
@@ -1796,9 +1755,7 @@ button {
   font-weight: 600;
   letter-spacing: 0.14em;
   color: rgba(245, 244, 240, 0.96);
-  text-shadow:
-    0 0 1px rgba(0, 0, 0, 0.55),
-    0 0 28px rgba(255, 255, 255, 0.32);
+  text-shadow: none;
 }
 
 .rm-trust-ecosystem__stat-slots {

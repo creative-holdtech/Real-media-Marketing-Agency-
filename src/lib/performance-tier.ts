@@ -21,7 +21,7 @@ export type TrustScenePerformanceProfile = {
 
 export function getTrustScenePerformanceProfile(): TrustScenePerformanceProfile {
   if (typeof window === "undefined") {
-    return { canvasGlow: true, particleMorphBlur: true, minFrameMs: 0 };
+    return { canvasGlow: false, particleMorphBlur: false, minFrameMs: 0 };
   }
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,5 +37,5 @@ export function getTrustScenePerformanceProfile(): TrustScenePerformanceProfile 
     return { canvasGlow: false, particleMorphBlur: false, minFrameMs: 32 };
   }
 
-  return { canvasGlow: true, particleMorphBlur: true, minFrameMs: 0 };
+  return { canvasGlow: false, particleMorphBlur: false, minFrameMs: 0 };
 }
