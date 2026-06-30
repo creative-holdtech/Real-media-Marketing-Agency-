@@ -47,7 +47,32 @@ async function scrollWorkSceneTo(page: import("@playwright/test").Page, fraction
     window.scrollTo(0, startY + scrollable * pct);
     window.dispatchEvent(new Event("scroll"));
   }, fraction);
-  await page.waitForTimeout(120);
+  await page.waitForTimeout(200);
+  await page.evaluate(() => {
+    window.dispatchEvent(new Event("scroll"));
+  });
+  await page.waitForTimeout(80);
+}
+
+async function scrollWorkScenePastEnd(page: import("@playwright/test").Page, extraPx = 48) {
+  await page.evaluate((extra) => {
+    const track = document.querySelector(".rm-work-scene__track") as HTMLElement | null;
+    const sticky = document.querySelector(".rm-work-scene__sticky") as HTMLElement | null;
+    if (!track || !sticky) return;
+    const root = document.documentElement;
+    const raw = getComputedStyle(root).getPropertyValue("--rm-header-offset").trim();
+    const rootPx = Number.parseFloat(getComputedStyle(root).fontSize) || 16;
+    const headerPx = raw.endsWith("rem")
+      ? Number.parseFloat(raw) * rootPx
+      : raw.endsWith("px")
+        ? Number.parseFloat(raw)
+        : 76;
+    const scrollable = Math.max(1, track.offsetHeight - sticky.offsetHeight);
+    const startY = window.scrollY + track.getBoundingClientRect().top - headerPx;
+    window.scrollTo(0, startY + scrollable + extra);
+    window.dispatchEvent(new Event("scroll"));
+  }, extraPx);
+  await page.waitForTimeout(250);
 }
 
 test.describe("Work scene — sticky preview crossfade", () => {
@@ -124,6 +149,80 @@ test.describe("Work scene — sticky preview crossfade", () => {
     const afterKey = await sampleWorkScene(page);
     expect(afterKey.active).toMatch(/Empresex/i);
     expect(afterKey.cards[1]?.opacity ?? 0).toBeGreaterThan(0.5);
+  });
+
+  test("progress rail ends at last tick without trailing segment", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await expect(page.locator("#work .rm-work-index-progress")).toBeVisible();
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(300);
+
+    await scrollWorkSceneTo(page, 1);
+    const rail = await page.evaluate(() => {
+      const work = document.getElementById("work");
+      const progress = work?.querySelector(".rm-work-index-progress") as HTMLElement | null;
+      const rows = work?.querySelectorAll(".rm-index__row");
+      const lastTick = rows?.[rows.length - 1]?.querySelector(
+        ".rm-work-index-progress__tick-anchor",
+      ) as HTMLElement | null;
+      const index = work?.querySelector(".rm-index") as HTMLElement | null;
+      if (!progress || !lastTick || !index) return null;
+      const progressBottom = progress.getBoundingClientRect().bottom;
+      const tickMid =
+        lastTick.getBoundingClientRect().top + lastTick.getBoundingClientRect().height / 2;
+      return {
+        progressBottom,
+        tickMid,
+        gap: progressBottom - tickMid,
+        railEnd: getComputedStyle(index).getPropertyValue("--work-rail-end"),
+      };
+    });
+
+    expect(rail).not.toBeNull();
+    expect(rail!.gap).toBeLessThan(4);
+    expect(rail!.railEnd.trim()).not.toBe("");
+  });
+
+  test("work scene release end keeps header band dark", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(300);
+
+    await scrollWorkSceneTo(page, 1);
+
+    const release = await page.evaluate(() => {
+      const sticky = document.querySelector(".rm-work-scene__sticky") as HTMLElement | null;
+      const root = document.documentElement;
+      const raw = getComputedStyle(root).getPropertyValue("--rm-header-offset").trim();
+      const rootPx = Number.parseFloat(getComputedStyle(root).fontSize) || 16;
+      const headerPx = raw.endsWith("rem")
+        ? Number.parseFloat(raw) * rootPx
+        : raw.endsWith("px")
+          ? Number.parseFloat(raw)
+          : 76;
+      const sampleY = headerPx + 2;
+      const el = document.elementFromPoint(window.innerWidth / 2, sampleY) as HTMLElement | null;
+      const bg = el ? getComputedStyle(el).backgroundColor : "";
+      const luminance = (() => {
+        const m = bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+        if (!m) return 255;
+        return (Number(m[1]) + Number(m[2]) + Number(m[3])) / 3;
+      })();
+      return {
+        stickyTop: sticky?.getBoundingClientRect().top ?? 0,
+        headerPx,
+        luminance,
+        progress: document.querySelector(".rm-work-scene__track")?.getAttribute("data-work-progress"),
+      };
+    });
+
+    expect(release.luminance).toBeLessThan(48);
   });
 
   test("progress tick scrubs to case", async ({ page }) => {

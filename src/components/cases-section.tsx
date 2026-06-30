@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent, type RefObject } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { useLenis } from "lenis/react";
-import { useReducedMotion, motion } from "motion/react";
+import { useReducedMotion } from "motion/react";
 
 import {
   BtnArrow,
@@ -33,7 +33,34 @@ import { cn } from "@/lib/utils";
 const WORK_SCENE_SCROLL_VH = 48;
 
 /** Breathing room after the last case before the next section. */
-const WORK_SCENE_RELEASE_VH = 8;
+const WORK_SCENE_RELEASE_VH = 5;
+
+/** Map raw track progress (incl. release runway) to 0–1 crossfade progress. */
+function motionProgressFromRaw(p: number) {
+  const scrollRatio =
+    WORK_SCENE_SCROLL_VH / (WORK_SCENE_SCROLL_VH + WORK_SCENE_RELEASE_VH);
+  if (p <= scrollRatio) return p / scrollRatio;
+  return 1;
+}
+
+function rawProgressFromMotion(motionP: number) {
+  const scrollRatio =
+    WORK_SCENE_SCROLL_VH / (WORK_SCENE_SCROLL_VH + WORK_SCENE_RELEASE_VH);
+  return motionP * scrollRatio;
+}
+
+/** Clip progress rail at last tick — no trailing dim line below Progresivo. */
+function syncRailEnd(indexEl: HTMLElement) {
+  const progress = indexEl.querySelector<HTMLElement>(".rm-work-index-progress");
+  const lastTick = indexEl.querySelector<HTMLElement>(
+    ".rm-index__row:last-child .rm-work-index-progress__tick-anchor",
+  );
+  if (!progress || !lastTick) return;
+  const indexTop = indexEl.getBoundingClientRect().top;
+  const tickRect = lastTick.getBoundingClientRect();
+  const endPx = Math.max(8, tickRect.top + tickRect.height / 2 - indexTop);
+  indexEl.style.setProperty("--work-rail-end", `${endPx.toFixed(1)}px`);
+}
 
 /** Progress delta/ms — above this, UI drops decorative transitions. */
 const WORK_SCROLL_FAST_VELOCITY = 0.00085;
@@ -148,9 +175,6 @@ function crossfadeBlur(opacity: number) {
   return mid * 2;
 }
 
-/** Hover peek — preview blend toward row under cursor (fine pointer only). */
-const HOVER_PREVIEW_PULL = 0.12;
-
 function crossfadeOpacities(count: number, p: number) {
   return Array.from({ length: count }, (_, i) => crossfadeOpacity(i, count, p));
 }
@@ -161,28 +185,6 @@ function normalizedCrossfadeOpacities(count: number, p: number) {
   const sum = raw.reduce((acc, value) => acc + value, 0);
   if (sum <= 1 || sum === 0) return raw;
   return raw.map((value) => value / sum);
-}
-
-function previewOpacitiesWithHover(count: number, p: number, hoverIndex: number | null) {
-  const opacities = normalizedCrossfadeOpacities(count, p);
-  if (hoverIndex === null) return opacities;
-
-  let dominant = 0;
-  let dominantWeight = -1;
-  opacities.forEach((weight, index) => {
-    if (weight > dominantWeight) {
-      dominantWeight = weight;
-      dominant = index;
-    }
-  });
-  if (hoverIndex === dominant) return opacities;
-
-  const next = [...opacities];
-  next[hoverIndex] = Math.min(1, next[hoverIndex] + HOVER_PREVIEW_PULL);
-  next[dominant] = Math.max(0, next[dominant] - HOVER_PREVIEW_PULL * 0.65);
-  const sum = next.reduce((acc, value) => acc + value, 0);
-  if (sum > 1) return next.map((value) => value / sum);
-  return next;
 }
 
 function activeCardIndex(p: number, count: number) {
@@ -205,6 +207,7 @@ function useWorkSceneProgress(
   onProgress?: (p: number) => void,
   onInViewChange?: (inView: boolean) => void,
   onFastScrollChange?: (fast: boolean) => void,
+  suppressFastScrollRef?: RefObject<boolean>,
 ) {
   const progressRef = useRef(0);
   const onProgressRef = useRef(onProgress);
@@ -245,12 +248,15 @@ function useWorkSceneProgress(
     const delta = Math.abs(p - lastP);
     lastSampleRef.current = { p, t: now };
 
-    if (delta > WORK_SCROLL_DELTA || velocity > WORK_SCROLL_FAST_VELOCITY) {
+    if (
+      !suppressFastScrollRef?.current &&
+      (delta > WORK_SCROLL_DELTA || velocity > WORK_SCROLL_FAST_VELOCITY)
+    ) {
       markMotionScrub();
     }
 
     onProgressRef.current?.(p);
-  }, [enabled, markMotionScrub, stickyRef, trackRef]);
+  }, [enabled, markMotionScrub, stickyRef, suppressFastScrollRef, trackRef]);
 
   const getProgress = useCallback(() => progressRef.current, []);
 
@@ -394,10 +400,22 @@ export function CasesSection() {
   caseCountRef.current = featuredCases.length;
   const featuredCasesRef = useRef(featuredCases);
   featuredCasesRef.current = featuredCases;
-  const hoverIndexRef = useRef<number | null>(null);
   const prefetchedSlugsRef = useRef(new Set<string>());
   const lastAnnouncedRef = useRef(-1);
   const liveRef = useRef<HTMLDivElement>(null);
+  const clickNavRef = useRef(false);
+  const clickNavTimerRef = useRef(0);
+
+  const endClickNav = useCallback(() => {
+    clickNavRef.current = false;
+    window.clearTimeout(clickNavTimerRef.current);
+  }, []);
+
+  const beginClickNav = useCallback(() => {
+    clickNavRef.current = true;
+    window.clearTimeout(clickNavTimerRef.current);
+    clickNavTimerRef.current = window.setTimeout(endClickNav, 1250);
+  }, [endClickNav]);
 
   const syncWorkSceneChrome = useCallback((p: number) => {
     const count = caseCountRef.current;
@@ -405,17 +423,18 @@ export function CasesSection() {
     const track = trackRef.current;
     const rail = railRef.current;
     const indexEl = indexRef.current;
-    const rowWeights = normalizedCrossfadeOpacities(count, p);
-    const previewWeights = previewOpacitiesWithHover(count, p, hoverIndexRef.current);
+    const motionP = motionProgressFromRaw(p);
+    const rowWeights = normalizedCrossfadeOpacities(count, motionP);
+    const previewWeights = rowWeights;
 
     if (track) {
-      track.style.setProperty("--work-p", p.toFixed(4));
+      track.style.setProperty("--work-p", motionP.toFixed(4));
     }
     if (rail) {
-      rail.style.setProperty("--work-p", p.toFixed(4));
+      rail.style.setProperty("--work-p", motionP.toFixed(4));
       rail.querySelectorAll<HTMLElement>(".rm-work-preview-card").forEach((card, i) => {
         const opacity = previewWeights[i] ?? 0;
-        const rawScale = crossfadeScale(i, count, p);
+        const rawScale = crossfadeScale(i, count, motionP);
         const scale = fastScrollRef.current ? 1 - (1 - rawScale) * 0.2 : rawScale;
         const blur = crossfadeBlur(opacity);
         card.style.opacity = String(opacity);
@@ -433,7 +452,7 @@ export function CasesSection() {
           if (fastScrollRef.current) {
             img.style.removeProperty("object-position");
           } else {
-            const pan = (p - 0.5) * 3;
+            const pan = (motionP - 0.5) * 3;
             img.style.objectPosition = `50% calc(50% + ${pan}%)`;
           }
         }
@@ -442,8 +461,8 @@ export function CasesSection() {
     }
 
     if (indexEl) {
-      indexEl.style.setProperty("--work-p", p.toFixed(4));
-      const active = activeCardIndex(p, count);
+      indexEl.style.setProperty("--work-p", motionP.toFixed(4));
+      const active = activeCardIndex(motionP, count);
       indexEl.dataset.activeIndex = String(active);
 
       if (active !== lastAnnouncedRef.current) {
@@ -466,8 +485,7 @@ export function CasesSection() {
 
         const tick = row.querySelector<HTMLElement>(".rm-work-index-progress__tick-anchor");
         if (tick) {
-          tick.style.setProperty("--tick-weight", weight.toFixed(4));
-          tick.dataset.active = weight > ROW_ON_WEIGHT ? "true" : "false";
+          tick.dataset.active = i === active ? "true" : "false";
         }
 
         const slug = cases[i]?.slug;
@@ -476,7 +494,16 @@ export function CasesSection() {
           void router.preloadRoute({ to: "/cases/$slug", params: { slug } });
         }
       });
+      syncRailEnd(indexEl);
     }
+
+    const sticky = stickyRef.current;
+    const headerPx = readHeaderOffsetPx();
+    const stickyTop = sticky?.getBoundingClientRect().top ?? headerPx;
+    const unpinned = sticky != null && stickyTop < headerPx - 0.5;
+    const handoff = unpinned || p >= 1 - 0.002;
+    sceneRef.current?.classList.toggle("rm-work-scene--handoff", handoff);
+    sceneRef.current?.classList.toggle("rm-work-scene--exit", unpinned);
   }, [router]);
 
   const { getProgress, syncProgress, markMotionScrub } = useWorkSceneProgress(
@@ -486,12 +513,14 @@ export function CasesSection() {
     syncWorkSceneChrome,
     setScrubbing,
     setFastScroll,
+    clickNavRef,
   );
 
   useLenis(
     (lenis) => {
       if (!sceneEnabled) return;
       syncProgress();
+      if (clickNavRef.current) return;
       if (Math.abs(lenis.velocity) > 1.4) markMotionScrub();
     },
     [sceneEnabled, syncProgress, markMotionScrub],
@@ -513,23 +542,31 @@ export function CasesSection() {
       const sticky = stickyRef.current;
       if (!track || !sticky) return;
       const peak = cardWindow(index, caseCountRef.current).peak;
-      const targetY = scrollYForWorkProgress(track, sticky, peak);
+      const targetY = scrollYForWorkProgress(track, sticky, rawProgressFromMotion(peak));
+      beginClickNav();
       if (lenis) {
         lenis.scrollTo(targetY, {
           duration: 1.05,
           easing: (t: number) => 1 - (1 - t) ** 3,
+          onComplete: endClickNav,
         });
       } else {
         window.scrollTo({ top: targetY, behavior: "smooth" });
       }
     },
-    [lenis],
+    [beginClickNav, endClickNav, lenis],
   );
 
   const handleRowClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>, index: number) => {
       if (!sceneEnabled) return;
-      const p = getProgress();
+      const p = motionProgressFromRaw(getProgress());
+      const active = activeCardIndex(p, caseCountRef.current);
+      if (index !== active) {
+        event.preventDefault();
+        scrollToCase(index);
+        return;
+      }
       const weight = normalizedCrossfadeOpacities(caseCountRef.current, p)[index] ?? 0;
       if (weight < ROW_NAV_WEIGHT) {
         event.preventDefault();
@@ -537,23 +574,6 @@ export function CasesSection() {
       }
     },
     [getProgress, sceneEnabled, scrollToCase],
-  );
-
-  const handleRowHover = useCallback(
-    (index: number | null) => {
-      if (!sceneEnabled) return;
-      hoverIndexRef.current = index;
-      syncWorkSceneChrome(getProgress());
-    },
-    [getProgress, sceneEnabled, syncWorkSceneChrome],
-  );
-
-  const handleRowPointerEnter = useCallback(
-    (index: number) => {
-      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-      handleRowHover(index);
-    },
-    [handleRowHover],
   );
 
   const syncSceneLayout = useCallback(() => {
@@ -565,6 +585,7 @@ export function CasesSection() {
       const h = index.offsetHeight;
       rail.style.setProperty("--rm-work-rail-h", `${h}px`);
       rail.style.minHeight = `${h}px`;
+      syncRailEnd(index);
     }
     if (track && sticky && window.matchMedia("(min-width: 768px)").matches) {
       const scrollRun = (WORK_SCENE_SCROLL_VH / 100) * window.innerHeight;
@@ -602,7 +623,7 @@ export function CasesSection() {
 
   useEffect(() => {
     if (!sceneEnabled) {
-      hoverIndexRef.current = null;
+      endClickNav();
       prefetchedSlugsRef.current.clear();
       lastAnnouncedRef.current = -1;
       const indexEl = indexRef.current;
@@ -613,6 +634,8 @@ export function CasesSection() {
       });
       if (indexEl) indexEl.dataset.activeIndex = "0";
       sceneRef.current?.classList.remove("rm-work-scene--live");
+      sceneRef.current?.classList.remove("rm-work-scene--handoff");
+      sceneRef.current?.classList.remove("rm-work-scene--exit");
       return;
     }
     syncWorkSceneChrome(getProgress());
@@ -621,7 +644,7 @@ export function CasesSection() {
       liveRef.current.textContent = `Showing case study: ${study.client}`;
       lastAnnouncedRef.current = 0;
     }
-  }, [sceneEnabled, getProgress, syncWorkSceneChrome, featuredCases]);
+  }, [endClickNav, sceneEnabled, getProgress, syncWorkSceneChrome, featuredCases]);
 
   useEffect(() => {
     if (!sceneEnabled) return;
@@ -662,7 +685,7 @@ export function CasesSection() {
       if (!inBand) return;
 
       const count = caseCountRef.current;
-      const active = activeCardIndex(getProgress(), count);
+      const active = activeCardIndex(motionProgressFromRaw(getProgress()), count);
       let next: number | null = null;
 
       switch (event.key) {
@@ -701,9 +724,10 @@ export function CasesSection() {
       id="work"
       aria-labelledby="cases-heading"
       tabIndex={sceneEnabled ? -1 : undefined}
-      className={cn(sectionShell, "rm-section-work rm-work-scene pt-0 pb-8 md:pb-10")}
+      className={cn(sectionShell, "rm-section-work rm-work-scene border-b-0 pt-0 pb-8 md:pb-10")}
     >
       <div ref={trackRef} className={cn("rm-work-scene__track-shell", scrollScene && !reduce && "rm-work-scene__track")}>
+        {scrollScene && !reduce ? <div className="rm-work-scene__pin-gutter" aria-hidden /> : null}
         <div ref={stickyRef} className={cn(scrollScene && !reduce && "rm-work-scene__sticky")}>
           <div className={sectionInner}>
             <div className={cn("rm-work", sectionContentGrid, "items-start md:items-stretch rm-work-scene__grid")}>
@@ -783,27 +807,20 @@ export function CasesSection() {
                       data-on={scrollScene && !reduce ? "false" : index === 0 ? "true" : "false"}
                       data-ready={scrollScene && !reduce ? "false" : "true"}
                       onClick={(event) => handleRowClick(event, index)}
-                      onMouseEnter={() => handleRowPointerEnter(index)}
-                      onMouseLeave={() => handleRowHover(null)}
-                      onFocus={() => handleRowHover(index)}
-                      onBlur={() => handleRowHover(null)}
                       aria-label={`${study.client} — ${study.primaryMetric.value} ${study.primaryMetric.label}`}
                     >
                       <span className="rm-index__num-cell">
                         {scrollScene && !reduce ? (
                           <span className="rm-work-index-progress__tick-anchor">
-                            <motion.button
+                            <button
                               type="button"
                               className="rm-work-index-progress__tick"
                               aria-label={`Show ${study.client}`}
-                              data-active="false"
                               onClick={(event) => {
                                 event.preventDefault();
                                 event.stopPropagation();
                                 scrollToCase(index);
                               }}
-                              whileTap={{ scale: 0.88 }}
-                              transition={{ type: "spring", stiffness: 480, damping: 32 }}
                             />
                           </span>
                         ) : (

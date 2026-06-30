@@ -176,7 +176,7 @@ export function ServicesSection() {
                     {engagement.metricUnitSub}
                   </p>
 
-                  <p className="m-0 rm-copy-standfirst whitespace-pre-line">{engagement.intro}</p>
+                  <p className="m-0 rm-copy-standfirst rm-copy-standfirst--band whitespace-pre-line">{engagement.intro}</p>
                 </div>
 
                 {/* Steps — horizontal timeline. mt separates from the lead; pt

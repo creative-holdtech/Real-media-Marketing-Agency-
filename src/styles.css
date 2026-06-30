@@ -2133,6 +2133,7 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 .rm-engage-panel__lead {
   display: flex;
   flex-direction: column;
+  width: 100%;
   max-width: 42ch;
 }
 
@@ -2500,17 +2501,64 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 
 /* ============ Home work — featured + rows ============ */
 .rm-section-work {
+  position: relative;
   background: #000;
   overflow: visible;
   scroll-margin-top: calc(var(--rm-header-offset) + 1.5rem);
 }
 
+/* Dissolve work → insights — no hard line at section exit. */
+.rm-section-work.rm-work-scene--exit::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(3rem, 8vh, 5rem);
+  background: linear-gradient(180deg, transparent 0%, #000 62%, #000 100%);
+  pointer-events: none;
+  z-index: 44;
+}
+
 .rm-work-scene__track-shell {
   height: auto;
+  background: #000;
 }
 
 .rm-work-scene__track {
   /* height set in JS: sticky content + scroll runway */
+}
+
+/* Black band under site header — masks headline bleed during sticky release. */
+.rm-work-scene__pin-gutter {
+  position: sticky;
+  top: 0;
+  height: var(--rm-header-offset);
+  margin-bottom: calc(-1 * var(--rm-header-offset));
+  background: #000;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.rm-work-scene--handoff .rm-work-scene__pin-gutter {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  margin-bottom: 0;
+  height: calc(var(--rm-header-offset) + 1rem);
+  z-index: 40;
+}
+
+.rm-work-scene--exit .rm-work-index-progress {
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.rm-work-scene--exit .rm-work-preview-rail::before,
+.rm-work-scene--exit .rm-work-preview-rail::after {
+  opacity: 0;
+  transition: opacity 280ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .rm-work-scene__sticky {
@@ -2522,6 +2570,22 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   align-items: flex-start;
   padding-top: clamp(0.75rem, 1.75vh, 1.25rem);
   padding-bottom: clamp(0.75rem, 1.75vh, 1rem);
+  background: #000;
+  isolation: isolate;
+  z-index: 1;
+}
+
+/* Bottom compositor seam into insights. */
+.rm-work-scene__sticky::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 4px;
+  background: #000;
+  pointer-events: none;
+  z-index: 20;
 }
 
 @media (min-width: 768px) {
@@ -2552,17 +2616,20 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
     position: absolute;
     left: var(--rm-work-index-rail-x);
     top: 0;
-    bottom: 0;
+    height: var(--work-rail-end, 100%);
     width: 1px;
     pointer-events: none;
     z-index: 1;
     transform: translateX(-50%);
+    isolation: isolate;
+    overflow: hidden;
   }
 
   .rm-work-index-progress::before {
     content: "";
     position: absolute;
     inset: 0;
+    z-index: 0;
     background: rgba(255, 255, 255, 0.22);
   }
 
@@ -2570,23 +2637,28 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 1;
     width: 100%;
     height: 100%;
     background: #ffffff;
     transform: scaleY(var(--work-p, 0));
     transform-origin: top center;
     pointer-events: none;
-    will-change: transform;
+    backface-visibility: hidden;
   }
 
   .rm-work-scene .rm-index__num-cell {
     position: relative;
+    z-index: 3;
     display: grid;
     place-items: center;
     align-self: center;
     width: 1.25rem;
     min-height: 1.25rem;
     padding-top: 0;
+    isolation: isolate;
+    background: #000;
+    border-radius: 999px;
   }
 
   .rm-work-scene .rm-index__num-cell .rm-index__num {
@@ -2599,68 +2671,69 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
     position: absolute;
     left: 50%;
     top: 50%;
-    z-index: 0;
-    display: block;
-    line-height: 0;
-    transform: translate(-50%, -50%) scale(calc(0.86 + var(--tick-weight, 0) * 0.18));
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    transform: translate(-50%, -50%);
     transform-origin: center center;
+    background: #000;
+    border-radius: 999px;
   }
 
   .rm-work-index-progress__tick-anchor[data-active="true"] {
     z-index: 2;
-    transform: translate(-50%, -50%) scale(calc(0.94 + var(--tick-weight, 0) * 0.12));
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .rm-index__num-cell:hover .rm-work-index-progress__tick-anchor,
-    .rm-index__num-cell:focus-within .rm-work-index-progress__tick-anchor {
-      transform: translate(-50%, -50%) scale(calc(0.96 + var(--tick-weight, 0) * 0.12));
-    }
   }
 
   .rm-work-index-progress__tick {
     position: relative;
+    z-index: 1;
     display: block;
+    flex-shrink: 0;
     width: 8px;
     height: 8px;
     padding: 0;
     margin: 0;
     border: 0;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
-    opacity: calc(0.58 + var(--tick-weight, 0) * 0.42);
+    background: #565656;
+    opacity: 1;
     cursor: pointer;
     pointer-events: auto;
+    box-shadow: 0 0 0 3px #000;
+    transition:
+      background-color var(--rm-motion-ui, 160ms) var(--rm-ease-out, cubic-bezier(0.2, 0, 0, 1)),
+      box-shadow var(--rm-motion-ui, 160ms) var(--rm-ease-out, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .rm-work-index-progress__tick-anchor:not([data-active="true"]) .rm-work-index-progress__tick {
+    background: #565656;
   }
 
   .rm-work-index-progress__tick-anchor[data-active="true"] .rm-work-index-progress__tick {
-    opacity: 1;
+    width: 10px;
+    height: 10px;
     background: #ffffff;
     box-shadow:
-      0 0 0 1px rgba(255, 255, 255, 0.4),
-      0 0 12px rgba(255, 255, 255, 0.35);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .rm-index__num-cell:hover .rm-work-index-progress__tick,
-    .rm-index__num-cell:focus-within .rm-work-index-progress__tick {
-      opacity: 1;
-      background: #ffffff;
-      box-shadow:
-        0 0 0 2px rgba(255, 255, 255, 0.45),
-        0 0 14px rgba(255, 255, 255, 0.38);
-    }
+      0 0 0 3px #000,
+      0 0 10px rgba(255, 255, 255, 0.28);
   }
 
   .rm-work-scene .rm-index__row {
     --row-weight: 0;
     padding-block: 1.25rem;
-    opacity: calc(0.34 + var(--row-weight) * 0.66);
     transform: translateY(calc((1 - var(--row-weight)) * 3px));
     transition:
       color var(--rm-motion-ui, 160ms) var(--rm-ease-out, cubic-bezier(0.2, 0, 0, 1)),
       background-color var(--rm-motion-ui, 160ms) var(--rm-ease-out, cubic-bezier(0.2, 0, 0, 1));
+  }
+
+  .rm-work-scene .rm-index__main,
+  .rm-work-scene .rm-index__metric,
+  .rm-work-scene .rm-index__arrow {
+    opacity: calc(0.34 + var(--row-weight) * 0.66);
+    transition: opacity var(--rm-motion-ui, 160ms) var(--rm-ease-out, cubic-bezier(0.2, 0, 0, 1));
   }
 
   .rm-work-scene .rm-index__row .rm-index__name,
@@ -2674,8 +2747,21 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 
   .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover,
   .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:focus-visible {
-    opacity: 1;
     transform: translateY(0);
+  }
+
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover .rm-index__main,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover .rm-index__metric,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover .rm-index__arrow,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:focus-visible .rm-index__main,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:focus-visible .rm-index__metric,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:focus-visible .rm-index__arrow {
+    opacity: 1;
+  }
+
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover .rm-work-index-progress__tick-anchor:not([data-active="true"]) .rm-work-index-progress__tick,
+  .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:focus-within .rm-work-index-progress__tick-anchor:not([data-active="true"]) .rm-work-index-progress__tick {
+    background: #707070;
   }
 
   .rm-work-scene:not(.rm-work-scene--scrubbing) .rm-index__row:hover .rm-index__name,
@@ -2710,6 +2796,12 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
     transition: none;
   }
 
+  .rm-work-scene--scrubbing .rm-index__main,
+  .rm-work-scene--scrubbing .rm-index__metric,
+  .rm-work-scene--scrubbing .rm-index__arrow {
+    transition: none;
+  }
+
   .rm-work-scene--scrubbing .rm-index__name,
   .rm-work-scene--scrubbing .rm-index__metric-value,
   .rm-work-scene--scrubbing .rm-index__metric-label {
@@ -2724,6 +2816,17 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 
   .rm-work-scene--scrubbing .rm-work-index-progress__fill {
     will-change: transform;
+  }
+
+  .rm-work-scene--scrubbing .rm-work-index-progress__tick,
+  .rm-work-scene--scrubbing .rm-work-index-progress__tick-anchor,
+  .rm-work-scene--live .rm-work-index-progress__tick,
+  .rm-work-scene--live .rm-work-index-progress__tick-anchor {
+    transition: none;
+  }
+
+  .rm-work-scene--handoff .rm-work-index-progress__fill {
+    will-change: auto;
   }
 
   .rm-work-scene .rm-index__metric {
@@ -2761,7 +2864,6 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   height: 14%;
   pointer-events: none;
   opacity: calc(0.88 + var(--work-p) * 0.12);
-  transform: translateY(calc(var(--work-p) * -6px));
   background: linear-gradient(
     to bottom,
     #000 0%,
@@ -2777,7 +2879,6 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   z-index: 3;
   height: 12%;
   pointer-events: none;
-  transform: translateY(calc(var(--work-p) * 4px));
   background: linear-gradient(to top, #000 0%, rgba(0, 0, 0, 0.5) 50%, transparent 100%);
 }
 
@@ -3424,8 +3525,23 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 }
 /* ============ Insights homepage — split list + preview ============ */
 .rm-section-insights {
+  position: relative;
   background: #000;
   overflow-x: clip;
+  border-top: 0;
+}
+
+/* Handoff from #work sticky release — no bright seam into insights. */
+.rm-section-insights::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: #000;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .rm-insights-grid {
@@ -5357,6 +5473,7 @@ html.rm-is-loading {
 .rm-defer-paint {
   content-visibility: auto;
   contain-intrinsic-size: auto 720px;
+  background: #000;
 }
 
 /* Sticky scroll scenes (e.g. home #work) break inside content-visibility:auto. */

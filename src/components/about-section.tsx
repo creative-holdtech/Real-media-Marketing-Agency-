@@ -72,7 +72,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
               lead={
                 <>
                   {studio?.body ? (
-                    <p className={cn(sectionSubheading, "reveal-fade m-0")} data-delay="1">
+                    <p className={cn(sectionSubheading, "rm-copy-standfirst--band reveal-fade m-0")} data-delay="1">
                       {studio.body}
                     </p>
                   ) : null}
