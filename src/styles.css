@@ -6938,6 +6938,7 @@ a.block:focus-visible .rm-points-card__read {
     transform: none !important;
     opacity: 1 !important;
   }
+}
 
 /* ============ Plan scene — "Operating Brief" (studio / AboutSection) ============ */
 .rm-plan-scene {
