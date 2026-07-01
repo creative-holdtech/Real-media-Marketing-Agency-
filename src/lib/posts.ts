@@ -180,7 +180,7 @@ export const posts: Post[] = [
     excerpt:
       "You don't need to invent a new market to win. Here we break down strategies for positioning against established giants.",
     image: blog03,
-    imageAlt: "Mobile portfolio mockup with abstract 3D sculpture and warm studio lighting",
+    imageAlt: "Editorial photograph — laptop in dramatic low light at a minimalist desk",
     imageFit: "contain",
     imageLayout: { portrait: "50% 28%", landscape: "50% 35%" },
     author: "R-M Editorial",
