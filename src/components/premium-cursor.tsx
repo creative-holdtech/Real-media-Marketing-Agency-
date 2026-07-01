@@ -1,4 +1,4 @@
-import { useReducedMotion } from "motion/react";
+import { useReducedMotion } from "framer-motion";
 import { useEffect, useRef } from "react";
 
 /** Core tracks the pointer closely; ring keeps a subtle editorial trail. */

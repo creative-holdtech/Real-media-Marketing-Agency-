@@ -8,7 +8,7 @@ import {
   useReducedMotion,
   useMotionValue,
   useMotionValueEvent,
-} from "motion/react";
+} from "framer-motion";
 
 import {
   bodyCopy,

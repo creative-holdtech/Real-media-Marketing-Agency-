@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
-import { cancelFrame, frame } from "motion/react";
+import { cancelFrame, frame } from "framer-motion";
 
 import { prefersNativeScroll } from "@/lib/performance-tier";
 

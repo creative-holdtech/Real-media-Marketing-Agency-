@@ -1,5 +1,5 @@
 import { useRef, type RefObject } from "react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
 import {
   FramerTag,

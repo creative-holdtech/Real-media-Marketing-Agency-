@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
 import {

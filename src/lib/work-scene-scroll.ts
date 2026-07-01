@@ -91,13 +91,6 @@ export function crossfadeScale(index: number, count: number, p: number) {
   return 1;
 }
 
-/** Subtle blur bridge while two previews overlap (max 2px at opacity ≈ 0.5). */
-export function crossfadeBlur(opacity: number) {
-  if (opacity <= 0.12 || opacity >= 0.88) return 0;
-  const mid = 1 - Math.abs(opacity - 0.5) * 2;
-  return mid * 2;
-}
-
 export function crossfadeOpacities(count: number, p: number) {
   return Array.from({ length: count }, (_, i) => crossfadeOpacity(i, count, p));
 }
@@ -132,15 +125,21 @@ export function previewWeight(index: number, count: number, motionP: number, hov
   return normalizedCrossfadeOpacities(count, previewP)[index] ?? 0;
 }
 
-/** Clip progress rail at last case tick (not :last-child — rows may be wrapped). */
+/** Clip the rail precisely between the first and last case ticks. */
 export function syncWorkRailEnd(indexEl: HTMLElement) {
   const progress = indexEl.querySelector<HTMLElement>(".rm-work-index-progress");
   const rows = indexEl.querySelectorAll<HTMLElement>(".rm-index__row");
+  const firstRow = rows[0];
   const lastRow = rows[rows.length - 1];
+  const firstTick = firstRow?.querySelector<HTMLElement>(".rm-work-index-progress__tick-anchor");
   const lastTick = lastRow?.querySelector<HTMLElement>(".rm-work-index-progress__tick-anchor");
-  if (!progress || !lastTick) return;
-  const indexTop = indexEl.getBoundingClientRect().top;
-  const tickRect = lastTick.getBoundingClientRect();
-  const endPx = Math.max(8, tickRect.top + tickRect.height / 2 - indexTop);
+  if (!progress || !firstTick || !lastTick) return;
+  const indexRect = indexEl.getBoundingClientRect();
+  const containingTop = indexRect.top + indexEl.clientTop;
+  const firstRect = firstTick.getBoundingClientRect();
+  const lastRect = lastTick.getBoundingClientRect();
+  const startPx = Math.max(0, firstRect.top + firstRect.height / 2 - containingTop);
+  const endPx = Math.max(startPx + 1, lastRect.top + lastRect.height / 2 - containingTop);
+  indexEl.style.setProperty("--work-rail-start", `${startPx.toFixed(1)}px`);
   indexEl.style.setProperty("--work-rail-end", `${endPx.toFixed(1)}px`);
 }

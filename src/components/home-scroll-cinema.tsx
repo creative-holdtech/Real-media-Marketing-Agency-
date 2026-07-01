@@ -5,7 +5,7 @@ import {
   useSpring,
   useTransform,
   type MotionValue,
-} from "motion/react";
+} from "framer-motion";
 import {
   useEffect,
   useRef,
@@ -27,6 +27,9 @@ const CHAPTERS = [
   { id: "insights", label: "Insights", short: "05" },
   { id: "cta", label: "Start", short: "06" },
 ] as const;
+
+const WORK_CHAPTER_INDEX = CHAPTERS.findIndex((chapter) => chapter.id === "work");
+const PREMIUM_EASE = [0.4, 0, 0.2, 1] as const;
 
 function subscribeCoarse(onChange: () => void) {
   const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
@@ -101,6 +104,7 @@ export function HomeScrollCinema() {
   const { scrollYProgress } = useScroll({ layoutEffect: false });
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.35 });
   const activeChapter = useActiveChapter(enabled);
+  const workActive = activeChapter === WORK_CHAPTER_INDEX;
 
   const glowY = useTransform(progress, [0, 1], ["-12%", "108%"]);
   const glowYb = useTransform(progress, [0, 1], ["6%", "126%"]);
@@ -123,11 +127,14 @@ export function HomeScrollCinema() {
 
       <motion.div
         aria-hidden
-        className="rm-scroll-cinema__ambient pointer-events-none fixed inset-0 z-[1] overflow-hidden"
-        style={{ opacity: glowOpacity }}
+        className="rm-scroll-cinema__ambient-shell pointer-events-none fixed inset-0 z-[1] overflow-hidden"
+        animate={{ opacity: workActive ? 0 : 1 }}
+        transition={{ duration: 0.48, ease: PREMIUM_EASE }}
       >
-        <motion.div className="rm-scroll-cinema__orb rm-scroll-cinema__orb--a" style={{ y: glowY }} />
-        <motion.div className="rm-scroll-cinema__orb rm-scroll-cinema__orb--b" style={{ y: glowYb }} />
+        <motion.div className="rm-scroll-cinema__ambient absolute inset-0" style={{ opacity: glowOpacity }}>
+          <motion.div className="rm-scroll-cinema__orb rm-scroll-cinema__orb--a" style={{ y: glowY }} />
+          <motion.div className="rm-scroll-cinema__orb rm-scroll-cinema__orb--b" style={{ y: glowYb }} />
+        </motion.div>
       </motion.div>
 
       <nav
@@ -141,8 +148,8 @@ export function HomeScrollCinema() {
               <li key={chapter.short} className="flex items-center justify-end gap-2">
                 <span
                   className={cn(
-                    "block h-1 w-1 rounded-full transition-[transform,background-color,opacity] duration-500",
-                    isActive ? "scale-150 bg-[#efeeea] opacity-100" : "bg-white/25 opacity-60",
+                    "block h-1 w-1 rounded-full transition-[transform,background-color,opacity] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                    isActive ? "scale-150 bg-[#efeeea] opacity-100" : "bg-[#555] opacity-100",
                   )}
                   aria-hidden
                 />

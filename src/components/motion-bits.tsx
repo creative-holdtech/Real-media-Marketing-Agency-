@@ -6,7 +6,7 @@ import {
   useTransform,
   useReducedMotion,
   type HTMLMotionProps,
-} from "motion/react";
+} from "framer-motion";
 import { useRef, type ReactNode, type MouseEvent } from "react";
 
 /* ---------- Smooth scroll progress bar ---------- */

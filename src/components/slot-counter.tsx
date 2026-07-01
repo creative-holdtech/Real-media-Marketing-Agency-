@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "motion/react";
+import { useInView } from "framer-motion";
 
 const DIGITS = "0123456789";
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

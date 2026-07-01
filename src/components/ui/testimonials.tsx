@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { motion, useInView, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useSyncExternalStore } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";

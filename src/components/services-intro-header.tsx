@@ -3,7 +3,7 @@ import {
   useInView,
   useReducedMotion,
   type Variants,
-} from "motion/react";
+} from "framer-motion";
 import { useEffect, useRef, useState, type RefObject } from "react";
 
 import {

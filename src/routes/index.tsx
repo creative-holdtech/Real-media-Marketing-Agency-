@@ -1,6 +1,6 @@
 import { lazy, Suspense, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 import {
   BtnArrow,

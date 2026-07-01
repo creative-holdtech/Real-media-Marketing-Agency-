@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "framer-motion";
 import { sectionInner, siteGutter } from "@/components/framer-section";
 import { ServicesCardDeckUnfold } from "@/components/services-card-deck-unfold";
 import { ServicesHero } from "@/components/services-hero";

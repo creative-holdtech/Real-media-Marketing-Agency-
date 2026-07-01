@@ -1,4 +1,4 @@
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 import {
   FramerTag,

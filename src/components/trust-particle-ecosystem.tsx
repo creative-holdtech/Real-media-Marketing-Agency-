@@ -1,4 +1,4 @@
-import { useReducedMotion } from "motion/react";
+import { useReducedMotion } from "framer-motion";
 import {
   useCallback,
   useEffect,

@@ -26,24 +26,7 @@ async function sampleWorkScene(page: import("@playwright/test").Page): Promise<W
       active,
       visibleCount: cards.filter((c) => c.opacity > 0.15).length,
     };
-    test("hover inactive row previews case without changing active tick", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 870 });
-    await page.goto("/#work");
-    await page.evaluate(() => {
-      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
-    });
-    await page.waitForTimeout(300);
-
-    const empresex = page.locator(".rm-index__row").filter({ hasText: "Empresex" });
-    await empresex.hover();
-    await page.waitForTimeout(200);
-
-    const hovered = await sampleWorkScene(page);
-    expect(hovered.active).toMatch(/Tequila/i);
-    expect(hovered.cards[1]?.opacity ?? 0).toBeGreaterThan(0.8);
-    expect(hovered.cards[0]?.opacity ?? 1).toBeLessThan(0.2);
   });
-});
 }
 
 async function scrollWorkSceneTo(page: import("@playwright/test").Page, fraction: number) {
@@ -198,25 +181,66 @@ test.describe("Work scene — sticky preview crossfade", () => {
       const work = document.getElementById("work");
       const progress = work?.querySelector(".rm-work-index-progress") as HTMLElement | null;
       const rows = work?.querySelectorAll(".rm-index__row");
+      const firstTick = rows?.[0]?.querySelector(
+        ".rm-work-index-progress__tick-anchor",
+      ) as HTMLElement | null;
       const lastTick = rows?.[rows.length - 1]?.querySelector(
         ".rm-work-index-progress__tick-anchor",
       ) as HTMLElement | null;
       const index = work?.querySelector(".rm-index") as HTMLElement | null;
-      if (!progress || !lastTick || !index) return null;
+      if (!progress || !firstTick || !lastTick || !index) return null;
+      const progressTop = progress.getBoundingClientRect().top;
       const progressBottom = progress.getBoundingClientRect().bottom;
-      const tickMid =
-        lastTick.getBoundingClientRect().top + lastTick.getBoundingClientRect().height / 2;
+      const firstRect = firstTick.getBoundingClientRect();
+      const lastRect = lastTick.getBoundingClientRect();
+      const firstTickMid = firstRect.top + firstRect.height / 2;
+      const lastTickMid = lastRect.top + lastRect.height / 2;
+      const dots = Array.from(work.querySelectorAll<HTMLElement>(".rm-work-index-progress__tick"));
       return {
+        progressTop,
         progressBottom,
-        tickMid,
-        gap: progressBottom - tickMid,
+        firstTickMid,
+        lastTickMid,
+        startGap: progressTop - firstTickMid,
+        endGap: progressBottom - lastTickMid,
+        dots: dots.map((dot) => ({
+          opacity: getComputedStyle(dot).opacity,
+          background: getComputedStyle(dot).backgroundColor,
+        })),
         railEnd: getComputedStyle(index).getPropertyValue("--work-rail-end"),
       };
     });
 
     expect(rail).not.toBeNull();
-    expect(rail!.gap).toBeLessThan(4);
+    expect(Math.abs(rail!.startGap)).toBeLessThan(1);
+    expect(Math.abs(rail!.endGap)).toBeLessThan(1);
+    expect(rail!.dots.every((dot) => dot.opacity === "1" && !dot.background.includes("rgba"))).toBe(
+      true,
+    );
     expect(rail!.railEnd.trim()).not.toBe("");
+  });
+
+  test("work scene suppresses global ambient and preview blur", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(650);
+
+    const motionState = await page.evaluate(() => {
+      const ambient = document.querySelector<HTMLElement>(".rm-scroll-cinema__ambient-shell");
+      const previews = Array.from(
+        document.querySelectorAll<HTMLElement>(".rm-work-preview-card .rm-index__preview--scene"),
+      );
+      return {
+        ambientOpacity: ambient ? Number.parseFloat(getComputedStyle(ambient).opacity) : 1,
+        previewFilters: previews.map((preview) => getComputedStyle(preview).filter),
+      };
+    });
+
+    expect(motionState.ambientOpacity).toBeLessThan(0.05);
+    expect(motionState.previewFilters.every((filter) => filter === "none")).toBe(true);
   });
 
   test("work scene release end keeps header band dark", async ({ page }) => {

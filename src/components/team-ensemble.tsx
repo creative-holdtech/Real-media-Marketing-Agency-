@@ -7,7 +7,7 @@ import {
   useSpring,
   useTransform,
   type MotionStyle,
-} from "motion/react";
+} from "framer-motion";
 
 import teamGroup from "@/assets/team-group.jpg";
 import { FramerTag } from "@/components/framer-section";

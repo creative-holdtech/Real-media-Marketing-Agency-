@@ -6,7 +6,7 @@ import {
   useReducedMotion,
   useTransform,
   type MotionValue,
-} from "motion/react";
+} from "framer-motion";
 import {
   useCallback,
   useEffect,
@@ -44,7 +44,6 @@ import { measureStickySceneProgress, readHeaderOffsetPx } from "@/lib/read-heade
 import {
   activeCardIndex,
   cardWindow,
-  crossfadeBlur,
   crossfadeScale,
   motionProgressFromRaw,
   normalizedCrossfadeOpacities,
@@ -61,6 +60,7 @@ import { cn } from "@/lib/utils";
 const FAST_VELOCITY = 0.00085;
 const FAST_DELTA = 0.00005;
 const FAST_SETTLE_MS = 180;
+const MotionLink = motion.create(Link);
 
 function scrollYForWorkProgress(
   track: HTMLElement,
@@ -187,39 +187,40 @@ function MotionPreviewCard({
   const previewPhoto = isCaseHomePreviewPhoto(previewSrc);
 
   const opacity = useTransform(previewP, (p) => previewWeight(index, count, p, null));
+  const [isVisible, setIsVisible] = useState(index === 0);
   const scale = useTransform(motionP, (p) => {
     const raw = crossfadeScale(index, count, p);
     return fastScroll ? 1 - (1 - raw) * 0.2 : raw;
   });
-  const blur = useTransform(previewP, (p) => {
-    if (fastScroll) return "blur(0px)";
-    const op = previewWeight(index, count, p, null);
-    const px = crossfadeBlur(op);
-    return px > 0 ? `blur(${px}px)` : "blur(0px)";
-  });
   const imgY = useTransform(motionP, (p) => {
     if (fastScroll) return "50%";
-    const pan = (p - 0.5) * 3;
+    const pan = (p - 0.5) * 2;
     return `calc(50% + ${pan}%)`;
   });
   const objectPosition = useMotionTemplate`50% ${imgY}`;
   const transform = useMotionTemplate`scale(${scale})`;
+
+  useMotionValueEvent(opacity, "change", (value) => {
+    setIsVisible((prev) => {
+      const next = value > 0.15;
+      return prev === next ? prev : next;
+    });
+  });
 
   return (
     <motion.div
       className="rm-work-preview-card"
       data-card-index={index}
       style={{ zIndex: index + 1, opacity }}
-      aria-hidden={index !== 0}
+      aria-hidden={!isVisible}
     >
       <motion.div className="rm-work-preview-card__inner" style={{ transform }}>
         <div className="rm-work-preview-card__shadow" aria-hidden />
-        <motion.div
+        <div
           className={cn(
             "rm-index__preview rm-index__preview--scene",
             previewPhoto && "rm-index__preview--photo",
           )}
-          style={{ filter: blur }}
         >
           <motion.img
             src={previewSrc}
@@ -227,7 +228,7 @@ function MotionPreviewCard({
             decoding="async"
             style={{ objectPosition }}
           />
-        </motion.div>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -269,34 +270,35 @@ function MotionWorkRow({
   const mainOpacity = useTransform(weight, (w) => {
     if (isOn) return 1;
     if (isHover) return 0.82;
-    return 0.34 + w * 0.66;
+    return 0.48 + w * 0.52;
   });
   const arrowX = useTransform(weight, (w) => (isOn ? w * 4 : 4));
   const y = useTransform(weight, (w) => (fastScroll ? 0 : (1 - w) * 3));
 
   useMotionValueEvent(weight, "change", (w) => {
-    setNavReady(w > ROW_NAV_WEIGHT);
+    setNavReady((prev) => {
+      const next = w > ROW_NAV_WEIGHT;
+      return prev === next ? prev : next;
+    });
   });
 
-  const rowTransform = useMotionTemplate`translateY(${y}px)`;
-
   return (
-    <motion.div style={{ transform: rowTransform }} className="contents">
-      <Link
-        to="/cases/$slug"
-        params={{ slug: study.slug }}
-        preload="intent"
-        className="rm-index__row rm-touch group"
-        data-on={isOn ? "true" : "false"}
-        data-ready={navReady ? "true" : "false"}
-        data-hover={isHover ? "true" : "false"}
-        onMouseEnter={() => onHover(index)}
-        onMouseLeave={onHoverEnd}
-        onFocus={() => onHover(index)}
-        onBlur={onHoverEnd}
-        onClick={(event) => onRowClick(event, index)}
-        aria-label={`${study.client} — ${study.primaryMetric.value} ${study.primaryMetric.label}`}
-      >
+    <MotionLink
+      to="/cases/$slug"
+      params={{ slug: study.slug }}
+      preload="intent"
+      className="rm-index__row rm-touch group"
+      style={{ y }}
+      data-on={isOn ? "true" : "false"}
+      data-ready={navReady ? "true" : "false"}
+      data-hover={isHover ? "true" : "false"}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={onHoverEnd}
+      onFocus={() => onHover(index)}
+      onBlur={onHoverEnd}
+      onClick={(event) => onRowClick(event, index)}
+      aria-label={`${study.client} — ${study.primaryMetric.value} ${study.primaryMetric.label}`}
+    >
         <span className="rm-index__num-cell">
           <span
             className="rm-work-index-progress__tick-anchor"
@@ -356,8 +358,7 @@ function MotionWorkRow({
         >
           <BtnArrow />
         </motion.span>
-      </Link>
-    </motion.div>
+    </MotionLink>
   );
 }
 
@@ -525,6 +526,7 @@ function WorkSceneDesktop({
   useEffect(() => {
     sceneRef.current?.classList.toggle("rm-work-scene--live", scrubbing);
     sceneRef.current?.classList.toggle("rm-work-scene--scrubbing", fastScroll);
+    if (indexRef.current) syncWorkRailEnd(indexRef.current);
   }, [fastScroll, scrubbing]);
 
   useEffect(() => {
