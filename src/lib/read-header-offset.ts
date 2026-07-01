@@ -12,3 +12,17 @@ export function readHeaderOffsetPx() {
   const parsed = parseFloat(raw);
   return Number.isFinite(parsed) ? parsed : 76;
 }
+
+/** Raw 0–1 scroll progress through a sticky scene track. */
+export function measureStickySceneProgress(
+  track: HTMLElement,
+  sticky: HTMLElement | null,
+) {
+  const rect = track.getBoundingClientRect();
+  const scrollable = sticky
+    ? Math.max(1, track.offsetHeight - sticky.offsetHeight)
+    : Math.max(1, track.offsetHeight - window.innerHeight);
+  const headerPx = readHeaderOffsetPx();
+  const p = (headerPx - rect.top) / scrollable;
+  return Math.min(1, Math.max(0, p));
+}

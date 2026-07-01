@@ -13,6 +13,8 @@ import {
 import {
   bodyCopy,
   btnPrimary,
+  pageHeroInner,
+  sectionHeroActionsRow,
   siteGutter,
   textFaint,
   textGhost,
@@ -242,7 +244,7 @@ function DeliverablesGrid({
     <div className="grid grid-cols-1 gap-px border-t border-[var(--rm-border-soft)] sm:grid-cols-3">
       {deliverables.map((d, i) => (
         <Reveal key={d.title} delay={i * 0.08}>
-          <div className="flex flex-col gap-4 px-0 py-8 sm:px-6 md:px-8 md:py-10 border-b border-[var(--rm-border-soft)] sm:border-b-0 sm:border-r sm:last:border-r-0">
+          <div className="flex flex-col gap-4 border-b border-[var(--rm-border-soft)] px-0 py-8 sm:border-b-0 sm:border-r sm:px-6 sm:last:border-r-0 md:py-8">
             <span className={cn("rm-type-meta", textGhost)}>0{i + 1}</span>
             <h3 className="rm-type-tag text-[var(--rm-ink)]">{d.title}</h3>
             <p className={cn("rm-type-body max-w-prose", textFaint)}>{d.body}</p>
@@ -265,7 +267,7 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
             onClick={() => onChange(m)}
             aria-pressed={isActive}
             className={cn(
-              "w-full text-left p-8 md:p-10 transition-all duration-300 cursor-pointer",
+              "w-full cursor-pointer p-8 text-left transition-all duration-300",
               isActive ? "bg-white/[0.04]" : "opacity-40 hover:opacity-70",
             )}
           >
@@ -397,7 +399,7 @@ function ProductsPage() {
 
       {isSticky && (
         <div className="rm-sticky-mode-bar">
-          <div className="mx-auto flex max-w-[var(--rm-grid-max)] items-center justify-end ">
+          <div className={cn("mx-auto flex max-w-[var(--rm-grid-max)] items-center justify-end", siteGutter)}>
             <ModeSwitcherCompact active={mode} onChange={handleModeChange} />
           </div>
         </div>
@@ -405,10 +407,10 @@ function ProductsPage() {
 
       <HeroAtmosphere imageSrc={heroBg} underHeader>
         <section
-          className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
+          className={cn("relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]", siteGutter)}
           aria-labelledby="products-heading"
         >
-          <div className="relative mx-auto w-full max-w-[var(--rm-grid-max)] pb-10 pt-2 md:pb-20 md:pt-8 ">
+          <div className={pageHeroInner}>
             <div className="mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
               <HeroHeadline />
               <motion.p
@@ -424,7 +426,7 @@ function ProductsPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1.15, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                className="mt-10"
+                className={sectionHeroActionsRow}
               >
                 <button
                   onClick={() =>
@@ -445,10 +447,10 @@ function ProductsPage() {
         <div
           ref={switcherRef}
           id="format"
-          className="border-b border-[var(--rm-border-soft)] bg-[#000]"
+          className={cn("border-b border-[var(--rm-border-soft)] bg-[#000]", siteGutter)}
           style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
-          <div className="mx-auto max-w-[var(--rm-grid-max)] overflow-hidden ">
+          <div className="mx-auto max-w-[var(--rm-grid-max)] overflow-hidden">
             <SplitModeSwitcher active={mode} onChange={handleModeChange} sectionRef={switcherRef} />
           </div>
         </div>
@@ -456,13 +458,13 @@ function ProductsPage() {
         {/* Mode content */}
         <div className="rm-mode-panel" key={mode}>
           {/* Headline + lead */}
-          <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
-            <div className="mx-auto max-w-[var(--rm-grid-max)] py-16 md:py-24 ">
+          <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000] py-16 md:py-20", siteGutter)}>
+            <div className="mx-auto max-w-[var(--rm-grid-max)]">
               <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <TextReveal
                     text={data.headline}
-                    className="rm-format-headline font-medium leading-[0.97] tracking-[-0.04em] text-white"
+                    className="rm-format-headline font-medium tracking-[-0.04em] text-white"
                   />
                 </div>
                 <div className="col-span-12 md:col-span-5 flex flex-col gap-6 md:pt-2">
@@ -480,18 +482,18 @@ function ProductsPage() {
           </section>
 
           {/* Deliverables — 3-column grid */}
-          <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
-            <div className="mx-auto max-w-[var(--rm-grid-max)] ">
+          <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000]", siteGutter)}>
+            <div className="mx-auto max-w-[var(--rm-grid-max)]">
               <DeliverablesGrid deliverables={data.deliverables} />
             </div>
           </section>
         </div>
 
         {/* Compare formats */}
-        <section className="border-b border-[var(--rm-border-soft)] bg-[#000]">
-          <div className="mx-auto max-w-[var(--rm-grid-max)] py-16 md:py-24 ">
+        <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000] py-16 md:py-20", siteGutter)}>
+          <div className="mx-auto max-w-[var(--rm-grid-max)]">
             <Reveal>
-              <p className="rm-eyebrow mb-10">Compare formats</p>
+              <p className="rm-eyebrow mb-8">Compare formats</p>
             </Reveal>
             <Reveal delay={0.08}>
               <PinFrame>

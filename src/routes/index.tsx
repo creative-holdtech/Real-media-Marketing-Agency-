@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 
@@ -19,6 +19,11 @@ import { AboutSection } from "@/components/about-section";
 import { CasesSection } from "@/components/cases-section";
 import { ServicesSection } from "@/components/services-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import {
+  HeroScrollStage,
+  HomeScrollCinema,
+  ScrollChapter,
+} from "@/components/home-scroll-cinema";
 import { PagePreloader } from "@/components/page-preloader";
 import { SectionShellSkeleton } from "@/components/section-shell-skeleton";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
@@ -99,6 +104,7 @@ function AmbientBlobs() {
 function Index() {
   useReveal();
   const reduce = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
   const { page } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
@@ -110,6 +116,7 @@ function Index() {
         Skip to content
       </a>
       <AmbientBlobs />
+      <HomeScrollCinema />
       <PagePreloader />
 
       <SiteHeader variant="dark" overlay />
@@ -117,13 +124,14 @@ function Index() {
       {/* HERO — full-bleed photo, centered editorial copy */}
       <HeroAtmosphere imageSrc={hero?.image || heroBg} underHeader>
         <section
+          ref={heroRef}
           aria-labelledby="home-hero-title"
           className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
         >
           <div className={siteChromeBand}>
             <div className={pageHeroContainer}>
+            <HeroScrollStage heroRef={heroRef} className={heroCopyLayout}>
             <motion.div
-              className={heroCopyLayout}
               variants={heroStage}
               initial={reduce ? false : "hidden"}
               animate="show"
@@ -188,24 +196,33 @@ function Index() {
                 ) : null}
               </motion.div>
             </motion.div>
+            </HeroScrollStage>
             </div>
           </div>
         </section>
       </HeroAtmosphere>
 
       <main id="main">
-        <AboutSection page={page} />
+        <ScrollChapter variant="plain">
+          <AboutSection page={page} />
+        </ScrollChapter>
 
         <div className="rm-defer-paint">
-          <TestimonialSection />
+          <ScrollChapter id="voice" variant="plain">
+            <TestimonialSection />
+          </ScrollChapter>
         </div>
 
         <div className="rm-defer-paint">
-          <ServicesSection />
+          <ScrollChapter variant="plain">
+            <ServicesSection />
+          </ScrollChapter>
         </div>
 
         <div className="rm-defer-paint">
-          <CasesSection />
+          <ScrollChapter variant="plain">
+            <CasesSection />
+          </ScrollChapter>
         </div>
 
         <Suspense
@@ -216,11 +233,14 @@ function Index() {
           }
         >
           <div className="rm-defer-paint">
-            <InsightsHeroSection posts={insightPosts} />
+            <ScrollChapter id="insights" variant="plain">
+              <InsightsHeroSection posts={insightPosts} />
+            </ScrollChapter>
           </div>
         </Suspense>
 
-        <UnifiedCTA
+        <ScrollChapter variant="reveal">
+          <UnifiedCTA
           title={cta?.title}
           titleAccent={cta?.titleAccent}
           primaryLabel={cta?.primaryLabel}
@@ -228,6 +248,7 @@ function Index() {
           secondaryLabel={cta?.secondaryLabel}
           secondaryTo={cta?.secondaryUrl}
         />
+        </ScrollChapter>
       </main>
 
       <SiteFooter />

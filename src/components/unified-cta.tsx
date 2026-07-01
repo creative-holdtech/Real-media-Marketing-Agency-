@@ -25,6 +25,7 @@ type CTAProps = {
   secondaryLabel?: string;
   secondaryTo?: string;
   secondaryHref?: string;
+  sectionClassName?: string;
 };
 
 export function UnifiedCTA({
@@ -37,9 +38,14 @@ export function UnifiedCTA({
   secondaryLabel = "See case studies →",
   secondaryTo = "/cases",
   secondaryHref,
+  sectionClassName,
 }: Partial<CTAProps> & { title?: string }) {
   return (
-    <section id="cta" aria-labelledby="unified-cta-heading" className={cn(sectionShell, "bg-black")}>
+    <section
+      id="cta"
+      aria-labelledby="unified-cta-heading"
+      className={cn(sectionShell, "bg-black", sectionClassName)}
+    >
       <div className={cn(sectionInner, "flex flex-col items-center text-center")}>
         {eyebrow ? (
           <Reveal duration={0.5}>

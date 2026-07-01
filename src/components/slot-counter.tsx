@@ -61,18 +61,24 @@ export function SlotCounter({
   value,
   className,
   charDelay = 70,
+  triggered: triggeredProp,
 }: {
   value: string;
   className?: string;
   charDelay?: number;
+  /** Parent-controlled trigger — skips internal inView when set. */
+  triggered?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -8% 0px" });
-  const [triggered, setTriggered] = useState(false);
+  const [internalTriggered, setInternalTriggered] = useState(false);
+  const parentControlled = triggeredProp !== undefined;
+  const triggered = parentControlled ? triggeredProp : internalTriggered;
 
   useEffect(() => {
-    if (inView && !triggered) setTriggered(true);
-  }, [inView, triggered]);
+    if (parentControlled || !inView || internalTriggered) return;
+    setInternalTriggered(true);
+  }, [inView, internalTriggered, parentControlled]);
 
   return (
     <span ref={ref} className={className} aria-label={value}>

@@ -26,7 +26,24 @@ async function sampleWorkScene(page: import("@playwright/test").Page): Promise<W
       active,
       visibleCount: cards.filter((c) => c.opacity > 0.15).length,
     };
+    test("hover inactive row previews case without changing active tick", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(300);
+
+    const empresex = page.locator(".rm-index__row").filter({ hasText: "Empresex" });
+    await empresex.hover();
+    await page.waitForTimeout(200);
+
+    const hovered = await sampleWorkScene(page);
+    expect(hovered.active).toMatch(/Tequila/i);
+    expect(hovered.cards[1]?.opacity ?? 0).toBeGreaterThan(0.8);
+    expect(hovered.cards[0]?.opacity ?? 1).toBeLessThan(0.2);
   });
+});
 }
 
 async function scrollWorkSceneTo(page: import("@playwright/test").Page, fraction: number) {
@@ -255,5 +272,23 @@ test.describe("Work scene — sticky preview crossfade", () => {
     const afterTick = await sampleWorkScene(page);
     expect(afterTick.active).toMatch(/Progresivo/i);
     expect(afterTick.cards[2]?.opacity ?? 0).toBeGreaterThan(0.5);
+  });
+
+  test("hover inactive row previews case without changing active tick", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 870 });
+    await page.goto("/#work");
+    await page.evaluate(() => {
+      document.querySelector(".rm-work-scene__track")?.scrollIntoView({ block: "start" });
+    });
+    await page.waitForTimeout(300);
+
+    const empresex = page.locator(".rm-index__row").filter({ hasText: "Empresex" });
+    await empresex.hover();
+    await page.waitForTimeout(200);
+
+    const hovered = await sampleWorkScene(page);
+    expect(hovered.active).toMatch(/Tequila/i);
+    expect(hovered.cards[1]?.opacity ?? 0).toBeGreaterThan(0.8);
+    expect(hovered.cards[0]?.opacity ?? 1).toBeLessThan(0.2);
   });
 });
