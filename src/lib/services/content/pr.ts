@@ -6,6 +6,8 @@ export const prService: ServiceContent = {
   shortName: "PR",
   tagline: "Shaping the market context.",
   accent: "#3aa6e8",
+  cardImage: "/services/be-trusted.jpg",
+  cardImageAlt: "Silhouette behind ribbed glass in warm studio light",
   hero: {
     word: "trusted",
     paragraphs: [

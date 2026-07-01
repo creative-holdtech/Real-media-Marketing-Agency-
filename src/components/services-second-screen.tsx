@@ -5,12 +5,10 @@ import { MarketingTagColumn } from "@/components/marketing-section";
 import {
   sectionContentGrid,
   sectionGap,
-  sectionHeadlineLead,
   sectionInner,
   sectionShell,
 } from "@/components/framer-section";
 import {
-  ServicesEntryHandoff,
   ServicesIntroHeader,
   servicesScreenTwoItem,
   servicesScreenTwoStage,
@@ -50,9 +48,8 @@ export function ServicesSecondScreen({ services }: ServicesSecondScreenProps) {
             className={cn(sectionContentGrid, "items-start")}
           >
             <MarketingTagColumn tag="Six disciplines" />
-            <div className={cn(sectionHeadlineLead, "md:col-span-2 md:col-start-2")}>
+            <div className="md:col-span-2 md:col-start-2">
               <ServicesIntroHeader />
-              <ServicesEntryHandoff />
             </div>
           </ItemTag>
 

@@ -23,11 +23,11 @@ export const services = {
 } as const;
 
 export const servicesList = [
-  brandService,
   smmService,
   prService,
   performanceService,
   seoService,
+  brandService,
   designService,
 ];
 

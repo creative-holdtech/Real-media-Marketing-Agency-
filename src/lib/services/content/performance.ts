@@ -6,6 +6,8 @@ export const performanceService: ServiceContent = {
   shortName: "Performance",
   tagline: "Structure before spend.",
   accent: "#3ae8a6",
+  cardImage: "/services/be-profitable.jpg",
+  cardImageAlt: "Notebook, pen, and stone on a desk in a beam of light",
   hero: {
     word: "profitable",
     paragraphs: [

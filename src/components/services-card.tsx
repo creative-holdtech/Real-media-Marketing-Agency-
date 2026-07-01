@@ -16,6 +16,30 @@ import { serviceCardIntro } from "@/lib/services";
 import type { ServiceContent } from "@/lib/services/types";
 import { cn } from "@/lib/utils";
 
+function ServiceCardCover({
+  src,
+  alt,
+}: {
+  src: string;
+  alt?: string;
+}) {
+  return (
+    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden md:aspect-[16/10]">
+      <img
+        src={src}
+        alt={alt ?? ""}
+        loading="lazy"
+        decoding="async"
+        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03] group-focus-visible:scale-[1.03]"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent"
+        aria-hidden
+      />
+    </div>
+  );
+}
+
 export function ServiceCardContent({
   service: s,
   variant = "default",
@@ -31,21 +55,22 @@ export function ServiceCardContent({
     return (
       <>
         <div
-          className="absolute inset-y-0 left-0 w-[2px] bg-[var(--service-accent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+          className="absolute inset-y-0 left-0 z-[2] w-[2px] bg-[var(--service-accent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
           aria-hidden
         />
-        <div className={cn("relative z-[1] flex h-full min-h-0 flex-col gap-4 md:gap-5", surfaceCardPadding)}>
+        {s.cardImage ? <ServiceCardCover src={s.cardImage} alt={s.cardImageAlt} /> : null}
+        <div className={cn("relative z-[1] flex h-full min-h-0 flex-col gap-4", surfaceCardPadding)}>
           <div className="flex items-center justify-between gap-3">
             <p className={cn(textMeta, "m-0")}>Be {s.hero.word}</p>
             <span className={cn(sectionPill, "uppercase")}>{s.shortName}</span>
           </div>
-          <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
+          <div className="mt-auto flex min-h-0 flex-col border-t border-[var(--rm-border-soft)] pt-4">
             <p className={cn(textMeta, "m-0")}>{s.tagline}</p>
-            <h3 className={cn(subsectionTitle, "mt-2 text-white")}>{s.name}</h3>
-            <p className={cn(bodyCopy, "mt-3 line-clamp-3 text-[var(--rm-text-body)]")}>
+            <h3 className={cn(subsectionTitle, "mt-2 line-clamp-2 text-white")}>{s.name}</h3>
+            <p className={cn(bodyCopy, "mt-3 line-clamp-2 text-[var(--rm-text-body)]")}>
               {serviceCardIntro(s)}
             </p>
-            <div className="mt-6 flex justify-end">
+            <div className="mt-4 flex justify-end">
               <span className={cn(btnOutlineOnDark, "gap-2")}>
                 View
                 <BtnArrow />
@@ -165,7 +190,7 @@ export function ServiceCard({
           ? cn(
               surfaceCardShell,
               interactiveSurfaceCard,
-              "min-h-0 overflow-hidden md:min-h-[200px]",
+              "h-full min-h-0 overflow-hidden",
             )
           : cn(
               "overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-black shadow-none md:rounded-[2rem]",

@@ -16,9 +16,9 @@ export function ServicesCardDeckUnfold({
   className,
 }: ServicesCardDeckUnfoldProps) {
   return (
-    <div className={cn(sectionCardGrid, className)}>
+    <div className={cn(sectionCardGrid, "items-stretch", className)}>
       {services.map((service) => (
-        <ServiceCard key={service.slug} service={service} variant={variant} />
+        <ServiceCard key={service.slug} service={service} variant={variant} className="h-full" />
       ))}
     </div>
   );

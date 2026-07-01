@@ -1,10 +1,6 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 
-import {
-  sectionHeadline,
-  sectionHeadlineAccent,
-  textMeta,
-} from "@/components/framer-section";
+import { sectionHeadline, sectionHeadlineAccent } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 
 const INTRO_LINE_1 = "Be seen. Be trusted. Be profitable.";
@@ -89,16 +85,6 @@ const entryRail: Variants = {
   },
 };
 
-const entryLabelReveal: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: INTRO_EASE, delay: 0.08 } },
-};
-
-const entryStage: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1, delayChildren: 0.04 } },
-};
-
 function StaticHeadline() {
   return (
     <>
@@ -152,7 +138,7 @@ function BeRow({
       className={cn("block text-pretty", muted && sectionHeadlineAccent)}
       variants={rowVariants ?? phraseRow}
     >
-      <span className="inline-flex min-w-0 flex-nowrap items-baseline gap-x-[0.35em]">
+      <span className="inline-flex min-w-0 flex-wrap items-baseline gap-x-[0.35em] gap-y-0 md:flex-nowrap">
         {descriptors.map((descriptor) => (
           <BePhrase key={descriptor} descriptor={descriptor} muted={muted} />
         ))}
@@ -170,20 +156,16 @@ function AnimatedHeadline() {
   );
 }
 
-const introHeadlineClass = cn(sectionHeadline, "m-0 max-w-[22ch] text-balance text-white");
+const introHeadlineClass = cn(sectionHeadline, "m-0 w-full max-w-none text-white");
 
 export function ServicesIntroHeader() {
   const reduce = useReducedMotion();
 
-  if (reduce) {
-    return (
-      <h2 id="services-intro-heading" className={introHeadlineClass}>
-        <StaticHeadline />
-      </h2>
-    );
-  }
-
-  return (
+  const headline = reduce ? (
+    <h2 id="services-intro-heading" className={introHeadlineClass}>
+      <StaticHeadline />
+    </h2>
+  ) : (
     <motion.h2
       id="services-intro-heading"
       className={introHeadlineClass}
@@ -193,60 +175,22 @@ export function ServicesIntroHeader() {
       <AnimatedHeadline />
     </motion.h2>
   );
-}
 
-export function ServicesEntryHandoff({
-  label = "Choose your entry point",
-  visibleCount,
-  totalCount,
-}: {
-  label?: string;
-  visibleCount?: number;
-  totalCount?: number;
-}) {
-  const reduce = useReducedMotion();
-  const counter =
-    visibleCount != null && totalCount != null && totalCount > visibleCount
-      ? `${visibleCount} of ${totalCount}`
-      : null;
-
-  const copy = (
-    <>
-      <div className="h-px w-full max-w-[12rem] bg-white/20" aria-hidden />
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <p className={cn(textMeta, "m-0 normal-case")}>{label}</p>
-        {counter ? (
-          <p className={cn(textMeta, "m-0")} aria-label={`Showing ${counter} disciplines`}>
-            {counter}
-          </p>
-        ) : null}
-      </div>
-    </>
+  const rail = reduce ? (
+    <div className="h-px w-full max-w-[12rem] bg-white/20" aria-hidden />
+  ) : (
+    <motion.div
+      className="h-px w-full max-w-[12rem] bg-white/18"
+      aria-hidden
+      variants={entryRail}
+      style={{ transformOrigin: "0% 50%" }}
+    />
   );
 
-  if (reduce) {
-    return <div className="flex flex-col gap-2">{copy}</div>;
-  }
-
   return (
-    <motion.div variants={entryStage} className="flex origin-left flex-col gap-2">
-      <motion.div
-        className="h-px w-full max-w-[12rem] bg-white/18"
-        aria-hidden
-        variants={entryRail}
-        style={{ transformOrigin: "0% 50%" }}
-      />
-      <motion.div
-        className="flex flex-wrap items-baseline gap-x-4 gap-y-1"
-        variants={entryLabelReveal}
-      >
-        <p className={cn(textMeta, "m-0 normal-case")}>{label}</p>
-        {counter ? (
-          <p className={cn(textMeta, "m-0")} aria-label={`Showing ${counter} disciplines`}>
-            {counter}
-          </p>
-        ) : null}
-      </motion.div>
-    </motion.div>
+    <div className="flex flex-col gap-2">
+      {headline}
+      {rail}
+    </div>
   );
 }

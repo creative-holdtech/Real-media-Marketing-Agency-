@@ -6,6 +6,8 @@ export const smmService: ServiceContent = {
   shortName: "SMM",
   tagline: "Replacing the cold pitch.",
   accent: "#7c5cff",
+  cardImage: "/services/be-seen.jpg",
+  cardImageAlt: "Laptop and glass of water on a concrete desk in warm light",
   hero: {
     word: "seen",
     paragraphs: [

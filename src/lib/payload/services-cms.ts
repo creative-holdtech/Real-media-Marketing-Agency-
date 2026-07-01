@@ -61,6 +61,7 @@ function mapPayloadService(doc: PayloadServiceDoc): ServiceContent {
     },
     closingQuote: doc.closingQuote ?? "",
     footerCta: doc.footerCta ?? "",
+    cardImage: mediaUrl(doc.cardImage) ?? undefined,
   };
 }
 
@@ -85,7 +86,16 @@ export async function fetchServiceBySlug(slug: string): Promise<ServiceContent |
 export async function getServicesList(): Promise<ServiceContent[]> {
   if (!isPayloadEnabled()) return staticServicesList;
   const remote = await fetchServices();
-  return remote?.length ? remote : staticServicesList;
+  if (!remote?.length) return staticServicesList;
+  return remote.map((service) => {
+    const local = getStaticService(service.slug);
+    if (!local) return service;
+    return {
+      ...service,
+      cardImage: service.cardImage ?? local.cardImage,
+      cardImageAlt: service.cardImageAlt ?? local.cardImageAlt,
+    };
+  });
 }
 
 export async function getServiceContent(slug: string): Promise<ServiceContent | undefined> {

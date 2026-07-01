@@ -39,6 +39,9 @@ export type ServiceContent = {
   /** Card tagline on /services index */
   tagline: string;
   accent: string;
+  /** Optional cover for /services index card */
+  cardImage?: string;
+  cardImageAlt?: string;
   hero: {
     word: string;
     paragraphs: string[];
