@@ -125,7 +125,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
 
     const measure = () => {
       const width = node.clientWidth;
-      setSlideWidth(Math.round(Math.min(280, Math.max(232, width * 0.52))));
+      setSlideWidth(Math.round(Math.min(248, Math.max(208, width * 0.44))));
     };
 
     measure();
@@ -138,7 +138,7 @@ export function InsightsHeroSection({ posts }: InsightsHeroSectionProps) {
     () => ({
       ...DRAGABLE_CAROUSEL_DEFAULTS,
       slideWidth,
-      slideHeight: Math.round(slideWidth * 1.25),
+      slideHeight: Math.round(slideWidth * 1.15),
       gap: 16,
       borderRadius: 18,
       perspective: 1800,

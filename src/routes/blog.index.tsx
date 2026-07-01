@@ -138,7 +138,7 @@ function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
         <article className="flex h-full flex-col">
           <figure
             className={cn(
-              "hover-zoom card-cover relative mb-6 aspect-[4/3] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]",
+              "hover-zoom card-cover relative mb-4 aspect-[3/2] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]",
               containImage && "flex items-center justify-center",
             )}
           >
