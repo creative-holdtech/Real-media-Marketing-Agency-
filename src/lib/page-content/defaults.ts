@@ -152,7 +152,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
     hero: {
       tag: "Services",
       titleLines: ["Six disciplines.", "One operating system."],
-      body: "Real Media works at the deeper levels of market context — how trust is built, how customers compare options, and how purchase decisions are made. Choose the entry point that matches what you need to ship this quarter.",
+      body: "Real Media works at the deeper levels of market context — how trust is built, how customers compare options, and how purchase decisions are made.",
     },
     cta: {
       title: "Tell us what needs fixing",

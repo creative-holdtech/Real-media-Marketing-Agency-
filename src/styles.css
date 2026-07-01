@@ -4556,6 +4556,48 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   min-height: min(84dvh, 720px);
 }
 
+/* Services — hero: content height, not a locked viewport */
+.rm-hero-atmosphere--services.rm-hero-atmosphere--under-header {
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
+
+.rm-hero-atmosphere--services .rm-services-hero__section {
+  height: auto;
+  min-height: 0;
+}
+
+/* Services — screen 2: intro + flush discipline grid */
+.rm-services-intro-screen__stage {
+  box-sizing: border-box;
+}
+
+.rm-services-intro-screen__cards {
+  min-height: 0;
+}
+
+.rm-hero-atmosphere--services .rm-services-hero__ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(46% 52% at 14% 22%, rgb(232 93 58 / 0.09), transparent 72%),
+    radial-gradient(40% 48% at 88% 78%, rgb(124 92 255 / 0.07), transparent 70%),
+    radial-gradient(120% 80% at 50% 100%, rgb(255 255 255 / 0.03), transparent 55%);
+  opacity: 0.9;
+}
+
+@media (max-width: 767px) {
+  .rm-hero-atmosphere--services .rm-services-hero__ambient {
+    background:
+      radial-gradient(62% 48% at 12% 18%, rgb(232 93 58 / 0.08), transparent 70%),
+      radial-gradient(52% 44% at 92% 82%, rgb(124 92 255 / 0.06), transparent 68%);
+  }
+}
+
 /* Case study — editorial reading surface (interface-design tokens) */
 .rm-case-study {
   --cs-space-2: 1rem;
@@ -6717,7 +6759,7 @@ a.block:focus-visible .rm-points-card__read {
   }
 }
 
-/* ============ Services pages — editorial utilitarian cards ============ */
+/* ============ Services pages ============ */
 .rm-services-hero {
   position: relative;
 }
@@ -6730,50 +6772,6 @@ a.block:focus-visible .rm-points-card__read {
   background:
     radial-gradient(42% 48% at 18% 28%, rgb(232 93 58 / 0.07), transparent 72%),
     radial-gradient(38% 44% at 82% 68%, rgb(124 92 255 / 0.06), transparent 70%);
-}
-
-.rm-services-hero__title {
-  font-size: clamp(2.75rem, 7vw, 6.5rem);
-  line-height: 0.94;
-  letter-spacing: -0.04em;
-  font-weight: 500;
-  color: var(--rm-ink);
-}
-
-.rm-services-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.02);
-  transition:
-    border-color 200ms ease-out,
-    background-color 200ms ease-out,
-    box-shadow 200ms ease-out;
-}
-
-.rm-services-card:hover,
-.rm-services-card:focus-visible {
-  border-color: rgb(255 255 255 / 0.2);
-  background: rgb(255 255 255 / 0.035);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.04);
-}
-
-.rm-services-card__accent {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  width: 2px;
-  background: var(--service-accent, #efeeea);
-  opacity: 0;
-  transition: opacity 200ms ease-out;
-}
-
-.rm-services-card:hover .rm-services-card__accent,
-.rm-services-card:focus-visible .rm-services-card__accent {
-  opacity: 1;
 }
 
 .rm-service-hero__ambient {

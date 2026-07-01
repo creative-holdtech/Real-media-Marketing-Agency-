@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 import {
@@ -6,6 +7,7 @@ import {
   heroHeadlineLead,
   heroStandfirst,
   pageHeroContainer,
+  sectionHeroActionsRow,
   siteChromeBand,
 } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
@@ -29,11 +31,10 @@ const heroTitle: Variants = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 const heroTitleLine: Variants = {
-  hidden: { opacity: 0, y: "0.45em", filter: "blur(7px)" },
+  hidden: { opacity: 0, y: "0.45em" },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: { duration: 0.9, ease: HERO_EASE },
   },
 };
@@ -43,11 +44,15 @@ type PageEditorialHeroProps = {
   titleLines: string[];
   body?: string;
   headingId?: string;
+  actions?: ReactNode;
   /**
    * `atmosphere` — child of HeroAtmosphere (Home / About pattern).
    * `standalone` — self-contained band with header offset.
+   * `copy` — inner copy only; parent supplies section chrome.
    */
-  layout?: "atmosphere" | "standalone";
+  layout?: "atmosphere" | "standalone" | "copy";
+  /** Vertical alignment when `layout="atmosphere"`. */
+  align?: "center" | "start";
   sectionClassName?: string;
 };
 
@@ -59,7 +64,9 @@ export function PageEditorialHero({
   titleLines,
   body,
   headingId = "page-hero-title",
+  actions,
   layout = "standalone",
+  align = "center",
   sectionClassName,
 }: PageEditorialHeroProps) {
   const reduce = useReducedMotion();
@@ -71,7 +78,7 @@ export function PageEditorialHero({
     <div
       className={cn(
         heroEyebrowStack,
-        "rm-hero-copy w-full max-w-[40rem] items-start text-left",
+        "rm-hero-copy w-full max-w-[36rem] items-start text-left",
       )}
     >
       {motionOn ? (
@@ -88,42 +95,54 @@ export function PageEditorialHero({
         {motionOn ? (
           <motion.h1
             id={headingId}
-            className="rm-title-hero-lead w-full text-balance text-white"
+            className="rm-title-hero-lead w-full text-white"
             variants={heroTitle}
           >
-            <span className="block">
+            <span className="block text-balance">
               <motion.span className="block" variants={heroTitleLine}>
                 {line1}
               </motion.span>
             </span>
             {line2 ? (
               <span className="block">
-                <motion.span className="block rm-type-display-muted" variants={heroTitleLine}>
+                <motion.span
+                  className="block whitespace-nowrap rm-type-display-muted"
+                  variants={heroTitleLine}
+                >
                   {line2}
                 </motion.span>
               </span>
             ) : null}
           </motion.h1>
         ) : (
-          <h1 id={headingId} className="rm-title-hero-lead w-full text-balance text-white">
-            <span className="block">{line1}</span>
-            {line2 ? <span className="block rm-type-display-muted">{line2}</span> : null}
+          <h1 id={headingId} className="rm-title-hero-lead w-full text-white">
+            <span className="block text-balance">{line1}</span>
+            {line2 ? (
+              <span className="block whitespace-nowrap rm-type-display-muted">{line2}</span>
+            ) : null}
           </h1>
         )}
 
         {body ? (
           motionOn ? (
-            <motion.p
-              className={cn("mx-0 max-w-[42rem] text-left", heroStandfirst)}
-              variants={heroRise}
-            >
+            <motion.p className={cn(heroStandfirst, "mx-0 text-left")} variants={heroRise}>
               {body}
             </motion.p>
           ) : (
-            <p className={cn("mx-0 max-w-[42rem] text-left", heroStandfirst)}>{body}</p>
+            <p className={cn(heroStandfirst, "mx-0 text-left")}>{body}</p>
           )
         ) : null}
       </div>
+
+      {actions ? (
+        motionOn ? (
+          <motion.div className={sectionHeroActionsRow} variants={heroRise}>
+            {actions}
+          </motion.div>
+        ) : (
+          <div className={sectionHeroActionsRow}>{actions}</div>
+        )
+      ) : null}
     </div>
   );
 
@@ -135,12 +154,17 @@ export function PageEditorialHero({
     copy
   );
 
+  if (layout === "copy") {
+    return copyBlock;
+  }
+
   if (layout === "atmosphere") {
     return (
       <section
         aria-labelledby={headingId}
         className={cn(
-          "relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]",
+          "relative z-10 flex flex-1 pt-[var(--rm-header-offset)]",
+          align === "center" ? "items-center" : "items-start",
           sectionClassName,
         )}
       >

@@ -1,16 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "framer-motion";
-import { sectionInner, siteGutter } from "@/components/framer-section";
-import { ServicesCardDeckUnfold } from "@/components/services-card-deck-unfold";
 import { ServicesHero } from "@/components/services-hero";
-import { ServicesIntroHeader } from "@/components/services-intro-header";
+import { ServicesSecondScreen } from "@/components/services-second-screen";
+import { ScrollChapter } from "@/components/home-scroll-cinema";
+import { PagePreloader } from "@/components/page-preloader";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { getServicesList } from "@/lib/payload/services-cms";
 import { getPageContent } from "@/lib/payload/pages";
 import { buildPageHead } from "@/lib/seo";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/services/")({
   loader: async () => ({
@@ -28,11 +26,18 @@ export const Route = createFileRoute("/services/")({
   component: ServicesIndex,
 });
 
-const SECTION_HANDOFF_EASE = [0.22, 1, 0.36, 1] as const;
+function AmbientBlobs() {
+  return (
+    <div aria-hidden className="ambient-blobs">
+      <div className="ambient-blob ambient-blob-a" />
+      <div className="ambient-blob ambient-blob-b" />
+      <div className="ambient-blob ambient-blob-c" />
+    </div>
+  );
+}
 
 function ServicesIndex() {
   useReveal();
-  const reduce = useReducedMotion();
   const { page, servicesList } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
@@ -40,6 +45,11 @@ function ServicesIndex() {
 
   return (
     <div className="rm-page min-h-screen bg-black selection:bg-rm-accent selection:text-black">
+      <a href="#main" className="skip-link">
+        Skip to content
+      </a>
+      <AmbientBlobs />
+      <PagePreloader />
       <SiteHeader variant="dark" overlay />
 
       <ServicesHero
@@ -50,33 +60,21 @@ function ServicesIndex() {
         sectionClassName="bg-black"
       />
 
-      <section
-        aria-labelledby="services-intro-heading"
-        className={cn(siteGutter, "relative z-10 bg-black pb-16 md:pb-20")}
-      >
-        <div className={cn(sectionInner, "flex flex-col gap-8 md:gap-10")}>
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 20 }}
-            whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.8, ease: SECTION_HANDOFF_EASE }}
-          >
-            <ServicesIntroHeader />
-          </motion.div>
+      <main id="main">
+        <ServicesSecondScreen services={servicesList} />
 
-          <ServicesCardDeckUnfold services={servicesList} />
-        </div>
-      </section>
+        <ScrollChapter variant="reveal">
+          <UnifiedCTA
+            title={cta?.title}
+            titleAccent={cta?.titleAccent}
+            primaryLabel={cta?.primaryLabel}
+            primaryTo={cta?.primaryUrl}
+            secondaryLabel={cta?.secondaryLabel}
+            secondaryTo={cta?.secondaryUrl}
+          />
+        </ScrollChapter>
+      </main>
 
-      <UnifiedCTA
-        title={cta?.title}
-        titleAccent={cta?.titleAccent}
-        primaryLabel={cta?.primaryLabel}
-        primaryTo={cta?.primaryUrl}
-        secondaryLabel={cta?.secondaryLabel}
-        secondaryTo={cta?.secondaryUrl}
-        sectionClassName="border-0"
-      />
       <SiteFooter />
     </div>
   );
