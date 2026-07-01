@@ -6792,34 +6792,39 @@ a.block:focus-visible .rm-points-card__read {
   display: flex;
   align-items: center;
   min-height: 2.5rem;
-  padding: 0.625rem 0.875rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 6px;
+  padding: 1rem 1.5rem;
+  border: 1px solid var(--rm-border-soft);
+  border-radius: 1.5rem;
+  background: var(--rm-surface-float);
   font-size: 11px;
   font-weight: 500;
   line-height: 1.35;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.72);
+  color: var(--rm-text-body);
   transition:
     border-color 180ms ease-out,
+    background-color 180ms ease-out,
+    transform 180ms ease-out,
     color 180ms ease-out;
 }
 
 .rm-service-deliverable:hover {
-  border-color: rgb(255 255 255 / 0.22);
-  color: rgb(255 255 255 / 0.92);
+  border-color: var(--rm-border-strong);
+  background: var(--rm-surface-raised);
+  color: var(--rm-ink);
+  transform: translateY(-1px);
 }
 
 .rm-service-outcome {
   padding: 1.5rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.015);
+  border: 1px solid var(--rm-border-soft);
+  border-radius: 1.5rem;
+  background: var(--rm-surface-float);
   transition:
     border-color 200ms ease-out,
     background-color 200ms ease-out,
-    box-shadow 200ms ease-out;
+    transform 200ms ease-out;
 }
 
 @media (min-width: 768px) {
@@ -6829,9 +6834,9 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 .rm-service-outcome:hover {
-  border-color: rgb(255 255 255 / 0.18);
-  background: rgb(255 255 255 / 0.03);
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.04);
+  border-color: var(--rm-border-strong);
+  background: var(--rm-surface-raised);
+  transform: translateY(-1px);
 }
 
 .rm-service-quote {
@@ -6841,22 +6846,27 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 .rm-service-art {
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.02);
+  border: 1px solid var(--rm-border-soft);
+  border-radius: 1.5rem;
+  background: var(--rm-surface-float);
   overflow: hidden;
-  transition: border-color 200ms ease-out;
+  transition:
+    border-color 200ms ease-out,
+    background-color 200ms ease-out,
+    transform 200ms ease-out;
 }
 
 .rm-service-art:hover {
-  border-color: rgb(255 255 255 / 0.18);
+  border-color: var(--rm-border-strong);
+  background: var(--rm-surface-raised);
+  transform: translateY(-1px);
 }
 
 .rm-service-proof {
   padding: 1.5rem;
-  border: 1px solid rgb(255 255 255 / 0.1);
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.015);
+  border: 1px solid var(--rm-border-soft);
+  border-radius: 1.5rem;
+  background: var(--rm-surface-float);
 }
 
 @media (min-width: 768px) {

@@ -30,10 +30,6 @@ export function ServiceCardContent({
   if (isHomeShell) {
     return (
       <>
-        <div
-          className="absolute inset-y-0 left-0 w-[2px] bg-[var(--service-accent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
-          aria-hidden
-        />
         <div className={cn("relative z-[1] flex h-full min-h-0 flex-col gap-4 md:gap-5", surfaceCardPadding)}>
           <div className="flex items-center justify-between gap-3">
             <p className={cn(textMeta, "m-0")}>Be {s.hero.word}</p>
