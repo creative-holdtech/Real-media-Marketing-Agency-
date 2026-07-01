@@ -76,15 +76,6 @@ const descriptorReveal: Variants = {
   },
 };
 
-const entryRail: Variants = {
-  hidden: { opacity: 0, scaleX: 0 },
-  show: {
-    opacity: 1,
-    scaleX: 1,
-    transition: { duration: 0.7, ease: CINE_EASE },
-  },
-};
-
 function StaticHeadline() {
   return (
     <>
@@ -161,11 +152,15 @@ const introHeadlineClass = cn(sectionHeadline, "m-0 w-full max-w-none text-white
 export function ServicesIntroHeader() {
   const reduce = useReducedMotion();
 
-  const headline = reduce ? (
-    <h2 id="services-intro-heading" className={introHeadlineClass}>
-      <StaticHeadline />
-    </h2>
-  ) : (
+  if (reduce) {
+    return (
+      <h2 id="services-intro-heading" className={introHeadlineClass}>
+        <StaticHeadline />
+      </h2>
+    );
+  }
+
+  return (
     <motion.h2
       id="services-intro-heading"
       className={introHeadlineClass}
@@ -174,23 +169,5 @@ export function ServicesIntroHeader() {
     >
       <AnimatedHeadline />
     </motion.h2>
-  );
-
-  const rail = reduce ? (
-    <div className="h-px w-full max-w-[12rem] bg-white/20" aria-hidden />
-  ) : (
-    <motion.div
-      className="h-px w-full max-w-[12rem] bg-white/18"
-      aria-hidden
-      variants={entryRail}
-      style={{ transformOrigin: "0% 50%" }}
-    />
-  );
-
-  return (
-    <div className="flex flex-col gap-2">
-      {headline}
-      {rail}
-    </div>
   );
 }
