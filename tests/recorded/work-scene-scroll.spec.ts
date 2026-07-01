@@ -296,6 +296,7 @@ test.describe("Work scene — sticky preview crossfade", () => {
     const afterTick = await sampleWorkScene(page);
     expect(afterTick.active).toMatch(/Progresivo/i);
     expect(afterTick.cards[2]?.opacity ?? 0).toBeGreaterThan(0.5);
+    expect(afterTick.progress).toBeGreaterThan(0.9);
   });
 
   test("hover inactive row previews case without changing active tick", async ({ page }) => {

@@ -247,10 +247,6 @@ export function ServicesSection() {
                   Compare formats
                   <BtnArrow />
                 </button>
-                <Link to="/services" className={cn(btnOutlineOnDark, "group gap-2")}>
-                  Six disciplines
-                  <BtnArrow />
-                </Link>
               </div>
             </div>
           </div>

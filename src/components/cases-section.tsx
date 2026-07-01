@@ -459,8 +459,8 @@ function WorkSceneDesktop({
       const track = trackRef.current;
       const sticky = stickyRef.current;
       if (!track || !sticky) return;
-      const peak = cardWindow(index, count).peak;
-      const targetY = scrollYForWorkProgress(track, sticky, rawProgressFromMotion(peak));
+      const targetMotion = index === count - 1 ? 1 : cardWindow(index, count).peak;
+      const targetY = scrollYForWorkProgress(track, sticky, rawProgressFromMotion(targetMotion));
       beginClickNav();
       if (lenis) {
         lenis.scrollTo(targetY, {

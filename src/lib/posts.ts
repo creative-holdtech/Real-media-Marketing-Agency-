@@ -89,7 +89,7 @@ export const posts: Post[] = [
       "In a category where every vendor claims best-in-class detection rates, the brands that win are the ones that make buyers feel safe before the demo.",
     image: blogCover("cybersecurity-trust-building"),
     imageAlt:
-      "Editorial photograph — figure at a crossroads with location pins on a winding floor path",
+      "Editorial photograph — black and white hands placing notes on a wall",
     imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
@@ -112,7 +112,7 @@ export const posts: Post[] = [
       "Clicks, impressions, and MQLs are metrics of activity, not outcomes. Here is what pipeline-attributed reporting actually looks like — and why most teams resist it.",
     image: blogCover("b2b-performance-marketing"),
     imageAlt:
-      "Editorial photograph — metallic funnel sculpture with radiating floor lines in dramatic light",
+      "Editorial photograph — concentric staircase sculpture with radiating floor lines",
     imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [
@@ -158,7 +158,7 @@ export const posts: Post[] = [
       "Buyers research products in dark social and hit your site ready to buy. We explained how to implement self-reported attribution to save your best channels.",
     image: blogCover("marketing-dark-social-attribution"),
     imageAlt:
-      "Editorial photograph — concrete spiral staircase emerging from shadow into a single light beam",
+      "Editorial photograph — hand turning pages in a printed report",
     imageLayout: { portrait: "50% 50%", landscape: "50% 50%" },
     author: "R-M Editorial",
     body: [

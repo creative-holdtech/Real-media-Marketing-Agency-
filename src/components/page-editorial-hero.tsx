@@ -106,7 +106,7 @@ export function PageEditorialHero({
             {line2 ? (
               <span className="block">
                 <motion.span
-                  className="block whitespace-nowrap rm-type-display-muted"
+                  className="block text-pretty rm-type-display-muted md:whitespace-nowrap"
                   variants={heroTitleLine}
                 >
                   {line2}
@@ -118,7 +118,9 @@ export function PageEditorialHero({
           <h1 id={headingId} className="rm-title-hero-lead w-full text-white">
             <span className="block text-balance">{line1}</span>
             {line2 ? (
-              <span className="block whitespace-nowrap rm-type-display-muted">{line2}</span>
+              <span className="block text-pretty rm-type-display-muted md:whitespace-nowrap">
+                {line2}
+              </span>
             ) : null}
           </h1>
         )}
