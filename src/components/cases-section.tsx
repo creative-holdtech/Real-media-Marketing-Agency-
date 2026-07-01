@@ -288,7 +288,6 @@ function MotionWorkRow({
       params={{ slug: study.slug }}
       preload="intent"
       className="rm-index__row rm-touch group"
-      style={{ y }}
       data-on={isOn ? "true" : "false"}
       data-ready={navReady ? "true" : "false"}
       data-hover={isHover ? "true" : "false"}
@@ -317,7 +316,7 @@ function MotionWorkRow({
           </span>
         </span>
 
-        <motion.span className="rm-index__main" style={{ opacity: mainOpacity }}>
+        <motion.span className="rm-index__main" style={{ opacity: mainOpacity, y }}>
           <span
             className={cn("rm-index__thumb", previewPhoto && "rm-index__thumb--photo")}
             aria-hidden
@@ -344,7 +343,7 @@ function MotionWorkRow({
           </span>
         </motion.span>
 
-        <motion.span className="rm-index__metric" style={{ opacity: mainOpacity }}>
+        <motion.span className="rm-index__metric" style={{ opacity: mainOpacity, y }}>
           <span className={cn("rm-index__metric-value", (isOn || isHover) && "text-white")}>
             {study.primaryMetric.value}
           </span>
@@ -353,7 +352,7 @@ function MotionWorkRow({
 
         <motion.span
           className={cn("rm-index__arrow", textGhost)}
-          style={{ opacity: mainOpacity, x: arrowX }}
+          style={{ opacity: mainOpacity, x: arrowX, y }}
           aria-hidden
         >
           <BtnArrow />
