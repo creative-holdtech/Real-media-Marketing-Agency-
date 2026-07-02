@@ -68,7 +68,7 @@ export function AboutSection({ page }: { page?: PageContent }) {
               title={studio?.heading ?? ""}
               titleLines={studio?.headingLines}
               srTitle={studio?.heading ?? ""}
-              contentClassName="md:max-w-[46ch]"
+              contentClassName="md:!w-[72ch] md:!max-w-[72ch]"
               lead={
                 <>
                   {studio?.body ? (

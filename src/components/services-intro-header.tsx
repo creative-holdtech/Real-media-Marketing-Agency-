@@ -15,10 +15,11 @@ const DESCRIPTOR_ROWS = [
 
 const CINE_EASE = [0.16, 1, 0.3, 1] as const;
 const INTRO_EASE = [0.22, 1, 0.36, 1] as const;
+const SOFT_SETTLE = [0.2, 0.85, 0.24, 1] as const;
 
-const WORD_STAGGER = 0.13;
-const ROW_GAP = 0.28;
-const ROW_2_DELAY = 0.06 + WORD_STAGGER * 3 + 0.55 + ROW_GAP;
+const WORD_STAGGER = 0.09;
+const ROW_GAP = 0.18;
+const ROW_2_DELAY = 0.16 + WORD_STAGGER * 3 + ROW_GAP;
 
 export const servicesScreenTwoStage: Variants = {
   hidden: {},
@@ -39,40 +40,95 @@ export const servicesScreenTwoItem: Variants = {
 const introPhraseStage: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.1, delayChildren: 0.04 },
+    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
   },
 };
 
 const phraseRow: Variants = {
-  hidden: {},
+  hidden: {
+    opacity: 0,
+    y: 12,
+    filter: "blur(12px)",
+  },
   show: {
-    transition: { staggerChildren: WORD_STAGGER, delayChildren: 0.06 },
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.72,
+      ease: CINE_EASE,
+      staggerChildren: WORD_STAGGER,
+      delayChildren: 0.04,
+    },
   },
 };
 
 const phraseRow2: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: WORD_STAGGER, delayChildren: ROW_2_DELAY },
+  hidden: {
+    opacity: 0,
+    y: 14,
+    filter: "blur(12px)",
   },
-};
-
-const wordShell: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.01 } },
-};
-
-const scaffoldReveal: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.45, ease: INTRO_EASE } },
-};
-
-const descriptorReveal: Variants = {
-  hidden: { opacity: 0, y: "0.5em" },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.92, ease: CINE_EASE },
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.76,
+      ease: CINE_EASE,
+      staggerChildren: WORD_STAGGER,
+      delayChildren: ROW_2_DELAY,
+    },
+  },
+};
+
+const phraseShell: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 10,
+    scale: 0.992,
+    filter: "blur(6px)",
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    filter: "blur(0px)",
+    transition: {
+      duration: 0.58,
+      ease: SOFT_SETTLE,
+      staggerChildren: 0.03,
+      delayChildren: 0.02,
+    },
+  },
+};
+
+const beReveal: Variants = {
+  hidden: { opacity: 0, y: 4, scale: 0.975, letterSpacing: "0.01em" },
+  show: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    letterSpacing: "0em",
+    transition: { duration: 0.3, ease: INTRO_EASE },
+  },
+};
+
+const descriptorReveal: Variants = {
+  hidden: {
+    opacity: 0,
+    x: 16,
+    y: 2,
+    clipPath: "inset(0 100% 0 0)",
+    filter: "blur(8px)",
+  },
+  show: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    clipPath: "inset(0 0% 0 0)",
+    filter: "blur(0px)",
+    transition: { duration: 0.9, ease: CINE_EASE },
   },
 };
 
@@ -95,18 +151,21 @@ function BePhrase({
   return (
     <motion.span
       className="inline-flex items-baseline whitespace-nowrap"
-      variants={wordShell}
+      variants={phraseShell}
       style={{ transformOrigin: "50% 100%" }}
     >
       <motion.span
-        className={cn("inline text-[var(--rm-text-faint)]", muted && "text-[var(--rm-text-ghost)]")}
-        variants={scaffoldReveal}
+        className="inline text-white"
+        variants={beReveal}
         aria-hidden
       >
         Be&nbsp;
       </motion.span>
       <motion.span
-        className={cn("inline", muted ? "text-[var(--rm-text-subtle)]" : "text-white")}
+        className={cn(
+          "inline text-[var(--rm-text-subtle)]",
+          "motion-reduce:filter-none",
+        )}
         variants={descriptorReveal}
       >
         {descriptor}

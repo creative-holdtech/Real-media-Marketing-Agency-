@@ -43,6 +43,7 @@ type PageEditorialHeroProps = {
   tag: string;
   titleLines: string[];
   body?: string;
+  bodyClassName?: string;
   headingId?: string;
   actions?: ReactNode;
   /**
@@ -63,6 +64,7 @@ export function PageEditorialHero({
   tag,
   titleLines,
   body,
+  bodyClassName,
   headingId = "page-hero-title",
   actions,
   layout = "standalone",
@@ -127,11 +129,11 @@ export function PageEditorialHero({
 
         {body ? (
           motionOn ? (
-            <motion.p className={cn(heroStandfirst, "mx-0 text-left")} variants={heroRise}>
+            <motion.p className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")} variants={heroRise}>
               {body}
             </motion.p>
           ) : (
-            <p className={cn(heroStandfirst, "mx-0 text-left")}>{body}</p>
+            <p className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")}>{body}</p>
           )
         ) : null}
       </div>

@@ -79,6 +79,7 @@ export function ServicesHero({
                 tag={tag}
                 titleLines={titleLines}
                 body={body}
+                bodyClassName="md:!w-[46ch] md:!max-w-[46ch]"
                 headingId={headingId}
               />
             </HeroScrollStage>

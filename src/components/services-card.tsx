@@ -35,10 +35,10 @@ export function ServiceCardContent({
             <p className={cn(textMeta, "m-0")}>Be {s.hero.word}</p>
             <span className={cn(sectionPill, "uppercase")}>{s.shortName}</span>
           </div>
-          <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
+          <div className="mt-auto flex min-h-0 flex-1 flex-col border-t border-[var(--rm-border-soft)] pt-5">
             <p className={cn(textMeta, "m-0")}>{s.tagline}</p>
             <h3 className={cn(subsectionTitle, "mt-2 text-white")}>{s.name}</h3>
-            <p className={cn(bodyCopy, "mt-3 line-clamp-3 text-[var(--rm-text-body)]")}>
+            <p className={cn(bodyCopy, "mt-3 line-clamp-3 flex-1 text-[var(--rm-text-body)]")}>
               {serviceCardIntro(s)}
             </p>
             <div className="mt-6 flex justify-end">
