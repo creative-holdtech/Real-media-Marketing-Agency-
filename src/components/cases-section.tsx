@@ -60,7 +60,7 @@ import { cn } from "@/lib/utils";
 const FAST_VELOCITY = 0.00085;
 const FAST_DELTA = 0.00005;
 const FAST_SETTLE_MS = 180;
-const MotionLink = motion.create(Link);
+const MotionLink = motion(Link);
 
 function scrollYForWorkProgress(
   track: HTMLElement,
