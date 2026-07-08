@@ -131,6 +131,12 @@ export function AboutManifestoSection({
 
   const thesisWordCount = thesis.split(" ").length;
   const correctionDelay = 0.04 + WORD_STAGGER * thesisWordCount + ROW_GAP;
+  const correctionWordCount = correction ? correction.split(" ").length : 0;
+  /** Standfirst must wait for the last headline word to finish its own reveal —
+   * otherwise it reads as fully visible while the thesis is still animating in above it. */
+  const headlineRevealEnd =
+    (correction ? correctionDelay + WORD_STAGGER * correctionWordCount : 0.04 + WORD_STAGGER * thesisWordCount) +
+    0.45;
 
   return (
     <section
@@ -168,14 +174,14 @@ export function AboutManifestoSection({
         )}
 
         {standfirst ? (
-          <FadeUp delay={0.08}>
+          <FadeUp delay={headlineRevealEnd}>
             <p className="rm-copy-standfirst mt-6 max-w-[46ch] text-pretty text-[var(--rm-text-body)]">
               {standfirst}
             </p>
           </FadeUp>
         ) : null}
 
-        <FadeUp delay={0.16} className="mt-8">
+        <FadeUp delay={headlineRevealEnd + 0.12} className="mt-8">
           <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
             Book free audit
             <BtnArrow />

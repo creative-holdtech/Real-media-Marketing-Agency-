@@ -504,7 +504,7 @@ function ProductsPage() {
         <section
           id="format"
           aria-labelledby="format-heading"
-          className={cn(sectionShell, "relative border-b-0 bg-black")}
+          className={cn(sectionShell, "relative bg-black")}
           style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
           <div aria-hidden className="rm-products-glow" />
@@ -536,7 +536,7 @@ function ProductsPage() {
 
         <section
           aria-labelledby="compare-heading"
-          className={cn(sectionShell, "relative border-b-0 bg-black")}
+          className={cn(sectionShell, "relative bg-black")}
         >
           <div aria-hidden className="rm-products-glow" />
           <div className={sectionInner}>

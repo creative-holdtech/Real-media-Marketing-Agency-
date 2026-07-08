@@ -281,9 +281,7 @@ function VerticalsSection({
           })}
             </div>
           </div>
-        </div>
 
-        <div className="md:col-span-2 md:col-start-2">
           <div
             role="tabpanel"
             id={`${panelId}-panel`}
