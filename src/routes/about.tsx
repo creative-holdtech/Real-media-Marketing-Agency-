@@ -128,15 +128,15 @@ function AboutPage() {
       <main id="main">
         <AboutStatsScroll />
 
-        <div className="rm-defer-paint">
+        <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 640px" }}>
           <ManifestoSection manifesto={manifesto} />
         </div>
 
-        <div className="rm-defer-paint">
+        <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 700px" }}>
           <VerticalsSection verticals={verticals} content={verticalsContent} />
         </div>
 
-        <div className="rm-defer-paint">
+        <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 850px" }}>
           <TeamSection />
         </div>
 
