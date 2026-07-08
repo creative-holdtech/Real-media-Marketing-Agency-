@@ -336,7 +336,7 @@ function FormatOverview({ mode }: { mode: Mode }) {
         id={MODE_PANEL_ID}
         role="tabpanel"
         aria-labelledby={`mode-tab-${mode}`}
-        className="flex flex-col gap-10 border-t border-white/10 pt-8 md:gap-12"
+        className="flex flex-col gap-10 pt-8 md:gap-12"
         variants={modePanelVariants}
         initial="hidden"
         animate="visible"
