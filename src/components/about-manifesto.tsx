@@ -145,7 +145,7 @@ export function AboutManifestoSection({
     >
       <div aria-hidden className="rm-products-glow" />
       <div aria-hidden className="rm-manifesto-light__grain" />
-      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center pb-40 pt-16 text-center md:pb-64 md:pt-24">
+      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center pb-40 pt-16 text-center md:pb-40 md:pt-24">
         <FadeUp>
           <FramerTag className="border-white/10 text-[var(--rm-text-muted)]">{tag}</FramerTag>
         </FadeUp>
