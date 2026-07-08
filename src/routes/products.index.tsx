@@ -282,33 +282,19 @@ function DeliverablesRail({ mode }: { mode: Mode }) {
 function ProofRow({ mode }: { mode: Mode }) {
   const data = modes[mode];
 
-  const [featured, ...rest] = data.proof;
-
   return (
-    <div className="grid items-start gap-4 sm:grid-cols-[1.4fr_1fr]">
-      <SurfaceCard interactive className="min-h-0">
-        <CardContent className={cn("flex flex-col gap-0", surfaceCardPadding)}>
-          <div className="border-t border-[var(--rm-border-soft)] pt-5">
-            <p className={cn(sectionHeadline, "tabular-nums text-white")}>{featured.value}</p>
-            <p className={cn(textLabel, "mt-3")}>{featured.label}</p>
-            <p className={cn(bodyCopy, "mt-3 max-w-[32ch] text-pretty")}>{featured.context}</p>
-          </div>
-        </CardContent>
-      </SurfaceCard>
-
-      <div className="grid gap-4">
-        {rest.map((stat) => (
-          <SurfaceCard key={stat.label} interactive className="min-h-0">
-            <CardContent className={cn("flex h-full flex-col justify-between gap-0", surfaceCardPadding)}>
-              <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
-                <p className={cn(subsectionTitle, "tabular-nums")}>{stat.value}</p>
-                <p className={cn(textLabel, "mt-3")}>{stat.label}</p>
-                <p className={cn(bodyCopy, "mt-3 max-w-[28ch] text-pretty")}>{stat.context}</p>
-              </div>
-            </CardContent>
-          </SurfaceCard>
-        ))}
-      </div>
+    <div className="grid gap-4 sm:grid-cols-3">
+      {data.proof.map((stat) => (
+        <SurfaceCard key={stat.label} interactive className="min-h-0">
+          <CardContent className={cn("flex h-full flex-col", surfaceCardPadding)}>
+            <p className="rm-type-display tabular-nums text-[2rem] leading-[1.1] text-[var(--rm-ink)]">
+              {stat.value}
+            </p>
+            <p className={cn(textLabel, "mt-3")}>{stat.label}</p>
+            <p className={cn(bodyCopy, "mt-2 max-w-[30ch] text-pretty")}>{stat.context}</p>
+          </CardContent>
+        </SurfaceCard>
+      ))}
     </div>
   );
 }
