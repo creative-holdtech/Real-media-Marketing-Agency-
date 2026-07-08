@@ -367,7 +367,7 @@ function FormatOverview({ mode }: { mode: Mode }) {
           <div className="flex h-full flex-col gap-6 pt-6">
             <div className="flex flex-col gap-3">
               <p className={cn("m-0", textMeta, textGhost)}>{data.tag}</p>
-              <h3 className={cn(sectionHeadline, "max-w-[18ch] text-white")}>{data.headline}</h3>
+              <h3 className={cn(subsectionTitle, "max-w-[22ch] text-white")}>{data.headline}</h3>
               <p className={cn(sectionSubheading, "m-0 max-w-[38ch] text-white")}>{leadHook}</p>
               {leadRest ? (
                 <p className={cn(bodyCopy, "max-w-[42ch] text-[var(--rm-text-subtle)]")}>{leadRest}</p>
