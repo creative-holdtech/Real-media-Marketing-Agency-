@@ -22,10 +22,6 @@ const heroFade: Variants = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { duration: 0.6, ease: HERO_EASE } },
 };
-const heroRise: Variants = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: HERO_EASE } },
-};
 const heroTitle: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
@@ -38,11 +34,26 @@ const heroTitleLine: Variants = {
     transition: { duration: 0.9, ease: HERO_EASE },
   },
 };
+/**
+ * Body + actions reveal together, after both title lines settle. Uses
+ * initial/animate (not variants) so it opts out of heroStage's
+ * staggerChildren orchestration entirely — Framer adds parent stagger
+ * delay and a child's own transition.delay together, so a variant-based
+ * delay here would just shift both further apart instead of syncing them.
+ */
+const HERO_BODY_ACTIONS_DELAY = 0.48;
+const heroRiseWithTitleHidden = { opacity: 0, y: 22 };
+const heroRiseWithTitleShow = { opacity: 1, y: 0 };
+const heroRiseWithTitleTransition = {
+  duration: 0.8,
+  ease: HERO_EASE,
+  delay: HERO_BODY_ACTIONS_DELAY,
+};
 
 type PageEditorialHeroProps = {
   tag: string;
   titleLines: string[];
-  body?: string;
+  body?: ReactNode;
   bodyClassName?: string;
   headingId?: string;
   actions?: ReactNode;
@@ -78,10 +89,7 @@ export function PageEditorialHero({
 
   const copy = (
     <div
-      className={cn(
-        heroEyebrowStack,
-        "rm-hero-copy w-full max-w-[36rem] items-start text-left",
-      )}
+      className={cn(heroEyebrowStack, "rm-hero-copy w-full max-w-[36rem] items-start text-left")}
     >
       {motionOn ? (
         <motion.p variants={heroFade}>
@@ -108,7 +116,7 @@ export function PageEditorialHero({
             {line2 ? (
               <span className="block">
                 <motion.span
-                  className="block text-pretty rm-type-display-muted md:whitespace-nowrap"
+                  className="block text-balance rm-type-display-muted md:whitespace-nowrap"
                   variants={heroTitleLine}
                 >
                   {line2}
@@ -120,7 +128,7 @@ export function PageEditorialHero({
           <h1 id={headingId} className="rm-title-hero-lead w-full text-white">
             <span className="block text-balance">{line1}</span>
             {line2 ? (
-              <span className="block text-pretty rm-type-display-muted md:whitespace-nowrap">
+              <span className="block text-balance rm-type-display-muted md:whitespace-nowrap">
                 {line2}
               </span>
             ) : null}
@@ -129,7 +137,12 @@ export function PageEditorialHero({
 
         {body ? (
           motionOn ? (
-            <motion.p className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")} variants={heroRise}>
+            <motion.p
+              className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")}
+              initial={heroRiseWithTitleHidden}
+              animate={heroRiseWithTitleShow}
+              transition={heroRiseWithTitleTransition}
+            >
               {body}
             </motion.p>
           ) : (
@@ -140,7 +153,12 @@ export function PageEditorialHero({
 
       {actions ? (
         motionOn ? (
-          <motion.div className={sectionHeroActionsRow} variants={heroRise}>
+          <motion.div
+            className={sectionHeroActionsRow}
+            initial={heroRiseWithTitleHidden}
+            animate={heroRiseWithTitleShow}
+            transition={heroRiseWithTitleTransition}
+          >
             {actions}
           </motion.div>
         ) : (
@@ -182,11 +200,7 @@ export function PageEditorialHero({
   return (
     <section
       aria-labelledby={headingId}
-      className={cn(
-        siteChromeBand,
-        "relative pt-[var(--rm-header-offset)]",
-        sectionClassName,
-      )}
+      className={cn(siteChromeBand, "relative pt-[var(--rm-header-offset)]", sectionClassName)}
     >
       <div className={pageHeroContainer}>{copyBlock}</div>
     </section>

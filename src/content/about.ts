@@ -27,8 +27,11 @@ export const aboutMetrics = {
       id: "capital",
       value: "€10M+",
       label: "Raised by founder teams we positioned and packaged.",
-      tag: "helped our clients earn 2025—2026",
-      animate: false,
+      tag: "Capital raised by our clients in 2025–2026",
+      animate: true,
+      numericTarget: 10,
+      prefix: "€",
+      suffix: "M+",
     },
     {
       id: "projects",
@@ -53,7 +56,9 @@ export const aboutMetrics = {
       value: "2y",
       label: "Independent.",
       tag: "Operating",
-      animate: false,
+      animate: true,
+      numericTarget: 2,
+      suffix: "y",
     },
   ],
 } as const;
@@ -110,8 +115,8 @@ export const aboutTeam = {
   subtitle: "Seven active operators. Every engagement is led, not delegated.",
   members: [
     {
-      id: "iryna",
-      name: "Iryna",
+      id: "tamara",
+      name: "Tamara",
       role: "Project Holder",
       status: "Active",
       lead: true,
@@ -119,8 +124,8 @@ export const aboutTeam = {
       bio: "Takes full ownership of projects from initial concept to successful launch. Coordinates the team, tracks key milestones, and ensures goals are met on schedule.",
     },
     {
-      id: "alex",
-      name: "Alex",
+      id: "veronica",
+      name: "Veronica",
       role: "Head of Strategy",
       status: "Active",
       photoKey: "04",

@@ -2,30 +2,28 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import aboutHero from "@/assets/about-hero.png";
-import aboutHeroTeam from "@/assets/about-hero-team.jpg";
 import nicheAi from "@/assets/niche-ai.jpg";
 import nicheFintech from "@/assets/niche-fintech.jpg";
 import nicheHospitality from "@/assets/niche-hospitality.jpg";
 import nicheB2b from "@/assets/niche-b2b.jpg";
-import { AboutStatsSection } from "@/components/about-stats-section";
-import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import { AboutStatsScroll } from "@/components/about-stats-scroll";
+import { AboutManifestoSection } from "@/components/about-manifesto";
 import { MarketingSection, MarketingTagColumn } from "@/components/marketing-section";
-import { ManifestoQuoteSection } from "@/components/ui/testimonials";
+import { ServicesHero } from "@/components/services-hero";
 import { TeamSection } from "@/components/team-section";
 import { PagePreloader } from "@/components/page-preloader";
 import {
+  BtnArrow,
   bodyCopy,
-  btnOutline,
-  heroSubcopyStrong,
+  borderSoft,
+  btnOutlineOnDark,
   btnPrimary,
-  FramerTag,
-  pageHeroContainer,
-  siteChromeBand,
   sectionGap,
-  sectionHeaderGrid,
+  sectionContentGrid,
   sectionHeadline,
-  sectionHeadlineLead,
+  subsectionTitle,
+  textGhost,
+  textMeta,
 } from "@/components/framer-section";
 import { SurfaceCard } from "@/components/surface-card";
 import { TextReveal } from "@/components/text-reveal";
@@ -50,10 +48,7 @@ export const Route = createFileRoute("/about")({
     const seo = buildPageHead({ title, description, pathname: "/about" });
     return {
       meta: seo.meta,
-      links: [
-        ...seo.links,
-        { rel: "preload", as: "image", href: aboutHeroTeam, fetchPriority: "high" },
-      ],
+      links: seo.links,
     };
   },
   component: AboutPage,
@@ -79,7 +74,6 @@ function AmbientBlobs() {
 /* ================================================================== */
 function AboutPage() {
   useReveal();
-  const reduce = useReducedMotion();
   const { page } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
@@ -103,80 +97,36 @@ function AboutPage() {
       <PagePreloader />
       <SiteHeader variant="dark" overlay />
 
-      <HeroAtmosphere
-        imageSrc={aboutHeroTeam}
-        fallbackImageSrc={hero?.image || aboutHero}
-        underHeader
-        className="rm-hero-atmosphere--about-photo"
-      >
-        <div aria-hidden className="rm-hero-grain" />
-        <section
-          aria-labelledby="page-title"
-          className="relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]"
-        >
-          <div className={siteChromeBand}>
-            <div className={pageHeroContainer}>
-            <div className="rm-hero-copy flex w-full max-w-[40rem] flex-col items-start text-left">
-              {hero?.tag ? (
-                <motion.p
-                  className="mb-8 w-fit"
-                  initial={reduce ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.65, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  <FramerTag>{hero.tag}</FramerTag>
-                </motion.p>
-              ) : null}
-              <h1
-                id="page-title"
-                className="rm-hero-headline w-full max-w-[16ch] text-[35px] font-medium leading-[0.94] tracking-[-0.045em] text-white sm:text-[48px] md:max-w-[18ch] md:text-[58px] lg:text-[64px]"
+      <ServicesHero
+        tag={hero?.tag ?? "The position"}
+        titleLines={hero?.titleLines ?? []}
+        body={hero?.subheading}
+        bodyClassName="md:!w-[42ch] md:!max-w-[42ch]"
+        headingId="page-title"
+        sectionClassName="bg-black"
+        actions={
+          <>
+            {hero?.ctaPrimaryLabel ? (
+              <Link to={hero.ctaPrimaryUrl ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
+                {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
+                <BtnArrow />
+              </Link>
+            ) : null}
+            {hero?.ctaSecondaryLabel ? (
+              <a
+                href={hero.ctaSecondaryUrl ?? "#verticals"}
+                className={cn(btnOutlineOnDark, "group gap-2")}
               >
-                {(hero?.titleLines ?? []).map((line, i) => (
-                  <span key={line} className="rm-hero-line">
-                    <span
-                      className="rm-hero-line__inner text-pretty"
-                      style={{ animationDelay: `${0.28 + i * 0.12}s` }}
-                    >
-                      {line}
-                    </span>
-                  </span>
-                ))}
-              </h1>
-              {hero?.subheading ? (
-                <motion.p
-                  className={cn("mt-7 max-w-[34ch] text-pretty", heroSubcopyStrong)}
-                  initial={reduce ? false : { opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.75, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {hero.subheading}
-                </motion.p>
-              ) : null}
-              <motion.div
-                className="mt-10 hidden flex-wrap items-center justify-start gap-4 md:flex"
-                initial={reduce ? false : { opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
-              >
-                {hero?.ctaPrimaryLabel ? (
-                  <Link to={hero.ctaPrimaryUrl ?? "/audit"} className={btnPrimary}>
-                    {hero.ctaPrimaryLabel}
-                  </Link>
-                ) : null}
-                {hero?.ctaSecondaryLabel ? (
-                  <a href={hero.ctaSecondaryUrl ?? "#verticals"} className={btnOutline}>
-                    {hero.ctaSecondaryLabel}
-                  </a>
-                ) : null}
-              </motion.div>
-            </div>
-            </div>
-          </div>
-        </section>
-      </HeroAtmosphere>
+                {hero.ctaSecondaryLabel.replace(/\s*→$/, "")}
+                <BtnArrow />
+              </a>
+            ) : null}
+          </>
+        }
+      />
 
       <main id="main">
-        <AboutStatsSection />
+        <AboutStatsScroll />
 
         <div className="rm-defer-paint">
           <ManifestoSection manifesto={manifesto} />
@@ -216,10 +166,9 @@ const manifestoBulletsDefault = [
 
 function ManifestoSection({ manifesto }: { manifesto: ReturnType<typeof pageSection> }) {
   return (
-    <ManifestoQuoteSection
+    <AboutManifestoSection
       tag={manifesto.tag ?? "The position"}
       titleId="manifesto-heading"
-      srTitle="Manifesto"
       thesis={manifesto.heading ?? manifestoThesisDefault}
       bullets={(manifesto.bullets ?? manifestoBulletsDefault) as unknown as readonly string[]}
     />
@@ -274,88 +223,80 @@ function VerticalsSection({
   }, []);
 
   return (
-    <MarketingSection id="verticals" ariaLabelledBy="verticals-heading">
-      <div className={cn(sectionHeaderGrid, "md:items-stretch")}>
+    <MarketingSection
+      id="verticals"
+      ariaLabelledBy="verticals-heading"
+      className="bg-black"
+    >
+      <div className={cn(sectionContentGrid, "items-start md:items-stretch")}>
         <MarketingTagColumn tag={content.tag ?? "Spaces"} />
-        <div className={cn("md:col-span-2", sectionHeadlineLead)}>
-          <h2 id="verticals-heading" className="sr-only">
-            Verticals
+        <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
+          <h2 id="verticals-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
+            <span className="block">Four spaces we lock into.</span>
           </h2>
-          <TextReveal
-            text={content.heading ?? "Four spaces we lock into."}
-            className={sectionHeadline}
-          />
-          {content.body ? (
-            <p className={cn(bodyCopy, "reveal")} data-delay="1">
-              {content.body}
-            </p>
-          ) : null}
-        </div>
-      </div>
+          <div className="flex flex-col gap-4">
+            {content.body ? (
+              <p className={cn(bodyCopy, "reveal max-w-[34ch]")} data-delay="1">
+                {content.body}
+              </p>
+            ) : null}
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-8">
-        <div className="flex md:flex-col md:items-start md:pt-2">
-          <div
-            ref={listRef}
-            role="tablist"
-            aria-label="Verticals"
-            className="relative flex w-full max-w-full gap-2 overflow-x-auto rounded-full border border-white/[0.14] p-1 [-ms-overflow-style:none] [scrollbar-width:none] md:flex-col md:overflow-visible md:rounded-2xl md:gap-1 [&::-webkit-scrollbar]:hidden"
-          >
-            {verticals.map((v, index) => {
-              const selected = index === active;
-              return (
-                <button
-                  key={v.n}
-                  type="button"
-                  role="tab"
-                  id={`${panelId}-tab-${v.n}`}
-                  aria-selected={selected}
-                  aria-controls={`${panelId}-panel`}
-                  tabIndex={selected ? 0 : -1}
-                  onClick={() => setActive(index)}
-                  onKeyDown={(e) => onKeyDown(e, index)}
-                  className={cn(
-                    "relative z-10 shrink-0 rounded-full px-4 py-2.5 text-sm font-medium transition-colors duration-200",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rm-accent focus-visible:ring-offset-2 focus-visible:ring-offset-black",
-                    "md:w-full md:rounded-xl md:px-4 md:py-3 md:text-left",
-                  )}
-                  style={{
-                    color: selected ? "var(--rm-ink)" : "var(--rm-text-muted)",
-                  }}
-                >
-                  {!reduce && selected ? (
-                    <motion.span
-                      layoutId="verticals-tab-bg"
-                      className="absolute inset-0 rounded-full bg-white/[0.08] md:rounded-xl"
-                      transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                    />
-                  ) : selected ? (
-                    <span
-                      className="absolute inset-0 rounded-full bg-white/[0.08] md:rounded-xl"
-                      aria-hidden
-                    />
-                  ) : null}
-                  <span className="relative whitespace-nowrap md:whitespace-normal">{v.title}</span>
-                </button>
-              );
-            })}
+            <div
+              ref={listRef}
+              role="tablist"
+              aria-label="Verticals"
+              className={cn("flex flex-wrap items-end gap-x-8 gap-y-1 border-b", borderSoft)}
+            >
+          {verticals.map((v, index) => {
+            const selected = index === active;
+            return (
+              <button
+                key={v.n}
+                type="button"
+                role="tab"
+                id={`${panelId}-tab-${v.n}`}
+                aria-selected={selected}
+                aria-controls={`${panelId}-panel`}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActive(index)}
+                onKeyDown={(e) => onKeyDown(e, index)}
+                className={cn(
+                  "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-2",
+                  subsectionTitle,
+                  "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
+                  selected ? "text-white" : cn(textGhost, "hover:text-[var(--rm-text-muted)]"),
+                )}
+              >
+                {selected ? (
+                  <motion.span
+                    layoutId="verticals-tab-bg"
+                    className="absolute inset-x-0 bottom-0 h-px bg-white"
+                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 400, damping: 35 }}
+                  />
+                ) : null}
+                <span className="relative whitespace-nowrap">{v.title}</span>
+              </button>
+            );
+          })}
+            </div>
           </div>
         </div>
 
-        <div className="md:col-span-2">
+        <div className="md:col-span-2 md:col-start-2">
           <div
             role="tabpanel"
             id={`${panelId}-panel`}
             aria-labelledby={`${panelId}-tab-${sector.n}`}
-            className="relative min-h-[280px] overflow-hidden rounded-2xl border border-[var(--rm-border-soft)] md:min-h-[360px]"
+            className="relative min-h-[320px] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-black md:min-h-[360px] md:rounded-[2rem]"
           >
             <AnimatePresence initial={false}>
               <motion.div
                 key={sector.n}
                 className="absolute inset-0 will-change-[opacity,transform]"
-                initial={reduce ? false : { opacity: 0, scale: 1.03, filter: "blur(6px)" }}
+                initial={reduce ? false : { opacity: 0, scale: 1.02, filter: "blur(5px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={reduce ? undefined : { opacity: 0, scale: 1.01, filter: "blur(4px)" }}
+                exit={reduce ? undefined : { opacity: 0, scale: 1.01, filter: "blur(3px)" }}
                 transition={{
                   duration: reduce ? 0 : 0.32,
                   ease: verticalPanelEase,
@@ -370,7 +311,7 @@ function VerticalsSection({
                   decoding="sync"
                   fetchPriority="high"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/42 to-black/12" />
                 <motion.div
                   className="absolute inset-0 flex flex-col justify-end p-6 md:p-8"
                   initial={reduce ? false : { opacity: 0, y: 8 }}
@@ -382,8 +323,9 @@ function VerticalsSection({
                   }}
                 >
                   <div>
+                    <p className={cn(textMeta, "mb-3")}>{sector.n}</p>
                     <h3 className={cn(sectionHeadline, "max-w-none text-white")}>{sector.title}</h3>
-                    <p className={cn(bodyCopy, "mt-4 max-w-[44ch] text-white/75")}>{sector.body}</p>
+                    <p className={cn(bodyCopy, "mt-4 max-w-[44ch]")}>{sector.body}</p>
                   </div>
                 </motion.div>
               </motion.div>

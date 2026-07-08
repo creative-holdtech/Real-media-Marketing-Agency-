@@ -8,7 +8,6 @@ import {
   sectionInner,
   sectionContentGrid,
   siteGutter,
-  textGhost,
 } from "@/components/framer-section";
 import { TextReveal } from "@/components/text-reveal";
 import { cn } from "@/lib/utils";
@@ -155,7 +154,7 @@ type QuoteEditorialProps = {
 };
 
 /** One in-view observer — tag, accent, quote, attribution share choreography. */
-function QuoteEditorial({
+export function QuoteEditorial({
   lead,
   quote,
   quoteId,
@@ -175,7 +174,6 @@ function QuoteEditorial({
   const enterFast = { duration: 0.22, ease: QUOTE_MOTION_EASE } as const;
   const enterQuote = { duration: 0.28, ease: QUOTE_MOTION_EASE } as const;
 
-  const isManifesto = editorialClassName?.includes("manifesto");
   const isTestimonial = editorialClassName?.includes("testimonial");
   const blockquoteCols =
     lead || isTestimonial ? "md:col-span-2 md:col-start-2" : "md:col-span-3 md:col-start-1";
@@ -183,12 +181,7 @@ function QuoteEditorial({
   return (
     <div className={cn("rm-quote-editorial w-full", sectionContentGrid, editorialClassName)}>
       {lead ? (
-        <QuoteEditorialLead
-          className={cn(
-            "md:col-start-1 md:row-start-1 md:self-start",
-            isManifesto && "flex flex-col gap-6 md:gap-8",
-          )}
-        >
+        <QuoteEditorialLead className="md:col-start-1 md:row-start-1 md:self-start">
           {lead}
         </QuoteEditorialLead>
       ) : null}
@@ -274,56 +267,3 @@ export default function TestimonialSection({
   );
 }
 
-type ManifestoQuoteSectionProps = {
-  tag: string;
-  titleId: string;
-  srTitle: string;
-  thesis: string;
-  bullets: readonly string[];
-};
-
-/** About manifesto — same editorial quote treatment as home testimonial. */
-export function ManifestoQuoteSection({
-  tag,
-  titleId,
-  srTitle,
-  thesis,
-  bullets,
-}: ManifestoQuoteSectionProps) {
-  return (
-    <QuoteGradientSection ariaLabelledBy={titleId}>
-      <QuoteEditorial
-        editorialClassName="rm-quote-editorial--manifesto"
-        lead={
-          <>
-            <FramerTag>{tag}</FramerTag>
-            <QuoteMark />
-          </>
-        }
-        quote={thesis}
-        quoteId={titleId}
-        quoteAriaLabel={srTitle}
-        afterQuote={
-          <ul className="mt-10 flex flex-col gap-4 md:mt-12">
-            {bullets.map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span className={cn("mt-[0.35em] shrink-0 text-sm", textGhost)} aria-hidden>
-                  —
-                </span>
-                <span
-                  className="text-pretty text-[var(--rm-text-muted)]"
-                  style={{
-                    fontSize: "clamp(0.95rem, 1.35vw, 1.05rem)",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {item}
-                </span>
-              </li>
-            ))}
-          </ul>
-        }
-      />
-    </QuoteGradientSection>
-  );
-}

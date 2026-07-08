@@ -18,8 +18,8 @@ const INTRO_EASE = [0.22, 1, 0.36, 1] as const;
 const SOFT_SETTLE = [0.2, 0.85, 0.24, 1] as const;
 
 const WORD_STAGGER = 0.09;
-const ROW_GAP = 0.18;
-const ROW_2_DELAY = 0.16 + WORD_STAGGER * 3 + ROW_GAP;
+const ROW_GAP = 0.04;
+const ROW_2_DELAY = 0.16 + WORD_STAGGER * 2 + ROW_GAP;
 
 export const servicesScreenTwoStage: Variants = {
   hidden: {},
@@ -104,12 +104,13 @@ const phraseShell: Variants = {
 };
 
 const beReveal: Variants = {
-  hidden: { opacity: 0, y: 4, scale: 0.975, letterSpacing: "0.01em" },
+  // No letterSpacing tween: it's a layout animation — width changes shift
+  // wrap points and nudge everything below the headline.
+  hidden: { opacity: 0, y: 4, scale: 0.975 },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    letterSpacing: "0em",
     transition: { duration: 0.3, ease: INTRO_EASE },
   },
 };

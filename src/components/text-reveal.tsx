@@ -145,8 +145,19 @@ export function TextReveal({
     if (skipMotion) {
       setComplete(true);
       onComplete?.();
+      return;
     }
-  }, [skipMotion, onComplete]);
+    // Landing already scrolled past the trigger range (anchor jump, back/forward
+    // cache) fires no scroll event, so the reveal would otherwise stay frozen
+    // mid-animation until the user scrolls again. Recheck once measured.
+    const raf = requestAnimationFrame(() => {
+      if (scrollYProgress.get() >= 0.98) {
+        setComplete(true);
+        onComplete?.();
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [skipMotion, onComplete, scrollYProgress]);
 
   if (skipMotion || complete) {
     return (

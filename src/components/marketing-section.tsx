@@ -65,6 +65,8 @@ export function MarketingSectionIntro({
   srTitle,
   lead,
   contentClassName,
+  headlineClassName,
+  accentClassName,
 }: {
   tag: string;
   title: string;
@@ -73,6 +75,10 @@ export function MarketingSectionIntro({
   srTitle?: string;
   lead?: ReactNode;
   contentClassName?: string;
+  /** Override headline width/wrap (e.g. wider column so a long accent line stays on one row). */
+  headlineClassName?: string;
+  /** Override the second (accent) line — e.g. `md:whitespace-nowrap` to keep it on one row. */
+  accentClassName?: string;
 }) {
   const lines =
     titleLines && titleLines.length >= 2
@@ -84,13 +90,13 @@ export function MarketingSectionIntro({
   const headline = lines ? (
     <h2
       id={titleId}
-      className={cn(sectionHeadline, "m-0 max-w-[22ch] text-balance")}
+      className={cn(sectionHeadline, "m-0 max-w-[22ch] text-balance", headlineClassName)}
       aria-label={srTitle ?? lines.join(" ")}
     >
       <span className="block text-pretty">
         <TextReveal text={lines[0]} as="span" className="text-inherit" ariaLabel={lines[0]} />
       </span>
-      <span className={cn(sectionHeadlineAccent)}>{lines[1]}</span>
+      <span className={cn(sectionHeadlineAccent, accentClassName)}>{lines[1]}</span>
     </h2>
   ) : (
     <TextReveal id={titleId} text={title} className={sectionHeadline} ariaLabel={srTitle} />

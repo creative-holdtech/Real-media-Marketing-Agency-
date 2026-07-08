@@ -1,56 +1,34 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useReducedMotion,
-  useMotionValue,
-  useMotionValueEvent,
-} from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 
 import {
+  BtnArrow,
+  FramerTag,
   bodyCopy,
+  borderSoft,
+  btnOutlineOnDark,
   btnPrimary,
-  pageHeroInner,
-  sectionHeroActionsRow,
-  siteGutter,
-  textFaint,
+  sectionContentGrid,
+  sectionHeadline,
+  sectionInner,
+  sectionShell,
+  sectionSubheading,
+  subsectionTitle,
+  surfaceCardPadding,
+  textCardBody,
   textGhost,
+  textLabel,
+  textMeta,
   textSubtle,
 } from "@/components/framer-section";
-
-function PinFrame({
-  children,
-  className,
-  active,
-}: {
-  children: React.ReactNode;
-  className?: string;
-  active?: boolean;
-}) {
-  return (
-    <div
-      className={`rm-pin-frame${active ? " rm-pin-frame--active" : ""}${className ? ` ${className}` : ""}`}
-    >
-      <span className="rm-pin-corner rm-pin-corner--tl" aria-hidden />
-      <span className="rm-pin-corner rm-pin-corner--tr" aria-hidden />
-      <span className="rm-pin-corner rm-pin-corner--bl" aria-hidden />
-      <span className="rm-pin-corner rm-pin-corner--br" aria-hidden />
-      {children}
-    </div>
-  );
-}
-import { cn } from "@/lib/utils";
-import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import { ServicesHero } from "@/components/services-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { SurfaceCard } from "@/components/surface-card";
+import { CardContent } from "@/components/ui/card";
 import { UnifiedCTA } from "@/components/unified-cta";
-import { Reveal } from "@/components/motion-bits";
-import { TextReveal } from "@/components/text-reveal";
-import { useReveal } from "@/hooks/use-reveal";
-import heroBg from "@/assets/hero-bg.png";
 import { buildPageHead } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/products/")({
   head: () => {
@@ -61,7 +39,7 @@ export const Route = createFileRoute("/products/")({
     });
     return {
       meta: seo.meta,
-      links: [...seo.links, { rel: "preload", as: "image", href: heroBg, fetchPriority: "high" }],
+      links: seo.links,
     };
   },
   component: ProductsPage,
@@ -70,15 +48,33 @@ export const Route = createFileRoute("/products/")({
 const modes = {
   sprint: {
     tag: "Sprint",
-    meta: "from 4 weeks · tactical retainer",
+    meta: "From 4 weeks · tactical retainer",
     headline: "High-impact marketing for fast raises and tight deadlines.",
+    summary:
+      "Built for a defined push: a raise, launch, or one blocked part of growth that needs a fast reset.",
     lead: "Sprint is a focused engagement with a clear scope and hard deadline. We embed into your workflow, deploy target channel mix, and move fast. You get weekly deliverables and clear data within a flexible monthly setup. Best suited for early-stage founders, growth leads preparing for a raise, and teams with solid traction looking for a breakthrough.",
     cta: "Scope a Sprint →",
-    duration: "4+",
     format: "Tactical retainer",
     bestFor: "A defined challenge",
     cadence: "Daily check-ins",
     output: "Fixed deliverables",
+    proof: [
+      {
+        value: "$75 → $30",
+        label: "CPL in 30 days",
+        context: "Paid acquisition rebuilt within the first month",
+      },
+      {
+        value: "2.7",
+        label: "ROAS in the first month",
+        context: "Through a locked channel test stack",
+      },
+      {
+        value: "3×",
+        label: "Daily lead volume",
+        context: "While cutting CPA from $50 to $30",
+      },
+    ],
     deliverables: [
       {
         title: "Positioning audit & fix",
@@ -96,15 +92,33 @@ const modes = {
   },
   marathon: {
     tag: "Marathon",
-    meta: "from 2 months · strategic partnership",
+    meta: "From 2 months · strategic partnership",
     headline: "For founders building a category beyond a product.",
+    summary:
+      "Built for teams that need an embedded strategic partner shaping message, GTM, and channel system over time.",
     lead: "Marathon is a foundational growth ecosystem. We replace the need for an in-house department to take over the entire function — from core strategy and positioning to long-term multi-channel execution. Built for Series A+ companies, ambitious scale-ups, and teams focusing on long-term growth as a board-level priority.",
     cta: "Start a Marathon →",
-    duration: "2+",
     format: "Strategic partnership",
     bestFor: "Full brand build or market entry",
     cadence: "Weekly / Monthly strategy sessions",
     output: "Brand / GTM strategy",
+    proof: [
+      {
+        value: "2.3×",
+        label: "Pipeline growth in 6 months",
+        context: "Inbound more than doubled on a flat paid budget",
+      },
+      {
+        value: "30–50%",
+        label: "Of all MQLs",
+        context: "Generated by organic search alone",
+      },
+      {
+        value: "10% → 25%",
+        label: "Brand awareness",
+        context: "Built through systematic communication",
+      },
+    ],
     deliverables: [
       {
         title: "Market narrative architecture",
@@ -115,7 +129,7 @@ const modes = {
         body: "Every month, we line up fresh channel and creative ideas. We track live performance, filter out the noise, and scale the top performers.",
       },
       {
-        title: "Embedded Strategic Support",
+        title: "Embedded strategic support",
         body: "Continuous C-level support for your launches, fundraises, and pivots. We operate inside your context, working alongside your core team.",
       },
     ],
@@ -124,175 +138,94 @@ const modes = {
 
 type Mode = keyof typeof modes;
 
-function ModeSwitcherCompact({ active, onChange }: { active: Mode; onChange: (m: Mode) => void }) {
-  return (
-    <div className="rm-mode-switcher" role="tablist" aria-label="Choose engagement format">
-      {(["sprint", "marathon"] as Mode[]).map((m) => (
-        <button
-          key={m}
-          role="tab"
-          aria-selected={active === m}
-          onClick={() => onChange(m)}
-          className={cn("rm-mode-btn", active === m && "rm-mode-btn--active")}
-        >
-          <span className="rm-mode-btn__label">{modes[m].tag}</span>
-          <span className="rm-mode-btn__bar" aria-hidden />
-        </button>
-      ))}
-    </div>
-  );
-}
+const UNDERLINE_SPRING = { type: "spring", stiffness: 380, damping: 34 } as const;
 
-function SplitModeSwitcher({
-  active,
-  onChange,
-  sectionRef,
-}: {
-  active: Mode;
-  onChange: (m: Mode) => void;
-  sectionRef: React.RefObject<HTMLDivElement | null>;
-}) {
+const modePanelVariants: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
+  },
+  exit: {
+    opacity: 0,
+    y: -10,
+    transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+  },
+};
+
+const heroRise: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+};
+
+const MODE_PANEL_ID = "format-panel";
+
+const comparisonRows = [
+  {
+    label: "Engagement",
+    sprint: modes.sprint.meta,
+    marathon: modes.marathon.meta,
+  },
+  {
+    label: "Best for",
+    sprint: modes.sprint.bestFor,
+    marathon: modes.marathon.bestFor,
+  },
+  {
+    label: "Cadence",
+    sprint: modes.sprint.cadence,
+    marathon: modes.marathon.cadence,
+  },
+  {
+    label: "Output",
+    sprint: modes.sprint.output,
+    marathon: modes.marathon.output,
+  },
+  {
+    label: "Operating model",
+    sprint: modes.sprint.summary,
+    marathon: modes.marathon.summary,
+  },
+] as const;
+
+function ModeSwitcher({ active, onChange }: { active: Mode; onChange: (mode: Mode) => void }) {
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start 0.9", "start 0.1"],
-  });
-
-  // Clamp slide distance to viewport width — prevents >20% jump on narrow screens
-  const xOffset = useMemo(
-    () => (typeof window !== "undefined" ? Math.round(Math.min(80, window.innerWidth * 0.13)) : 80),
-    [],
-  );
-
-  const raw = useSpring(scrollYProgress, { stiffness: 120, damping: 22, mass: 0.4 });
-
-  // Full transform strings — GPU-composited, not rAF/main-thread like x/y shorthands
-  const sprintTransform = useTransform(
-    raw,
-    [0, 1],
-    reduce
-      ? ["translateX(0px)", "translateX(0px)"]
-      : [`translateX(-${xOffset}px)`, "translateX(0px)"],
-  );
-  const marathonTransform = useTransform(
-    raw,
-    [0, 1],
-    reduce
-      ? ["translateX(0px)", "translateX(0px)"]
-      : [`translateX(${xOffset}px)`, "translateX(0px)"],
-  );
-  const opacity = useTransform(raw, [0, 1], [0, 1]);
-  const barScaleX = useTransform(raw, [0.2, 0.9], reduce ? [1, 1] : [0, 1]);
-  // Ratcheted value — bar only ever increases, never shrinks on scroll-back
-  const barRatchet = useMotionValue(0);
-  useMotionValueEvent(barScaleX, "change", (v) => {
-    if (v > barRatchet.get()) barRatchet.set(v);
-  });
-  const barTransform = useTransform(barRatchet, (v: number) => `scaleX(${v})`);
 
   return (
     <div
-      className="rm-mode-switcher rm-mode-switcher--split"
       role="tablist"
       aria-label="Choose engagement format"
+      className="flex flex-wrap items-end gap-x-8 gap-y-1 border-b border-white/10"
     >
-      <motion.button
-        role="tab"
-        aria-selected={active === "sprint"}
-        onClick={() => onChange("sprint")}
-        className={cn("rm-mode-btn", active === "sprint" && "rm-mode-btn--active")}
-        style={{ transform: sprintTransform, opacity }}
-      >
-        <span className="rm-mode-btn__label">Sprint</span>
-        <span className="rm-mode-btn__meta">{modes.sprint.meta}</span>
-        <motion.span
-          className="rm-mode-btn__bar"
-          aria-hidden
-          style={
-            active === "sprint" ? { transform: barTransform, transformOrigin: "left" } : undefined
-          }
-        />
-      </motion.button>
-
-      <motion.button
-        role="tab"
-        aria-selected={active === "marathon"}
-        onClick={() => onChange("marathon")}
-        className={cn("rm-mode-btn", active === "marathon" && "rm-mode-btn--active")}
-        style={{ transform: marathonTransform, opacity }}
-      >
-        <span className="rm-mode-btn__label">Marathon</span>
-        <span className="rm-mode-btn__meta">{modes.marathon.meta}</span>
-        <motion.span
-          className="rm-mode-btn__bar"
-          aria-hidden
-          style={
-            active === "marathon" ? { transform: barTransform, transformOrigin: "left" } : undefined
-          }
-        />
-      </motion.button>
-    </div>
-  );
-}
-
-function DeliverablesGrid({
-  deliverables,
-}: {
-  deliverables: readonly { title: string; body: string }[];
-}) {
-  return (
-    <div className="grid grid-cols-1 gap-px border-t border-[var(--rm-border-soft)] sm:grid-cols-3">
-      {deliverables.map((d, i) => (
-        <Reveal key={d.title} delay={i * 0.08}>
-          <div className="flex flex-col gap-4 border-b border-[var(--rm-border-soft)] px-0 py-8 sm:border-b-0 sm:border-r sm:px-6 sm:last:border-r-0 md:py-8">
-            <span className={cn("rm-type-meta", textGhost)}>0{i + 1}</span>
-            <h3 className="rm-type-tag text-[var(--rm-ink)]">{d.title}</h3>
-            <p className={cn("rm-type-body max-w-prose", textFaint)}>{d.body}</p>
-          </div>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
-function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) => void }) {
-  return (
-    <div className="grid grid-cols-1 gap-px border border-[var(--rm-border-soft)] sm:grid-cols-2">
-      {(["sprint", "marathon"] as Mode[]).map((m) => {
-        const d = modes[m];
-        const isActive = active === m;
+      {(["sprint", "marathon"] as const).map((mode) => {
+        const isActive = active === mode;
         return (
           <button
-            key={m}
-            onClick={() => onChange(m)}
-            aria-pressed={isActive}
+            key={mode}
+            type="button"
+            id={`mode-tab-${mode}`}
+            role="tab"
+            aria-selected={isActive}
+            aria-controls={MODE_PANEL_ID}
+            tabIndex={isActive ? 0 : -1}
+            onClick={() => onChange(mode)}
             className={cn(
-              "w-full cursor-pointer p-8 text-left transition-all duration-300",
-              isActive ? "bg-white/[0.04]" : "opacity-40 hover:opacity-70",
+              "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-2",
+              subsectionTitle,
+              "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
+              isActive ? "text-white" : "text-[var(--rm-text-ghost)] hover:text-[var(--rm-text-body)]",
             )}
           >
-            <div className="mb-6">
-              <p className="rm-type-display text-[var(--rm-ink)]">{d.tag}</p>
-              <p className={cn("mt-3 rm-type-body", textFaint)}>{d.meta}</p>
-            </div>
-            <dl className="flex flex-col gap-3 border-t border-[var(--rm-border-soft)] pt-6">
-              {[
-                { label: "Format", value: d.format },
-                { label: "Best for", value: d.bestFor },
-                { label: "Cadence", value: d.cadence },
-                { label: "Output", value: d.output },
-              ].map(({ label, value }) => (
-                <div key={label} className="flex justify-between items-baseline gap-4">
-                  <dt className={cn("rm-type-tag shrink-0", textGhost)}>{label}</dt>
-                  <dd className="rm-type-body text-[var(--rm-text-muted)] text-right italic">
-                    {value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-            <div className={cn("mt-8 rm-type-body", textSubtle)}>
-              {isActive ? d.cta : `Select ${d.tag}`}
-            </div>
+            {modes[mode].tag}
+            {isActive ? (
+              <motion.span
+                layoutId="products-mode-underline"
+                className="absolute inset-x-0 bottom-0 h-px bg-white"
+                transition={reduce ? { duration: 0 } : UNDERLINE_SPRING}
+              />
+            ) : null}
           </button>
         );
       })}
@@ -300,95 +233,238 @@ function CompareCards({ active, onChange }: { active: Mode; onChange: (m: Mode) 
   );
 }
 
-const WORD_EASE = [0.23, 1, 0.32, 1] as [number, number, number, number];
-
-const wordVariant = {
-  hidden: { opacity: 0, y: 22 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      delay: i * 0.07,
-      duration: 0.7,
-      ease: WORD_EASE,
-    },
-  }),
-};
-
-const LINE1 = ["Choose", "the", "level"];
-const LINE2 = ["of", "support", "you", "need"];
-
-function HeroHeadline() {
-  const reduce = useReducedMotion();
-  const words = [...LINE1, ...LINE2, "right now."];
+function DeliverablesRail({ mode }: { mode: Mode }) {
+  const data = modes[mode];
 
   return (
-    <h1 id="products-heading" className="w-full rm-title-hero text-balance">
-      <span className="block text-balance">
-        {LINE1.map((word, i) => (
-          <motion.span
-            key={word}
-            custom={i}
-            initial="hidden"
-            animate="visible"
-            variants={reduce ? undefined : wordVariant}
-            style={{ display: "inline-block", marginRight: "0.22em" }}
-          >
-            {word}
-          </motion.span>
+    <div className="flex flex-col gap-4">
+      <p className={cn("m-0", textMeta, textGhost)}>What ships inside</p>
+
+      <div className="rm-engage-steps relative pt-6 md:pt-8">
+        <div className="rm-engage-rail pointer-events-none absolute inset-x-0 hidden md:block" aria-hidden>
+          <div className="h-full w-full bg-white/[0.08]" />
+          <div className="rm-engage-rail__fill absolute inset-0 origin-left bg-gradient-to-r from-white/45 via-white/25 to-white/10" />
+        </div>
+
+        <div className="grid gap-x-8 gap-y-6 md:grid-cols-3 lg:gap-x-12">
+          {data.deliverables.map((item, index) => (
+            <dl
+              key={item.title}
+              role="group"
+              aria-label={item.title}
+              className={cn(
+                "rm-engage-step group/step relative m-0 flex flex-col gap-2 py-5 first:pt-0 md:gap-2 md:py-0",
+                "max-md:border-b max-md:last:border-b-0",
+                borderSoft,
+              )}
+            >
+              <span
+                aria-hidden
+                className="rm-engage-step__dot absolute left-0 z-[1] hidden size-1.5 rounded-full bg-white ring-[3px] ring-black md:block"
+              />
+              <dt className="flex items-baseline gap-2.5">
+                <span className={cn(textMeta, textGhost, "rm-engage-step__code")}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className={cn(textMeta, textSubtle, "rm-engage-step__title")}>
+                  {item.title}
+                </span>
+              </dt>
+              <dd className={cn("m-0 max-w-[34ch]", textCardBody, textSubtle)}>{item.body}</dd>
+            </dl>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProofRow({ mode }: { mode: Mode }) {
+  const data = modes[mode];
+
+  const [featured, ...rest] = data.proof;
+
+  return (
+    <div className="grid items-start gap-4 sm:grid-cols-[1.4fr_1fr]">
+      <SurfaceCard interactive className="min-h-0">
+        <CardContent className={cn("flex flex-col gap-0", surfaceCardPadding)}>
+          <div className="border-t border-[var(--rm-border-soft)] pt-5">
+            <p className={cn(sectionHeadline, "tabular-nums text-white")}>{featured.value}</p>
+            <p className={cn(textLabel, "mt-3")}>{featured.label}</p>
+            <p className={cn(bodyCopy, "mt-3 max-w-[32ch] text-pretty")}>{featured.context}</p>
+          </div>
+        </CardContent>
+      </SurfaceCard>
+
+      <div className="grid gap-4">
+        {rest.map((stat) => (
+          <SurfaceCard key={stat.label} interactive className="min-h-0">
+            <CardContent className={cn("flex h-full flex-col justify-between gap-0", surfaceCardPadding)}>
+              <div className="mt-auto border-t border-[var(--rm-border-soft)] pt-5">
+                <p className={cn(subsectionTitle, "tabular-nums")}>{stat.value}</p>
+                <p className={cn(textLabel, "mt-3")}>{stat.label}</p>
+                <p className={cn(bodyCopy, "mt-3 max-w-[28ch] text-pretty")}>{stat.context}</p>
+              </div>
+            </CardContent>
+          </SurfaceCard>
         ))}
-      </span>
-      <span className="block text-balance">
-        {LINE2.map((word, i) => (
-          <motion.span
-            key={word}
-            custom={LINE1.length + i}
-            initial="hidden"
-            animate="visible"
-            variants={reduce ? undefined : wordVariant}
-            style={{ display: "inline-block", marginRight: "0.22em" }}
-          >
-            {word}
-          </motion.span>
-        ))}
-        <motion.span
-          custom={words.length - 1}
-          initial="hidden"
-          animate="visible"
-          variants={reduce ? undefined : wordVariant}
-          className="rm-type-display-muted"
-          style={{ display: "inline-block" }}
-        >
-          right now.
-        </motion.span>
-      </span>
-    </h1>
+      </div>
+    </div>
+  );
+}
+
+/** Split the lead paragraph at its first sentence — gives the eye an entry point before the rest. */
+function splitLead(lead: string): [string, string] {
+  const match = lead.match(/^(.+?[.!?])\s+(.*)$/s);
+  return match ? [match[1], match[2]] : [lead, ""];
+}
+
+function FormatOverview({ mode }: { mode: Mode }) {
+  const data = modes[mode];
+  const [leadHook, leadRest] = splitLead(data.lead);
+  const rows = [
+    ["Format", data.format],
+    ["Best for", data.bestFor],
+    ["Cadence", data.cadence],
+    ["Output", data.output],
+  ] as const;
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={mode}
+        id={MODE_PANEL_ID}
+        role="tabpanel"
+        aria-labelledby={`mode-tab-${mode}`}
+        className="flex flex-col gap-10 border-t border-white/10 pt-8 md:gap-12"
+        variants={modePanelVariants}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.58fr)_minmax(24rem,1.42fr)] lg:gap-12">
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
+              <p className={cn("m-0", textMeta, textGhost)}>{data.meta}</p>
+              <p className={cn(sectionSubheading, "m-0 max-w-[34ch] text-left text-[var(--rm-text-body)]")}>
+                {data.summary}
+              </p>
+            </div>
+
+            <dl className="flex flex-col border-t border-white/10">
+              {rows.map(([label, value]) => (
+                <div
+                  key={label}
+                  className="flex items-baseline justify-between gap-4 border-b border-white/10 py-3 first:pt-4 last:border-b-0"
+                >
+                  <dt className={cn(textMeta, textGhost)}>{label}</dt>
+                  <dd className="m-0 rm-type-body text-right text-white">{value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="flex h-full flex-col gap-6 pt-6">
+            <div className="flex flex-col gap-3">
+              <p className={cn("m-0", textMeta, textGhost)}>{data.tag}</p>
+              <h3 className={cn(sectionHeadline, "max-w-[18ch] text-white")}>{data.headline}</h3>
+              <p className={cn(sectionSubheading, "m-0 max-w-[38ch] text-white")}>{leadHook}</p>
+              {leadRest ? (
+                <p className={cn(bodyCopy, "max-w-[42ch] text-[var(--rm-text-subtle)]")}>{leadRest}</p>
+              ) : null}
+            </div>
+
+            <div className="mt-auto">
+              <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
+                {data.cta.replace(/\s*→$/, "")}
+                <BtnArrow />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <ProofRow mode={mode} />
+
+        <DeliverablesRail mode={mode} />
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+function ComparisonTable({ active }: { active: Mode }) {
+  const colTint = (mode: Mode) => (active === mode ? "bg-white/[0.04]" : undefined);
+
+  return (
+    <div className="rm-comparison-card overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
+      <table className="rm-comparison-table w-full min-w-[720px] border-collapse">
+        <thead>
+          <tr className="border-b border-white/10">
+            <th className="w-[11rem] md:w-[13rem] px-6 py-7 md:py-8 text-left align-top md:px-8" scope="col">
+              <span className={cn(textMeta, textGhost)}>Decision lens</span>
+            </th>
+            <th
+              className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
+              scope="col"
+            >
+              <div className="flex flex-col gap-2">
+                <span className="rm-type-subsection text-white">Sprint</span>
+                <span className={cn("rm-type-body", textSubtle)}>Defined push</span>
+              </div>
+            </th>
+            <th
+              className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
+              scope="col"
+            >
+              <div className="flex flex-col gap-2">
+                <span className="rm-type-subsection text-white">Marathon</span>
+                <span className={cn("rm-type-body", textSubtle)}>Embedded system</span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {comparisonRows.map((row) => (
+            <tr key={row.label} className="border-b border-white/10 last:border-b-0">
+              <th
+                scope="row"
+                className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8", textMeta, textGhost)}
+              >
+                {row.label}
+              </th>
+              <td
+                data-col="Sprint"
+                className={cn("px-6 py-7 md:py-8 align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
+              >
+                <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
+                  {row.sprint}
+                </span>
+              </td>
+              <td
+                data-col="Marathon"
+                className={cn("px-6 py-7 md:py-8 align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
+              >
+                <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
+                  {row.marathon}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
 function ProductsPage() {
-  useReveal();
+  const reduce = useReducedMotion();
   const [mode, setMode] = useState<Mode>("sprint");
-  const switcherRef = useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(false);
-
-  useEffect(() => {
-    const el = switcherRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => setIsSticky(!entry.isIntersecting), {
-      threshold: 0,
-      rootMargin: "-80px 0px 0px 0px",
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  function handleModeChange(next: Mode) {
-    if (next === mode) return;
-    setMode(next);
-  }
-
-  const data = modes[mode];
+  const hero = {
+    tag: "Products",
+    titleLines: ["Choose the level of support", "that matches the decision in front of you."] as string[],
+    body:
+      "Same engine, two tempos. Sprint is for the next hard deadline. Marathon is for the system you need to keep building after it.",
+  };
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
@@ -397,111 +473,108 @@ function ProductsPage() {
       </a>
       <SiteHeader variant="dark" overlay />
 
-      {isSticky && (
-        <div className="rm-sticky-mode-bar">
-          <div className={cn("mx-auto flex max-w-[var(--rm-grid-max)] items-center justify-end", siteGutter)}>
-            <ModeSwitcherCompact active={mode} onChange={handleModeChange} />
-          </div>
-        </div>
-      )}
+      <ServicesHero
+        tag={hero.tag}
+        titleLines={hero.titleLines}
+        body={hero.body}
+        bodyClassName="md:!w-[46ch] md:!max-w-[46ch]"
+        headingId="products-heading"
+        sectionClassName="bg-black"
+        actions={
+          <>
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("format")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" })
+              }
+              className={cn(btnPrimary, "group gap-2")}
+            >
+              Compare formats
+              <BtnArrow className="rotate-90" />
+            </button>
+            <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
+              See case studies
+              <BtnArrow />
+            </Link>
+          </>
+        }
+      />
 
-      <HeroAtmosphere imageSrc={heroBg} underHeader>
+      <main id="main">
         <section
-          className={cn("relative z-10 flex flex-1 items-center pt-[var(--rm-header-offset)]", siteGutter)}
-          aria-labelledby="products-heading"
+          id="format"
+          aria-labelledby="format-heading"
+          className={cn(sectionShell, "relative border-b-0 bg-black")}
+          style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
-          <div className={pageHeroInner}>
-            <div className="mx-auto flex w-full max-w-[40rem] flex-col items-center text-center">
-              <HeroHeadline />
-              <motion.p
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                className={cn("mt-6 max-w-[34ch] text-balance text-center", bodyCopy)}
-              >
-                Both formats are built around your growth. One moves faster, the other goes deeper.
-                Same quality, different scope.
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.15, duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
-                className={sectionHeroActionsRow}
-              >
-                <button
-                  onClick={() =>
-                    document.getElementById("format")?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className={btnPrimary}
-                >
-                  See formats ↓
-                </button>
-              </motion.div>
+          <div aria-hidden className="rm-products-glow" />
+          <div className={sectionInner}>
+            <div className={cn(sectionContentGrid, "items-start")}>
+              <div className="md:col-start-1">
+                <FramerTag>Engagement formats</FramerTag>
+              </div>
+
+              <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
+                <div className="flex flex-col gap-6">
+                  <h2 id="format-heading" className={cn(sectionHeadline, "max-w-[18ch] text-white")}>
+                    Pick the working rhythm that fits the moment.
+                  </h2>
+                  <p className={cn(sectionSubheading, "m-0 max-w-[48ch] text-[var(--rm-text-body)]")}>
+                    Sprint compresses execution into a defined push. Marathon keeps message,
+                    channel mix, and decision-making compounding over time.
+                  </p>
+                </div>
+
+                <ModeSwitcher active={mode} onChange={setMode} />
+                <FormatOverview mode={mode} />
+              </div>
             </div>
           </div>
         </section>
-      </HeroAtmosphere>
 
-      <main id="main">
-        {/* Scroll-driven mode switcher */}
-        <div
-          ref={switcherRef}
-          id="format"
-          className={cn("border-b border-[var(--rm-border-soft)] bg-[#000]", siteGutter)}
-          style={{ scrollMarginTop: "var(--rm-header-offset)" }}
+        <div className="rm-products-tone-bridge" aria-hidden />
+
+        <section
+          aria-labelledby="compare-heading"
+          className={cn(sectionShell, "relative border-b-0 bg-black")}
         >
-          <div className="mx-auto max-w-[var(--rm-grid-max)] overflow-hidden">
-            <SplitModeSwitcher active={mode} onChange={handleModeChange} sectionRef={switcherRef} />
-          </div>
-        </div>
+          <div aria-hidden className="rm-products-glow" />
+          <div className={sectionInner}>
+            <div className={cn(sectionContentGrid, "items-start")}>
+              <div className="md:col-start-1">
+                <FramerTag>Compare formats</FramerTag>
+              </div>
 
-        {/* Mode content */}
-        <div className="rm-mode-panel" key={mode}>
-          {/* Headline + lead */}
-          <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000] py-16 md:py-20", siteGutter)}>
-            <div className="mx-auto max-w-[var(--rm-grid-max)]">
-              <div className="grid grid-cols-12 gap-y-8 md:gap-16 items-start">
-                <div className="col-span-12 md:col-span-7">
-                  <TextReveal
-                    text={data.headline}
-                    className="rm-format-headline font-medium tracking-[-0.04em] text-white"
-                  />
+              <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
+                <div className="flex flex-col gap-6">
+                  <h2 id="compare-heading" className={cn(sectionHeadline, "max-w-[18ch] text-white")}>
+                    One engine, two tempos.
+                  </h2>
+                  <p className={cn(sectionSubheading, "m-0 max-w-[48ch] text-[var(--rm-text-body)]")}>
+                    Sprint points everything at a single deadline. Marathon compounds the same
+                    work quarter after quarter. Pick by the decision in front of you, not by which
+                    option looks bigger on paper.
+                  </p>
                 </div>
-                <div className="col-span-12 md:col-span-5 flex flex-col gap-6 md:pt-2">
-                  <Reveal delay={0.1}>
-                    <p className="rm-copy-lead">{data.lead}</p>
-                  </Reveal>
-                  <Reveal delay={0.2}>
-                    <Link to="/contact" className={btnPrimary}>
-                      {data.cta}
-                    </Link>
-                  </Reveal>
+
+                <ComparisonTable active={mode} />
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
+                    Talk through the fit
+                    <BtnArrow />
+                  </Link>
+                  <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
+                    See case studies
+                    <BtnArrow />
+                  </Link>
                 </div>
               </div>
             </div>
-          </section>
-
-          {/* Deliverables — 3-column grid */}
-          <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000]", siteGutter)}>
-            <div className="mx-auto max-w-[var(--rm-grid-max)]">
-              <DeliverablesGrid deliverables={data.deliverables} />
-            </div>
-          </section>
-        </div>
-
-        {/* Compare formats */}
-        <section className={cn("border-b border-[var(--rm-border-soft)] bg-[#000] py-16 md:py-20", siteGutter)}>
-          <div className="mx-auto max-w-[var(--rm-grid-max)]">
-            <Reveal>
-              <p className="rm-eyebrow mb-8">Compare formats</p>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <PinFrame>
-                <CompareCards active={mode} onChange={handleModeChange} />
-              </PinFrame>
-            </Reveal>
           </div>
         </section>
+
+        <div aria-hidden className="rm-products-cta-bridge" />
 
         <UnifiedCTA
           title="Not sure which one fits?"

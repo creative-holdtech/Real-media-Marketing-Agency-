@@ -55,8 +55,7 @@ export function ServicesSecondScreen({ services }: ServicesSecondScreenProps) {
 
           <ItemTag
             variants={reduce ? undefined : servicesScreenTwoItem}
-            className="reveal rm-services-intro-screen__cards"
-            data-delay="1"
+            className="rm-services-intro-screen__cards"
           >
             <ServicesCardDeckUnfold services={services} variant="default" />
           </ItemTag>

@@ -1,4 +1,5 @@
 import {
+  animate,
   motion,
   useMotionTemplate,
   useMotionValue,
@@ -172,7 +173,7 @@ type MotionPreviewCardProps = {
   count: number;
   motionP: MotionValue<number>;
   previewP: MotionValue<number>;
-  fastScroll: boolean;
+  fastFactor: MotionValue<number>;
 };
 
 function MotionPreviewCard({
@@ -181,20 +182,19 @@ function MotionPreviewCard({
   count,
   motionP,
   previewP,
-  fastScroll,
+  fastFactor,
 }: MotionPreviewCardProps) {
   const previewSrc = getCaseHomePreviewImage(study);
   const previewPhoto = isCaseHomePreviewPhoto(previewSrc);
 
   const opacity = useTransform(previewP, (p) => previewWeight(index, count, p, null));
   const [isVisible, setIsVisible] = useState(index === 0);
-  const scale = useTransform(motionP, (p) => {
-    const raw = crossfadeScale(index, count, p);
-    return fastScroll ? 1 - (1 - raw) * 0.2 : raw;
+  const scale = useTransform(() => {
+    const raw = crossfadeScale(index, count, motionP.get());
+    return raw + (1 - raw) * 0.8 * fastFactor.get();
   });
-  const imgY = useTransform(motionP, (p) => {
-    if (fastScroll) return "50%";
-    const pan = (p - 0.5) * 2;
+  const imgY = useTransform(() => {
+    const pan = (motionP.get() - 0.5) * 2 * (1 - fastFactor.get());
     return `calc(50% + ${pan}%)`;
   });
   const objectPosition = useMotionTemplate`50% ${imgY}`;
@@ -238,10 +238,10 @@ type MotionWorkRowProps = {
   study: CaseStudy;
   index: number;
   count: number;
-  motionP: MotionValue<number>;
+  previewP: MotionValue<number>;
   activeIndex: number;
   hoverIndex: number | null;
-  fastScroll: boolean;
+  fastFactor: MotionValue<number>;
   onHover: (index: number) => void;
   onHoverEnd: () => void;
   onRowClick: (event: MouseEvent<HTMLAnchorElement>, index: number) => void;
@@ -252,10 +252,10 @@ function MotionWorkRow({
   study,
   index,
   count,
-  motionP,
+  previewP,
   activeIndex,
   hoverIndex,
-  fastScroll,
+  fastFactor,
   onHover,
   onHoverEnd,
   onRowClick,
@@ -266,14 +266,13 @@ function MotionWorkRow({
   const isOn = index === activeIndex;
   const isHover = hoverIndex === index;
   const [navReady, setNavReady] = useState(index === 0);
-  const weight = useTransform(motionP, (p) => rowWeight(index, count, p));
+  const weight = useTransform(previewP, (p) => rowWeight(index, count, p));
   const mainOpacity = useTransform(weight, (w) => {
-    if (isOn) return 1;
-    if (isHover) return 0.82;
-    return 0.48 + w * 0.52;
+    const base = 0.48 + w * 0.52;
+    return isOn ? base : Math.min(0.82, base);
   });
   const arrowX = useTransform(weight, (w) => (isOn ? w * 4 : 4));
-  const y = useTransform(weight, (w) => (fastScroll ? 0 : (1 - w) * 3));
+  const y = useTransform(() => (1 - weight.get()) * 3 * (1 - fastFactor.get()));
 
   useMotionValueEvent(weight, "change", (w) => {
     setNavReady((prev) => {
@@ -395,9 +394,17 @@ function WorkSceneDesktop({
   });
 
   const progressFill = useTransform(motionP, (p) => p);
-  const railFade = useTransform(motionP, (p) => 0.88 + p * 0.12);
+  const fastFactor = useMotionValue(0);
   const fastScrollRef = useRef(fastScroll);
   fastScrollRef.current = fastScroll;
+
+  useEffect(() => {
+    const controls = animate(fastFactor, fastScroll ? 1 : 0, {
+      duration: 0.16,
+      ease: "easeOut",
+    });
+    return () => controls.stop();
+  }, [fastFactor, fastScroll]);
 
   useMotionValueEvent(motionP, "change", (p) => {
     if (railRef.current) {
@@ -424,7 +431,10 @@ function WorkSceneDesktop({
       const w = rowWeight(i, count, p);
       if (w > ROW_NAV_WEIGHT && !prefetchedRef.current.has(study.slug)) {
         prefetchedRef.current.add(study.slug);
-        void router.preloadRoute({ to: "/cases/$slug", params: { slug: study.slug } });
+        // Defer: motionP can change during render; preloadRoute sets router state.
+        window.setTimeout(() => {
+          void router.preloadRoute({ to: "/cases/$slug", params: { slug: study.slug } });
+        }, 0);
       }
     });
   });
@@ -454,11 +464,19 @@ function WorkSceneDesktop({
   const scrollToCase = useCallback(
     (index: number) => {
       setHoverIndex(null);
-      hoverPeak.set(-1);
       const track = trackRef.current;
       const sticky = stickyRef.current;
       if (!track || !sticky) return;
       const targetMotion = index === count - 1 ? 1 : cardWindow(index, count).peak;
+      // Ride the hover preview into the click-nav scroll: tween hoverPeak to the
+      // same target with the same easing as the Lenis scroll, then hand off.
+      if (hoverPeak.get() >= 0) {
+        animate(hoverPeak, targetMotion, {
+          duration: 1.05,
+          ease: [0.33, 1, 0.68, 1],
+          onComplete: () => hoverPeak.set(-1),
+        });
+      }
       const targetY = scrollYForWorkProgress(track, sticky, rawProgressFromMotion(targetMotion));
       beginClickNav();
       if (lenis) {
@@ -475,24 +493,37 @@ function WorkSceneDesktop({
     [beginClickNav, count, endClickNav, hoverPeak, lenis],
   );
 
+  const releaseHoverPeak = useCallback(() => {
+    if (hoverPeak.get() < 0) return;
+    animate(hoverPeak, motionP.get(), {
+      duration: 0.28,
+      ease: [0.2, 0, 0, 1],
+      onComplete: () => hoverPeak.set(-1),
+    });
+  }, [hoverPeak, motionP]);
+
   const handleRowHover = useCallback(
     (index: number) => {
       if (clickNavRef.current || fastScroll) return;
       if (index === activeIndex) {
         setHoverIndex(null);
-        hoverPeak.set(-1);
+        releaseHoverPeak();
         return;
       }
       setHoverIndex(index);
-      hoverPeak.set(cardWindow(index, count).peak);
+      if (hoverPeak.get() < 0) hoverPeak.set(motionP.get());
+      animate(hoverPeak, cardWindow(index, count).peak, {
+        duration: 0.35,
+        ease: [0.2, 0, 0, 1],
+      });
     },
-    [activeIndex, count, fastScroll, hoverPeak],
+    [activeIndex, count, fastScroll, hoverPeak, motionP, releaseHoverPeak],
   );
 
   const handleRowHoverEnd = useCallback(() => {
     setHoverIndex(null);
-    hoverPeak.set(-1);
-  }, [hoverPeak]);
+    releaseHoverPeak();
+  }, [releaseHoverPeak]);
 
   const handleRowClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>, index: number) => {
@@ -606,7 +637,10 @@ function WorkSceneDesktop({
       id="work"
       aria-labelledby="cases-heading"
       tabIndex={-1}
-      className={cn(sectionShell, "rm-section-work rm-work-scene border-b-0 pt-0 pb-8 md:pb-10")}
+      className={cn(
+        sectionShell,
+        "rm-section-work rm-work-scene rm-work-scene--motion border-b-0 pt-0 pb-8 md:pb-10",
+      )}
     >
       <div ref={trackRef} className="rm-work-scene__track-shell rm-work-scene__track">
         <div className="rm-work-scene__pin-gutter" aria-hidden />
@@ -634,15 +668,6 @@ function WorkSceneDesktop({
                 className="rm-work-preview-rail hidden md:block md:col-start-1 md:row-start-2 md:self-start"
                 aria-hidden
               >
-                <motion.div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 top-0 z-[3] h-[14%]"
-                  style={{
-                    opacity: railFade,
-                    background:
-                      "linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.85) 45%, transparent 100%)",
-                  }}
-                />
                 {featuredCases.map((study, index) => (
                   <MotionPreviewCard
                     key={study.slug}
@@ -651,7 +676,7 @@ function WorkSceneDesktop({
                     count={count}
                     motionP={motionP}
                     previewP={previewP}
-                    fastScroll={fastScroll}
+                    fastFactor={fastFactor}
                   />
                 ))}
               </div>
@@ -676,10 +701,10 @@ function WorkSceneDesktop({
                     study={study}
                     index={index}
                     count={count}
-                    motionP={motionP}
+                    previewP={previewP}
                     activeIndex={activeIndex}
                     hoverIndex={hoverIndex}
-                    fastScroll={fastScroll}
+                    fastFactor={fastFactor}
                     onHover={handleRowHover}
                     onHoverEnd={handleRowHoverEnd}
                     onRowClick={handleRowClick}

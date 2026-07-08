@@ -81,7 +81,7 @@ Tag/meta → h2 `gap-6` (24, `sectionHeadlineLead`) → standfirst `gap-4` (16, 
 
 ### Паттерн C — UnifiedCTA (`#cta`)
 
-H2 → standfirst **`gap-2` (8px)** → кнопки **`mt-6` (24px)**. Не `sectionHeadlineLead`, не `sectionActionsRow`.
+H2 → standfirst **`gap-6` (24px, как в Паттерне B)** → кнопки **`mt-6` (24px)**. Изменено по клиентскому QA — раньше было `gap-2` (8px), заказчик попросил унифицировать с остальными секциями.
 
 ### Паттерн D — Insights (home)
 

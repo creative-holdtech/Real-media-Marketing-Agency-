@@ -1,4 +1,4 @@
-import { useRef, type RefObject } from "react";
+import { useRef, type ReactNode, type RefObject } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
 import { sectionInner, siteChromeBand } from "@/components/framer-section";
@@ -10,7 +10,9 @@ type ServicesHeroProps = {
   tag: string;
   titleLines: string[];
   body?: string;
+  bodyClassName?: string;
   headingId?: string;
+  actions?: ReactNode;
   sectionClassName?: string;
 };
 
@@ -50,7 +52,9 @@ export function ServicesHero({
   tag,
   titleLines,
   body,
+  bodyClassName,
   headingId = "services-hero-title",
+  actions,
   sectionClassName,
 }: ServicesHeroProps) {
   const reduce = useReducedMotion();
@@ -79,8 +83,9 @@ export function ServicesHero({
                 tag={tag}
                 titleLines={titleLines}
                 body={body}
-                bodyClassName="md:!w-[46ch] md:!max-w-[46ch]"
+                bodyClassName={bodyClassName ?? "md:!w-[46ch] md:!max-w-[46ch]"}
                 headingId={headingId}
+                actions={actions}
               />
             </HeroScrollStage>
           </div>

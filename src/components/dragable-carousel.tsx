@@ -418,7 +418,7 @@ export function DragableCarousel({
                 role="tab"
                 aria-selected={index === selectedIndex}
                 aria-label={`Go to slide ${index + 1}`}
-                className="pointer-events-auto rounded-full p-0 shadow-[0_1px_4px_rgb(0_0_0_/_0.45)] transition-[opacity,transform] duration-150 ease-out hover:opacity-90"
+                className="pointer-events-auto cursor-pointer rounded-full p-0 shadow-[0_1px_4px_rgb(0_0_0_/_0.45)] transition-[opacity,transform] duration-150 ease-out hover:opacity-90"
                 style={{
                   width: cfg.dotSize,
                   height: cfg.dotSize,
@@ -446,7 +446,7 @@ export function DragableCarousel({
               role="tab"
               aria-selected={index === selectedIndex}
               aria-label={`Go to slide ${index + 1}`}
-              className="pointer-events-auto rounded-full p-0 transition-[opacity,transform] duration-150 ease-out hover:opacity-90"
+              className="pointer-events-auto cursor-pointer rounded-full p-0 transition-[opacity,transform] duration-150 ease-out hover:opacity-90"
               style={{
                 width: cfg.dotSize,
                 height: cfg.dotSize,

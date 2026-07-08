@@ -26,6 +26,8 @@ export function AboutStatsSection() {
           tag={aboutMetrics.tag}
           titleId="numbers-heading"
           title={aboutMetrics.title}
+          headlineClassName="md:max-w-none"
+          accentClassName="md:whitespace-nowrap"
           lead={
             <p className={cn(bodyCopy, "reveal")} data-delay="1">
               {aboutMetrics.subtitle}
@@ -34,14 +36,19 @@ export function AboutStatsSection() {
         />
 
         <MarketingContentGrid>
-          <ChapterSpacer chapter="03" />
+          <ChapterSpacer />
           {aboutMetrics.items.map((item) => (
             <MetricCard
               key={item.id}
               tag={item.tag}
               headline={
                 item.animate && item.numericTarget != null ? (
-                  <BigStatValue to={item.numericTarget} suffix={item.suffix ?? ""} start={inView} />
+                  <BigStatValue
+                    prefix={"prefix" in item ? item.prefix : undefined}
+                    to={item.numericTarget}
+                    suffix={item.suffix ?? ""}
+                    start={inView}
+                  />
                 ) : (
                   item.value
                 )

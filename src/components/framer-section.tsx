@@ -62,8 +62,8 @@ export const heroIntroStack = cn(heroEyebrowStack, "w-full items-center text-cen
 export const heroEyebrowOffset = "mb-8";
 /** Hero display headline → standfirst — 16px */
 export const heroHeadlineLead = "flex w-full flex-col gap-4";
-/** Centered CTA band — h2 → standfirst — 8px */
-export const ctaBandCopyStack = "flex w-full flex-col gap-2 text-balance";
+/** Centered CTA band — h2 → standfirst — 24px, matches section-intro rhythm */
+export const ctaBandCopyStack = "flex w-full flex-col gap-6 text-balance";
 /** Meta / label → headline in one column — 4px */
 export const sectionLabelHeadlineStack = "flex flex-col gap-1";
 /** Meta tag → headline block when stacked in one grid column — 16px */

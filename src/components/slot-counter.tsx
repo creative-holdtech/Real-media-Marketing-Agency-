@@ -80,17 +80,32 @@ export function SlotCounter({
     setInternalTriggered(true);
   }, [inView, internalTriggered, parentControlled]);
 
+  // Chars are individual inline-block boxes for the shuffle effect, which gives the
+  // browser a break opportunity between every letter — multi-word values (e.g. "Instant
+  // deployment") could then wrap mid-word. Group chars per word under `nowrap` and only
+  // emit real breakable spaces between words.
+  let globalIndex = 0;
+  const wordEls = value.split(" ").map((word, wi) => {
+    const startIndex = globalIndex;
+    globalIndex += word.length + 1;
+    return (
+      <span key={wi} className="inline-block whitespace-nowrap">
+        {word.split("").map((char, ci) => (
+          <SlotChar
+            key={ci}
+            char={char}
+            delay={(startIndex + ci) * charDelay}
+            cycles={7 + (startIndex + ci) * 3}
+            triggered={triggered}
+          />
+        ))}
+      </span>
+    );
+  });
+
   return (
     <span ref={ref} className={className} aria-label={value}>
-      {value.split("").map((char, i) => (
-        <SlotChar
-          key={i}
-          char={char}
-          delay={i * charDelay}
-          cycles={7 + i * 3}
-          triggered={triggered}
-        />
-      ))}
+      {wordEls.flatMap((el, i) => (i === 0 ? [el] : [" ", el]))}
     </span>
   );
 }

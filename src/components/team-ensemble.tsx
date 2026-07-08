@@ -178,7 +178,7 @@ export function TeamEnsemble({ variant = "feature" }: { variant?: "feature" | "b
           <p className="reveal mb-6 w-fit md:mb-8">
             <FramerTag>{copy.tag}</FramerTag>
           </p>
-          <TextReveal id="ensemble-heading" text={copy.title} className="rm-ensemble__title" />
+          <TextReveal as="h2" id="ensemble-heading" text={copy.title} className="rm-ensemble__title" />
           {copy.lead ? (
             <p
               className="reveal mt-7 max-w-[42ch] text-balance text-[15px] leading-relaxed text-white/65 md:text-[16px]"

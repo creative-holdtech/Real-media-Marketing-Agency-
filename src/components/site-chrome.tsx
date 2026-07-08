@@ -154,7 +154,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
     <footer
       className={cn(
         siteChromeBand,
-        "pb-12 pt-12",
+        "bg-[#0a0a0b] pb-12 pt-12",
         light && cn("border-t", chromeLightBorder, chromeLightInk),
       )}
     >

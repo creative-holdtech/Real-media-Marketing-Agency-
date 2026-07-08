@@ -1,12 +1,15 @@
 import { blogIndex } from "@/content/blog";
+import { resolveSiteUrl } from "@/lib/seo";
 import type { BlogIndexContent } from "@/lib/page-content/types";
 import { payloadFetch } from "./client";
 import type { PayloadSiteSettingsGlobal } from "./types";
 
-const defaultRobots = `User-agent: *
+function defaultRobotsTxt(): string {
+  return `User-agent: *
 Allow: /
 
-Sitemap: https://realmedia.ink/sitemap.xml`;
+Sitemap: ${resolveSiteUrl()}/sitemap.xml`;
+}
 
 export async function fetchSiteSettings(): Promise<PayloadSiteSettingsGlobal | null> {
   return payloadFetch<PayloadSiteSettingsGlobal>("/api/globals/site-settings?depth=0", {
@@ -16,7 +19,7 @@ export async function fetchSiteSettings(): Promise<PayloadSiteSettingsGlobal | n
 
 export async function fetchRobotsTxt(): Promise<string> {
   const settings = await fetchSiteSettings();
-  return settings?.robotsTxt?.trim() || defaultRobots;
+  return settings?.robotsTxt?.trim() || defaultRobotsTxt();
 }
 
 export async function fetchBlogMeta(): Promise<{ title: string; description: string }> {

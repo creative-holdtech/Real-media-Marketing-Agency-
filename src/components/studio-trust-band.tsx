@@ -59,7 +59,7 @@ export function BigStatValue({
     <>
       {prefix ?? ""}
       {n}
-      {suffix ?? ""}
+      <span style={{ marginLeft: "0.04em" }}>{suffix ?? ""}</span>
     </>
   );
 }
