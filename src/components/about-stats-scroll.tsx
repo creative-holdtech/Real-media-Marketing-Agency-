@@ -163,13 +163,13 @@ function StatSlide({
 }
 
 function ProgressMark({ index, position }: { index: number; position: MotionValue<number> }) {
-  const scaleX = useTransform(position, [index - 0.55, index, index + 0.55], [0.35, 1, 0.35]);
+  const scale = useTransform(position, [index - 0.55, index, index + 0.55], [0.85, 1.2, 0.85]);
   const opacity = useTransform(position, [index - 0.55, index, index + 0.55], [0.28, 0.92, 0.28]);
 
   return (
     <motion.span
-      className="h-px w-8 origin-left bg-white"
-      style={{ scaleX, opacity, willChange: "transform, opacity" }}
+      className="block size-2 rounded-full bg-white"
+      style={{ scale, opacity, willChange: "transform, opacity" }}
     />
   );
 }

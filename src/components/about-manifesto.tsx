@@ -10,8 +10,8 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const CINE_EASE = [0.16, 1, 0.3, 1] as const;
 const IN_VIEW_MARGIN = "0px 0px -8% 0px" as const;
 
-const WORD_STAGGER = 0.09;
-const ROW_GAP = 0.04;
+const WORD_STAGGER = 0.06;
+const ROW_GAP = 0.01;
 
 function FadeUp({
   children,
@@ -33,7 +33,7 @@ function FadeUp({
       className={className}
       initial={false}
       animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-      transition={reduce ? { duration: 0 } : { duration: 0.55, delay, ease: EASE }}
+      transition={reduce ? { duration: 0 } : { duration: 0.36, delay, ease: EASE }}
     >
       {children}
     </motion.div>
@@ -58,7 +58,7 @@ const rowStage = (delayChildren: number): Variants => ({
     y: 0,
     filter: "blur(0px)",
     transition: {
-      duration: 0.72,
+      duration: 0.48,
       ease: CINE_EASE,
       staggerChildren: WORD_STAGGER,
       delayChildren,
@@ -72,7 +72,7 @@ const wordReveal: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.6, ease: CINE_EASE },
+    transition: { duration: 0.42, ease: CINE_EASE },
   },
 };
 

@@ -321,7 +321,13 @@ function VerticalsSection({
                   }}
                 >
                   <div>
-                    <p className={cn(textMeta, "mb-3")}>{sector.n}</p>
+                    <p
+                      className={cn(
+                        "mb-3 inline-flex size-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-[0.7rem] font-medium tracking-[0.18em] text-white",
+                      )}
+                    >
+                      {sector.n}
+                    </p>
                     <h3 className={cn(sectionHeadline, "max-w-none text-white")}>{sector.title}</h3>
                     <p className={cn(bodyCopy, "mt-4 max-w-[44ch]")}>{sector.body}</p>
                   </div>

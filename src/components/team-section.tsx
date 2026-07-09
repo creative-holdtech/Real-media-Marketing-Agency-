@@ -121,7 +121,7 @@ export function TeamSection() {
           </p>
         </div>
 
-        <div className="mt-2 flex w-full justify-center md:mt-3">
+        <div className="mt-8 flex w-full justify-center md:mt-10">
           <TeamCastCarousel />
         </div>
       </div>
