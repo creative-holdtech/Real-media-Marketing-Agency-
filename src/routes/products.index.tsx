@@ -332,7 +332,7 @@ function FormatOverview({ mode }: { mode: Mode }) {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-4">
               <p className={cn("m-0", textMeta, textGhost)}>{data.meta}</p>
-              <p className={cn(sectionSubheading, "m-0 max-w-[34ch] text-left text-[var(--rm-text-body)]")}>
+              <p className={cn(textCardBody, "m-0 max-w-[46ch] text-left text-[var(--rm-text-body)]")}>
                 {data.summary}
               </p>
             </div>
@@ -352,10 +352,7 @@ function FormatOverview({ mode }: { mode: Mode }) {
 
           <div className="flex h-full flex-col gap-6">
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <p className={cn("m-0", textMeta, textGhost)}>{data.tag}</p>
-                <h3 className={cn(subsectionTitle, "max-w-[22ch] text-white")}>{data.headline}</h3>
-              </div>
+              <h3 className={cn(subsectionTitle, "max-w-[28ch] text-balance text-white")}>{data.headline}</h3>
               <p className={cn(sectionSubheading, "m-0 max-w-[38ch] text-white")}>{leadHook}</p>
               {leadRest ? (
                 <p className={cn(bodyCopy, "max-w-[42ch] text-[var(--rm-text-subtle)]")}>{leadRest}</p>
@@ -387,11 +384,11 @@ function ComparisonTable({ active }: { active: Mode }) {
       <table className="rm-comparison-table w-full min-w-[720px] border-collapse">
         <thead>
           <tr className="border-b border-white/10">
-            <th className="w-[11rem] md:w-[13rem] px-6 py-7 md:py-8 text-left align-top md:px-8" scope="col">
+            <th className="w-[11rem] md:w-[13rem] px-6 py-4 md:py-5 text-left align-top md:px-8" scope="col">
               <span className={cn(textMeta, textGhost)}>Decision lens</span>
             </th>
             <th
-              className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
+              className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
               scope="col"
             >
               <div className="flex flex-col gap-2">
@@ -400,7 +397,7 @@ function ComparisonTable({ active }: { active: Mode }) {
               </div>
             </th>
             <th
-              className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
+              className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
               scope="col"
             >
               <div className="flex flex-col gap-2">
@@ -416,13 +413,13 @@ function ComparisonTable({ active }: { active: Mode }) {
             <tr key={row.label} className="border-b border-white/10 last:border-b-0">
               <th
                 scope="row"
-                className={cn("px-6 py-7 md:py-8 text-left align-top md:px-8", textMeta, textGhost)}
+                className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8", textMeta, textGhost)}
               >
                 {row.label}
               </th>
               <td
                 data-col="Sprint"
-                className={cn("px-6 py-7 md:py-8 align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
+                className={cn("px-6 py-4 md:py-5 align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
               >
                 <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
                   {row.sprint}
@@ -430,7 +427,7 @@ function ComparisonTable({ active }: { active: Mode }) {
               </td>
               <td
                 data-col="Marathon"
-                className={cn("px-6 py-7 md:py-8 align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
+                className={cn("px-6 py-4 md:py-5 align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
               >
                 <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
                   {row.marathon}
@@ -561,8 +558,6 @@ function ProductsPage() {
             </div>
           </div>
         </section>
-
-        <div aria-hidden className="rm-products-cta-bridge" />
 
         <UnifiedCTA
           title="Not sure which one fits?"
