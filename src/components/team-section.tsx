@@ -148,7 +148,7 @@ export function TeamSection() {
           />
         </div>
         <p
-          className={cn("reveal mx-auto mt-6 max-w-[34ch] text-balance text-center", heroSubcopy)}
+          className={cn("reveal mx-auto mt-2 max-w-[34ch] text-balance text-center", heroSubcopy)}
           data-delay="1"
         >
           {aboutTeam.subtitle}
