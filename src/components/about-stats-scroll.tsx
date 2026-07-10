@@ -78,6 +78,7 @@ function StatsScene({ id }: { id?: string }) {
                 key={item.id}
                 index={index}
                 position={position}
+                sectionProgress={scrollYProgress}
                 item={item}
               />
             ))}
@@ -104,10 +105,12 @@ function StatsScene({ id }: { id?: string }) {
 function StatSlide({
   index,
   position,
+  sectionProgress,
   item,
 }: {
   index: number;
   position: MotionValue<number>;
+  sectionProgress: MotionValue<number>;
   item: (typeof items)[number];
 }) {
   const [counterStarted, setCounterStarted] = useState(false);
@@ -117,14 +120,23 @@ function StatSlide({
    * 1400ms count-up does, so the number never gets a moment to "land". */
   const holdGate = useMotionValue(0);
   useEffect(() => {
-    const maybeStart = (current: number) => {
-      if (current >= index - 0.32 && current < index + 0.55) {
+    /* sectionProgress guard: position sits at 0 while the section is still far
+       below the viewport, which used to start slide 0's counter at page load —
+       the count-up finished offscreen and the user never saw it (QA #315). */
+    const maybeStart = () => {
+      const current = position.get();
+      if (sectionProgress.get() > 0.002 && current >= index - 0.32 && current < index + 0.55) {
         setCounterStarted(true);
       }
     };
-    maybeStart(position.get());
-    return position.on("change", maybeStart);
-  }, [index, position]);
+    maybeStart();
+    const unsubPosition = position.on("change", maybeStart);
+    const unsubProgress = sectionProgress.on("change", maybeStart);
+    return () => {
+      unsubPosition();
+      unsubProgress();
+    };
+  }, [index, position, sectionProgress]);
   useEffect(() => {
     if (!counterStarted) return;
     holdGate.set(1);
@@ -133,12 +145,22 @@ function StatSlide({
   }, [counterStarted, holdGate]);
 
   const y = useTransform(position, (current) => `${(index - current) * 0.82}em`);
+  /* The hold only applies while this slide is still the one nearest the scroll
+     position. Un-masked, a fast scroll left the previous slide pinned at full
+     opacity for the whole 2s hold, ghosting two slides on top of each other
+     for 1–3 seconds (QA #316). */
+  const holdMask = useTransform(
+    position,
+    [index - 0.55, index - 0.35, index + 0.35, index + 0.55],
+    [0, 1, 1, 0],
+  );
+  const hold = useTransform([holdGate, holdMask], (values: number[]) => values[0] * values[1]);
   const scrollOpacity = useTransform(
     position,
     [index - 0.78, index - 0.2, index + 0.04, index + 0.42, index + 0.78],
     [0, 0, 1, 1, 0],
   );
-  const opacity = useTransform([scrollOpacity, holdGate], (values: number[]) =>
+  const opacity = useTransform([scrollOpacity, hold], (values: number[]) =>
     Math.max(values[0], values[1]),
   );
   const visibility = useTransform(opacity, (value) => (value < 0.02 ? "hidden" : "visible"));
@@ -148,11 +170,11 @@ function StatSlide({
     [index - 0.56, index - 0.16, index + 0.16, index + 0.56],
     [0, 1, 1, 0],
   );
-  const copyOpacity = useTransform([scrollCopyOpacity, holdGate], (values: number[]) =>
+  const copyOpacity = useTransform([scrollCopyOpacity, hold], (values: number[]) =>
     Math.max(values[0], values[1]),
   );
   const scrollCopyY = useTransform(position, [index - 0.6, index, index + 0.6], [26, 0, -26]);
-  const copyY = useTransform([scrollCopyY, holdGate], (values: number[]) =>
+  const copyY = useTransform([scrollCopyY, hold], (values: number[]) =>
     values[1] > 0.5 ? 0 : values[0],
   );
   const scrollCopyFilter = useTransform(
@@ -161,7 +183,7 @@ function StatSlide({
     ["blur(3px) brightness(0.72)", "blur(0px) brightness(1.18)", "blur(3px) brightness(0.72)"],
   );
   const copyFilter = useTransform(
-    [scrollCopyFilter, holdGate] as MotionValue<string | number>[],
+    [scrollCopyFilter, hold] as MotionValue<string | number>[],
     (values: (string | number)[]) => (Number(values[1]) > 0.5 ? "blur(0px) brightness(1.18)" : String(values[0])),
   );
   return (
