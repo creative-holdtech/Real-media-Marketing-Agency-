@@ -76,12 +76,12 @@ export const borderSoft = "border-[var(--rm-border-soft)]";
 export const divideSoft = "divide-[var(--rm-border-soft)]";
 /** Panel zone separator — border + 32/48px pad */
 export const sectionZoneDivider = cn("border-t pt-8 md:pt-12", borderSoft);
-/** Panel zone separator inside a gap parent — parent gap handles space above the rule */
-export const sectionZoneDividerNested = cn("border-t pt-6", borderSoft);
+/** Panel zone separator inside a gap parent — parent gap handles space above the rule, pt matches it below */
+export const sectionZoneDividerNested = cn("border-t pt-8", borderSoft);
 /** Products — format chooser column */
 export const productsFormatColumn = cn("flex flex-col", sectionGap);
-/** Products — detail panel interior */
-export const productsPanelStack = "flex flex-col gap-8 md:gap-12";
+/** Products — detail panel interior — uniform 32px rhythm between all zones */
+export const productsPanelStack = "flex flex-col gap-8";
 export const productsZoneStack = "flex flex-col gap-6";
 export const productsChoiceGrid = "grid gap-4 sm:grid-cols-2";
 export const productsOperatingGrid = cn("grid sm:grid-cols-3", sectionGap);
@@ -123,13 +123,13 @@ export const engageStepItem = cn(
   borderSoft,
 );
 export const engageStepCode = cn(textMeta, textGhost, "rm-engage-step__code");
-export const engageStepTitle = cn(textMeta, textSubtle, "rm-engage-step__title");
+export const engageStepTitle = cn(textLabel, textSubtle, "rm-engage-step__title");
 /** Engage panel lead — meta + standfirst (home #engage) */
 export const engagePanelLead = cn("rm-engage-panel__lead min-w-0", sectionPanelLead);
-export const formatOperatingStrip = cn("m-0 border-y py-6 md:py-8", borderSoft, productsOperatingGrid);
+export const formatOperatingStrip = cn("m-0 border-y py-8", borderSoft, productsOperatingGrid);
 export const subsectionTitleMuted = cn("rm-type-subsection", textSubtle);
-export const productsProofGrid = cn("grid sm:grid-cols-3", sectionGap);
-export const productsProofItem = cn("flex flex-col gap-3 border-t pt-6 sm:pt-8", borderSoft);
+export const productsProofGrid = cn("rm-proof-grid grid sm:grid-cols-3", sectionGap);
+export const productsProofItem = cn("rm-proof-item flex flex-col gap-3 border-t pt-6 sm:pt-8", borderSoft);
 /** Hero centered copy column */
 export const heroCopyLayout =
   "mx-auto flex w-full max-w-[36rem] flex-col items-center text-center";

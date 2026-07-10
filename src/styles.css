@@ -2486,6 +2486,33 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   }
 }
 
+/* Proof stat rows — hover emphasis (mirrors engage-step rail) */
+@media (min-width: 768px) {
+  .rm-proof-grid:has(.rm-proof-item:hover) .rm-proof-item:not(:hover),
+  .rm-proof-grid:has(.rm-proof-item:focus-within) .rm-proof-item:not(:focus-within) {
+    opacity: 0.38;
+    transition: opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .rm-proof-item {
+    transition:
+      opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.2s ease-out;
+  }
+
+  .rm-proof-item:hover,
+  .rm-proof-item:focus-within {
+    border-top-color: var(--rm-border-strong);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-proof-grid:has(.rm-proof-item:hover) .rm-proof-item:not(:hover),
+  .rm-proof-grid:has(.rm-proof-item:focus-within) .rm-proof-item:not(:focus-within) {
+    opacity: 1;
+  }
+}
+
 .rm-engage-time {
   margin: 0;
   font-size: 0.6875rem;

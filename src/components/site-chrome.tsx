@@ -137,7 +137,7 @@ export function SiteHeader({
             }}
             className={cn(btnPrimarySm, "group hidden shrink-0 gap-2 md:inline-flex")}
           >
-            Get Audit
+            Get audit
             <BtnArrow />
           </Link>
           <MobileMenu />
@@ -239,7 +239,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
               [
                 ["/about", "About"],
                 ["/contact", "Contact"],
-                ["/audit", "Free Audit"],
+                ["/audit", "Free audit"],
               ] as const
             ).map(([to, label]) => (
               <li key={to}>

@@ -45,7 +45,7 @@ export const homepageEngagements: Engagement[] = [
         body: "Final deliverable with a clear roadmap and 100% asset & content ownership",
       },
     ],
-    ctaLabel: "Scope a Sprint →",
+    ctaLabel: "Scope a sprint →",
   },
   {
     id: "marathon",
@@ -74,7 +74,7 @@ export const homepageEngagements: Engagement[] = [
         body: "Final brand guidelines, operational channels, 100% asset & content ownership",
       },
     ],
-    ctaLabel: "Plan a Marathon →",
+    ctaLabel: "Plan a marathon →",
   },
 ];
 

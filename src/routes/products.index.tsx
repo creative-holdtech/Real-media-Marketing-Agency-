@@ -1,6 +1,15 @@
 import { useCallback, useState, type KeyboardEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import {
+  Compass,
+  Crosshair,
+  Filter,
+  Layers,
+  TrendingUp,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
 
 import {
   BtnArrow,
@@ -102,17 +111,20 @@ const modes = {
     deliverables: [
       {
         title: "Positioning audit & fix",
+        icon: Crosshair,
         body: "We read everything your market sees—landing pages, decks, ads, socials—and rewrite the core pitch that should be doing 80% of the heavy lifting.",
       },
       {
         title: "Channel test stack",
+        icon: Layers,
         body: "Three high-probability distribution bets, deployed together over a two-week cycle. Hypothesis, creative, copy, and success metrics fully locked before launch.",
       },
       {
         title: "Conversion system review",
+        icon: Filter,
         body: "End-to-end funnel teardown: from first impression to signed deal. We isolate the single choke-point costing you the most and clear it.",
       },
-    ],
+    ] satisfies Array<{ title: string; icon: LucideIcon; body: string }>,
   },
   marathon: {
     tag: "Marathon",
@@ -148,17 +160,20 @@ const modes = {
     deliverables: [
       {
         title: "Market narrative architecture",
+        icon: Compass,
         body: "Your core message should never lose relevance. Every quarter, we analyze and update your positioning to match the current market reality.",
       },
       {
         title: "Finding new growth tracks",
+        icon: TrendingUp,
         body: "Every month, we line up fresh channel and creative ideas. We track live performance, filter out the noise, and scale the top performers.",
       },
       {
         title: "Embedded strategic support",
+        icon: Users,
         body: "Continuous C-level support for your launches, fundraises, and pivots. We operate inside your context, working alongside your core team.",
       },
-    ],
+    ] satisfies Array<{ title: string; icon: LucideIcon; body: string }>,
   },
 } as const;
 
@@ -306,7 +321,6 @@ function DeliverablesRail({ mode }: { mode: Mode }) {
         <h4 id={`deliverables-${mode}`} className={cn("m-0", textMeta, textGhost)}>
           What ships inside
         </h4>
-        <p className={cn("m-0", textCardBody, textSubtle)}>Three core deliverables per engagement cycle.</p>
       </div>
 
       <div className={engageStepsShell}>
@@ -316,7 +330,7 @@ function DeliverablesRail({ mode }: { mode: Mode }) {
         </div>
 
         <div className={engageStepsGrid}>
-          {data.deliverables.map((item, index) => (
+          {data.deliverables.map((item) => (
             <dl
               key={item.title}
               role="group"
@@ -328,8 +342,10 @@ function DeliverablesRail({ mode }: { mode: Mode }) {
                 aria-hidden
                 className="rm-engage-step__dot absolute left-0 z-[1] hidden size-1.5 rounded-full bg-white ring-[3px] ring-black md:block"
               />
-              <dt className="flex items-baseline gap-2">
-                <span className={engageStepCode}>{String(index + 1).padStart(2, "0")}</span>
+              <dt className="flex items-center gap-2">
+                <span className={cn(engageStepCode, "inline-flex items-center")}>
+                  <item.icon size={16} strokeWidth={1.5} aria-hidden />
+                </span>
                 <span className={engageStepTitle}>{item.title}</span>
               </dt>
               <dd className={cn("m-0 max-w-prose", bodyCopy)}>{item.body}</dd>
@@ -350,7 +366,6 @@ function ProofRow({ mode }: { mode: Mode }) {
         <h4 id={`proof-${mode}`} className={cn("m-0", textMeta, textGhost)}>
           Client results
         </h4>
-        <p className={cn("m-0", textCardBody, textSubtle)}>Measured outcomes from recent engagements.</p>
       </div>
 
       <div className={productsProofGrid}>
@@ -392,9 +407,7 @@ function FormatOverview({ mode }: { mode: Mode }) {
         exit="exit"
       >
         <div className={engagePanelLead}>
-          <p className={cn("m-0", textMeta, textGhost)}>Choose this if</p>
-          <p className="m-0 rm-copy-standfirst rm-copy-standfirst--band">{data.fitSignal}</p>
-          <p className={cn(bodyCopyStrong, "m-0 text-pretty")}>{data.headline}</p>
+          <p className="m-0 rm-copy-standfirst rm-copy-standfirst--band">{data.headline}</p>
           <p className={cn(bodyCopy, "m-0")}>{leadHook}</p>
         </div>
 
