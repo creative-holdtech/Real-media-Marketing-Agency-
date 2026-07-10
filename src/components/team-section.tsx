@@ -33,13 +33,26 @@ const team = aboutTeam.members.map((member) => ({
 }));
 
 const TEAM_PHOTO_FOCUS: Record<keyof typeof teamPhotos, string> = {
-  "01": "center 8%",
-  "02": "center 5%",
-  "03": "center 6%",
-  "04": "center 3%",
-  "05": "center 4%",
-  "06": "center 5%",
-  "07": "center 2%",
+  "01": "center top",
+  "02": "center top",
+  "03": "center top",
+  "04": "center top",
+  "05": "center top",
+  "06": "center top",
+  "07": "center top",
+};
+
+/* All team photos are 1400×1400 squares shown in a portrait box — the cover
+   crop is height-limited, so object-position-Y can't move the head at all.
+   A bottom-anchored zoom is the only lever: s = 0.88 / (1 - crownFrac) puts
+   every crown at ~12% of card height (matches photo 07, the highest head). */
+const TEAM_PHOTO_ZOOM: Partial<Record<keyof typeof teamPhotos, number>> = {
+  "01": 1.067,
+  "02": 1.06,
+  "03": 1.19,
+  "04": 1.03,
+  "05": 1.06,
+  "06": 1.17,
 };
 
 const carouselConfig = {
@@ -73,7 +86,15 @@ function TeamPortraitSlide({ person }: { person: (typeof team)[number] }) {
         alt={person.name}
         draggable={false}
         className="rm-team-portrait__img pointer-events-none h-full w-full"
-        style={{ objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center 5%" }}
+        style={{
+          objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center 5%",
+          ...(TEAM_PHOTO_ZOOM[person.photoKey]
+            ? {
+                transform: `scale(${TEAM_PHOTO_ZOOM[person.photoKey]})`,
+                transformOrigin: "50% 100%",
+              }
+            : null),
+        }}
         loading="lazy"
         decoding="async"
       />
