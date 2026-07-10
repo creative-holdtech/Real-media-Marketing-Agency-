@@ -1,10 +1,40 @@
 import { useRef, type ReactNode, type RefObject } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
-import { sectionInner, siteChromeBand } from "@/components/framer-section";
+import { sectionInner, siteChromeBand, textGhost, textMeta } from "@/components/framer-section";
 import { HeroScrollStage } from "@/components/home-scroll-cinema";
 import { PageEditorialHero } from "@/components/page-editorial-hero";
 import { cn } from "@/lib/utils";
+
+/** Centered-hero background glow — accent + neutral blobs on existing tokens. */
+export function HeroAmbientGlow() {
+  return (
+    <div aria-hidden className="rm-hero-ambient">
+      <div className="rm-hero-ambient__blob rm-hero-ambient__blob--a" />
+      <div className="rm-hero-ambient__blob rm-hero-ambient__blob--b" />
+    </div>
+  );
+}
+
+/** Image-backed hero ambient — a soft glow render bled behind the copy. */
+export function HeroAmbientImage({ src }: { src: string }) {
+  return (
+    <div aria-hidden className="rm-hero-ambient rm-hero-ambient--image">
+      <img src={src} alt="" className="rm-hero-ambient__img" loading="eager" decoding="async" />
+      <div className="rm-hero-ambient__veil" />
+    </div>
+  );
+}
+
+/** "Scroll to explore" affordance under a centered hero's actions row. */
+export function HeroScrollCue({ label = "Scroll to explore" }: { label?: string }) {
+  return (
+    <div aria-hidden className="rm-hero-scrollcue">
+      <span className={cn(textMeta, textGhost)}>{label}</span>
+      <span className="rm-hero-scrollcue__dot" />
+    </div>
+  );
+}
 
 type ServicesHeroProps = {
   tag: string;
@@ -14,6 +44,12 @@ type ServicesHeroProps = {
   headingId?: string;
   actions?: ReactNode;
   sectionClassName?: string;
+  /** Left-aligned by default (About pattern); "center" for a centered composition. */
+  align?: "start" | "center";
+  /** Decorative background layer (e.g. ambient glow blobs), behind the copy. */
+  ambient?: ReactNode;
+  /** Rendered under the actions row (e.g. a "scroll to explore" cue). */
+  scrollCue?: ReactNode;
 };
 
 function ServicesHeroAmbient({
@@ -56,6 +92,9 @@ export function ServicesHero({
   headingId = "services-hero-title",
   actions,
   sectionClassName,
+  align = "start",
+  ambient,
+  scrollCue,
 }: ServicesHeroProps) {
   const reduce = useReducedMotion();
   const motionOn = !reduce;
@@ -70,6 +109,7 @@ export function ServicesHero({
       )}
     >
       <ServicesHeroAmbient enabled={motionOn} heroRef={heroRef} />
+      {ambient}
 
       <section
         aria-labelledby={headingId}
@@ -80,6 +120,7 @@ export function ServicesHero({
             <HeroScrollStage heroRef={heroRef} className="w-full">
               <PageEditorialHero
                 layout="copy"
+                align={align}
                 tag={tag}
                 titleLines={titleLines}
                 body={body}
@@ -87,6 +128,7 @@ export function ServicesHero({
                 headingId={headingId}
                 actions={actions}
               />
+              {scrollCue}
             </HeroScrollStage>
           </div>
         </div>

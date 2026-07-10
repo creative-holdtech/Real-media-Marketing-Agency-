@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState, type KeyboardEvent } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 
@@ -6,27 +6,49 @@ import {
   BtnArrow,
   FramerTag,
   bodyCopy,
+  bodyCopyStrong,
   borderSoft,
   btnOutlineOnDark,
   btnPrimary,
+  engagePanelLead,
+  engageStepCode,
+  engageStepItem,
+  engageStepsGrid,
+  engageStepsShell,
+  engageStepTitle,
+  formatOperatingStrip,
+  heroStandfirst,
+  productsChoiceGrid,
+  productsFormatColumn,
+  productsPanelStack,
+  productsProofGrid,
+  productsProofItem,
+  sectionActionsInline,
   sectionContentGrid,
+  sectionHeadlineLead,
   sectionHeadline,
   sectionInner,
+  sectionLabelHeadlineStack,
+  sectionPanelLead,
   sectionShell,
   sectionSubheading,
+  sectionZoneDividerNested,
   subsectionTitle,
+  subsectionTitleMuted,
   surfaceCardPadding,
   textCardBody,
   textGhost,
   textLabel,
   textMeta,
   textSubtle,
+  textValue,
 } from "@/components/framer-section";
-import { ServicesHero } from "@/components/services-hero";
+import { HeroAmbientImage, HeroScrollCue, ServicesHero } from "@/components/services-hero";
+import productsHeroAmbient from "@/assets/products-hero-ambient.jpg";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { SurfaceCard } from "@/components/surface-card";
-import { CardContent } from "@/components/ui/card";
 import { UnifiedCTA } from "@/components/unified-cta";
+import { PageSectionDots } from "@/components/page-section-dots";
+import { ScrollChapter } from "@/components/home-scroll-cinema";
 import { buildPageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -49,11 +71,13 @@ const modes = {
   sprint: {
     tag: "Sprint",
     meta: "From 4 weeks · tactical retainer",
+    tempo: "Defined push",
+    fitSignal: "A raise, launch, or growth blocker needs a fast reset.",
     headline: "High-impact marketing for fast raises and tight deadlines.",
     summary:
       "Built for a defined push: a raise, launch, or one blocked part of growth that needs a fast reset.",
     lead: "Sprint is a focused engagement with a clear scope and hard deadline. We embed into your workflow, deploy target channel mix, and move fast. You get weekly deliverables and clear data within a flexible monthly setup. Best suited for early-stage founders, growth leads preparing for a raise, and teams with solid traction looking for a breakthrough.",
-    cta: "Scope a Sprint →",
+    cta: "Scope a sprint →",
     format: "Tactical retainer",
     bestFor: "A defined challenge",
     cadence: "Daily check-ins",
@@ -93,11 +117,13 @@ const modes = {
   marathon: {
     tag: "Marathon",
     meta: "From 2 months · strategic partnership",
+    tempo: "Embedded system",
+    fitSignal: "You need an embedded partner shaping GTM over quarters, not a one-off project.",
     headline: "For founders building a category beyond a product.",
     summary:
       "Built for teams that need an embedded strategic partner shaping message, GTM, and channel system over time.",
-    lead: "Marathon is a foundational growth ecosystem. We replace the need for an in-house department to take over the entire function — from core strategy and positioning to long-term multi-channel execution. Built for Series A+ companies, ambitious scale-ups, and teams focusing on long-term growth as a board-level priority.",
-    cta: "Start a Marathon →",
+    lead: "Marathon replaces the in-house growth function — strategy, positioning, and multi-channel execution as one embedded system. Built for Series A+ teams and scale-ups treating growth as a board-level priority.",
+    cta: "Start a marathon →",
     format: "Strategic partnership",
     bestFor: "Full brand build or market entry",
     cadence: "Weekly / Monthly strategy sessions",
@@ -138,34 +164,34 @@ const modes = {
 
 type Mode = keyof typeof modes;
 
-const UNDERLINE_SPRING = { type: "spring", stiffness: 380, damping: 34 } as const;
-
 const modePanelVariants: Variants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.38, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.26, ease: [0.22, 1, 0.36, 1] },
   },
   exit: {
     opacity: 0,
-    y: -10,
-    transition: { duration: 0.18, ease: [0.4, 0, 1, 1] },
+    y: -6,
+    transition: { duration: 0.1, ease: [0.4, 0, 1, 1] },
   },
-};
-
-const heroRise: Variants = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
 };
 
 const MODE_PANEL_ID = "format-panel";
 
+const productsPageDots = [
+  { id: "products-top", label: "Intro" },
+  { id: "format", label: "Formats" },
+  { id: "compare", label: "Comparison" },
+  { id: "cta", label: "Call" },
+] as const;
+
 const comparisonRows = [
   {
-    label: "Engagement",
-    sprint: modes.sprint.meta,
-    marathon: modes.marathon.meta,
+    label: "Format",
+    sprint: modes.sprint.format,
+    marathon: modes.marathon.format,
   },
   {
     label: "Best for",
@@ -182,50 +208,68 @@ const comparisonRows = [
     sprint: modes.sprint.output,
     marathon: modes.marathon.output,
   },
-  {
-    label: "Operating model",
-    sprint: modes.sprint.summary,
-    marathon: modes.marathon.summary,
-  },
 ] as const;
 
-function ModeSwitcher({ active, onChange }: { active: Mode; onChange: (mode: Mode) => void }) {
+const MODE_ORDER: Mode[] = ["sprint", "marathon"];
+
+function FormatChoiceCards({ active, onChange }: { active: Mode; onChange: (mode: Mode) => void }) {
   const reduce = useReducedMotion();
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      const index = MODE_ORDER.indexOf(active);
+      if (index < 0) return;
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        event.preventDefault();
+        onChange(MODE_ORDER[(index + 1) % MODE_ORDER.length]);
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        event.preventDefault();
+        onChange(MODE_ORDER[(index - 1 + MODE_ORDER.length) % MODE_ORDER.length]);
+      }
+    },
+    [active, onChange],
+  );
 
   return (
     <div
-      role="tablist"
+      role="radiogroup"
       aria-label="Choose engagement format"
-      className="flex flex-wrap items-end gap-x-8 gap-y-1 border-b border-white/10"
+      className={productsChoiceGrid}
+      onKeyDown={handleKeyDown}
     >
-      {(["sprint", "marathon"] as const).map((mode) => {
+      {MODE_ORDER.map((mode) => {
+        const data = modes[mode];
         const isActive = active === mode;
         return (
           <button
             key={mode}
             type="button"
             id={`mode-tab-${mode}`}
-            role="tab"
-            aria-selected={isActive}
+            role="radio"
+            aria-checked={isActive}
             aria-controls={MODE_PANEL_ID}
-            tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(mode)}
             className={cn(
-              "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-2",
-              subsectionTitle,
-              "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
-              isActive ? "text-white" : "text-[var(--rm-text-ghost)] hover:text-[var(--rm-text-body)]",
+              "rm-format-choice rm-touch cursor-pointer text-left",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-[var(--rm-surface-raised)]",
+              !reduce && "motion-safe:active:scale-[0.99]",
+              isActive && "rm-format-choice--active",
             )}
           >
-            {modes[mode].tag}
-            {isActive ? (
-              <motion.span
-                layoutId="products-mode-underline"
-                className="absolute inset-x-0 bottom-0 h-px bg-white"
-                transition={reduce ? { duration: 0 } : UNDERLINE_SPRING}
-              />
-            ) : null}
+            <div className={cn("flex flex-col", surfaceCardPadding, sectionPanelLead)}>
+              <div className="flex items-start justify-between gap-4">
+                <div className={sectionLabelHeadlineStack}>
+                  <span className={isActive ? subsectionTitle : subsectionTitleMuted}>{data.tag}</span>
+                  <span className={cn(textMeta, textGhost)}>{data.tempo}</span>
+                </div>
+                <span aria-hidden className="rm-format-choice__indicator" />
+              </div>
+
+              <p className={cn(textMeta, "m-0", textGhost)}>{data.meta}</p>
+              <p className={cn(textCardBody, "m-0 text-pretty")}>{data.summary}</p>
+              <p className={cn(textMeta, "m-0", !isActive && textGhost)}>Best for · {data.bestFor}</p>
+            </div>
           </button>
         );
       })}
@@ -233,49 +277,67 @@ function ModeSwitcher({ active, onChange }: { active: Mode; onChange: (mode: Mod
   );
 }
 
+function FormatOperatingStrip({ mode }: { mode: Mode }) {
+  const data = modes[mode];
+  const items = [
+    ["Format", data.format],
+    ["Cadence", data.cadence],
+    ["Output", data.output],
+  ] as const;
+
+  return (
+    <dl className={formatOperatingStrip}>
+      {items.map(([label, value]) => (
+        <div key={label} className={sectionLabelHeadlineStack}>
+          <dt className={cn(textMeta, textGhost)}>{label}</dt>
+          <dd className={cn(bodyCopyStrong, "m-0 text-pretty")}>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
 function DeliverablesRail({ mode }: { mode: Mode }) {
   const data = modes[mode];
 
   return (
-    <div className="flex flex-col gap-4">
-      <p className={cn("m-0", textMeta, textGhost)}>What ships inside</p>
+    <section aria-labelledby={`deliverables-${mode}`}>
+      <div className={sectionPanelLead}>
+        <h4 id={`deliverables-${mode}`} className={cn("m-0", textMeta, textGhost)}>
+          What ships inside
+        </h4>
+        <p className={cn("m-0", textCardBody, textSubtle)}>Three core deliverables per engagement cycle.</p>
+      </div>
 
-      <div className="rm-engage-steps relative pt-6 md:pt-8">
+      <div className={engageStepsShell}>
         <div className="rm-engage-rail pointer-events-none absolute inset-x-0 hidden md:block" aria-hidden>
           <div className="h-full w-full bg-white/[0.08]" />
           <div className="rm-engage-rail__fill absolute inset-0 origin-left bg-gradient-to-r from-white/45 via-white/25 to-white/10" />
         </div>
 
-        <div className="grid gap-x-8 gap-y-6 md:grid-cols-3 lg:gap-x-12">
+        <div className={engageStepsGrid}>
           {data.deliverables.map((item, index) => (
             <dl
               key={item.title}
               role="group"
               aria-label={item.title}
-              className={cn(
-                "rm-engage-step group/step relative m-0 flex flex-col gap-2 py-5 first:pt-0 md:gap-2 md:py-0",
-                "max-md:border-b max-md:last:border-b-0",
-                borderSoft,
-              )}
+              tabIndex={0}
+              className={engageStepItem}
             >
               <span
                 aria-hidden
                 className="rm-engage-step__dot absolute left-0 z-[1] hidden size-1.5 rounded-full bg-white ring-[3px] ring-black md:block"
               />
-              <dt className="flex items-baseline gap-2.5">
-                <span className={cn(textMeta, textGhost, "rm-engage-step__code")}>
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className={cn(textMeta, textSubtle, "rm-engage-step__title")}>
-                  {item.title}
-                </span>
+              <dt className="flex items-baseline gap-2">
+                <span className={engageStepCode}>{String(index + 1).padStart(2, "0")}</span>
+                <span className={engageStepTitle}>{item.title}</span>
               </dt>
-              <dd className={cn("m-0 max-w-[34ch]", textCardBody, textSubtle)}>{item.body}</dd>
+              <dd className={cn("m-0 max-w-prose", bodyCopy)}>{item.body}</dd>
             </dl>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -283,19 +345,26 @@ function ProofRow({ mode }: { mode: Mode }) {
   const data = modes[mode];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-3">
-      {data.proof.map((stat) => (
-        <SurfaceCard key={stat.label} interactive className="min-h-0">
-          <CardContent className={cn("flex h-full flex-col", surfaceCardPadding)}>
-            <p className="rm-type-display tabular-nums text-[2rem] leading-[1.1] text-[var(--rm-ink)]">
-              {stat.value}
-            </p>
-            <p className={cn(textLabel, "mt-3")}>{stat.label}</p>
-            <p className={cn(bodyCopy, "mt-2 max-w-[30ch] text-pretty")}>{stat.context}</p>
-          </CardContent>
-        </SurfaceCard>
-      ))}
-    </div>
+    <section aria-labelledby={`proof-${mode}`}>
+      <div className={sectionPanelLead}>
+        <h4 id={`proof-${mode}`} className={cn("m-0", textMeta, textGhost)}>
+          Client results
+        </h4>
+        <p className={cn("m-0", textCardBody, textSubtle)}>Measured outcomes from recent engagements.</p>
+      </div>
+
+      <div className={productsProofGrid}>
+        {data.proof.map((stat) => (
+          <dl key={stat.label} className={cn(productsProofItem, "m-0")}>
+            <dt className="rm-stat-hero tabular-nums">{stat.value}</dt>
+            <dd className="m-0 flex flex-col gap-3">
+              <span className={textLabel}>{stat.label}</span>
+              <span className={cn(bodyCopy, "max-w-[28ch] text-pretty")}>{stat.context}</span>
+            </dd>
+          </dl>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -307,102 +376,69 @@ function splitLead(lead: string): [string, string] {
 
 function FormatOverview({ mode }: { mode: Mode }) {
   const data = modes[mode];
-  const [leadHook, leadRest] = splitLead(data.lead);
-  const rows = [
-    ["Format", data.format],
-    ["Best for", data.bestFor],
-    ["Cadence", data.cadence],
-    ["Output", data.output],
-  ] as const;
+  const [leadHook] = splitLead(data.lead);
 
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={mode}
         id={MODE_PANEL_ID}
-        role="tabpanel"
+        role="region"
         aria-labelledby={`mode-tab-${mode}`}
-        className="flex flex-col gap-10 pt-8 md:gap-12"
+        className={cn("rm-format-panel", productsPanelStack, surfaceCardPadding)}
         variants={modePanelVariants}
         initial="hidden"
         animate="visible"
         exit="exit"
       >
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,0.58fr)_minmax(24rem,1.42fr)] lg:gap-12">
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4">
-              <p className={cn("m-0", textMeta, textGhost)}>{data.meta}</p>
-              <p className={cn(textCardBody, "m-0 max-w-[46ch] text-left text-[var(--rm-text-body)]")}>
-                {data.summary}
-              </p>
-            </div>
-
-            <dl className="flex flex-col border-t border-white/10">
-              {rows.map(([label, value]) => (
-                <div
-                  key={label}
-                  className="flex items-baseline justify-between gap-4 border-b border-white/10 py-3 first:pt-4 last:border-b-0"
-                >
-                  <dt className={cn(textMeta, textGhost)}>{label}</dt>
-                  <dd className="m-0 rm-type-body text-right text-white">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-
-          <div className="flex h-full flex-col gap-6">
-            <div className="flex flex-col gap-4">
-              <h3 className={cn(subsectionTitle, "max-w-[28ch] text-balance text-white")}>{data.headline}</h3>
-              <p className={cn(sectionSubheading, "m-0 max-w-[38ch] text-white")}>{leadHook}</p>
-              {leadRest ? (
-                <p className={cn(bodyCopy, "max-w-[42ch] text-[var(--rm-text-subtle)]")}>{leadRest}</p>
-              ) : null}
-            </div>
-
-            <div className="mt-auto">
-              <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
-                {data.cta.replace(/\s*→$/, "")}
-                <BtnArrow />
-              </Link>
-            </div>
-          </div>
+        <div className={engagePanelLead}>
+          <p className={cn("m-0", textMeta, textGhost)}>Choose this if</p>
+          <p className="m-0 rm-copy-standfirst rm-copy-standfirst--band">{data.fitSignal}</p>
+          <p className={cn(bodyCopyStrong, "m-0 text-pretty")}>{data.headline}</p>
+          <p className={cn(bodyCopy, "m-0")}>{leadHook}</p>
         </div>
+
+        <FormatOperatingStrip mode={mode} />
+
+        <DeliverablesRail mode={mode} />
 
         <ProofRow mode={mode} />
 
-        <DeliverablesRail mode={mode} />
+        <div className={cn(sectionZoneDividerNested, "flex justify-end")}>
+          <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
+            {data.cta.replace(/\s*→$/, "")}
+            <BtnArrow />
+          </Link>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
 }
 
-function ComparisonTable({ active }: { active: Mode }) {
-  const colTint = (mode: Mode) => (active === mode ? "bg-white/[0.04]" : undefined);
-
+function ComparisonTable() {
   return (
-    <div className="rm-comparison-card overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]">
-      <table className="rm-comparison-table w-full min-w-[720px] border-collapse">
+    <div className="rm-comparison-card">
+      <table className="rm-comparison-table w-full border-collapse">
+        <colgroup>
+          <col className="rm-comparison-table__label-col" />
+          <col className="rm-comparison-table__value-col" />
+          <col className="rm-comparison-table__value-col" />
+        </colgroup>
         <thead>
-          <tr className="border-b border-white/10">
-            <th className="w-[11rem] md:w-[13rem] px-6 py-4 md:py-5 text-left align-top md:px-8" scope="col">
+          <tr className={cn("border-b", borderSoft)}>
+            <th className="text-left align-middle" scope="col">
               <span className={cn(textMeta, textGhost)}>Decision lens</span>
             </th>
-            <th
-              className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
-              scope="col"
-            >
-              <div className="flex flex-col gap-2">
-                <span className="rm-type-subsection text-white">Sprint</span>
-                <span className={cn("rm-type-body", textSubtle)}>Defined push</span>
+            <th className="text-left align-middle" scope="col">
+              <div className={sectionLabelHeadlineStack}>
+                <span className={subsectionTitle}>Sprint</span>
+                <span className={cn(textCardBody, textSubtle)}>{modes.sprint.tempo}</span>
               </div>
             </th>
-            <th
-              className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
-              scope="col"
-            >
-              <div className="flex flex-col gap-2">
-                <span className="rm-type-subsection text-white">Marathon</span>
-                <span className={cn("rm-type-body", textSubtle)}>Embedded system</span>
+            <th className="text-left align-middle" scope="col">
+              <div className={sectionLabelHeadlineStack}>
+                <span className={subsectionTitle}>Marathon</span>
+                <span className={cn(textCardBody, textSubtle)}>{modes.marathon.tempo}</span>
               </div>
             </th>
           </tr>
@@ -410,26 +446,17 @@ function ComparisonTable({ active }: { active: Mode }) {
 
         <tbody>
           {comparisonRows.map((row) => (
-            <tr key={row.label} className="border-b border-white/10 last:border-b-0">
-              <th
-                scope="row"
-                className={cn("px-6 py-4 md:py-5 text-left align-top md:px-8", textMeta, textGhost)}
-              >
+            <tr key={row.label} className={cn("border-b", borderSoft, "last:border-b-0")}>
+              <th scope="row" className={cn("text-left align-middle", textMeta, textGhost)}>
                 {row.label}
               </th>
-              <td
-                data-col="Sprint"
-                className={cn("px-6 py-4 md:py-5 align-top md:px-8 transition-colors duration-300", colTint("sprint"))}
-              >
-                <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
+              <td data-col="Sprint" className="align-middle">
+                <span className={cn(textValue, row.label === "Best for" && "rm-type-body-strong")}>
                   {row.sprint}
                 </span>
               </td>
-              <td
-                data-col="Marathon"
-                className={cn("px-6 py-4 md:py-5 align-top md:px-8 transition-colors duration-300", colTint("marathon"))}
-              >
-                <span className={cn(textCardBody, "text-white", row.label === "Best for" && "rm-type-body-strong")}>
+              <td data-col="Marathon" className="align-middle">
+                <span className={cn(textValue, row.label === "Best for" && "rm-type-body-strong")}>
                   {row.marathon}
                 </span>
               </td>
@@ -456,34 +483,40 @@ function ProductsPage() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
+      <PageSectionDots sections={productsPageDots} />
       <SiteHeader variant="dark" overlay />
 
-      <ServicesHero
-        tag={hero.tag}
-        titleLines={hero.titleLines}
-        body={hero.body}
-        bodyClassName="md:!w-[46ch] md:!max-w-[46ch]"
-        headingId="products-heading"
-        sectionClassName="bg-black"
-        actions={
-          <>
-            <button
-              type="button"
-              onClick={() =>
-                document.getElementById("format")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" })
-              }
-              className={cn(btnPrimary, "group gap-2")}
-            >
-              Compare formats
-              <BtnArrow className="rotate-90" />
-            </button>
-            <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
-              See case studies
-              <BtnArrow />
-            </Link>
-          </>
-        }
-      />
+      <div id="products-top">
+        <ServicesHero
+          tag={hero.tag}
+          titleLines={hero.titleLines}
+          body={hero.body}
+          bodyClassName={heroStandfirst}
+          headingId="products-heading"
+          sectionClassName="bg-black"
+          align="center"
+          ambient={<HeroAmbientImage src={productsHeroAmbient} />}
+          scrollCue={<HeroScrollCue />}
+          actions={
+            <>
+              <button
+                type="button"
+                onClick={() =>
+                  document.getElementById("format")?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" })
+                }
+                className={cn(btnPrimary, "group gap-2")}
+              >
+                Compare formats
+                <BtnArrow className="rotate-90" />
+              </button>
+              <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
+                See case studies
+                <BtnArrow />
+              </Link>
+            </>
+          }
+        />
+      </div>
 
       <main id="main">
         <section
@@ -499,18 +532,18 @@ function ProductsPage() {
                 <FramerTag>Engagement formats</FramerTag>
               </div>
 
-              <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
-                <div className="flex flex-col gap-6">
-                  <h2 id="format-heading" className={cn(sectionHeadline, "max-w-[18ch] text-white")}>
+              <div className={cn(productsFormatColumn, "md:col-span-2 md:col-start-2")}>
+                <div className={sectionHeadlineLead}>
+                  <h2 id="format-heading" className={sectionHeadline}>
                     Pick the working rhythm that fits the moment.
                   </h2>
-                  <p className={cn(sectionSubheading, "m-0 max-w-[48ch] text-[var(--rm-text-body)]")}>
-                    Sprint compresses execution into a defined push. Marathon keeps message,
-                    channel mix, and decision-making compounding over time.
+                  <p className={cn(sectionSubheading, "rm-copy-standfirst--band m-0")}>
+                    Compare both formats at a glance, then open the detail panel for deliverables,
+                    operating model, and proof.
                   </p>
                 </div>
 
-                <ModeSwitcher active={mode} onChange={setMode} />
+                <FormatChoiceCards active={mode} onChange={setMode} />
                 <FormatOverview mode={mode} />
               </div>
             </div>
@@ -520,8 +553,10 @@ function ProductsPage() {
         <div className="rm-products-tone-bridge" aria-hidden />
 
         <section
+          id="compare"
           aria-labelledby="compare-heading"
           className={cn(sectionShell, "relative bg-black")}
+          style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         >
           <div aria-hidden className="rm-products-glow" />
           <div className={sectionInner}>
@@ -530,21 +565,21 @@ function ProductsPage() {
                 <FramerTag>Compare formats</FramerTag>
               </div>
 
-              <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
-                <div className="flex flex-col gap-6">
-                  <h2 id="compare-heading" className={cn(sectionHeadline, "max-w-[18ch] text-white")}>
+              <div className={cn(productsFormatColumn, "md:col-span-2 md:col-start-2")}>
+                <div className={sectionHeadlineLead}>
+                  <h2 id="compare-heading" className={sectionHeadline}>
                     One engine, two tempos.
                   </h2>
-                  <p className={cn(sectionSubheading, "m-0 max-w-[48ch] text-[var(--rm-text-body)]")}>
+                  <p className={cn(sectionSubheading, "rm-copy-standfirst--band m-0")}>
                     Sprint points everything at a single deadline. Marathon compounds the same
                     work quarter after quarter. Pick by the decision in front of you, not by which
                     option looks bigger on paper.
                   </p>
                 </div>
 
-                <ComparisonTable active={mode} />
+                <ComparisonTable />
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className={sectionActionsInline}>
                   <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
                     Talk through the fit
                     <BtnArrow />
@@ -559,14 +594,16 @@ function ProductsPage() {
           </div>
         </section>
 
-        <UnifiedCTA
-          title="Not sure which one fits?"
-          titleAccent="Let's figure it out together. Book a 30-minute call. We'll ask you three questions and tell you exactly which format makes sense — or why neither does."
-          primaryLabel="Book a call"
-          primaryTo="/contact"
-          secondaryLabel="See case studies"
-          secondaryTo="/cases"
-        />
+        <ScrollChapter variant="reveal">
+          <UnifiedCTA
+            title="Not sure which one fits?"
+            titleAccent="Let's figure it out together. Book a 30-minute call. We'll ask you three questions and tell you exactly which format makes sense — or why neither does."
+            primaryLabel="Book a call"
+            primaryTo="/contact"
+            secondaryLabel="See case studies"
+            secondaryTo="/cases"
+          />
+        </ScrollChapter>
       </main>
 
       <SiteFooter />

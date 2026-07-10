@@ -10,7 +10,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const CINE_EASE = [0.16, 1, 0.3, 1] as const;
 const IN_VIEW_MARGIN = "0px 0px -8% 0px" as const;
 
-const WORD_STAGGER = 0.06;
+const WORD_STAGGER = 0.032;
 const ROW_GAP = 0.01;
 
 function FadeUp({
@@ -33,7 +33,7 @@ function FadeUp({
       className={className}
       initial={false}
       animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-      transition={reduce ? { duration: 0 } : { duration: 0.36, delay, ease: EASE }}
+      transition={reduce ? { duration: 0 } : { duration: 0.24, delay, ease: EASE }}
     >
       {children}
     </motion.div>
@@ -43,22 +43,22 @@ function FadeUp({
 const wordStage: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: WORD_STAGGER, delayChildren: 0.04 },
+    transition: { staggerChildren: WORD_STAGGER, delayChildren: 0.02 },
   },
 };
 
+/** No `filter` on this transition — Safari struggles to animate blur() reliably
+ * on staggered children, which made the reveal appear stuck on Mac. */
 const rowStage = (delayChildren: number): Variants => ({
   hidden: {
     opacity: 0,
-    y: 12,
-    filter: "blur(12px)",
+    y: 10,
   },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.48,
+      duration: 0.3,
       ease: CINE_EASE,
       staggerChildren: WORD_STAGGER,
       delayChildren,
@@ -67,12 +67,11 @@ const rowStage = (delayChildren: number): Variants => ({
 });
 
 const wordReveal: Variants = {
-  hidden: { opacity: 0, y: 10, filter: "blur(8px)" },
+  hidden: { opacity: 0, y: 8 },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.42, ease: CINE_EASE },
+    transition: { duration: 0.26, ease: CINE_EASE },
   },
 };
 
@@ -136,12 +135,12 @@ export function AboutManifestoSection({
    * otherwise it reads as fully visible while the thesis is still animating in above it. */
   const headlineRevealEnd =
     (correction ? correctionDelay + WORD_STAGGER * correctionWordCount : 0.04 + WORD_STAGGER * thesisWordCount) +
-    0.45;
+    0.28;
 
   return (
     <section
       aria-labelledby={titleId}
-      className="rm-manifesto-light relative overflow-hidden bg-black px-6 md:px-10"
+      className="rm-manifesto-light relative z-[2] overflow-hidden bg-black px-6 md:px-10"
     >
       <div aria-hidden className="rm-products-glow" />
       <div aria-hidden className="rm-manifesto-light__grain" />

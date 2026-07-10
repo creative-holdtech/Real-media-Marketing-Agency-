@@ -48,13 +48,15 @@ export function BigStatValue({
   to,
   suffix,
   start,
+  duration,
 }: {
   prefix?: string;
   to: number;
   suffix?: string;
   start: boolean;
+  duration?: number;
 }) {
-  const n = useCountUp(to, start);
+  const n = useCountUp(to, start, duration);
   return (
     <>
       {prefix ?? ""}

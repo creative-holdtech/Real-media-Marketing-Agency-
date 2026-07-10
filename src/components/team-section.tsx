@@ -32,6 +32,16 @@ const team = aboutTeam.members.map((member) => ({
   photo: teamPhotos[member.photoKey],
 }));
 
+const TEAM_PHOTO_FOCUS: Record<keyof typeof teamPhotos, string> = {
+  "01": "center 8%",
+  "02": "center 5%",
+  "03": "center 6%",
+  "04": "center 3%",
+  "05": "center 4%",
+  "06": "center 5%",
+  "07": "center 2%",
+};
+
 const carouselConfig = {
   ...DRAGABLE_CAROUSEL_DEFAULTS,
   inactiveScale: 0.9,
@@ -54,12 +64,16 @@ function bioLines(bio: string): string[] {
 
 function TeamPortraitSlide({ person }: { person: (typeof team)[number] }) {
   return (
-    <div className="rm-dragable-carousel__media rm-team-portrait overflow-hidden">
+    <div
+      className="rm-dragable-carousel__media rm-team-portrait overflow-hidden"
+      data-photo={person.photoKey}
+    >
       <img
         src={person.photo}
         alt={person.name}
         draggable={false}
-        className="pointer-events-none h-full w-full object-cover object-[center_20%]"
+        className="rm-team-portrait__img pointer-events-none h-full w-full"
+        style={{ objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center 5%" }}
         loading="lazy"
         decoding="async"
       />
@@ -99,32 +113,28 @@ function TeamCastCarousel() {
 export function TeamSection() {
   return (
     <MarketingSection ariaLabelledBy="team-heading" className="bg-black">
-      <div className="flex flex-col">
-        <div className="mx-auto flex w-full max-w-[42ch] flex-col items-center text-center">
-          <div className={cn(sectionLabelHeadlineStack, "w-full items-center")}>
-            <FramerTag>{aboutTeam.tag}</FramerTag>
-            <TextReveal
-              as="h2"
-              id="team-heading"
-              text={aboutTeam.title}
-              className={cn(
-                sectionHeadline,
-                "m-0 w-full max-w-[18ch] text-balance text-center text-white",
-              )}
-            />
-          </div>
-          <p
-            className={cn("reveal mx-auto mt-4 max-w-[34ch] text-balance text-center", heroSubcopy)}
-            data-delay="1"
-          >
-            {aboutTeam.subtitle}
-          </p>
+      <header className="rm-insights-intro mx-auto flex w-full flex-col items-center text-center">
+        <div className={cn(sectionLabelHeadlineStack, "w-full items-center")}>
+          <FramerTag>{aboutTeam.tag}</FramerTag>
+          <TextReveal
+            as="h2"
+            id="team-heading"
+            text={aboutTeam.title}
+            className={cn(
+              sectionHeadline,
+              "m-0 mx-auto max-w-[18ch] text-balance text-center text-white",
+            )}
+          />
         </div>
+        <p
+          className={cn("reveal mx-auto mt-6 max-w-[34ch] text-balance text-center", heroSubcopy)}
+          data-delay="1"
+        >
+          {aboutTeam.subtitle}
+        </p>
+      </header>
 
-        <div className="mt-8 flex w-full justify-center md:mt-10">
-          <TeamCastCarousel />
-        </div>
-      </div>
+      <TeamCastCarousel />
     </MarketingSection>
   );
 }

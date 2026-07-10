@@ -435,7 +435,7 @@ export function DragableCarousel({
 
       {cfg.showDots && scrollSnaps.length > 1 && dotsPosition === "below-cards" ? (
         <div
-          className="rm-dragable-carousel__dots pointer-events-none mt-5 flex justify-center gap-2.5 md:mt-6"
+          className="rm-dragable-carousel__dots pointer-events-none mt-8 flex justify-center gap-2.5 md:mt-10"
           role="tablist"
           aria-label="Carousel pagination"
         >

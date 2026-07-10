@@ -16,11 +16,11 @@ const cardLayout: Record<(typeof aboutMetrics.items)[number]["id"], string> = {
   operating: "md:col-start-3 md:row-start-2",
 };
 
-export function AboutStatsSection() {
+export function AboutStatsSection({ id }: { id?: string } = {}) {
   const { ref, inView } = useSectionInView<HTMLElement>();
 
   return (
-    <section id="numbers" ref={ref} aria-labelledby="numbers-heading" className={sectionShell}>
+    <section id={id} ref={ref} aria-labelledby="numbers-heading" className={sectionShell}>
       <div className={sectionContainer}>
         <MarketingSectionIntro
           tag={aboutMetrics.tag}

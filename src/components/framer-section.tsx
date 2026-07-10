@@ -46,6 +46,8 @@ export const sectionActionsRow = cn(
   sectionActionsOffset,
   "flex flex-wrap items-center gap-3 md:gap-4",
 );
+/** Action row inside a flex/grid gap parent — no extra mt on the same axis */
+export const sectionActionsInline = "flex flex-wrap items-center gap-3 md:gap-4";
 /** Hero-scale copy → standfirst/CTA row — 24px */
 export const sectionHeroActionsRow = cn(
   "mt-6 flex flex-wrap items-center gap-4",
@@ -72,6 +74,18 @@ export const sectionTagHeadlineColumn = "flex flex-col gap-4";
 export const borderSoft = "border-[var(--rm-border-soft)]";
 /** List row separators — pair with divide-y */
 export const divideSoft = "divide-[var(--rm-border-soft)]";
+/** Panel zone separator — border + 32/48px pad */
+export const sectionZoneDivider = cn("border-t pt-8 md:pt-12", borderSoft);
+/** Panel zone separator inside a gap parent — parent gap handles space above the rule */
+export const sectionZoneDividerNested = cn("border-t pt-6", borderSoft);
+/** Products — format chooser column */
+export const productsFormatColumn = cn("flex flex-col", sectionGap);
+/** Products — detail panel interior */
+export const productsPanelStack = "flex flex-col gap-8 md:gap-12";
+export const productsZoneStack = "flex flex-col gap-6";
+export const productsChoiceGrid = "grid gap-4 sm:grid-cols-2";
+export const productsOperatingGrid = cn("grid sm:grid-cols-3", sectionGap);
+export const textInk = "text-[var(--rm-ink)]";
 
 /* ——— Typography — 8px grid via .rm-type-* (styles.css) ——— */
 export const textDisplay = "rm-type-display text-[var(--rm-ink)]";
@@ -99,6 +113,23 @@ export const sectionStandfirst = sectionSubheading;
 export const textSubtle = "text-[var(--rm-text-subtle)]";
 export const textFaint = "text-[var(--rm-text-faint)]";
 export const textGhost = "text-[var(--rm-text-ghost)]";
+/** Engage timeline — shared with home #engage (services-section) */
+export const engageStepsShell = "rm-engage-steps relative pt-6 md:pt-8";
+export const engageStepsLeadOffset = "mt-10 md:mt-14";
+export const engageStepsGrid = "grid gap-x-8 md:grid-cols-3 lg:gap-x-12";
+export const engageStepItem = cn(
+  "rm-engage-step group/step relative m-0 flex flex-col gap-1.5 py-5 first:pt-0 md:gap-2 md:py-0",
+  "max-md:border-b max-md:last:border-b-0",
+  borderSoft,
+);
+export const engageStepCode = cn(textMeta, textGhost, "rm-engage-step__code");
+export const engageStepTitle = cn(textMeta, textSubtle, "rm-engage-step__title");
+/** Engage panel lead — meta + standfirst (home #engage) */
+export const engagePanelLead = cn("rm-engage-panel__lead min-w-0", sectionPanelLead);
+export const formatOperatingStrip = cn("m-0 border-y py-6 md:py-8", borderSoft, productsOperatingGrid);
+export const subsectionTitleMuted = cn("rm-type-subsection", textSubtle);
+export const productsProofGrid = cn("grid sm:grid-cols-3", sectionGap);
+export const productsProofItem = cn("flex flex-col gap-3 border-t pt-6 sm:pt-8", borderSoft);
 /** Hero centered copy column */
 export const heroCopyLayout =
   "mx-auto flex w-full max-w-[36rem] flex-col items-center text-center";
@@ -138,7 +169,7 @@ export const interactiveWhiteCard = interactiveSurfaceCard;
 
 /* ——— Buttons ——— */
 const btnBase =
-  "inline-flex rm-touch cursor-pointer items-center justify-center rounded-full rm-type-body font-medium transition-[background-color,border-color,color,transform] duration-200 ease-out focus-visible:outline-none motion-safe:hover:-translate-y-0.5 active:scale-[0.98]";
+  "inline-flex rm-touch cursor-pointer items-center justify-center rounded-full rm-type-body font-medium transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-none motion-safe:hover:-translate-y-0.5 active:scale-[0.98]";
 export const btnPrimary = cn(
   btnBase,
   "w-fit bg-white px-6 py-3 text-black hover:bg-[#efeeea] focus-visible:ring-2 focus-visible:ring-[#efeeea] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--rm-surface-raised)]",

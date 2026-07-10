@@ -506,6 +506,24 @@
     }
   }
 
+  /* Centered page hero (Products / About) — smaller display so each authored
+     line reads as a single clean line, matching the reference composition. */
+  .rm-title-hero-lead--centered {
+    font-size: var(--rm-font-xl);
+  }
+
+  @media (min-width: 768px) {
+    .rm-title-hero-lead--centered {
+      font-size: var(--rm-font-2xl);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rm-title-hero-lead--centered {
+      font-size: var(--rm-font-3xl);
+    }
+  }
+
   .rm-kicker {
     font-size: var(--rm-font-xs);
     line-height: var(--rm-line-xs);
@@ -780,6 +798,100 @@ button {
   min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  border-radius: 2rem;
+  border: 1px solid var(--rm-border-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.008)),
+    var(--rm-surface-float);
+}
+
+.rm-comparison-table {
+  table-layout: fixed;
+  min-width: 45rem;
+}
+
+.rm-comparison-table th,
+.rm-comparison-table td {
+  padding: 1rem 1.5rem;
+}
+
+.rm-comparison-table__label-col {
+  width: 24%;
+}
+
+.rm-comparison-table__value-col {
+  width: 38%;
+}
+
+.rm-comparison-table thead tr {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.rm-comparison-table tbody tr {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.rm-comparison-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.042);
+}
+
+.rm-engage-step:focus-visible {
+  outline: none;
+}
+
+.rm-engage-step:focus-visible .rm-engage-step__title {
+  color: var(--rm-ink);
+}
+
+.rm-format-choice {
+  border-radius: 1.5rem;
+  border: 1px solid var(--rm-border-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+    var(--rm-surface-float);
+  transition:
+    border-color var(--rm-motion-ui) var(--rm-ease-out),
+    background-color var(--rm-motion-ui) var(--rm-ease-out),
+    transform var(--rm-motion-ui) var(--rm-ease-enter);
+}
+
+.rm-format-choice:hover:not(.rm-format-choice--active) {
+  border-color: var(--rm-border-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent),
+    var(--rm-surface-float);
+}
+
+.rm-format-choice--active {
+  border-color: var(--rm-border-strong);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012)),
+    var(--rm-surface-float);
+}
+
+.rm-format-choice__indicator {
+  width: 0.625rem;
+  height: 0.625rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  border-radius: 9999px;
+  border: 1px solid var(--rm-text-ghost);
+  transition:
+    border-color var(--rm-motion-ui) var(--rm-ease-out),
+    background-color var(--rm-motion-ui) var(--rm-ease-out);
+}
+
+.rm-format-choice--active .rm-format-choice__indicator {
+  border-color: var(--rm-ink);
+  background: var(--rm-ink);
+}
+
+.rm-format-panel {
+  border-radius: 2rem;
+  border: 1px solid var(--rm-border-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.008)),
+    var(--rm-surface-float);
 }
 
 /* Products comparison — stacked rows on narrow viewports only */
@@ -857,6 +969,105 @@ button {
   inset: 0;
   pointer-events: none;
   background: radial-gradient(72% 54% at 50% 0%, rgba(239, 238, 234, 0.04), transparent 82%);
+}
+
+/* Centered hero ambient — two soft blobs in existing site tokens (accent + neutral) */
+.rm-hero-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.rm-hero-ambient__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.55;
+}
+
+.rm-hero-ambient__blob--a {
+  left: -8%;
+  top: -12%;
+  width: 32rem;
+  height: 32rem;
+  background: radial-gradient(circle, color-mix(in oklab, var(--rm-accent) 55%, transparent), transparent 70%);
+}
+
+.rm-hero-ambient__blob--b {
+  right: -10%;
+  bottom: -18%;
+  width: 30rem;
+  height: 30rem;
+  background: radial-gradient(circle, rgba(239, 238, 234, 0.16), transparent 70%);
+}
+
+/* Image-backed variant — orange/blue glow render bled full-width behind copy.
+   z-index 1 lifts it above the services-hero black wash (z-0), staying below
+   the copy layer (z-10). */
+.rm-hero-ambient--image {
+  z-index: 1;
+  background: #000;
+}
+
+.rm-hero-ambient__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Image is a wide, soft glow render — stretch to fill so both blobs stay
+     in frame; the blur hides the aspect distortion. */
+  object-fit: fill;
+  opacity: 0.9;
+  /* Dissolve only the bottom edge into black so the hero blends seamlessly
+     into the black section below (no hard seam) — keep the glow itself intact. */
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 80%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 80%, transparent 100%);
+}
+
+/* Keeps centered copy legible over the brighter glow zones */
+.rm-hero-ambient__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(52% 58% at 50% 46%, rgba(0, 0, 0, 0.4), transparent 80%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 30%, transparent 72%, rgba(0, 0, 0, 0.72) 100%);
+}
+
+.rm-hero-scrollcue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 2.5rem;
+}
+
+.rm-hero-scrollcue__dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: rm-hero-scrollcue-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes rm-hero-scrollcue-pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rm-hero-scrollcue__dot {
+    animation: none;
+  }
 }
 
 /* Frosted-glass language for chrome sitting on the dark format band.
@@ -6783,6 +6994,11 @@ a.block:focus-visible .rm-points-card__read {
 
 /* Framer Dragable Carousel — https://www.framer.com/marketplace/components/dragable-carousel/ */
 /* About Team carousel — dark band */
+.rm-team-portrait__img {
+  object-fit: cover;
+  object-position: center 5%;
+}
+
 .rm-team-carousel.rm-dragable-carousel {
   overflow: visible;
 }

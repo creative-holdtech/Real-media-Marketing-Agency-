@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
-  useMotionValueEvent,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -31,14 +31,14 @@ function steppedPosition(progress: number) {
   return step + eased;
 }
 
-export function AboutStatsScroll() {
+export function AboutStatsScroll({ id }: { id?: string } = {}) {
   const reduce = useReducedMotion();
 
-  if (reduce) return <AboutStatsSection />;
-  return <StatsScene />;
+  if (reduce) return <AboutStatsSection id={id} />;
+  return <StatsScene id={id} />;
 }
 
-function StatsScene() {
+function StatsScene({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -51,16 +51,23 @@ function StatsScene() {
     restDelta: 0.001,
   });
   const position = useTransform(smoothProgress, steppedPosition);
+  const sceneFade = useTransform(smoothProgress, [0.9, 0.99], [1, 0]);
 
   return (
     <section
       ref={sectionRef}
-      id="numbers"
       aria-labelledby="numbers-heading"
       className="relative h-[440vh] border-y border-white/10 bg-black text-white"
     >
-      <div className="sticky top-0 h-screen overflow-hidden pt-[var(--rm-header-offset)]">
-        <div className="relative mx-auto h-full max-w-[1240px] bg-black">
+      {/* IO target for PageSectionDots sits on this viewport-sized sticky div, not
+          the 440vh scroll-track above — a section that tall reports a tiny
+          intersectionRatio against its own bounding box for nearly its whole
+          scroll range, which starved the "Numbers" dot of activation. */}
+      <div id={id} className="sticky top-0 h-screen overflow-hidden pt-[var(--rm-header-offset)]">
+        <motion.div
+          className="relative mx-auto h-full max-w-[1240px] bg-black"
+          style={{ opacity: sceneFade }}
+        >
           <h2 id="numbers-heading" className="sr-only">
             {aboutMetrics.title}
           </h2>
@@ -88,7 +95,7 @@ function StatsScene() {
           <span className="sr-only">
             {items.map((item) => `${item.value}. ${item.tag}. ${item.label} `).join("")}
           </span>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -104,31 +111,63 @@ function StatSlide({
   item: (typeof items)[number];
 }) {
   const [counterStarted, setCounterStarted] = useState(false);
-  useMotionValueEvent(position, "change", (current) => {
-    if (!counterStarted && Math.abs(current - index) < 0.08) setCounterStarted(true);
-  });
+  /** Forces the slide to stay fully visible/settled for a fixed wall-clock
+   * window once the counter starts — independent of scroll speed. Without
+   * this, the scroll-position-driven fade below can finish before the
+   * 1400ms count-up does, so the number never gets a moment to "land". */
+  const holdGate = useMotionValue(0);
+  useEffect(() => {
+    const maybeStart = (current: number) => {
+      if (current >= index - 0.32 && current < index + 0.55) {
+        setCounterStarted(true);
+      }
+    };
+    maybeStart(position.get());
+    return position.on("change", maybeStart);
+  }, [index, position]);
+  useEffect(() => {
+    if (!counterStarted) return;
+    holdGate.set(1);
+    const timeout = setTimeout(() => holdGate.set(0), 2000);
+    return () => clearTimeout(timeout);
+  }, [counterStarted, holdGate]);
+
   const y = useTransform(position, (current) => `${(index - current) * 0.82}em`);
-  const opacity = useTransform(
+  const scrollOpacity = useTransform(
     position,
-    [index - 0.9, index - 0.22, index - 0.06, index + 0.12, index + 0.62],
-    [0, 0.12, 1, 1, 0],
+    [index - 0.78, index - 0.2, index + 0.04, index + 0.42, index + 0.78],
+    [0, 0, 1, 1, 0],
   );
+  const opacity = useTransform([scrollOpacity, holdGate], (values: number[]) =>
+    Math.max(values[0], values[1]),
+  );
+  const visibility = useTransform(opacity, (value) => (value < 0.02 ? "hidden" : "visible"));
   const scale = useTransform(position, [index - 1, index, index + 1], [0.88, 1, 0.88]);
-  const copyOpacity = useTransform(
+  const scrollCopyOpacity = useTransform(
     position,
     [index - 0.56, index - 0.16, index + 0.16, index + 0.56],
     [0, 1, 1, 0],
   );
-  const copyY = useTransform(position, [index - 0.6, index, index + 0.6], [26, 0, -26]);
-  const copyFilter = useTransform(
+  const copyOpacity = useTransform([scrollCopyOpacity, holdGate], (values: number[]) =>
+    Math.max(values[0], values[1]),
+  );
+  const scrollCopyY = useTransform(position, [index - 0.6, index, index + 0.6], [26, 0, -26]);
+  const copyY = useTransform([scrollCopyY, holdGate], (values: number[]) =>
+    values[1] > 0.5 ? 0 : values[0],
+  );
+  const scrollCopyFilter = useTransform(
     position,
     [index - 0.56, index, index + 0.56],
     ["blur(3px) brightness(0.72)", "blur(0px) brightness(1.18)", "blur(3px) brightness(0.72)"],
   );
+  const copyFilter = useTransform(
+    [scrollCopyFilter, holdGate] as MotionValue<string | number>[],
+    (values: (string | number)[]) => (Number(values[1]) > 0.5 ? "blur(0px) brightness(1.18)" : String(values[0])),
+  );
   return (
     <motion.div
       className="rm-trust-ecosystem__fg-stat rm-trust-ecosystem__fg-stat--center absolute left-1/2 top-1/2 w-[min(86%,34rem)] -translate-x-1/2 -translate-y-1/2"
-      style={{ y, opacity, scale, willChange: "transform, opacity" }}
+      style={{ y, opacity, scale, visibility, willChange: "transform, opacity" }}
     >
       <p className="rm-trust-ecosystem__fg-stat-value" data-count-stat={index}>
         {item.animate && item.numericTarget != null ? (
@@ -137,6 +176,7 @@ function StatSlide({
             to={item.numericTarget}
             suffix={item.suffix ?? ""}
             start={counterStarted}
+            duration={1100}
           />
         ) : (
           item.value

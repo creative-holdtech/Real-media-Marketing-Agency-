@@ -9,7 +9,8 @@ import nicheB2b from "@/assets/niche-b2b.jpg";
 import { AboutStatsScroll } from "@/components/about-stats-scroll";
 import { AboutManifestoSection } from "@/components/about-manifesto";
 import { MarketingSection, MarketingTagColumn } from "@/components/marketing-section";
-import { ServicesHero } from "@/components/services-hero";
+import { PageSectionDots } from "@/components/page-section-dots";
+import { HeroAmbientGlow, HeroScrollCue, ServicesHero } from "@/components/services-hero";
 import { TeamSection } from "@/components/team-section";
 import { PagePreloader } from "@/components/page-preloader";
 import {
@@ -59,6 +60,15 @@ export const Route = createFileRoute("/about")({
 /* ------------------------------------------------------------------ */
 const verticalImages = [nicheAi, nicheFintech, nicheHospitality, nicheB2b];
 
+const aboutPageDots = [
+  { id: "about-top", label: "Intro" },
+  { id: "about-stats", label: "Numbers" },
+  { id: "about-position", label: "Position" },
+  { id: "verticals", label: "Spaces" },
+  { id: "about-team", label: "Team" },
+  { id: "cta", label: "Call" },
+] as const;
+
 function AmbientBlobs() {
   return (
     <div aria-hidden className="ambient-blobs">
@@ -95,40 +105,50 @@ function AboutPage() {
       </a>
       <AmbientBlobs />
       <PagePreloader />
+      <PageSectionDots sections={aboutPageDots} />
       <SiteHeader variant="dark" overlay />
 
-      <ServicesHero
-        tag={hero?.tag ?? "The position"}
-        titleLines={hero?.titleLines ?? []}
-        body={hero?.subheading}
-        bodyClassName="md:!w-[42ch] md:!max-w-[42ch]"
-        headingId="page-title"
-        sectionClassName="bg-black"
-        actions={
-          <>
-            {hero?.ctaPrimaryLabel ? (
-              <Link to={hero.ctaPrimaryUrl ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
-                {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
-                <BtnArrow />
-              </Link>
-            ) : null}
-            {hero?.ctaSecondaryLabel ? (
-              <a
-                href={hero.ctaSecondaryUrl ?? "#verticals"}
-                className={cn(btnOutlineOnDark, "group gap-2")}
-              >
-                {hero.ctaSecondaryLabel.replace(/\s*→$/, "")}
-                <BtnArrow />
-              </a>
-            ) : null}
-          </>
-        }
-      />
+      <div id="about-top">
+        <ServicesHero
+          tag={hero?.tag ?? "The position"}
+          titleLines={hero?.titleLines ?? []}
+          body={hero?.subheading}
+          bodyClassName="md:!w-[42ch] md:!max-w-[42ch]"
+          headingId="page-title"
+          sectionClassName="bg-black"
+          align="center"
+          ambient={<HeroAmbientGlow />}
+          scrollCue={<HeroScrollCue />}
+          actions={
+            <>
+              {hero?.ctaPrimaryLabel ? (
+                <Link to={hero.ctaPrimaryUrl ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
+                  {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
+                  <BtnArrow />
+                </Link>
+              ) : null}
+              {hero?.ctaSecondaryLabel ? (
+                <a
+                  href={hero.ctaSecondaryUrl ?? "#verticals"}
+                  className={cn(btnOutlineOnDark, "group gap-2")}
+                >
+                  {hero.ctaSecondaryLabel.replace(/\s*→$/, "")}
+                  <BtnArrow />
+                </a>
+              ) : null}
+            </>
+          }
+        />
+      </div>
 
       <main id="main">
-        <AboutStatsScroll />
+        <AboutStatsScroll id="about-stats" />
 
-        <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 640px" }}>
+        <div
+          id="about-position"
+          className="rm-defer-paint"
+          style={{ containIntrinsicSize: "auto 640px", scrollMarginTop: "var(--rm-header-offset)" }}
+        >
           <ManifestoSection manifesto={manifesto} />
         </div>
 
@@ -136,7 +156,11 @@ function AboutPage() {
           <VerticalsSection verticals={verticals} content={verticalsContent} />
         </div>
 
-        <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 850px" }}>
+        <div
+          id="about-team"
+          className="rm-defer-paint"
+          style={{ containIntrinsicSize: "auto 850px", scrollMarginTop: "var(--rm-header-offset)" }}
+        >
           <TeamSection />
         </div>
 
@@ -263,7 +287,7 @@ function VerticalsSection({
                 className={cn(
                   "relative -mb-px cursor-pointer border-0 bg-transparent p-0 pb-2",
                   subsectionTitle,
-                  "transition-colors duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                  "transition-[color,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-[0.97]",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-4 focus-visible:ring-offset-black",
                   selected ? "text-white" : cn(textGhost, "hover:text-[var(--rm-text-muted)]"),
                 )}
@@ -323,7 +347,7 @@ function VerticalsSection({
                   <div>
                     <p
                       className={cn(
-                        "mb-3 inline-flex size-8 items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-[0.7rem] font-medium tracking-[0.18em] text-white",
+                        "mb-3 inline-flex size-8 items-center justify-center rounded-full border border-white/30 bg-white/[0.16] text-[0.7rem] font-semibold tracking-[0.18em] text-white shadow-[0_1px_6px_rgb(0_0_0_/_0.35)]",
                       )}
                     >
                       {sector.n}

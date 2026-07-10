@@ -5,6 +5,7 @@ import {
   FramerTag,
   heroEyebrowStack,
   heroHeadlineLead,
+  heroIntroStack,
   heroStandfirst,
   pageHeroContainer,
   sectionHeroActionsRow,
@@ -63,7 +64,10 @@ type PageEditorialHeroProps = {
    * `copy` — inner copy only; parent supplies section chrome.
    */
   layout?: "atmosphere" | "standalone" | "copy";
-  /** Vertical alignment when `layout="atmosphere"`. */
+  /**
+   * Vertical alignment when `layout="atmosphere"`; horizontal text
+   * alignment (left vs centered copy block) when `layout="copy"`.
+   */
   align?: "center" | "start";
   sectionClassName?: string;
 };
@@ -79,17 +83,22 @@ export function PageEditorialHero({
   headingId = "page-hero-title",
   actions,
   layout = "standalone",
-  align = "center",
+  align = "start",
   sectionClassName,
 }: PageEditorialHeroProps) {
   const reduce = useReducedMotion();
   const motionOn = !reduce;
   const line1 = titleLines[0] ?? "";
   const line2 = titleLines[1];
+  const centered = align === "center";
 
   const copy = (
     <div
-      className={cn(heroEyebrowStack, "rm-hero-copy w-full max-w-[36rem] items-start text-left")}
+      className={cn(
+        centered ? heroIntroStack : heroEyebrowStack,
+        "rm-hero-copy w-full",
+        centered ? "mx-auto max-w-[56rem]" : "max-w-[36rem] items-start text-left",
+      )}
     >
       {motionOn ? (
         <motion.p variants={heroFade}>
@@ -105,7 +114,7 @@ export function PageEditorialHero({
         {motionOn ? (
           <motion.h1
             id={headingId}
-            className="rm-title-hero-lead w-full text-white"
+            className={cn("rm-title-hero-lead w-full text-white", centered && "rm-title-hero-lead--centered")}
             variants={heroTitle}
           >
             <span className="block text-balance">
@@ -116,7 +125,7 @@ export function PageEditorialHero({
             {line2 ? (
               <span className="block">
                 <motion.span
-                  className="block text-balance rm-type-display-muted md:whitespace-nowrap"
+                  className={cn("block text-balance rm-type-display-muted", !centered && "md:whitespace-nowrap")}
                   variants={heroTitleLine}
                 >
                   {line2}
@@ -125,10 +134,13 @@ export function PageEditorialHero({
             ) : null}
           </motion.h1>
         ) : (
-          <h1 id={headingId} className="rm-title-hero-lead w-full text-white">
+          <h1
+            id={headingId}
+            className={cn("rm-title-hero-lead w-full text-white", centered && "rm-title-hero-lead--centered")}
+          >
             <span className="block text-balance">{line1}</span>
             {line2 ? (
-              <span className="block text-balance rm-type-display-muted md:whitespace-nowrap">
+              <span className={cn("block text-balance rm-type-display-muted", !centered && "md:whitespace-nowrap")}>
                 {line2}
               </span>
             ) : null}
@@ -138,7 +150,7 @@ export function PageEditorialHero({
         {body ? (
           motionOn ? (
             <motion.p
-              className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")}
+              className={cn(heroStandfirst, bodyClassName, centered ? "mx-auto text-center" : "mx-0 text-left")}
               initial={heroRiseWithTitleHidden}
               animate={heroRiseWithTitleShow}
               transition={heroRiseWithTitleTransition}
@@ -146,7 +158,9 @@ export function PageEditorialHero({
               {body}
             </motion.p>
           ) : (
-            <p className={cn(heroStandfirst, bodyClassName, "mx-0 text-left")}>{body}</p>
+            <p className={cn(heroStandfirst, bodyClassName, centered ? "mx-auto text-center" : "mx-0 text-left")}>
+              {body}
+            </p>
           )
         ) : null}
       </div>
@@ -154,7 +168,7 @@ export function PageEditorialHero({
       {actions ? (
         motionOn ? (
           <motion.div
-            className={sectionHeroActionsRow}
+            className={cn(sectionHeroActionsRow, centered && "justify-center")}
             initial={heroRiseWithTitleHidden}
             animate={heroRiseWithTitleShow}
             transition={heroRiseWithTitleTransition}
@@ -162,7 +176,7 @@ export function PageEditorialHero({
             {actions}
           </motion.div>
         ) : (
-          <div className={sectionHeroActionsRow}>{actions}</div>
+          <div className={cn(sectionHeroActionsRow, centered && "justify-center")}>{actions}</div>
         )
       ) : null}
     </div>
