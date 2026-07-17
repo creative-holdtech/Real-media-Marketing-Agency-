@@ -1,108 +1,7 @@
-import type { ReactNode } from "react";
-import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 
 import { BtnArrow, FramerTag, btnPrimary } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
-const CINE_EASE = [0.16, 1, 0.3, 1] as const;
-const IN_VIEW_MARGIN = "0px 0px -8% 0px" as const;
-
-const WORD_STAGGER = 0.032;
-const ROW_GAP = 0.01;
-
-function FadeUp({
-  children,
-  className,
-  delay = 0,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: IN_VIEW_MARGIN });
-  const shown = reduce || inView;
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={false}
-      animate={shown ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
-      transition={reduce ? { duration: 0 } : { duration: 0.24, delay, ease: EASE }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-const wordStage: Variants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: WORD_STAGGER, delayChildren: 0.02 },
-  },
-};
-
-/** No `filter` on this transition — Safari struggles to animate blur() reliably
- * on staggered children, which made the reveal appear stuck on Mac. */
-const rowStage = (delayChildren: number): Variants => ({
-  hidden: {
-    opacity: 0,
-    y: 10,
-  },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.3,
-      ease: CINE_EASE,
-      staggerChildren: WORD_STAGGER,
-      delayChildren,
-    },
-  },
-});
-
-const wordReveal: Variants = {
-  hidden: { opacity: 0, y: 8 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.26, ease: CINE_EASE },
-  },
-};
-
-function WordRow({
-  text,
-  muted,
-  rowVariants,
-}: {
-  text: string;
-  muted?: boolean;
-  rowVariants: Variants;
-}) {
-  const words = text.split(" ");
-  return (
-    <motion.span
-      className={cn("block text-pretty", muted ? "text-[var(--rm-text-subtle)]" : "text-white")}
-      variants={rowVariants}
-    >
-      {words.map((word, i) => (
-        <motion.span
-          key={`${word}-${i}`}
-          className="inline-block whitespace-pre"
-          variants={wordReveal}
-        >
-          {word}
-          {i < words.length - 1 ? " " : ""}
-        </motion.span>
-      ))}
-    </motion.span>
-  );
-}
 
 type AboutManifestoSectionProps = {
   tag: string;
@@ -124,19 +23,6 @@ export function AboutManifestoSection({
   const [correction, ...rest] = bullets;
   const standfirst = rest.join(" ");
 
-  const reduce = useReducedMotion();
-  const ref = useRef<HTMLHeadingElement>(null);
-  const inView = useInView(ref, { once: true, margin: IN_VIEW_MARGIN });
-
-  const thesisWordCount = thesis.split(" ").length;
-  const correctionDelay = 0.04 + WORD_STAGGER * thesisWordCount + ROW_GAP;
-  const correctionWordCount = correction ? correction.split(" ").length : 0;
-  /** Standfirst must wait for the last headline word to finish its own reveal —
-   * otherwise it reads as fully visible while the thesis is still animating in above it. */
-  const headlineRevealEnd =
-    (correction ? correctionDelay + WORD_STAGGER * correctionWordCount : 0.04 + WORD_STAGGER * thesisWordCount) +
-    0.28;
-
   return (
     <section
       aria-labelledby={titleId}
@@ -144,48 +30,33 @@ export function AboutManifestoSection({
     >
       <div aria-hidden className="rm-products-glow" />
       <div aria-hidden className="rm-manifesto-light__grain" />
-      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center pb-40 pt-16 text-center md:pb-40 md:pt-24">
-        <FadeUp>
+      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center pb-16 pt-16 text-center md:pb-24 md:pt-24">
+        <div className="reveal" data-delay="0">
           <FramerTag className="border-white/10 text-[var(--rm-text-muted)]">{tag}</FramerTag>
-        </FadeUp>
+        </div>
 
-        {reduce ? (
-          <h2 id={titleId} className="rm-manifesto-light__statement mt-6">
-            <span className="block text-white">{thesis}</span>
-            {correction ? (
-              <span className="block text-[var(--rm-text-subtle)]">{correction}</span>
-            ) : null}
-          </h2>
-        ) : (
-          <motion.h2
-            ref={ref}
-            id={titleId}
-            className="rm-manifesto-light__statement mt-6"
-            variants={wordStage}
-            initial="hidden"
-            animate={inView ? "show" : "hidden"}
-          >
-            <WordRow text={thesis} rowVariants={rowStage(0.04)} />
-            {correction ? (
-              <WordRow text={correction} muted rowVariants={rowStage(correctionDelay)} />
-            ) : null}
-          </motion.h2>
-        )}
+        <h2 id={titleId} className="reveal rm-manifesto-light__statement mt-6" data-delay="1">
+          <span className="block text-white">{thesis}</span>
+          {correction ? (
+            <span className="block text-[var(--rm-text-subtle)]">{correction}</span>
+          ) : null}
+        </h2>
 
         {standfirst ? (
-          <FadeUp delay={headlineRevealEnd}>
-            <p className="rm-copy-standfirst mt-6 max-w-[46ch] text-pretty text-[var(--rm-text-body)]">
-              {standfirst}
-            </p>
-          </FadeUp>
+          <p
+            className="reveal rm-copy-standfirst mt-6 max-w-[46ch] text-pretty text-[var(--rm-text-body)]"
+            data-delay="2"
+          >
+            {standfirst}
+          </p>
         ) : null}
 
-        <FadeUp delay={headlineRevealEnd + 0.12} className="mt-8">
+        <div className="reveal mt-8" data-delay="3">
           <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
             Book free audit
             <BtnArrow />
           </Link>
-        </FadeUp>
+        </div>
       </div>
     </section>
   );

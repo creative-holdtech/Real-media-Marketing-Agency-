@@ -44,15 +44,16 @@ const TEAM_PHOTO_FOCUS: Record<keyof typeof teamPhotos, string> = {
 
 /* All team photos are 1400×1400 squares shown in a portrait box — the cover
    crop is height-limited, so object-position-Y can't move the head at all.
-   A bottom-anchored zoom is the only lever: s = 0.88 / (1 - crownFrac) puts
-   every crown at ~12% of card height (matches photo 07, the highest head). */
+   A bottom-anchored zoom is the only lever: higher s → crown sits higher.
+   Target: crowns aligned ~6% from top (Figma QA #343 — all heads on one level). */
 const TEAM_PHOTO_ZOOM: Partial<Record<keyof typeof teamPhotos, number>> = {
-  "01": 1.067,
-  "02": 1.06,
-  "03": 1.19,
-  "04": 1.03,
-  "05": 1.06,
-  "06": 1.17,
+  "01": 1.14,
+  "02": 1.13,
+  "03": 1.15,
+  "04": 1.04,
+  "05": 1.13,
+  "06": 1.12,
+  "07": 1.07,
 };
 
 const carouselConfig = {
@@ -87,7 +88,7 @@ function TeamPortraitSlide({ person }: { person: (typeof team)[number] }) {
         draggable={false}
         className="rm-team-portrait__img pointer-events-none h-full w-full"
         style={{
-          objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center 5%",
+          objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center top",
           ...(TEAM_PHOTO_ZOOM[person.photoKey]
             ? {
                 transform: `scale(${TEAM_PHOTO_ZOOM[person.photoKey]})`,
@@ -148,7 +149,7 @@ export function TeamSection() {
           />
         </div>
         <p
-          className={cn("reveal mx-auto mt-2 max-w-[34ch] text-balance text-center", heroSubcopy)}
+          className={cn("reveal mx-auto mt-4 max-w-[34ch] text-balance text-center", heroSubcopy)}
           data-delay="1"
         >
           {aboutTeam.subtitle}

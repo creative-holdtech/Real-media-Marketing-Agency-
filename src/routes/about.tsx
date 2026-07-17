@@ -255,22 +255,23 @@ function VerticalsSection({
       <div className={cn(sectionContentGrid, "items-start md:items-stretch")}>
         <MarketingTagColumn tag={content.tag ?? "Spaces"} />
         <div className="flex flex-col gap-6 md:col-span-2 md:col-start-2">
-          <h2 id="verticals-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
-            <span className="block">Four spaces we lock into.</span>
-          </h2>
           <div className="flex flex-col gap-4">
+            <h2 id="verticals-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
+              <span className="block">Four spaces we lock into.</span>
+            </h2>
             {content.body ? (
               <p className={cn(bodyCopy, "reveal max-w-[34ch]")} data-delay="1">
                 {content.body}
               </p>
             ) : null}
+          </div>
 
-            <div
-              ref={listRef}
-              role="tablist"
-              aria-label="Verticals"
-              className={cn("flex flex-wrap items-end gap-x-8 gap-y-1 border-b", borderSoft)}
-            >
+          <div
+            ref={listRef}
+            role="tablist"
+            aria-label="Verticals"
+            className={cn("flex flex-wrap items-end gap-x-8 gap-y-1 border-b", borderSoft)}
+          >
           {verticals.map((v, index) => {
             const selected = index === active;
             return (
@@ -303,7 +304,6 @@ function VerticalsSection({
               </button>
             );
           })}
-            </div>
           </div>
 
           <div

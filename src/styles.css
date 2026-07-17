@@ -7046,6 +7046,13 @@ a.block:focus-visible .rm-points-card__read {
   box-shadow: none;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .rm-team-carousel .rm-dragable-carousel__arrow:hover {
+    border-color: rgba(255, 255, 255, 0.34);
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+}
+
 /* Caption + scrim — reveal after carousel settle (not mid-drag) */
 .rm-team-portrait::after {
   content: "";

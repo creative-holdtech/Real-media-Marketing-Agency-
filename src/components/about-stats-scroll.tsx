@@ -17,16 +17,16 @@ const items = aboutMetrics.items;
 const lastItem = items.length - 1;
 
 function steppedPosition(progress: number) {
-  const normalized = Math.min(1, Math.max(0, (progress - 0.04) / 0.92));
+  const normalized = Math.min(1, Math.max(0, (progress - 0.04) / 0.8));
   const raw = normalized * lastItem;
   const step = Math.min(lastItem, Math.floor(raw));
   if (step === lastItem) return lastItem;
 
   const local = raw - step;
-  if (local <= 0.66) return step;
-  if (local >= 0.94) return step + 1;
+  if (local <= 0.75) return step;
+  if (local >= 0.97) return step + 1;
 
-  const transition = (local - 0.66) / 0.28;
+  const transition = (local - 0.75) / 0.22;
   const eased = transition * transition * (3 - 2 * transition);
   return step + eased;
 }
@@ -51,13 +51,13 @@ function StatsScene({ id }: { id?: string }) {
     restDelta: 0.001,
   });
   const position = useTransform(smoothProgress, steppedPosition);
-  const sceneFade = useTransform(smoothProgress, [0.9, 0.99], [1, 0]);
+  const sceneFade = useTransform(smoothProgress, [0.955, 0.995], [1, 0]);
 
   return (
     <section
       ref={sectionRef}
       aria-labelledby="numbers-heading"
-      className="relative h-[440vh] border-y border-white/10 bg-black text-white"
+      className="relative h-[560vh] border-y border-white/10 bg-black text-white"
     >
       {/* IO target for PageSectionDots sits on this viewport-sized sticky div, not
           the 440vh scroll-track above — a section that tall reports a tiny
@@ -155,9 +155,14 @@ function StatSlide({
     [0, 1, 1, 0],
   );
   const hold = useTransform([holdGate, holdMask], (values: number[]) => values[0] * values[1]);
+  /* Full-opacity keyframe must land at or before `index` — steppedPosition
+     hard-clamps the LAST slide's position at exactly `lastItem` and never
+     lets it exceed that, so a keyframe past `index` (e.g. index+0.04) was
+     unreachable for the final card: it settled at ~83% opacity forever
+     once the wall-clock hold expired, instead of the intended full 100%. */
   const scrollOpacity = useTransform(
     position,
-    [index - 0.78, index - 0.2, index + 0.04, index + 0.42, index + 0.78],
+    [index - 0.82, index - 0.24, index, index + 0.38, index + 0.74],
     [0, 0, 1, 1, 0],
   );
   const opacity = useTransform([scrollOpacity, hold], (values: number[]) =>
