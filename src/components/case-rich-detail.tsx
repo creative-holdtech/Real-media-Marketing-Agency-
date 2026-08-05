@@ -703,7 +703,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                     >
                       <MetaItem label="Client" value={rich.meta.client} />
                       <MetaItem label="Scope" value={rich.meta.scope} />
-                      <MetaItem label="Year" value={rich.meta.year} />
+                      <MetaItem label={rich.meta.periodLabel ?? "Year"} value={rich.meta.year} />
                       <MetaItem label="Status" value={rich.meta.status} />
                     </dl>
                   </section>

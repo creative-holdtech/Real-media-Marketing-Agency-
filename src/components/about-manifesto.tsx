@@ -1,6 +1,15 @@
 import { Link } from "@tanstack/react-router";
 
-import { BtnArrow, FramerTag, btnPrimary } from "@/components/framer-section";
+import {
+  BtnArrow,
+  FramerTag,
+  btnPrimary,
+  sectionActionsOffset,
+  sectionHeadline,
+  sectionHeadlineAccent,
+  sectionHeadlineLead,
+  sectionLeadStack,
+} from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 
 type AboutManifestoSectionProps = {
@@ -13,6 +22,7 @@ type AboutManifestoSectionProps = {
 /**
  * About manifesto — dark band. Keeps the page in the same black editorial
  * system as the home page while letting the statement breathe.
+ * Spacing: Pattern B (tag → h2 gap-6 → standfirst gap-4 → CTA mt-8).
  */
 export function AboutManifestoSection({
   tag,
@@ -28,30 +38,37 @@ export function AboutManifestoSection({
       aria-labelledby={titleId}
       className="rm-manifesto-light relative z-[2] overflow-hidden bg-black px-6 md:px-10"
     >
-      <div aria-hidden className="rm-products-glow" />
       <div aria-hidden className="rm-manifesto-light__grain" />
-      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center pb-16 pt-16 text-center md:pb-24 md:pt-24">
-        <div className="reveal" data-delay="0">
-          <FramerTag className="border-white/10 text-[var(--rm-text-muted)]">{tag}</FramerTag>
+      <div className="relative z-[1] mx-auto flex w-full max-w-[var(--rm-grid-max)] flex-col items-center py-16 text-center md:py-20">
+        <div className={cn(sectionHeadlineLead, "items-center")}>
+          <div className="reveal" data-delay="0">
+            <FramerTag className="border-white/10 text-[var(--rm-text-muted)]">{tag}</FramerTag>
+          </div>
+
+          <div className={cn(sectionLeadStack, "items-center")}>
+            <h2
+              id={titleId}
+              className={cn(sectionHeadline, "reveal m-0 max-w-[22ch] text-balance text-center")}
+              data-delay="1"
+            >
+              <span className="block text-white">{thesis}</span>
+              {correction ? (
+                <span className={cn("block", sectionHeadlineAccent)}>{correction}</span>
+              ) : null}
+            </h2>
+
+            {standfirst ? (
+              <p
+                className="reveal rm-copy-standfirst m-0 max-w-[46ch] text-pretty text-[var(--rm-text-body)]"
+                data-delay="2"
+              >
+                {standfirst}
+              </p>
+            ) : null}
+          </div>
         </div>
 
-        <h2 id={titleId} className="reveal rm-manifesto-light__statement mt-6" data-delay="1">
-          <span className="block text-white">{thesis}</span>
-          {correction ? (
-            <span className="block text-[var(--rm-text-subtle)]">{correction}</span>
-          ) : null}
-        </h2>
-
-        {standfirst ? (
-          <p
-            className="reveal rm-copy-standfirst mt-6 max-w-[46ch] text-pretty text-[var(--rm-text-body)]"
-            data-delay="2"
-          >
-            {standfirst}
-          </p>
-        ) : null}
-
-        <div className="reveal mt-8" data-delay="3">
+        <div className={cn("reveal", sectionActionsOffset)} data-delay="3">
           <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
             Book free audit
             <BtnArrow />

@@ -5,10 +5,12 @@ import team04 from "@/assets/team-04.jpg";
 import team05 from "@/assets/team-05.jpg";
 import team06 from "@/assets/team-06.jpg";
 import team07 from "@/assets/team-07.jpg";
+import { useState } from "react";
 import { DRAGABLE_CAROUSEL_DEFAULTS, DragableCarousel } from "@/components/dragable-carousel";
 import {
   FramerTag,
   heroSubcopy,
+  sectionGap,
   sectionHeadline,
   sectionLabelHeadlineStack,
 } from "@/components/framer-section";
@@ -26,6 +28,8 @@ const teamPhotos = {
   "06": team06,
   "07": team07,
 } as const;
+
+const TEAM_PHOTO_SIZE = 1400;
 
 const team = aboutTeam.members.map((member) => ({
   ...member,
@@ -76,29 +80,52 @@ function bioLines(bio: string): string[] {
     .filter(Boolean);
 }
 
-function TeamPortraitSlide({ person }: { person: (typeof team)[number] }) {
+function slideIsNear(index: number, active: number, total: number) {
+  if (index === active) return true;
+  const prev = (active - 1 + total) % total;
+  const next = (active + 1) % total;
+  return index === prev || index === next;
+}
+
+function TeamPortraitSlide({
+  person,
+  loadImage,
+}: {
+  person: (typeof team)[number];
+  loadImage: boolean;
+}) {
   return (
     <div
       className="rm-dragable-carousel__media rm-team-portrait overflow-hidden"
       data-photo={person.photoKey}
     >
-      <img
-        src={person.photo}
-        alt={person.name}
-        draggable={false}
-        className="rm-team-portrait__img pointer-events-none h-full w-full"
-        style={{
-          objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center top",
-          ...(TEAM_PHOTO_ZOOM[person.photoKey]
-            ? {
-                transform: `scale(${TEAM_PHOTO_ZOOM[person.photoKey]})`,
-                transformOrigin: "50% 100%",
-              }
-            : null),
-        }}
-        loading="lazy"
-        decoding="async"
-      />
+      {loadImage ? (
+        <img
+          src={person.photo}
+          alt={person.name}
+          width={TEAM_PHOTO_SIZE}
+          height={TEAM_PHOTO_SIZE}
+          sizes="(max-width: 768px) 72vw, 320px"
+          draggable={false}
+          className="rm-team-portrait__img pointer-events-none h-full w-full"
+          style={{
+            objectPosition: TEAM_PHOTO_FOCUS[person.photoKey] ?? "center top",
+            ...(TEAM_PHOTO_ZOOM[person.photoKey]
+              ? {
+                  transform: `scale(${TEAM_PHOTO_ZOOM[person.photoKey]})`,
+                  transformOrigin: "50% 100%",
+                }
+              : null),
+          }}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div
+          aria-hidden
+          className="rm-team-portrait__img h-full w-full bg-[var(--rm-surface-raised)]"
+        />
+      )}
       <div className="rm-team-portrait__caption">
         <p className="rm-team-portrait__name">{person.name}</p>
         <p className="rm-team-portrait__role rm-type-meta">{person.role}</p>
@@ -115,17 +142,36 @@ function TeamPortraitSlide({ person }: { person: (typeof team)[number] }) {
 }
 
 function TeamCastCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [loaded, setLoaded] = useState(() => new Set([0, 1, team.length - 1]));
+
+  const onSlideChange = (index: number) => {
+    setActiveIndex(index);
+    setLoaded((prev) => {
+      const next = new Set(prev);
+      for (let i = 0; i < team.length; i += 1) {
+        if (slideIsNear(i, index, team.length)) next.add(i);
+      }
+      return next.size === prev.size && [...next].every((i) => prev.has(i)) ? prev : next;
+    });
+  };
+
   return (
-    <div className="reveal-fade rm-team-carousel-enter flex w-full min-w-0 flex-col items-center">
+    <div className="reveal-fade rm-team-carousel-enter rm-team-stage">
       <DragableCarousel
         ariaLabel="Team members"
-        className="rm-team-carousel max-w-[min(100%,56rem)]"
+        className="rm-team-carousel"
         clipSlides={false}
         config={carouselConfig}
         dotsPosition="below-cards"
+        onSlideChange={onSlideChange}
       >
-        {team.map((person) => (
-          <TeamPortraitSlide key={person.id} person={person} />
+        {team.map((person, index) => (
+          <TeamPortraitSlide
+            key={person.id}
+            person={person}
+            loadImage={loaded.has(index) || slideIsNear(index, activeIndex, team.length)}
+          />
         ))}
       </DragableCarousel>
     </div>
@@ -135,28 +181,31 @@ function TeamCastCarousel() {
 export function TeamSection() {
   return (
     <MarketingSection ariaLabelledBy="team-heading" className="bg-black">
-      <header className="rm-insights-intro mx-auto flex w-full flex-col items-center text-center">
-        <div className={cn(sectionLabelHeadlineStack, "w-full items-center")}>
-          <FramerTag>{aboutTeam.tag}</FramerTag>
-          <TextReveal
-            as="h2"
-            id="team-heading"
-            text={aboutTeam.title}
-            className={cn(
-              sectionHeadline,
-              "m-0 mx-auto max-w-[18ch] text-balance text-center text-white",
-            )}
-          />
-        </div>
-        <p
-          className={cn("reveal mx-auto mt-4 max-w-[34ch] text-balance text-center", heroSubcopy)}
-          data-delay="1"
-        >
-          {aboutTeam.subtitle}
-        </p>
-      </header>
+      {/* Mirror home Insights stack: intro → stage, same gap / track pad / max-width. */}
+      <div className={cn("rm-team-stack flex w-full flex-col items-center", sectionGap)}>
+        <header className="rm-insights-intro mx-auto flex w-full flex-col items-center text-center">
+          <div className={cn(sectionLabelHeadlineStack, "w-full items-center")}>
+            <FramerTag>{aboutTeam.tag}</FramerTag>
+            <TextReveal
+              as="h2"
+              id="team-heading"
+              text={aboutTeam.title}
+              className={cn(
+                sectionHeadline,
+                "m-0 mx-auto max-w-[18ch] text-balance text-center text-white",
+              )}
+            />
+          </div>
+          <p
+            className={cn("reveal mx-auto mt-6 max-w-[34ch] text-balance text-center", heroSubcopy)}
+            data-delay="1"
+          >
+            {aboutTeam.subtitle}
+          </p>
+        </header>
 
-      <TeamCastCarousel />
+        <TeamCastCarousel />
+      </div>
     </MarketingSection>
   );
 }

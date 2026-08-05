@@ -10,11 +10,11 @@ export const aboutMeta = {
 } as const;
 
 export const aboutHero = {
-  tag: "R—M marketing agency · est. 2025",
-  titleLine1: "Strategic partnership",
-  titleLine2: "for founders who build to scale",
-  lead: "A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts. No outsourcing.",
-  ctaPrimary: "Book free audit →",
+  tag: "About — Marketing agency",
+  titleLine1: "R—M is a marketing agency for founders",
+  titleLine2: "building in EU and MENA.",
+  lead: "We go deep where our work compounds.",
+  ctaPrimary: "Get audit →",
   ctaSecondary: "Our core areas",
 } as const;
 

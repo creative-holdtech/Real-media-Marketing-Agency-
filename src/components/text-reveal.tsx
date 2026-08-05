@@ -176,7 +176,7 @@ export function TextReveal({
     <HeadingTag
       id={id}
       ref={ref as RefObject<HTMLElement>}
-      className={className}
+      className={className ? `relative ${className}` : "relative"}
       aria-label={ariaLabel}
     >
       {chunks.map((chunk, index) => {

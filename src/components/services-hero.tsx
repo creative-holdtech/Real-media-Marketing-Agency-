@@ -52,13 +52,11 @@ type ServicesHeroProps = {
   scrollCue?: ReactNode;
 };
 
-function ServicesHeroAmbient({
-  enabled,
-  heroRef,
-}: {
-  enabled: boolean;
-  heroRef: RefObject<HTMLDivElement | null>;
-}) {
+function ServicesHeroAmbientStatic() {
+  return <div className="rm-services-hero__ambient" aria-hidden />;
+}
+
+function ServicesHeroAmbientMotion({ heroRef }: { heroRef: RefObject<HTMLDivElement | null> }) {
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -69,11 +67,7 @@ function ServicesHeroAmbient({
     damping: 28,
     mass: 0.4,
   });
-  const ambientOpacity = useTransform(progress, [0, 1], enabled ? [0.9, 0.45] : [0.9, 0.9]);
-
-  if (!enabled) {
-    return <div className="rm-services-hero__ambient" aria-hidden />;
-  }
+  const ambientOpacity = useTransform(progress, [0, 1], [0.9, 0.45]);
 
   return (
     <motion.div
@@ -99,6 +93,9 @@ export function ServicesHero({
   const reduce = useReducedMotion();
   const motionOn = !reduce;
   const heroRef = useRef<HTMLDivElement>(null);
+  /** Scroll-linked ambient only when a visible ambient layer is present —
+   * otherwise useScroll still mounts and warns on a no-op target. */
+  const ambientMotion = Boolean(ambient) && motionOn;
 
   return (
     <div
@@ -107,8 +104,9 @@ export function ServicesHero({
         "rm-hero-atmosphere rm-hero-atmosphere--under-header rm-hero-atmosphere--services relative isolate flex flex-col bg-black",
         sectionClassName,
       )}
+      style={{ position: "relative" }}
     >
-      <ServicesHeroAmbient enabled={motionOn} heroRef={heroRef} />
+      {ambientMotion ? <ServicesHeroAmbientMotion heroRef={heroRef} /> : <ServicesHeroAmbientStatic />}
       {ambient}
 
       <section

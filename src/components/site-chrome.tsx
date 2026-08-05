@@ -213,7 +213,7 @@ export function SiteFooter({ variant = "dark" }: { variant?: "light" | "dark" })
             {(
               [
                 ["/services", "Services"],
-                ["/cases", "Case Studies"],
+                ["/cases", "Case studies"],
                 ["/products", "Products"],
                 ["/blog", "Blog"],
               ] as const

@@ -39,7 +39,7 @@ const STATIC_ROUTES = [
 
 const SERVICE_SLUGS = ["brand", "smm", "pr", "performance", "seo", "design"];
 
-const FALLBACK_CASE_SLUGS = ["empresex", "tequila-cpa", "progresivo"];
+const FALLBACK_CASE_SLUGS = ["empresex", "tequila-cpa", "currency"];
 
 const FALLBACK_POSTS = [
   { slug: "cross-border-fintech-scale", dateISO: "2026-05-21" },

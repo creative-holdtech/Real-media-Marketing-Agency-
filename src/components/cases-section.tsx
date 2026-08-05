@@ -40,6 +40,7 @@ import {
   isCaseHomePreviewPhoto,
   type CaseStudy,
 } from "@/lib/cases";
+import workAmbientGlow from "@/assets/products-hero-ambient.jpg";
 import { casesHomeTeaserHeaderProps } from "@/lib/cases-gallery-config";
 import { measureStickySceneProgress, readHeaderOffsetPx } from "@/lib/read-header-offset";
 import {
@@ -360,6 +361,18 @@ function MotionWorkRow({
   );
 }
 
+/** Quiet echo of the hero's ambient glow — anchored top, bottom-masked, kept
+ * well under the hero's intensity so it warms the black frame without
+ * competing with the list/preview content above it. */
+function WorkAmbientGlow() {
+  return (
+    <div aria-hidden className="rm-work-ambient">
+      <img src={workAmbientGlow} alt="" className="rm-work-ambient__img" loading="lazy" decoding="async" />
+      <div className="rm-work-ambient__veil" />
+    </div>
+  );
+}
+
 function WorkSceneDesktop({
   featuredCases,
   header,
@@ -384,13 +397,23 @@ function WorkSceneDesktop({
   const [scrubbing, setScrubbing] = useState(false);
   const [liveLabel, setLiveLabel] = useState(`Showing case study: ${featuredCases[0]?.client ?? ""}`);
   const hoverPeak = useMotionValue(-1);
+  // Rest-state snap: once scroll (and hover) go idle, ease the crossfade the
+  // rest of the way to the active card's peak so the preview always resolves
+  // to exactly one fully-opaque thumbnail instead of resting mid-blend.
+  const settlePeak = useMotionValue(-1);
+  const settleTimerRef = useRef(0);
+  const settleControlsRef = useRef<{ stop: () => void } | null>(null);
+  const activeIndexRef = useRef(0);
 
   const { rawProgress, motionP } = useWorkSceneProgress(trackRef, stickyRef, true);
   const fastScroll = useFastScroll(rawProgress, true, clickNavRef);
 
   const previewP = useTransform(() => {
-    const peak = hoverPeak.get();
-    return peak >= 0 ? peak : motionP.get();
+    const hover = hoverPeak.get();
+    if (hover >= 0) return hover;
+    const settle = settlePeak.get();
+    if (settle >= 0) return settle;
+    return motionP.get();
   });
 
   const progressFill = useTransform(motionP, (p) => p);
@@ -406,6 +429,66 @@ function WorkSceneDesktop({
     return () => controls.stop();
   }, [fastFactor, fastScroll]);
 
+  // Rest-state snap: `settlePeak` overrides `previewP` (see above) once scroll
+  // has been idle for a beat, easing the crossfade the rest of the way to the
+  // active card's peak. Any real scroll movement cancels the override
+  // immediately, so scrubbing itself is untouched — only the resting frame
+  // is guaranteed to resolve to exactly one fully-opaque thumbnail.
+  const clearSettle = useCallback(() => {
+    window.clearTimeout(settleTimerRef.current);
+    settleControlsRef.current?.stop();
+    settleControlsRef.current = null;
+    // Hand control straight back to the live raw scroll position. (A softer
+    // eased hand-back was tried here, but a real scroll gesture fires many
+    // 'scroll' events per second — re-triggering a short tween on every one
+    // of them meant it kept restarting toward a constantly moving target and
+    // never actually converged, effectively pinning the preview and freezing
+    // the crossfade mid-scrub. An instant release only trades a one-frame
+    // pop for correctness, and only ever happens once per idle→scroll
+    // transition, so it's the safer default here.)
+    if (settlePeak.get() >= 0) settlePeak.set(-1);
+  }, [settlePeak]);
+
+  const scheduleSettle = useCallback(() => {
+    window.clearTimeout(settleTimerRef.current);
+    settleTimerRef.current = window.setTimeout(() => {
+      if (clickNavRef.current || hoverPeak.get() >= 0) return;
+      const target = cardWindow(activeIndexRef.current, count).peak;
+      const current = settlePeak.get() >= 0 ? settlePeak.get() : motionP.get();
+      if (Math.abs(current - target) < 0.001) {
+        // Already resting on the peak — pin it explicitly so a later re-render
+        // (e.g. active card change while idle) can't leave it unresolved.
+        settlePeak.set(target);
+        return;
+      }
+      settlePeak.set(current);
+      settleControlsRef.current?.stop();
+      // Hold the settled value indefinitely (no reset-to-off on complete) so
+      // the preview rests at exactly one fully-opaque thumbnail until the
+      // next real scroll gesture calls clearSettle().
+      settleControlsRef.current = animate(settlePeak, target, {
+        duration: 0.24,
+        ease: [0.4, 0, 0.2, 1],
+        onComplete: () => {
+          settleControlsRef.current = null;
+        },
+      });
+    }, 220);
+  }, [count, hoverPeak, motionP, settlePeak]);
+
+  useEffect(() => {
+    const onScroll = () => {
+      clearSettle();
+      scheduleSettle();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    scheduleSettle();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearSettle();
+    };
+  }, [clearSettle, scheduleSettle]);
+
   useMotionValueEvent(motionP, "change", (p) => {
     if (railRef.current) {
       railRef.current.style.setProperty("--work-p", p.toFixed(4));
@@ -415,6 +498,7 @@ function WorkSceneDesktop({
     }
 
     const next = activeCardIndex(p, count);
+    activeIndexRef.current = next;
     setActiveIndex((prev) => {
       if (prev !== next) {
         const study = featuredCases[next];
@@ -498,9 +582,12 @@ function WorkSceneDesktop({
     animate(hoverPeak, motionP.get(), {
       duration: 0.28,
       ease: [0.2, 0, 0, 1],
-      onComplete: () => hoverPeak.set(-1),
+      onComplete: () => {
+        hoverPeak.set(-1);
+        scheduleSettle();
+      },
     });
-  }, [hoverPeak, motionP]);
+  }, [hoverPeak, motionP, scheduleSettle]);
 
   const handleRowHover = useCallback(
     (index: number) => {
@@ -523,7 +610,8 @@ function WorkSceneDesktop({
   const handleRowHoverEnd = useCallback(() => {
     setHoverIndex(null);
     releaseHoverPeak();
-  }, [releaseHoverPeak]);
+    scheduleSettle();
+  }, [releaseHoverPeak, scheduleSettle]);
 
   const handleRowClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>, index: number) => {
@@ -645,7 +733,8 @@ function WorkSceneDesktop({
       <div ref={trackRef} className="rm-work-scene__track-shell rm-work-scene__track">
         <div className="rm-work-scene__pin-gutter" aria-hidden />
         <div ref={stickyRef} className="rm-work-scene__sticky">
-          <div className={sectionInner}>
+          <WorkAmbientGlow />
+          <div className={cn(sectionInner, "relative z-10")}>
             <div className={cn("rm-work", sectionContentGrid, "items-start md:items-stretch rm-work-scene__grid")}>
               <div className="reveal-fade md:col-start-1 md:self-start md:pt-1">
                 <FramerTag>{header.tag}</FramerTag>
@@ -665,7 +754,7 @@ function WorkSceneDesktop({
 
               <div
                 ref={railRef}
-                className="rm-work-preview-rail hidden md:block md:col-start-1 md:row-start-2 md:self-start"
+                className="rm-work-preview-rail hidden md:block md:col-start-1 md:row-start-2"
                 aria-hidden
               >
                 {featuredCases.map((study, index) => (
@@ -743,7 +832,8 @@ function WorkSceneStatic({
     >
       <div className="rm-work-scene__track-shell">
         <div className="rm-work-scene__sticky">
-          <div className={sectionInner}>
+          <WorkAmbientGlow />
+          <div className={cn(sectionInner, "relative z-10")}>
             <WorkSceneGrid featuredCases={featuredCases} header={header} />
           </div>
         </div>
@@ -773,7 +863,7 @@ function WorkSceneGrid({
         ) : null}
       </header>
 
-      <div className="rm-work-preview-rail hidden md:block md:col-start-1 md:row-start-2 md:self-start">
+      <div className="rm-work-preview-rail hidden md:block md:col-start-1 md:row-start-2">
         <div
           className={cn(
             "rm-index__preview rm-index__preview--scene",

@@ -223,6 +223,27 @@ type HeroScrollStageProps = {
 /** Hero copy lifts and fades on scroll — no velocity skew (keeps headline legible). */
 export function HeroScrollStage({ heroRef, children, className }: HeroScrollStageProps) {
   const enabled = useCinemaMotion();
+
+  if (!enabled) {
+    return <div className={className}>{children}</div>;
+  }
+
+  return (
+    <HeroScrollStageMotion heroRef={heroRef} className={className}>
+      {children}
+    </HeroScrollStageMotion>
+  );
+}
+
+function HeroScrollStageMotion({
+  heroRef,
+  children,
+  className,
+}: {
+  heroRef: RefObject<HTMLElement | null>;
+  children: ReactNode;
+  className?: string;
+}) {
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -230,12 +251,8 @@ export function HeroScrollStage({ heroRef, children, className }: HeroScrollStag
   });
   const progress = useSpring(scrollYProgress, { stiffness: 110, damping: 30, mass: 0.4 });
 
-  const y = useTransform(progress, [0, 1], enabled ? [0, -48] : [0, 0]);
-  const opacity = useTransform(progress, [0, 0.62, 1], enabled ? [1, 0.72, 0] : [1, 1, 1]);
-
-  if (!enabled) {
-    return <div className={className}>{children}</div>;
-  }
+  const y = useTransform(progress, [0, 1], [0, -48]);
+  const opacity = useTransform(progress, [0, 0.62, 1], [1, 0.72, 0]);
 
   return (
     <motion.div className={className} style={{ opacity, y }}>

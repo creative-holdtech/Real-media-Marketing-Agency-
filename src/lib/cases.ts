@@ -27,6 +27,7 @@ export type CaseRichContent = {
     client: string;
     scope: string;
     year: string;
+    periodLabel?: string;
     status: string;
   };
   overview: {
@@ -72,7 +73,7 @@ export type CaseRichContent = {
 export type CaseStudy = {
   slug: string;
   client: string;
-  niche: "AI SaaS" | "Fintech" | "Cybersecurity" | "iGaming";
+  niche: "AI SaaS" | "Fintech" | "Web3 / Fintech" | "Cybersecurity" | "iGaming";
   format: "Sprint" | "Marathon";
   duration: string;
   preview: string; // one-liner under card
@@ -130,10 +131,10 @@ export const cases: CaseStudy[] = [
       "iGaming CPA network — brand identity, web ecosystem, and performance creative engine built from the ground up.",
     headline: "How R-M helped Tequila turn brand into a partner acquisition engine.",
     heroMetrics: [
-      { value: "+35%", label: "Brand growth" },
-      { value: "300+", label: "Brand partners" },
-      { value: "Tier 1–3", label: "GEO coverage" },
-      { value: "6 mo", label: "Engagement" },
+      { value: "21%", label: "Brand awareness in niche" },
+      { value: "317", label: "Social media followers" },
+      { value: "~6,000", label: "Average content views" },
+      { value: "3", label: "Media placements" },
     ],
     primaryMetric: { value: "+35%", label: "Brand growth in 6 mo." },
     situation:
@@ -157,7 +158,7 @@ export const cases: CaseStudy[] = [
     resultMetrics: [
       { value: "+35%", label: "Brand growth" },
       { value: "300+", label: "Active brand partners" },
-      { value: "2", label: "Buyer Awards nominations" },
+      { value: "3", label: "Award categories" },
       { value: "Tier 1–3", label: "Markets activated" },
     ],
     resultsBody:
@@ -180,8 +181,6 @@ export const cases: CaseStudy[] = [
     rich: {
       titleLines: ["Brand system", "for a CPA network"],
       subline:
-        "A CPA network with in-house media buying, specialising in iGaming — 300+ brands across Tier 1, Tier 2, and Tier 3 regions, including Africa.",
-      heroNote:
         "Tequila had it all: strong offer, reliable team, and global coverage. But not yet the recognition. Together we closed that gap.",
       meta: {
         client: "Tequila CPA",
@@ -209,12 +208,12 @@ export const cases: CaseStudy[] = [
             body: "Raise visibility across Tier 1, Tier 2, and Tier 3 — with a voice the market recognises as Tequila, not interchangeable CPA noise.",
           },
           {
-            title: "Partner acquisition",
-            body: "Turn brand visibility into inbound partner requests — new affiliates and teams coming in without cold outreach.",
-          },
-          {
             title: "Community recognition",
             body: "Build a strong presence inside the iGaming and Affiliate community — among buyers, networks, and industry players.",
+          },
+          {
+            title: "Partner acquisition",
+            body: "Turn brand visibility into inbound partner requests — new affiliates and teams coming in without cold outreach.",
           },
           {
             title: "Performance at volume",
@@ -223,7 +222,7 @@ export const cases: CaseStudy[] = [
         ],
       },
       deliverables: {
-        heading: "Three deliverable tracks. One GTM system.",
+        heading: "From brief to brand — three deliverable tracks. One GTM system.",
         items: [
           {
             title: "Identity & Branding",
@@ -316,15 +315,15 @@ export const cases: CaseStudy[] = [
     format: "Marathon",
     duration: "11 months",
     preview:
-      "Licensed crypto exchange — brand identity, marketing site, mobile app, and web trading platform.",
-    headline: "Not just an exchange. A new standard.",
+      "Licensed crypto exchange — a clear visual language across brand, web, app, and platform.",
+    headline: "Clarity where the category defaults to noise.",
     heroMetrics: [
       { value: "VASP", label: "Licensed in Czech Republic" },
       { value: "BTC · ETH · USDC", label: "Supported assets" },
       { value: "3 steps", label: "Path to trading" },
       { value: "Live", label: "empresex.io" },
     ],
-    primaryMetric: { value: "4 surfaces", label: "Brand · web · app · platform" },
+    primaryMetric: { value: "4 touchpoints", label: "Brand · web · app · platform" },
     situation:
       "Empresex is a licensed crypto exchange based in the Czech Republic. They turn complex crypto into simple, instant trades — fiat and digital currencies in seconds, with transparent fees and advanced security.",
     challenge:
@@ -371,9 +370,9 @@ export const cases: CaseStudy[] = [
     coverScope: ["Identity", "Web", "Mobile app", "Exchange"],
     layout: "rich",
     rich: {
-      titleLines: ["Not just an exchange.", "A new standard."],
+      titleLines: ["Clarity where the category", "defaults to noise."],
       subline:
-        "We turn complex crypto into simple, instant trades — a complete design system for identity, web, app, and exchange platform.",
+        "Crypto exchanges compete on complexity. Empresex bet on the opposite. We gave that bet a visual language.",
       meta: {
         client: "Empresex, Czech Republic",
         scope: "Brand, Web, Mobile, Platform",
@@ -381,13 +380,13 @@ export const cases: CaseStudy[] = [
         status: "Live at empresex.io",
       },
       overview: {
-        heading: "A next-generation crypto exchange built for trust",
-        body: "Empresex is a next-generation crypto exchange — fast, intuitive, and reliable. Trade fiat and digital assets in seconds, with clarity and trust at every step.\n\nLicensed in the Czech Republic with a VASP permit, Empresex turns complex crypto into simple, instant trades. We partnered with the team to shape the full visual layer: brand identity, marketing site, mobile app, and web exchange platform — one coherent system from empresex.io through the live dashboard.",
+        heading: "Project intro",
+        body: "The crypto exchange market is a crowded space. To say the least. Most exchanges look the same, promise the same, appear and disappear the same way. In a market where credibility is decided in seconds, looking the part isn't optional.\n\nEmpresex came in hot: licensed, transparent, and built for users — entering a niche that had seen too many projects that weren't.",
         scope: ["Identity & Branding", "Web & Landing Design", "Mobile App", "Exchange Platform"],
       },
       problem: {
-        heading: "Designing for clarity in a category that rewards noise",
-        body: "Crypto exchanges often look loud, complex, and interchangeable. Empresex takes the opposite path: transparent fees, advanced security, fast execution, and a product built for real users — not hype.\n\nThe challenge was to translate that promise into a visual language that holds across every touchpoint. From the first visit to empresex.io through account verification and live trading, the experience needed to feel calm, credible, and unmistakably Empresex.\n\nThat meant building a system that could scale with the product — new assets, new flows, new markets — without losing the clarity that makes the brand work.",
+        heading: "The challenge",
+        body: "Empresex had outgrown its visual identity before it had fully launched. The product was licensed, fast, and built to last — but nothing on screen communicated that scale or security.\n\nThe product was ready. The team was ready. The brand wasn't.\n\nDesigning for intuitive crypto trading meant translating Empresex's focus on transparency, advanced security, and fast execution into a visual language that holds across every touchpoint. From the first website visit through account verification and live trading, the experience needed to feel calm, credible, and unmistakably Empresex.\n\nThe system also had to scale with the product — across new assets, flows, and markets — without losing the clarity that makes the brand work.",
         cards: [
           {
             title: "Trust before the first trade",
@@ -427,45 +426,45 @@ export const cases: CaseStudy[] = [
           "A planetary gradient — deep amber burning into dark space. The signature Gold Element is used intentionally and sparingly, reserved strictly for primary interactive components and CTAs.",
       },
       deliverables: {
-        heading: "Four deliverables. One coherent system.",
+        heading: "Four deliverables. One aligned system.",
         items: [
           {
             title: "Identity & Branding",
-            body: "Logo, icon mark, typographic system, colour palette, and brand guidelines — aligned with Empresex positioning as a licensed, transparent exchange.",
+            body: "Logo, icons, typographic system, colour palette, and brand guidelines — built directly around Empresex's identity as a licensed, transparent exchange.",
           },
           {
             title: "Web & Landing Design",
-            body: "Marketing site with planetary hero, Why Empresex pillars, three-step onboarding, instant exchange preview, media presence, FAQ, and blog. Fully responsive.",
+            body: "Translating brand positioning into a high-trust digital experience: an interactive marketing site with product and instant-exchange previews, value propositions, and a three-step onboarding flow.",
           },
           {
             title: "Mobile App",
-            body: "Exchange screen, payment flow, funds transfer confirmation, and authentication — designed for the same speed and clarity as the web product.",
+            body: "Streamlining crypto operations for small screens: exchange core, secure payment flows, funds transfer confirmation, and authentication, optimised for intuitive mobile UI.",
           },
           {
             title: "Exchange Platform",
-            body: "The full web dashboard: balance overview, budget statistics, quick transaction panel, withdrawal flow, multi-currency portfolio sidebar, recent transactions, and design system handoff for development.",
+            body: "Web dashboard with balance overview, budget statistics, quick transaction panel, withdrawal flow, multi-currency portfolio sidebar, and recent transactions — plus a smooth, production-ready design-system handoff.",
           },
         ],
       },
       platform: {
         heading: "Design approach",
-        body: "We discarded purely decorative aesthetics to focus on usability. The strict grayscale foundation minimises visual fatigue when reading complex financial data. The signature Gold Element guides attention to primary actions across marketing and product.",
+        body: "A grayscale UI foundation reduces visual fatigue when reading financial data, while the signature Gold Element directs attention to primary user actions.",
         features: [
           {
             title: "Instant exchange",
-            body: "Convert Bitcoin, Ethereum, and USDC instantly — a clear conversion flow optimised for transparency and convenience, mirroring the live widget on empresex.io.",
+            body: "An instant conversion interface for Bitcoin, Ethereum, and USDC — a clear, convenient flow designed to mirror the live website widget.",
           },
           {
             title: "Dashboard",
-            body: "Total balance front and centre, budget statistics below, and quick-action panel for the most common operations — everything at a glance.",
+            body: "A data-driven layout putting total balance front and centre, with secondary budget statistics below and a quick-action panel for core operations.",
           },
           {
             title: "Verification & onboarding",
-            body: "A streamlined path from sign-up and email activation through KYC to live trading — designed to match Empresex five-minute verification promise.",
+            body: "A step-by-step journey mapping registration, activation, and KYC into a fast, clear flow designed for a five-minute verification experience.",
           },
           {
             title: "Design system",
-            body: "A full token library and component set in Figma, documented and handed off so the platform could grow — new assets, flows, and markets — without breaking consistency.",
+            body: "A production-ready Figma token library and component set, fully documented to keep design consistent across new flows and markets.",
           },
         ],
       },
@@ -481,163 +480,147 @@ export const cases: CaseStudy[] = [
     },
   },
   {
-    slug: "progresivo",
-    client: "Progresivo",
-    niche: "Fintech",
+    slug: "currency",
+    client: "Currency",
+    niche: "Web3 / Fintech",
     format: "Marathon",
-    duration: "9 months",
+    duration: "Live",
     preview:
-      "LATAM educational academy — brand identity, web infrastructure, and scalable marketing assets.",
-    headline: "How R-M helped Progresivo rebuild its brand for LATAM.",
+      "Regulated crypto exchange — communication strategy, PR, SMM, influencer partnerships, and video content.",
+    headline: "User acquisition through brand authority.",
     heroMetrics: [
-      { value: "LATAM", label: "Primary market" },
-      { value: "3", label: "Brand pillars" },
-      { value: "1", label: "Design system" },
-      { value: "9 mo", label: "Engagement" },
+      { value: "30,878", label: "New verified accounts" },
+      { value: "120+", label: "Countries covered" },
+      { value: "4", label: "Core channels" },
+      { value: "Live", label: "Campaign status" },
     ],
-    primaryMetric: { value: "LATAM", label: "Market-focused rebrand" },
+    primaryMetric: { value: "30,878", label: "New verified accounts" },
     situation:
-      "Progresivo Academy needed a complete visual system transformation — consistency, scalability, and a high-impact digital presence across social and paid channels in LATAM.",
+      "Currency is a regulated crypto exchange and digital asset platform operating across more than 120 countries, with coverage in the U.S. and Europe.",
     challenge:
-      "The brand had outgrown its original look. Social feeds, ad creatives, and landing pages needed one flexible identity that could scale without losing recognition in a fast-moving market.",
+      "Strict KYC makes the entry barrier unusually high. The acquisition system had to move beyond low-quality traffic, earn trust at every step, and convert high-intent users into active traders.",
     work: [
       {
-        title: "Visual identity refresh",
-        body: "Rebuilt the brand foundation — colour palette, typography, modular elements, and aesthetic rules that scale from web interfaces to high-performance ad creatives.",
+        title: "PR & industry authority",
+        body: "Built systematic visibility in Tier-1 and crypto-native media to establish trust for a regulated financial service and secure broad audience coverage.",
       },
       {
-        title: "Guidelines & design system",
-        body: "Developed social media guidelines and a content design system, centred on a signature line element that acts as a visual fingerprint in the feed.",
+        title: "SMM & community infrastructure",
+        body: "Turned social channels into an educational, trust-building hub for transparent product updates, market insight, and post-onboarding retention.",
       },
       {
-        title: "LATAM creative direction",
-        body: "Applied a vibrant, high-energy palette tuned for LATAM audiences — built for feed recognition and paid conversion.",
+        title: "Influencer partnerships & KOLs",
+        body: "Used data-backed scouting and tailored activations with trusted analysts, traders, and industry leaders to reach warm, pre-vetted audiences.",
+      },
+      {
+        title: "Content production & scale",
+        body: "Produced and distributed short-form content and deep-dive product explainers that made platform security and features easier to understand.",
       },
     ],
     resultMetrics: [
-      { value: "1", label: "Unified brand system" },
-      { value: "LATAM", label: "Market focus" },
-      { value: "3", label: "Core deliverables" },
-      { value: "9 mo", label: "Engagement" },
+      { value: "30,878", label: "New verified accounts" },
+      { value: "120+", label: "Countries covered" },
+      { value: "4", label: "Synchronized channels" },
+      { value: "0", label: "Reliance on low-grade traffic" },
     ],
     resultsBody:
-      "Progresivo now runs on one visual language across social, ads, and landing pages — with a system the in-house team can extend as new campaigns ship.",
+      "PR, social, influencer partnerships, and video now operate as one acquisition funnel — building authority, growing a high-quality audience, and reducing acquisition costs below standard crypto advertising.",
     quote: {
-      text: "One system from social to landing pages — our team ships new campaigns without losing the brand.",
-      who: "Progresivo Academy",
-      role: "LATAM academy",
+      text: "Every step of the user journey must earn trust and convert it into active users.",
+      who: "R—M",
+      role: "Acquisition principle",
     },
-    accent: "#f43f5e",
-    coverImage: caseAsset("progresivo", "logo.svg"),
-    previewImage: caseAsset("progresivo", "hover.png"),
+    accent: "#60a5fa",
+    coverImage: nicheFintech,
+    previewImage: nicheFintech,
     homePreviewPosition: "center center",
-    coverTreatment: "logo",
+    coverTreatment: "photo",
     heroImage: nicheFintech,
     fallbackCover: nicheFintech,
     fallbackHero: aboutHero,
-    coverScope: ["Visual identity", "Design system", "LATAM creatives"],
+    coverScope: ["PR", "SMM", "Influencer marketing", "Production"],
     layout: "rich",
     rich: {
-      titleLines: ["Visual system", "for LATAM scale."],
+      titleLines: ["User acquisition", "through brand authority."],
       subline:
-        "Complete visual identity and digital ecosystem overhaul for Progresivo Academy — built for consistency, scalability, and high-impact presence in LATAM.",
+        "Communication strategy engineered for a regulated crypto exchange — scaling new account creation through synchronized media, content, and creator networks.",
       meta: {
-        client: "Progresivo Academy",
-        scope: "Brand, Social, Performance",
-        year: "2024",
-        status: "Live system",
+        client: "Currency",
+        scope: "PR, SMM, Influencer Marketing, Production",
+        year: "120+ countries",
+        periodLabel: "Coverage",
+        status: "Live · regulated infrastructure",
       },
       overview: {
-        heading: "Visual identity & digital ecosystem overhaul",
-        body: "For Progresivo Academy, we executed a complete visual system transformation. Approaching this as a signature Real Media client case, we focused on three pillars: consistency, scalability, and high-impact digital presence.\n\nThe brand now operates under a clear set of rules that scale seamlessly from web interfaces to high-performance ad creatives across LATAM.",
-        scope: [
-          "Visual identity refresh",
-          "Guidelines & design system",
-          "LATAM creative direction",
-        ],
+        heading: "Project intro",
+        body: "The client is a regulated crypto exchange and digital asset platform. The goal was to move beyond low-quality traffic and build a high-intent, deeply engaged user base.\n\nFor a regulated exchange, the entry barrier is extremely high because of strict KYC. Every step of the user journey must earn trust and convert it into active users. We built a full-funnel marketing system that turned industry authority into user growth.",
+        scope: ["PR", "SMM", "Influencer Marketing", "Content Production"],
       },
       problem: {
-        heading: "Why the brand needed a reset",
-        body: "Progresivo had outgrown its original look. Social feeds, ad creatives, and landing pages needed one flexible identity that could scale without losing recognition in a fast-moving LATAM market.\n\nGiven Progresivo's focus on LATAM, the system had to win attention in the feed without sacrificing credibility.",
+        heading: "Strategy & objectives",
+        body: "The challenge was to create a communication system that brings in high-quality leads, builds institutional and retail trust, and keeps users engaged after onboarding.",
         cards: [
           {
-            title: "Consistency at scale",
-            body: "One visual language across social, paid, and landing pages — no more one-off campaign aesthetics.",
+            title: "High-LTV acquisition",
+            body: "Drive qualified, high-intent users through the strict KYC funnel and convert them into active platform traders.",
           },
           {
-            title: "Scalable design system",
-            body: "Modular elements, typography, and colour rules the in-house team can extend as new campaigns ship.",
+            title: "Cross-channel authority",
+            body: "Establish institutional and retail trust through verified industry media, cutting through standard crypto noise.",
           },
           {
-            title: "Signature line element",
-            body: "A key brand marker that weaves visuals into a unified system — a visual fingerprint in a fast-moving social feed.",
+            title: "Community engagement",
+            body: "Turn passive social media viewers into active brand advocates and community members.",
           },
           {
-            title: "LATAM colour strategy",
-            body: "A vibrant, high-energy palette tuned for LATAM feeds while staying unmistakably Progresivo.",
+            title: "Influence calibration",
+            body: "Deploy highly targeted influencer collaborations to reach warm, pre-vetted crypto audiences.",
           },
         ],
       },
-      identity: {
-        heading: "Strategic visual identity refresh",
-        typeface: {
-          label: "Extended grotesk system",
-          body: "We rebuilt the brand foundation from the ground up — updated colour palette, typography, modular elements, and overall aesthetic for a modern, flexible identity.",
-        },
-        colors: {
-          principle: "Colour as a strategic tool.",
-          items: [
-            { name: "Vibrant primaries", meaning: "feed recognition and paid conversion in LATAM" },
-            { name: "Neutral base", meaning: "readability in long-form trust content" },
-            { name: "Accent line", meaning: "signature marker across all compositions" },
-          ],
-        },
-        logo: "Extended lowercase logotype with a distinctive slash mark — approachable, modern, and instantly recognisable in social thumbnails.",
-        keyVisual:
-          "The signature line element runs through social templates, ad frames, and landing modules — tying every touchpoint back to one Progresivo world.",
-      },
       deliverables: {
-        heading: "What we delivered",
+        heading: "Four channels. One acquisition engine.",
         items: [
           {
-            title: "Brand foundation",
-            body: "Colour palette, typography, modular elements, and aesthetic rules — modern, flexible, and instantly recognisable across touchpoints.",
+            title: "PR & Industry Authority",
+            body: "Systematic publishing in Tier-1 and crypto-native media — building the trust required for a regulated financial service and securing broad audience coverage.",
           },
           {
-            title: "Social & content system",
-            body: "Comprehensive social media guidelines and a content design system built around the signature line element.",
+            title: "SMM & Community Infrastructure",
+            body: "Social channels became an educational and trust-building hub, with direct interaction, transparent product updates, and market insight designed to retain users post-onboarding.",
           },
           {
-            title: "LATAM performance creatives",
-            body: "High-energy ad and social templates tuned for LATAM audiences — built for recognition and conversion.",
+            title: "Influencer Partnerships & KOLs",
+            body: "Data-backed influencer scouting and tailored activations with trusted crypto analysts, traders, and industry leaders for direct conversion.",
+          },
+          {
+            title: "Content Production & Scale",
+            body: "Targeted distribution of short-form content and deep-dive product explainers, lowering the entry barrier by demonstrating platform security and features.",
           },
         ],
       },
       platform: {
-        heading: "The solution in practice",
-        body: "Four strategic layers — identity refresh, guidelines, line element, and LATAM colour — shipped as one operating system the team owns.",
+        heading: "Building a real audience in a fake traffic world",
+        body: "An end-to-end communication engine designed to reach the right audience at every stage of the user journey.",
         features: [
           {
-            title: "Unified brand system",
-            body: "One coherent visual language from feed to landing page — no drift between campaigns.",
+            title: "High-quality user growth",
+            body: "More than 30,878 new verified accounts created with zero reliance on low-grade traffic.",
           },
           {
-            title: "Content design system",
-            body: "Repeatable templates for social, stories, and paid — with the line element as the anchor.",
+            title: "Unified communications ecosystem",
+            body: "PR, social, influencer partnerships, and video working as one funnel.",
           },
           {
-            title: "LATAM market focus",
-            body: "Palette and composition rules tuned for regional feed behaviour and audience energy.",
-          },
-          {
-            title: "Team-ready guidelines",
-            body: "Documentation the in-house team uses to ship new creatives without losing quality.",
+            title: "Sustainable CAC reduction",
+            body: "Organic video, trusted KOLs, and sharp PR reduced acquisition costs below standard crypto advertising.",
           },
         ],
       },
       closing: {
-        titleLines: ["Build a brand", "that scales."],
-        subline: "If your academy or product needs a visual system built for LATAM — let's talk.",
+        titleLines: ["Turn authority", "into active users."],
+        subline:
+          "If your regulated product needs high-intent growth without low-grade traffic — let's talk.",
         primaryLabel: "Book free audit →",
         primaryTo: "/audit",
         secondaryLabel: "View all cases",
@@ -647,7 +630,14 @@ export const cases: CaseStudy[] = [
   },
 ];
 
-export const caseNiches = ["All", "AI SaaS", "Fintech", "Cybersecurity", "iGaming"] as const;
+export const caseNiches = [
+  "All",
+  "AI SaaS",
+  "Fintech",
+  "Web3 / Fintech",
+  "Cybersecurity",
+  "iGaming",
+] as const;
 export type CaseNiche = (typeof caseNiches)[number];
 
 export function getCase(slug: string) {

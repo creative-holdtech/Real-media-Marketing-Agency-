@@ -59,11 +59,10 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
     metaDescription:
       "R-M is a strategic marketing agency for founders in Fintech, AI SaaS, Cybersecurity, and iGaming.",
     hero: {
-      tag: "R—M marketing agency · est. 2025",
-      titleLines: ["Strategic partnership", "for founders who build to scale"],
-      subheading:
-        "A focused team for Fintech, AI SaaS, Cybersecurity, and iGaming. 10 senior experts. No outsourcing.",
-      ctaPrimaryLabel: "Book free audit →",
+      tag: "About — Marketing agency",
+      titleLines: ["R—M is a marketing agency for founders", "building in EU and MENA."],
+      subheading: "We go deep where our work compounds.",
+      ctaPrimaryLabel: "Get audit →",
       ctaPrimaryUrl: "/audit",
       ctaSecondaryLabel: "Our core areas",
       ctaSecondaryUrl: "#verticals",
@@ -168,7 +167,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
     sections: {
       work: {
         tag: "Case studies",
-        heading: "Three engagements.",
+        heading: "Three core runs.",
       },
     },
     metaTitle: "Case Studies — Work That Ships | R-M",
@@ -181,7 +180,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
         "Identity, websites, funnels, and platforms for Fintech, iGaming, and Web3 brands.",
       ctaPrimaryLabel: "Book free audit →",
       ctaPrimaryUrl: "/audit",
-      ctaSecondaryLabel: "See the work",
+      ctaSecondaryLabel: "Check our cases",
       ctaSecondaryUrl: "#work",
     },
     cta: {

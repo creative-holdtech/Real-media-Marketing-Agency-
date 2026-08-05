@@ -1,0 +1,4 @@
+.agents/
+.codex/
+.playwright-cli/
+output/

@@ -126,10 +126,10 @@ export const engageStepCode = cn(textMeta, textGhost, "rm-engage-step__code");
 export const engageStepTitle = cn(textLabel, textSubtle, "rm-engage-step__title");
 /** Engage panel lead — meta + standfirst (home #engage) */
 export const engagePanelLead = cn("rm-engage-panel__lead min-w-0", sectionPanelLead);
-export const formatOperatingStrip = cn("m-0 border-y py-8", borderSoft, productsOperatingGrid);
+export const formatOperatingStrip = cn("m-0 border-y py-6", borderSoft, productsOperatingGrid);
 export const subsectionTitleMuted = cn("rm-type-subsection", textSubtle);
-export const productsProofGrid = cn("rm-proof-grid grid sm:grid-cols-3", sectionGap);
-export const productsProofItem = cn("rm-proof-item flex flex-col gap-3 border-t pt-6 sm:pt-8", borderSoft);
+export const productsProofGrid = "rm-proof-grid grid sm:grid-cols-3";
+export const productsProofItem = "rm-proof-item flex flex-col gap-4";
 /** Hero centered copy column */
 export const heroCopyLayout =
   "mx-auto flex w-full max-w-[36rem] flex-col items-center text-center";

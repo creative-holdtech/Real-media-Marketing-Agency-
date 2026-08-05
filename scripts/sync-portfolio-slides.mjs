@@ -29,13 +29,6 @@ const DECK = {
     deliverables: 21,
     platform: 22,
   },
-  progresivo: {
-    cover: 29,
-    overview: 30,
-    identity: 31,
-    deliverables: 33,
-    platform: 34,
-  },
 };
 
 function copySlide(slug, role, slideNum) {

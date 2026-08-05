@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
   useScroll,
   useSpring,
@@ -40,27 +41,36 @@ export function AboutStatsScroll({ id }: { id?: string } = {}) {
 
 function StatsScene({ id }: { id?: string }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
+    layoutEffect: false,
   });
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 115,
-    damping: 32,
-    mass: 0.32,
+    stiffness: 140,
+    damping: 36,
+    mass: 0.28,
     restDelta: 0.001,
   });
   const position = useTransform(smoothProgress, steppedPosition);
   const sceneFade = useTransform(smoothProgress, [0.955, 0.995], [1, 0]);
 
+  useMotionValueEvent(position, "change", (value) => {
+    const next = Math.min(lastItem, Math.max(0, Math.round(value)));
+    setActiveIndex((prev) => (prev === next ? prev : next));
+  });
+
+  const activeItem = items[activeIndex] ?? items[0];
+
   return (
     <section
       ref={sectionRef}
       aria-labelledby="numbers-heading"
-      className="relative h-[560vh] border-y border-white/10 bg-black text-white"
+      className="relative h-[420vh] border-y border-white/10 bg-black text-white"
     >
       {/* IO target for PageSectionDots sits on this viewport-sized sticky div, not
-          the 440vh scroll-track above — a section that tall reports a tiny
+          the tall scroll-track above — a section that tall reports a tiny
           intersectionRatio against its own bounding box for nearly its whole
           scroll range, which starved the "Numbers" dot of activation. */}
       <div id={id} className="sticky top-0 h-screen overflow-hidden pt-[var(--rm-header-offset)]">
@@ -93,9 +103,9 @@ function StatsScene({ id }: { id?: string }) {
             ))}
           </div>
 
-          <span className="sr-only">
-            {items.map((item) => `${item.value}. ${item.tag}. ${item.label} `).join("")}
-          </span>
+          <p className="sr-only" aria-live="polite" aria-atomic="true">
+            {activeItem.value}. {activeItem.tag}. {activeItem.label}
+          </p>
         </motion.div>
       </div>
     </section>
@@ -182,15 +192,6 @@ function StatSlide({
   const copyY = useTransform([scrollCopyY, hold], (values: number[]) =>
     values[1] > 0.5 ? 0 : values[0],
   );
-  const scrollCopyFilter = useTransform(
-    position,
-    [index - 0.56, index, index + 0.56],
-    ["blur(3px) brightness(0.72)", "blur(0px) brightness(1.18)", "blur(3px) brightness(0.72)"],
-  );
-  const copyFilter = useTransform(
-    [scrollCopyFilter, hold] as MotionValue<string | number>[],
-    (values: (string | number)[]) => (Number(values[1]) > 0.5 ? "blur(0px) brightness(1.18)" : String(values[0])),
-  );
   return (
     <motion.div
       className="rm-trust-ecosystem__fg-stat rm-trust-ecosystem__fg-stat--center absolute left-1/2 top-1/2 w-[min(86%,34rem)] -translate-x-1/2 -translate-y-1/2"
@@ -214,13 +215,13 @@ function StatSlide({
       <div className="flex min-h-[7rem] flex-col justify-start sm:min-h-[8rem]">
         <motion.p
           className="rm-trust-ecosystem__fg-stat-copy mx-auto mb-4 max-w-[34ch] text-[var(--rm-text-muted)] sm:text-base"
-          style={{ opacity: copyOpacity, y: copyY, filter: copyFilter, willChange: "transform, opacity, filter" }}
+          style={{ opacity: copyOpacity, y: copyY, willChange: "transform, opacity" }}
         >
           {item.tag}
         </motion.p>
         <motion.p
           className="text-balance text-[clamp(1.15rem,2.1vw,2rem)] font-medium leading-[1.02] tracking-[-0.035em] text-white"
-          style={{ opacity: copyOpacity, y: copyY, filter: copyFilter, willChange: "transform, opacity, filter" }}
+          style={{ opacity: copyOpacity, y: copyY, willChange: "transform, opacity" }}
         >
           {item.label}
         </motion.p>

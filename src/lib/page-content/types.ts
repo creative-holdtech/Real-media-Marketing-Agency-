@@ -231,7 +231,7 @@ export type PayloadCaseDoc = {
   id: string;
   slug: string;
   client: string;
-  niche: "AI SaaS" | "Fintech" | "Cybersecurity" | "iGaming";
+  niche: "AI SaaS" | "Fintech" | "Web3 / Fintech" | "Cybersecurity" | "iGaming";
   format: "Sprint" | "Marathon";
   duration: string;
   preview: string;

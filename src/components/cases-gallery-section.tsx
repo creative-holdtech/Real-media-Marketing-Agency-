@@ -51,7 +51,7 @@ const galleryCardGrid = cn(
 const COVER_OBJECT_POSITION: Partial<Record<string, string>> = {
   empresex: "center center",
   "tequila-cpa": "center center",
-  progresivo: "center 40%",
+  currency: "center center",
 };
 
 function padIndex(n: number) {

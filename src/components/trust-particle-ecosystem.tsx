@@ -395,6 +395,7 @@ export function TrustParticleEcosystem({
   const smoothScrollRef = useRef(0);
   const countValueRef = useRef<Map<number, number>>(new Map());
   const statHeroRef = useRef<Map<number, number>>(new Map());
+  const statCaptionRef = useRef<Map<number, number>>(new Map());
   const countStatElsRef = useRef<HTMLElement[]>([]);
   const fgStatElsRef = useRef<HTMLElement[]>([]);
   const perfRef = useRef(getTrustScenePerformanceProfile());
@@ -687,21 +688,30 @@ export function TrustParticleEcosystem({
       countStatElsRef.current.forEach((el) => {
         const index = Number(el.dataset.countStat ?? 0);
         const beat = index === 1 ? b1 : b0;
-        const vis = statVisibility(index, b0, b1);
         const stat = stats[index];
-        if (!stat?.countUp || vis < 0.1) {
+        if (!stat?.countUp) {
+          el.textContent = String(stat?.value ?? "");
+          return;
+        }
+        // Gate the freeze/reset on the slot's *actual displayed* opacity
+        // (statHeroRef, one frame behind — same value written to
+        // slot.style.opacity below), not on the raw `statVisibility` fraction.
+        // `hero` lags `vis` through its own easing/smoothing, so gating on
+        // `vis` let the value hard-reset to 0 while the slot was still
+        // rendered at high opacity — the exact defect this guards against.
+        const displayedOpacity = statHeroRef.current.get(index) ?? 0;
+        // Reset to 0 is only safe once the slot is fully invisible — otherwise a
+        // reset while still >5% opaque reads as the number visibly snapping back
+        // to zero mid-fade (see defect: stat counter resets to 0 while visible).
+        if (displayedOpacity <= 0.05) {
           countValueRef.current.set(index, 0);
-          el.textContent = stat?.countUp
-            ? `${stat.countUp.prefix ?? ""}0${stat.countUp.suffix ?? ""}`
-            : String(stat?.value ?? "");
+          el.textContent = `${stat.countUp.prefix ?? ""}0${stat.countUp.suffix ?? ""}`;
           return;
         }
         const countTargetT = EASE_PREMIUM_OUT(Math.max(0, (beat.heroReveal - 0.12) / 0.88));
         const targetValue = stat.countUp.to * countTargetT;
         let displayed = countValueRef.current.get(index) ?? 0;
-        if (targetValue < displayed) {
-          displayed = smoothStep(displayed, targetValue, dt, 4.5);
-        } else {
+        if (targetValue > displayed) {
           displayed = smoothCapped(
             displayed,
             targetValue,
@@ -709,8 +719,11 @@ export function TrustParticleEcosystem({
             COUNT_VALUE_FOLLOW_RATE,
             stat.countUp.to * COUNT_VALUE_MAX_FRACTION_PER_SEC * dt,
           );
+          countValueRef.current.set(index, displayed);
         }
-        countValueRef.current.set(index, displayed);
+        // else: freeze the last displayed value while any perceptible opacity
+        // remains (vis > 0.05) — value must never decrease on exit, only the
+        // opacity fades it out. Re-entry resumes counting up from the frozen value.
         el.textContent = `${stat.countUp.prefix ?? ""}${Math.round(displayed)}${stat.countUp.suffix ?? ""}`;
       });
 
@@ -819,7 +832,17 @@ export function TrustParticleEcosystem({
         }
         statHeroRef.current.set(index, hero);
 
-        const copy = EASE_PREMIUM_OUT(beat.copyReveal) * vis * (1 - story.exit);
+        // Caption fades as ONE unit with its value — it tracks the same `hero`
+        // signal that drives the value's own opacity, with only a short
+        // (~100ms) follow-lag layered on top, instead of the old copyReveal
+        // gate (which stayed at 0 until heroReveal > 0.22 and ramped over the
+        // remaining 0.78, leaving the caption invisible long after the value
+        // was legible).
+        const captionTarget = hero;
+        let captionOpacity = statCaptionRef.current.get(index) ?? 0;
+        captionOpacity = smoothStep(captionOpacity, captionTarget, dt, 22);
+        statCaptionRef.current.set(index, captionOpacity);
+
         const exitLift = beat.dissolveT > 0 ? -14 * EASE_PREMIUM_OUT(beat.dissolveT) : 0;
         const emergeScale = EASE_PREMIUM_OUT(hero);
         const enterLift = (1 - emergeScale) * 22;
@@ -832,8 +855,8 @@ export function TrustParticleEcosystem({
 
         const copyEl = slot.querySelector<HTMLElement>(".rm-trust-ecosystem__fg-stat-copy");
         if (copyEl) {
-          const copyLift = (1 - copy) * 12;
-          copyEl.style.opacity = String(copy);
+          const copyLift = (1 - captionOpacity) * 12;
+          copyEl.style.opacity = String(captionOpacity);
           copyEl.style.transform = `translateY(${copyLift}px)`;
           copyEl.style.filter = "none";
         }
