@@ -3,7 +3,7 @@
 Marketing site for **R—M** (TanStack Start + Vite).
 
 - **Repo:** https://github.com/creative-holdtech/Real-media-Marketing-Agency-
-- **Production:** https://real-media-marketing-agency.vercel.app
+- **Production:** https://real-media-staging.vercel.app/
 - **Branch:** `main` → Vercel production
 
 ## Quick start
