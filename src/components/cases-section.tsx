@@ -26,7 +26,7 @@ import {
   sectionGridSpacer,
   sectionInner,
   sectionHeadline,
-  sectionLeadStack,
+  sectionHeadlineLead,
   sectionSubheading,
   sectionShell,
   subsectionTitle,
@@ -740,7 +740,7 @@ function WorkSceneDesktop({
                 <FramerTag>{header.tag}</FramerTag>
               </div>
               <header
-                className={cn("reveal-fade", sectionLeadStack, "md:col-span-2 md:col-start-2 md:self-start")}
+                className={cn("reveal-fade", sectionHeadlineLead, "md:col-span-2 md:col-start-2 md:self-start")}
               >
                 <h2 id="cases-heading" className={cn(sectionHeadline, "m-0 max-w-[18ch] text-balance")}>
                   {header.heading}
@@ -854,7 +854,7 @@ function WorkSceneGrid({
       <div className="reveal-fade md:col-start-1 md:self-start md:pt-1">
         <FramerTag>{header.tag}</FramerTag>
       </div>
-      <header className={cn("reveal-fade", sectionLeadStack, "md:col-span-2 md:col-start-2 md:self-start")}>
+      <header className={cn("reveal-fade", sectionHeadlineLead, "md:col-span-2 md:col-start-2 md:self-start")}>
         <h2 id="cases-heading" className={cn(sectionHeadline, "m-0 max-w-[18ch] text-balance")}>
           {header.heading}
         </h2>

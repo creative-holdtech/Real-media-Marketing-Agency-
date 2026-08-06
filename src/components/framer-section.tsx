@@ -22,10 +22,10 @@ export const proseContainer = "mx-auto w-full max-w-[var(--rm-prose-max)]";
 export const formContainer = "mx-auto w-full max-w-[var(--rm-form-max)]";
 export const sectionGap = "gap-6 md:gap-8";
 export const sectionInnerStack = "flex flex-col gap-4 md:gap-6";
-/** Standfirst → supporting list — 16px; stays tighter than sectionHeadlineLead (24px) */
+/** Standfirst → supporting list — 16px, matches sectionHeadlineLead */
 export const sectionLeadStack = "flex flex-col gap-4";
-/** Section headline → standfirst / lead block — 24px */
-export const sectionHeadlineLead = "flex w-full flex-col gap-6";
+/** Section headline → standfirst / lead block — 8px */
+export const sectionHeadlineLead = "flex w-full flex-col gap-2";
 /** In-panel kicker (meta, metric) → standfirst — 16px */
 export const sectionPanelLead = "flex flex-col gap-4";
 export const sectionHeaderGrid = `grid grid-cols-1 items-start ${sectionGap} md:grid-cols-3`;
@@ -64,8 +64,8 @@ export const heroIntroStack = cn(heroEyebrowStack, "w-full items-center text-cen
 export const heroEyebrowOffset = "mb-8";
 /** Hero display headline → standfirst — 16px */
 export const heroHeadlineLead = "flex w-full flex-col gap-4";
-/** Centered CTA band — h2 → standfirst — 24px, matches section-intro rhythm */
-export const ctaBandCopyStack = "flex w-full flex-col gap-6 text-balance";
+/** Centered CTA band — h2 → standfirst — 8px, matches section-intro rhythm */
+export const ctaBandCopyStack = "flex w-full flex-col gap-2 text-balance";
 /** Meta / label → headline in one column — 4px */
 export const sectionLabelHeadlineStack = "flex flex-col gap-1";
 /** Meta tag → headline block when stacked in one grid column — 16px */
