@@ -5,9 +5,9 @@ import { cancelFrame, frame } from "framer-motion";
 
 import { prefersNativeScroll } from "@/lib/performance-tier";
 
-/** Lenis default lerp — buttery continuous scroll (not duration easing). */
+/** Lenis lerp: 0.05 — slower inertia for cinematic scroll feel (produx-style). */
 const lenisOptions = {
-  lerp: 0.075,
+  lerp: 0.05,
   smoothWheel: true,
   wheelMultiplier: 1,
   touchMultiplier: 1,
@@ -16,7 +16,7 @@ const lenisOptions = {
   gestureOrientation: "vertical" as const,
   autoRaf: false,
   anchors: {
-    lerp: 0.075,
+    lerp: 0.05,
   },
 };
 

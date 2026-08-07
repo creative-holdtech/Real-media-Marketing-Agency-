@@ -22,9 +22,10 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
         headingLines: ["We don't bring ideas.", "We come with a plan."],
         body: "A team of senior experts who know Fintech, AI SaaS, Cybersecurity, and iGaming inside out.",
         bullets: [
-          "10 practitioners to make your product seen, trusted, and bought.",
-          "No corporate layers. Clear deliverables only.",
-          "Decisions in hours, not weeks. Output you can ship the same day.",
+          "10+ practitioners",
+          "No corporate layers",
+          "Decisions in hours",
+          "Clear deliverables only.",
         ],
       },
     },

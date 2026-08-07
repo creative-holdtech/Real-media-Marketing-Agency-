@@ -162,8 +162,8 @@ function ParallaxImage({
 export function Reveal({
   children,
   delay = 0,
-  y = 12,
-  duration = 0.6,
+  y = 8,
+  duration = 0.55,
   className,
   viewportMargin = "0px 0px -4% 0px",
 }: {
@@ -178,10 +178,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y, filter: "blur(4px)" }}
+      initial={reduce ? false : { opacity: 0, y, filter: "blur(6px)" }}
       whileInView={reduce ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, margin: viewportMargin, amount: 0.12 }}
-      transition={{ duration, ease: [0.16, 1, 0.3, 1], delay }}
+      transition={{ duration, ease: [0.22, 1, 0.36, 1], delay }}
     >
       {children}
     </motion.div>

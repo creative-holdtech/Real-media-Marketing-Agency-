@@ -16,7 +16,7 @@ import {
 } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
-import { CasesSection } from "@/components/cases-section";
+import { CasesGridSection } from "@/components/cases-grid-section";
 import { ServicesSection } from "@/components/services-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import {
@@ -221,7 +221,7 @@ function Index() {
 
         <div className="rm-defer-paint">
           <ScrollChapter variant="plain">
-            <CasesSection />
+            <CasesGridSection />
           </ScrollChapter>
         </div>
 

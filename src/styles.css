@@ -10026,6 +10026,9 @@ a.block:focus-visible .rm-points-card__read {
 .reveal-fade[data-delay="3"].is-visible {
   transition-delay: 280ms;
 }
+.reveal-fade[data-delay="4"].is-visible {
+  transition-delay: 400ms;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .rm-plan-scene__grid,
