@@ -28,7 +28,6 @@ import { PagePreloader } from "@/components/page-preloader";
 import { SectionShellSkeleton } from "@/components/section-shell-skeleton";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import TestimonialSection from "@/components/ui/testimonials";
-import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { posts } from "@/lib/posts";
 import { getPageContent } from "@/lib/payload/pages";
@@ -239,19 +238,16 @@ function Index() {
           </div>
         </Suspense>
 
-        <ScrollChapter variant="reveal">
-          <UnifiedCTA
-          title={cta?.title}
-          titleAccent={cta?.titleAccent}
-          primaryLabel={cta?.primaryLabel}
-          primaryTo={cta?.primaryUrl}
-          secondaryLabel={cta?.secondaryLabel}
-          secondaryTo={cta?.secondaryUrl}
-        />
-        </ScrollChapter>
       </main>
 
-      <SiteFooter />
+      <SiteFooter
+        title={cta?.title}
+        titleAccent={cta?.titleAccent}
+        primaryLabel={cta?.primaryLabel}
+        primaryTo={cta?.primaryUrl}
+        secondaryLabel={cta?.secondaryLabel}
+        secondaryTo={cta?.secondaryUrl}
+      />
     </div>
   );
 }

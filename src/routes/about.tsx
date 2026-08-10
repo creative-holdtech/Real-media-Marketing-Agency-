@@ -30,7 +30,6 @@ import {
   textGhost,
 } from "@/components/framer-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
 import { getPageContent, section as pageSection } from "@/lib/payload/pages";
@@ -137,17 +136,16 @@ function AboutPage() {
             <TeamSection />
           </div>
 
-          <UnifiedCTA
-            title={cta?.title}
-            titleAccent={cta?.titleAccent}
-            primaryLabel={cta?.primaryLabel}
-            primaryTo={cta?.primaryUrl}
-            secondaryLabel={cta?.secondaryLabel}
-            secondaryTo={cta?.secondaryUrl}
-          />
         </main>
 
-        <SiteFooter />
+        <SiteFooter
+          title={cta?.title}
+          titleAccent={cta?.titleAccent}
+          primaryLabel={cta?.primaryLabel}
+          primaryTo={cta?.primaryUrl}
+          secondaryLabel={cta?.secondaryLabel}
+          secondaryTo={cta?.secondaryUrl}
+        />
       </div>
     </LazyMotion>
   );

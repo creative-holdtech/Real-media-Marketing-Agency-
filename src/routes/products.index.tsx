@@ -53,9 +53,7 @@ import {
 } from "@/components/framer-section";
 import { ProductsHero } from "@/components/products-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { UnifiedCTA } from "@/components/unified-cta";
 import { PageSectionDots } from "@/components/page-section-dots";
-import { ScrollChapter } from "@/components/home-scroll-cinema";
 import { buildPageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
@@ -846,25 +844,20 @@ function ProductsPage() {
             </div>
           </m.section>
 
-          <ScrollChapter variant="reveal">
-            <UnifiedCTA
-              title={
-                mode === "sprint" ? "Ready to tackle the deadline?" : "Ready to build the system?"
-              }
-              titleAccent={
-                mode === "sprint"
-                  ? "Bring us the blocked growth problem. We’ll define the scope, lock the deadline, and tell you what can ship."
-                  : "Bring us the growth mandate. We’ll map the operating model, priorities, and first quarter together."
-              }
-              primaryLabel={activeMode.cta.replace(/\s*→$/, "")}
-              primaryTo="/contact"
-              secondaryLabel="See case studies"
-              secondaryTo="/cases"
-            />
-          </ScrollChapter>
         </main>
 
-        <SiteFooter />
+        <SiteFooter
+          title={mode === "sprint" ? "Ready to tackle the deadline?" : "Ready to build the system?"}
+          titleAccent={
+            mode === "sprint"
+              ? "Bring us the blocked growth problem. We’ll define the scope, lock the deadline, and tell you what can ship."
+              : "Bring us the growth mandate. We’ll map the operating model, priorities, and first quarter together."
+          }
+          primaryLabel={activeMode.cta.replace(/\s*→$/, "")}
+          primaryTo="/contact"
+          secondaryLabel="See case studies"
+          secondaryTo="/cases"
+        />
       </div>
     </LazyMotion>
   );

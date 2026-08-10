@@ -215,7 +215,8 @@ function EngagementDiagram({
                     </span>
                     <span
                       className={cn(
-                        "whitespace-nowrap text-[10px] font-medium leading-tight tracking-wider transition-colors duration-200",
+                        textMeta,
+                        "whitespace-nowrap text-[10px] leading-tight tracking-wider transition-colors duration-200",
                         isHighlighted
                           ? "text-black/60"
                           : "text-white/20 group-hover/row:text-black/60",
@@ -243,10 +244,14 @@ function EngagementDiagram({
 /* ── Closed → open morph timing ─────────────────────────────────── */
 /* How long the closed name takes to rise into the open card's title slot.
    The panel swaps in the open card only once the name has landed. */
-const NAME_RISE_MS = 340;
+const NAME_RISE_MS = 480;
 /* Where the open card's title sits, measured from the panel's padding edge:
-   card padding (20) + header box border (1) + header box padding (20) */
+   card padding (20) + header box border (1) + header box padding (20).
+   Padding is symmetric (p-5 on both the card and the header box), so this
+   same figure applies to the left inset too — the risen name has to shift
+   right by this delta or it lands 21px off from the open title on the x-axis. */
 const OPEN_TITLE_TOP = 41;
+const OPEN_TITLE_LEFT = OPEN_TITLE_TOP;
 
 /* ── Animation variants ─────────────────────────────────────────── */
 const containerV = {
@@ -378,8 +383,8 @@ function EngagementCardOpen({
             })}
           </div>
 
-          {/* Desktop CTA — bottom of left column */}
-          <div className="mt-auto hidden pt-6 md:block">{ctaButton}</div>
+          {/* Desktop CTA — 24px below the last step, not pinned to card bottom */}
+          <div className="mt-6 hidden md:block">{ctaButton}</div>
         </div>
 
         {/* Vertical divider — desktop only */}
@@ -418,7 +423,7 @@ function EngagementCardClosed({
   /* The name renders at the open card's exact type size and is scaled down at
      rest, so hovering only has to animate it back to scale 1 — the landing
      size then matches the open title pixel for pixel. */
-  const [morph, setMorph] = useState({ rise: 0, rest: 0.7 });
+  const [morph, setMorph] = useState({ rise: 0, shiftX: 0, rest: 0.7 });
 
   liftingRef.current = isHovered && !reduced;
 
@@ -435,6 +440,7 @@ function EngagementCardClosed({
       const ARROW = 28; /* icon + gap */
       setMorph({
         rise: OPEN_TITLE_TOP - row.offsetTop,
+        shiftX: OPEN_TITLE_LEFT - row.offsetLeft,
         rest: Math.max(0.5, Math.min(0.8, (avail - ARROW) / natural)),
       });
     };
@@ -460,8 +466,12 @@ function EngagementCardClosed({
         ref={rowRef}
         className="flex items-end gap-2"
         style={{ transformOrigin: "left bottom" }}
-        animate={{ y: lifting ? morph.rise : 0, scale: lifting ? 1 : morph.rest }}
-        transition={{ duration: NAME_RISE_MS / 1000, ease: [0.32, 0.72, 0, 1] }}
+        animate={{
+          x: lifting ? morph.shiftX : 0,
+          y: lifting ? morph.rise : 0,
+          scale: lifting ? 1 : morph.rest,
+        }}
+        transition={{ duration: NAME_RISE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
       >
         {/* Same type ramp as the open card's title — no overrides, so the
             two line boxes coincide exactly at the end of the rise */}
@@ -469,7 +479,7 @@ function EngagementCardClosed({
           ref={nameRef}
           className={cn(sectionHeadline, "whitespace-nowrap")}
           animate={{ color: lifting ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.2)" }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
         >
           {engagement.name}
         </motion.span>
@@ -658,6 +668,38 @@ export function ServicesSection() {
     return () => io.disconnect();
   }, [reduce]);
 
+  /* Scroll-scrubbed toggle: Sprint stays active while the section's midpoint
+     is still below the viewport's midpoint (i.e. while the user is scrolling
+     up to and through the section's center). Once the user keeps scrolling
+     down past that center, Marathon takes over; scrolling back above it
+     reverts to Sprint. Position-based, not direction-based — independent of
+     hover, and self-correcting on scroll direction changes. */
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let ticking = false;
+
+    const evaluate = () => {
+      const rect = el.getBoundingClientRect();
+      const sectionCenter = rect.top + rect.height / 2;
+      const viewportCenter = window.innerHeight / 2;
+      setPending(null);
+      setActive(sectionCenter < viewportCenter ? "marathon" : "sprint");
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        evaluate();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <section
       ref={sectionRef}
@@ -687,8 +729,8 @@ export function ServicesSection() {
         <div className="flex flex-col gap-6">
 
           {/* Desktop panels — fixed height prevents section jumps when switching cards.
-              Narrower viewports need more height because the text column is narrower. */}
-          <div className="hidden h-[600px] lg:flex lg:gap-3 xl:h-[560px] 2xl:h-[540px]">
+              Content-hugging height (steps + 24px CTA gap) is flat across lg–2xl. */}
+          <div className="hidden h-[536px] lg:flex lg:gap-3">
             {homepageEngagements.map((engagement) => (
               <EngagementPanel
                 key={engagement.id}

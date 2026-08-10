@@ -16,7 +16,6 @@ import {
 } from "@/components/framer-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
-import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { formatCaseDuration, type CaseRichContent, type CaseSectionVisual, type CaseStudy } from "@/lib/cases";
 import {
@@ -993,17 +992,16 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
           <CasesGallerySection {...relatedCasesGalleryProps()} cases={others} />
         ) : null}
 
-        <UnifiedCTA
-          title={rich.closing.titleLines[0]}
-          titleAccent={rich.closing.subline}
-          primaryLabel={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
-          primaryTo={rich.closing.primaryTo}
-          secondaryLabel={rich.closing.secondaryLabel}
-          secondaryTo={rich.closing.secondaryTo}
-        />
       </main>
 
-      <SiteFooter />
+      <SiteFooter
+        title={rich.closing.titleLines[0]}
+        titleAccent={rich.closing.subline}
+        primaryLabel={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+        primaryTo={rich.closing.primaryTo}
+        secondaryLabel={rich.closing.secondaryLabel}
+        secondaryTo={rich.closing.secondaryTo}
+      />
 
       <aside
         aria-label="Contextual next step"
