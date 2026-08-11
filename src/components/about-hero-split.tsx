@@ -1,11 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  LazyMotion,
-  domAnimation,
-  m,
-  useReducedMotion,
-  type Variants,
-} from "framer-motion";
+import { LazyMotion, domAnimation, m, useReducedMotion, type Variants } from "framer-motion";
 
 import {
   BtnArrow,
@@ -114,10 +108,7 @@ export function AboutHeroSplit() {
 
             {/* Pattern A: title → standfirst 16 · standfirst → CTA 24 — no auto-push to floor */}
             <m.p
-              className={cn(
-                heroStandfirst,
-                "rm-about-hero__lead mx-0 max-w-[28ch] text-left",
-              )}
+              className={cn(heroStandfirst, "rm-about-hero__lead mx-0 max-w-[28ch] text-left")}
               variants={heroRise}
             >
               We go deep where our work compounds.
@@ -148,7 +139,10 @@ export function AboutHeroSplit() {
               ))}
             </m.ul>
 
-            <m.p className={cn("rm-about-hero__rail-markets", textMeta, textSubtle)} variants={heroFade}>
+            <m.p
+              className={cn("rm-about-hero__rail-markets", textMeta, textSubtle)}
+              variants={heroFade}
+            >
               Markets / EU · MENA
             </m.p>
           </aside>

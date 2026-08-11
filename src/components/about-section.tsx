@@ -79,8 +79,12 @@ export function AboutSection({ page }: { page?: PageContent }) {
 
       <div className="rm-studio-chapter__body">
         <div className={cn("border-b bg-black pb-16 md:pb-20", borderSoft, siteGutter)}>
-          <div className={cn(sectionInner, "rm-plan-scene flex flex-col gap-10 md:gap-14 py-16 md:py-20")}>
-
+          <div
+            className={cn(
+              sectionInner,
+              "rm-plan-scene flex flex-col gap-10 md:gap-14 py-16 md:py-20",
+            )}
+          >
             {/* Ambient background decorations */}
             <div className="rm-plan-scene__ambient" aria-hidden="true">
               <div className="rm-plan-scene__grid" />
@@ -90,7 +94,6 @@ export function AboutSection({ page }: { page?: PageContent }) {
 
             {/* ── Main: two-column grid ── */}
             <div className="reveal is-visible relative grid grid-cols-1 items-start gap-10 md:grid-cols-[5fr_7fr] md:gap-16">
-
               {/* Left: tag + headline */}
               <div className="flex flex-col items-start gap-4">
                 <FramerTag>{studio?.tag ?? "Marketing agency"}</FramerTag>
@@ -160,7 +163,10 @@ export function AboutSection({ page }: { page?: PageContent }) {
               >
                 {studio.bullets.map((bullet, i) => (
                   <>
-                    <span key={bullet} className={cn(textMeta, "flex-1 text-center text-[var(--rm-text-subtle)]")}>
+                    <span
+                      key={bullet}
+                      className={cn(textMeta, "flex-1 text-center text-[var(--rm-text-subtle)]")}
+                    >
                       {bullet}
                     </span>
                     {i < (studio.bullets?.length ?? 0) - 1 && (
@@ -176,7 +182,6 @@ export function AboutSection({ page }: { page?: PageContent }) {
                 ))}
               </div>
             ) : null}
-
           </div>
         </div>
       </div>

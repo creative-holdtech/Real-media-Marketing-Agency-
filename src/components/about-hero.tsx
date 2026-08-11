@@ -1,11 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  LazyMotion,
-  domAnimation,
-  m,
-  useReducedMotion,
-  type Variants,
-} from "framer-motion";
+import { LazyMotion, domAnimation, m, useReducedMotion, type Variants } from "framer-motion";
 
 import {
   BtnArrow,
@@ -83,7 +77,11 @@ export function AboutHero() {
 
         <div className={cn("rm-about-spine__shell", siteGutter)}>
           <div className={cn("rm-about-spine__stage", borderSoft)}>
-            <m.p className={cn("rm-about-spine__spine", textMeta, textSubtle)} variants={fade} aria-hidden>
+            <m.p
+              className={cn("rm-about-spine__spine", textMeta, textSubtle)}
+              variants={fade}
+              aria-hidden
+            >
               About
             </m.p>
 
@@ -103,7 +101,9 @@ export function AboutHero() {
               </m.h1>
 
               <m.div className="rm-about-spine__action" variants={rise}>
-                <p className={cn(heroStandfirst, "rm-about-spine__lead mx-0 max-w-[32ch] text-left")}>
+                <p
+                  className={cn(heroStandfirst, "rm-about-spine__lead mx-0 max-w-[32ch] text-left")}
+                >
                   {aboutHero.lead}
                 </p>
                 <Link to="/audit" className={cn(btnPrimary, "group gap-2 shrink-0")}>
@@ -139,7 +139,9 @@ export function AboutHero() {
                   <span className={cn(textMeta, textGhost)}>{MARQUEE}</span>
                 </m.div>
               ) : (
-                <p className={cn("rm-about-spine__marquee-static", textMeta, textGhost)}>{MARQUEE}</p>
+                <p className={cn("rm-about-spine__marquee-static", textMeta, textGhost)}>
+                  {MARQUEE}
+                </p>
               )}
             </div>
           </div>
