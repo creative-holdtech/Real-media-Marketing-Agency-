@@ -15,6 +15,7 @@ import {
   textMeta,
 } from "@/components/framer-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
@@ -374,19 +375,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
-      <div
-        role="progressbar"
-        aria-label="Reading progress"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(progress)}
-        className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-white/5"
-      >
-        <div
-          className="h-full w-full origin-left bg-rm-accent"
-          style={{ transform: `scaleX(${progress / 100})`, transition: "transform 80ms linear" }}
-        />
-      </div>
+      <ScrollProgressBar />
 
       <SiteHeader variant="dark" overlay solid={headerSolid} />
 
