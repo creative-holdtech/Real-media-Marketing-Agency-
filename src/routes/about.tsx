@@ -16,7 +16,7 @@ import { AboutHero } from "@/components/about-hero";
 import { AboutStatsScroll } from "@/components/about-stats-scroll";
 import { AboutManifestoSection } from "@/components/about-manifesto";
 import { MarketingSection, MarketingTagColumn } from "@/components/marketing-section";
-import { PageSectionDots } from "@/components/page-section-dots";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { TeamSection } from "@/components/team-section";
 import { PagePreloader } from "@/components/page-preloader";
 import {
@@ -64,15 +64,6 @@ export const Route = createFileRoute("/about")({
 /* ------------------------------------------------------------------ */
 const verticalImages = [nicheAi, nicheFintech, nicheHospitality, nicheB2b];
 
-const aboutPageDots = [
-  { id: "about-top", label: "Intro" },
-  { id: "about-stats", label: "Numbers" },
-  { id: "about-position", label: "Position" },
-  { id: "verticals", label: "Spaces" },
-  { id: "about-team", label: "Team" },
-  { id: "cta", label: "Call" },
-] as const;
-
 function AmbientBlobs() {
   return (
     <div aria-hidden className="ambient-blobs">
@@ -107,9 +98,9 @@ function AboutPage() {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
+        <ScrollProgressBar />
         <AmbientBlobs />
         <PagePreloader />
-        <PageSectionDots sections={aboutPageDots} />
         <SiteHeader variant="dark" overlay />
 
         <AboutHero />

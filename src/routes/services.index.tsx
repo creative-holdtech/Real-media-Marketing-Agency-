@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ServicesHero } from "@/components/services-hero";
 import { ServicesSecondScreen } from "@/components/services-second-screen";
 import { ScrollChapter } from "@/components/home-scroll-cinema";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { PagePreloader } from "@/components/page-preloader";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
@@ -48,6 +49,7 @@ function ServicesIndex() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
+      <ScrollProgressBar />
       <AmbientBlobs />
       <PagePreloader />
       <SiteHeader variant="dark" overlay />

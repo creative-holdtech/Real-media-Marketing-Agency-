@@ -14,6 +14,7 @@ import {
   textGhost,
   textMeta,
 } from "@/components/framer-section";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { cn } from "@/lib/utils";
 import { useReveal } from "@/hooks/use-reveal";
@@ -115,6 +116,7 @@ function AuditPage() {
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <ScrollProgressBar />
       <SiteHeader variant="dark" />
 
       <section className={cn(siteChromeBand, "relative pt-16 pb-12 md:pt-24 md:pb-20")}>

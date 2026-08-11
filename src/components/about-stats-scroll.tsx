@@ -69,10 +69,6 @@ function StatsScene({ id }: { id?: string }) {
       aria-labelledby="numbers-heading"
       className="relative h-[420vh] border-y border-white/10 bg-black text-white"
     >
-      {/* IO target for PageSectionDots sits on this viewport-sized sticky div, not
-          the tall scroll-track above — a section that tall reports a tiny
-          intersectionRatio against its own bounding box for nearly its whole
-          scroll range, which starved the "Numbers" dot of activation. */}
       <div id={id} className="sticky top-0 h-screen overflow-hidden pt-[var(--rm-header-offset)]">
         <motion.div
           className="relative mx-auto h-full max-w-[1240px] bg-black"

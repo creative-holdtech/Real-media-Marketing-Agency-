@@ -54,7 +54,7 @@ import {
 import { ProductsHero } from "@/components/products-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
-import { PageSectionDots } from "@/components/page-section-dots";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { ScrollChapter } from "@/components/home-scroll-cinema";
 import { buildPageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -293,13 +293,6 @@ const activeMarkerExit = { opacity: 0, scaleX: 0.7 };
 const activeMarkerTransition = { duration: 0.24, ease: [0.4, 0, 0.2, 1] as const };
 
 const MODE_PANEL_ID = "format-panel";
-
-const productsPageDots = [
-  { id: "products-top", label: "Intro" },
-  { id: "format", label: "Formats" },
-  { id: "compare", label: "Comparison" },
-  { id: "cta", label: "Call" },
-] as const;
 
 const comparisonRows = [
   {
@@ -751,7 +744,7 @@ function ProductsPage() {
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <PageSectionDots sections={productsPageDots} />
+        <ScrollProgressBar />
         <SiteHeader variant="dark" overlay />
 
         <ProductsHero

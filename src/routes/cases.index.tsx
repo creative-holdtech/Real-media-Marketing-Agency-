@@ -6,6 +6,7 @@ import { CasesGallerySection } from "@/components/cases-gallery-section";
 import { CmsFallbackBanner } from "@/components/cms-fallback-banner";
 import { EditorialHeroCopy } from "@/components/editorial-hero-copy";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { PagePreloader } from "@/components/page-preloader";
 import { bodyCopy, pageHeroContainer, siteChromeBand } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
@@ -78,6 +79,7 @@ function CasesPage() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
+      <ScrollProgressBar />
       <AmbientBlobs />
       <PagePreloader />
       <SiteHeader variant="dark" overlay />

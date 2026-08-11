@@ -755,14 +755,9 @@ button {
   background: radial-gradient(circle, rgba(120, 130, 255, 0.06) 0%, transparent 70%);
 }
 
-.rm-scroll-cinema__rail {
-  opacity: 0.85;
-}
-
 @media (prefers-reduced-motion: reduce), (max-width: 991px), (pointer: coarse) {
   .rm-scroll-cinema__ambient-shell,
-  .rm-scroll-cinema__ambient,
-  .rm-scroll-cinema__rail {
+  .rm-scroll-cinema__ambient {
     display: none !important;
   }
 }

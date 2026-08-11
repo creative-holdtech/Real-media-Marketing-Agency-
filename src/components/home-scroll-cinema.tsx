@@ -137,31 +137,6 @@ export function HomeScrollCinema() {
         </motion.div>
       </motion.div>
 
-      <nav
-        aria-label="Page progress"
-        className="rm-scroll-cinema__rail pointer-events-none fixed right-6 top-1/2 z-[57] hidden -translate-y-1/2 md:block lg:right-10"
-      >
-        <ol className="flex flex-col gap-2">
-          {CHAPTERS.map((chapter, index) => {
-            const isActive = index === activeChapter;
-            return (
-              <li key={chapter.short} className="flex items-center justify-end gap-2">
-                <span
-                  className={cn(
-                    "block h-1 w-1 rounded-full transition-[transform,background-color,opacity] duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]",
-                    isActive ? "scale-150 bg-[#efeeea] opacity-100" : "bg-[#555] opacity-100",
-                  )}
-                  aria-hidden
-                />
-                <span className="sr-only">
-                  {chapter.label}
-                  {isActive ? " (current)" : ""}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
       <HomeScrollVignette progress={progress} />
     </>
   );

@@ -12,6 +12,7 @@ import {
   textCardBody,
   textFaint,
 } from "@/components/framer-section";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { TeamEnsemble } from "@/components/team-ensemble";
 import { cn } from "@/lib/utils";
@@ -64,6 +65,7 @@ function ContactPage() {
 
   return (
     <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <ScrollProgressBar />
       <SiteHeader variant="dark" />
 
       <section className={cn(siteChromeBand, "relative pt-24 pb-24 md:pb-36")}>
