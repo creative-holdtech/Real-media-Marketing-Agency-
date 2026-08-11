@@ -1,8 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ServicesHero } from "@/components/services-hero";
 import { ServicesSecondScreen } from "@/components/services-second-screen";
+import { ScrollChapter } from "@/components/home-scroll-cinema";
 import { PagePreloader } from "@/components/page-preloader";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { getServicesList } from "@/lib/payload/services-cms";
 import { getPageContent } from "@/lib/payload/pages";
@@ -61,16 +63,19 @@ function ServicesIndex() {
       <main id="main">
         <ServicesSecondScreen services={servicesList} />
 
+        <ScrollChapter variant="reveal">
+          <UnifiedCTA
+            title={cta?.title}
+            titleAccent={cta?.titleAccent}
+            primaryLabel={cta?.primaryLabel}
+            primaryTo={cta?.primaryUrl}
+            secondaryLabel={cta?.secondaryLabel}
+            secondaryTo={cta?.secondaryUrl}
+          />
+        </ScrollChapter>
       </main>
 
-      <SiteFooter
-        title={cta?.title}
-        titleAccent={cta?.titleAccent}
-        primaryLabel={cta?.primaryLabel}
-        primaryTo={cta?.primaryUrl}
-        secondaryLabel={cta?.secondaryLabel}
-        secondaryTo={cta?.secondaryUrl}
-      />
+      <SiteFooter />
     </div>
   );
 }

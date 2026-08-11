@@ -16,6 +16,7 @@ import { BlogPostImage } from "@/components/blog-post-image";
 import { MarketingSection } from "@/components/marketing-section";
 import { TextReveal } from "@/components/text-reveal";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { blogFilters, blogMeta } from "@/content/blog";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
@@ -328,6 +329,7 @@ function BlogPage() {
           ) : null}
         </MarketingSection>
 
+        <UnifiedCTA />
       </main>
 
       <SiteFooter />

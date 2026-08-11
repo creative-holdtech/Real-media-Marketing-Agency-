@@ -10,6 +10,7 @@ import { PagePreloader } from "@/components/page-preloader";
 import { bodyCopy, pageHeroContainer, siteChromeBand } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import { getPageDefaults } from "@/lib/page-content/defaults";
 import { getCasesWithMeta } from "@/lib/payload/cases-cms";
@@ -130,16 +131,17 @@ function CasesPage() {
           </div>
         )}
 
+        <UnifiedCTA
+          title={cta?.title}
+          titleAccent={cta?.titleAccent}
+          primaryLabel={cta?.primaryLabel}
+          primaryTo={cta?.primaryUrl}
+          secondaryLabel={cta?.secondaryLabel}
+          secondaryTo={cta?.secondaryUrl}
+        />
       </main>
 
-      <SiteFooter
-        title={cta?.title}
-        titleAccent={cta?.titleAccent}
-        primaryLabel={cta?.primaryLabel}
-        primaryTo={cta?.primaryUrl}
-        secondaryLabel={cta?.secondaryLabel}
-        secondaryTo={cta?.secondaryUrl}
-      />
+      <SiteFooter />
     </div>
   );
 }

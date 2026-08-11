@@ -25,6 +25,7 @@ import { PageEditorialHero } from "@/components/page-editorial-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { SlotCounter } from "@/components/slot-counter";
 import { QuoteEditorial, QuoteGradientSection, QuoteMark } from "@/components/ui/testimonials";
+import { UnifiedCTA } from "@/components/unified-cta";
 import { useReveal } from "@/hooks/use-reveal";
 import type { ServiceContent } from "@/lib/services/types";
 import { cn } from "@/lib/utils";
@@ -414,12 +415,14 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
         ) : null}
       </main>
 
-      <SiteFooter
+      <UnifiedCTA
         primaryLabel={s.footerCta.includes("→") ? s.footerCta : `${s.footerCta} →`}
         primaryTo="/audit"
         secondaryLabel="Talk to the team →"
         secondaryTo="/contact"
       />
+
+      <SiteFooter />
 
       <style>{`
         .skip-link{position:absolute;left:-9999px}
