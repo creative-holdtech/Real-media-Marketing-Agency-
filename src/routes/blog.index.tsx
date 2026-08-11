@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/framer-section";
 import { BlogPostImage } from "@/components/blog-post-image";
 import { MarketingSection } from "@/components/marketing-section";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { TextReveal } from "@/components/text-reveal";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
@@ -168,20 +169,7 @@ function BlogPage() {
   const { featured, archive, blogIndexContent } = Route.useLoaderData();
   const copy = blogIndexContent;
   const [active, setActive] = useState("All");
-  const [progress, setProgress] = useState(0);
   const resultsId = "archive-results";
-
-  useEffect(() => {
-    const onScroll = () => {
-      const h = document.documentElement;
-      const scrolled = h.scrollTop;
-      const max = h.scrollHeight - h.clientHeight;
-      setProgress(max > 0 ? (scrolled / max) * 100 : 0);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const filtered = active === "All" ? archive : archive.filter((p) => p.category === active);
 
@@ -191,19 +179,7 @@ function BlogPage() {
         Skip to content
       </a>
 
-      <div
-        role="progressbar"
-        aria-label="Reading progress"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(progress)}
-        className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-white/5"
-      >
-        <div
-          className="h-full w-full origin-left bg-rm-accent"
-          style={{ transform: `scaleX(${progress / 100})`, transition: "transform 80ms linear" }}
-        />
-      </div>
+      <ScrollProgressBar />
 
       <SiteHeader variant="dark" />
 

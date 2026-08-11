@@ -16,6 +16,7 @@ import {
   textMeta,
 } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
+import { ScrollProgressBar } from "@/components/motion-bits";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/utils";
@@ -92,7 +93,6 @@ function buildSections(body: string[]): Section[] {
 function ArticlePage() {
   useReveal();
   const { post, allPosts } = Route.useLoaderData();
-  const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [activeId, setActiveId] = useState("s-1");
 
@@ -103,11 +103,6 @@ function ArticlePage() {
 
   useEffect(() => {
     const onScroll = () => {
-      const h = document.documentElement;
-      const scrolled = h.scrollTop;
-      const max = h.scrollHeight - h.clientHeight;
-      setProgress(max > 0 ? (scrolled / max) * 100 : 0);
-
       const offsets = sections
         .map((s) => {
           const el = document.getElementById(s.id);
@@ -155,19 +150,7 @@ function ArticlePage() {
         Skip to content
       </a>
 
-      <div
-        role="progressbar"
-        aria-label="Reading progress"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={Math.round(progress)}
-        className="fixed top-0 left-0 right-0 z-[60] h-[2px] bg-white/5"
-      >
-        <div
-          className="h-full w-full origin-left bg-rm-accent"
-          style={{ transform: `scaleX(${progress / 100})`, transition: "transform 80ms linear" }}
-        />
-      </div>
+      <ScrollProgressBar />
 
       <SiteHeader variant="dark" />
 
