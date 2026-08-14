@@ -15,6 +15,8 @@ import { Link } from "@tanstack/react-router";
 
 import {
   BtnArrow,
+  EASE_ENTER,
+  FlipLabel,
   btnOutlineOnDark,
   btnPrimarySm,
   FramerTag,
@@ -23,6 +25,7 @@ import {
   sectionInner,
   siteGutter,
 } from "@/components/framer-section";
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import {
   getHomeFeaturedCases,
   getCaseHomePreviewImage,
@@ -34,7 +37,6 @@ import { cn } from "@/lib/utils";
 
 /* ─── Constants ───────────────────────────────────────────────────────────── */
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const MAX_TILT = 8; // degrees per axis — matches produx depth-warp feel
 
 const tagContainerVariants: Variants = {
@@ -48,13 +50,13 @@ const tagVariants: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.42, ease: EASE },
+    transition: { duration: 0.42, ease: EASE_ENTER },
   },
 };
 
 const articleVariants: Variants = {
   rest: { scale: 1 },
-  hover: { scale: 1.02, transition: { duration: 0.3, ease: EASE } },
+  hover: { scale: 1.02, transition: { duration: 0.3, ease: EASE_ENTER } },
 };
 
 /* ─── Card ────────────────────────────────────────────────────────────────── */
@@ -85,7 +87,13 @@ function CaseCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: cardRef, offset: ["start end", "end start"] });
   const parallaxY = useTransform(scrollYProgress, [0, 1], ["35px", "-35px"]);
-  const isInView = useInView(cardRef, { once: true, amount: 0 });
+  // amount:0 used to fire the instant a single pixel of the card touched the
+  // trigger zone — for a short row card that's basically "once it's roughly
+  // in view", but for the tall bottom-row card it fired long before it was
+  // anywhere near comfortably visible, reading as mistimed/inconsistent next
+  // to its row-mates. A real fraction ties the trigger to actual visibility
+  // regardless of the card's own height.
+  const isInView = useInView(cardRef, { once: true, amount: 0.2, margin: TRIGGER_VIEWPORT_MARGIN });
 
   const [imgHovered, setImgHovered] = useState(false);
 
@@ -141,7 +149,7 @@ function CaseCard({
               opacity: dimmed ? 0.5 : 1,
               filter: dimmed ? "blur(4px) brightness(0.4)" : "blur(0px) brightness(1)",
               scale: dimmed ? 0.98 : 1,
-              transition: { duration: 0.45, ease: EASE },
+              transition: { duration: 0.45, ease: EASE_ENTER },
             }
       }
       onHoverStart={onEnter}
@@ -163,7 +171,7 @@ function CaseCard({
           style={{ x: btnX, y: btnY }}
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: imgHovered ? 1 : 0, scale: imgHovered ? 1 : 0.85 }}
-          transition={{ duration: 0.22, ease: EASE }}
+          transition={{ duration: 0.22, ease: EASE_ENTER }}
         >
           <div className={cn(btnPrimarySm, "gap-2")}>
             View
@@ -183,19 +191,21 @@ function CaseCard({
         <div className={cn("relative overflow-hidden", aspectClass)}>
 
           <motion.div className="absolute inset-0">
-            {/* Reveal wrapper: clip-path + scale from bottom-left corner */}
+            {/* Reveal wrapper: clip-path + scale, straight bottom-to-top (was
+                clipping from top+right together, which read as unfolding
+                diagonally from the bottom-left corner instead of rising). */}
             <motion.div
               className="absolute inset-0"
-              style={{ transformOrigin: "0% 100%" }}
-              initial={reduced ? undefined : { clipPath: "inset(100% 100% 0% 0%)", scale: 1.3 }}
+              style={{ transformOrigin: "50% 100%" }}
+              initial={reduced ? undefined : { clipPath: "inset(100% 0% 0% 0%)", scale: 1.15 }}
               animate={
                 reduced
                   ? undefined
                   : isInView
                     ? { clipPath: "inset(0% 0% 0% 0%)", scale: 1 }
-                    : { clipPath: "inset(100% 100% 0% 0%)", scale: 1.3 }
+                    : { clipPath: "inset(100% 0% 0% 0%)", scale: 1.15 }
               }
-              transition={{ duration: 0.9, ease: EASE, delay: isInView ? revealDelay : 0 }}
+              transition={{ duration: 0.65, ease: EASE_ENTER, delay: isInView ? revealDelay : 0 }}
             >
               {/* Parallax image */}
               <motion.div
@@ -246,7 +256,7 @@ function CaseCard({
               ? { opacity: 1, y: 0 }
               : { opacity: 0, y: 10 }
         }
-        transition={{ duration: 0.55, ease: EASE, delay: isInView ? revealDelay + 0.18 : 0 }}
+        transition={{ duration: 0.55, ease: EASE_ENTER, delay: isInView ? revealDelay + 0.18 : 0 }}
       >
         <span className="rm-type-meta tabular-nums text-[var(--rm-text-ghost)] leading-none mt-[0.18em] shrink-0">
           {counter}
@@ -291,19 +301,21 @@ export function CasesGridSection() {
       id="work"
       aria-labelledby="cases-heading"
       className={cn(
-        "border-b border-[var(--rm-border-soft)] bg-black py-16 md:py-20",
+        // no border-b — Insights (next chapter) is bg-black edge-to-edge too;
+        // a border here would show as a stray line across continuous black.
+        "bg-black py-16 md:py-20",
         siteGutter,
       )}
     >
       <div className={sectionInner}>
         <div className="flex items-end justify-between mb-10 md:mb-16">
           <div className={cn(sectionHeadlineLead, "items-start")}>
-            <div className="reveal-fade self-start">
+            <div className="reveal self-start">
               <FramerTag>{header.tag}</FramerTag>
             </div>
             <h2
               id="cases-heading"
-              className={cn(sectionHeadline, "reveal-fade m-0 max-w-[18ch] text-balance !text-white")}
+              className={cn(sectionHeadline, "reveal m-0 max-w-[18ch] text-balance !text-white")}
               data-delay="1"
             >
               {header.heading}
@@ -311,15 +323,16 @@ export function CasesGridSection() {
           </div>
           <Link
             to="/cases"
-            className={cn(btnOutlineOnDark, "reveal-fade hidden md:flex group shrink-0 gap-2 self-end")}
+            className={cn(btnOutlineOnDark, "reveal hidden md:flex group shrink-0 gap-2 self-end")}
             data-delay="1"
+            aria-label="View all case studies"
           >
-            View all case studies
+            <FlipLabel text="View all case studies" />
             <BtnArrow />
           </Link>
         </div>
 
-        <div className="grid grid-cols-12 gap-y-10 gap-x-[1.5vw] md:gap-y-14">
+        <div className="mx-auto grid max-w-[1600px] grid-cols-12 gap-y-10 gap-x-[1.5vw] md:gap-y-14">
           {featuredCases.map((study, i) => (
             <div key={study.slug} className={cn(CARD_LAYOUT[i] ?? "col-span-12")}>
               <CaseCard
@@ -336,8 +349,12 @@ export function CasesGridSection() {
         </div>
 
         <div className="mt-10 flex justify-end md:hidden">
-          <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
-            View all case studies
+          <Link
+            to="/cases"
+            className={cn(btnOutlineOnDark, "group gap-2")}
+            aria-label="View all case studies"
+          >
+            <FlipLabel text="View all case studies" />
             <BtnArrow />
           </Link>
         </div>

@@ -4,6 +4,8 @@ import type { CSSProperties } from "react";
 
 import {
   BtnArrow,
+  EASE_ENTER,
+  FlipLabel,
   bodyCopy,
   btnOutline,
   btnPrimary,
@@ -20,7 +22,7 @@ import {
   FramerTag,
   interactiveSurfaceCard,
 } from "@/components/framer-section";
-import { ScrollProgressBar, Reveal } from "@/components/motion-bits";
+import { ScrollProgressBar, Reveal, TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import { PageEditorialHero } from "@/components/page-editorial-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { SlotCounter } from "@/components/slot-counter";
@@ -46,8 +48,8 @@ function DeliverableRow({ item, index = 0 }: { item: string; index?: number }) {
     <motion.div
       initial={reduce ? false : { opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.65 }}
-      transition={{ duration: reduce ? 0 : 0.42, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, amount: 0.65, margin: TRIGGER_VIEWPORT_MARGIN }}
+      transition={{ duration: reduce ? 0 : 0.42, delay, ease: EASE_ENTER }}
       className="block"
     >
       <p className={cn(bodyCopy, "m-0 min-w-0")}>
@@ -127,7 +129,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
   useReveal();
   return (
     <div
-      className="rm-page selection:bg-rm-accent selection:text-black"
+      className="rm-page selection:bg-[#90471B] selection:text-black"
       style={{ "--service-accent": s.accent } as CSSProperties}
     >
       <a href="#main" className="skip-link">
@@ -175,12 +177,20 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                   }
                   actions={
                     <>
-                      <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
-                        {s.hero.primaryCta.replace(/\s*→$/, "")}
+                      <Link
+                        to="/audit"
+                        className={cn(btnPrimary, "group gap-2")}
+                        aria-label={s.hero.primaryCta.replace(/\s*→$/, "")}
+                      >
+                        <FlipLabel text={s.hero.primaryCta.replace(/\s*→$/, "")} />
                         <BtnArrow />
                       </Link>
-                      <a href="#blocks" className={cn(btnOutline, "group gap-2")}>
-                        How we work
+                      <a
+                        href="#blocks"
+                        className={cn(btnOutline, "group gap-2")}
+                        aria-label="How we work"
+                      >
+                        <FlipLabel text="How we work" />
                         <BtnArrow />
                       </a>
                     </>
@@ -210,7 +220,7 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
                       <div>
                         <FramerTag>{block.title}</FramerTag>
                       </div>
-                      <h2 className={cn(sectionHeadline, "mt-4 max-w-[16ch] text-white")}>
+                      <h2 className={cn(sectionHeadline, "mt-2 max-w-[16ch] text-white")}>
                         {block.subtitle}
                       </h2>
                       <span className="rm-type-display mt-auto block pt-8 tabular-nums text-[var(--rm-text-ghost)]">
@@ -235,8 +245,12 @@ export function ServicePageView({ service: s }: { service: ServiceContent }) {
 
                     {block.cta ? (
                       <div>
-                        <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
-                          {block.cta.replace(/\s*→$/, "")}
+                        <Link
+                          to="/audit"
+                          className={cn(btnPrimary, "group gap-2")}
+                          aria-label={block.cta.replace(/\s*→$/, "")}
+                        >
+                          <FlipLabel text={block.cta.replace(/\s*→$/, "")} />
                           <BtnArrow />
                         </Link>
                       </div>

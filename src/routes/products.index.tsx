@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import {
   BtnArrow,
+  EASE_ENTER,
+  FlipLabel,
   FramerTag,
   bodyCopy,
   bodyCopyStrong,
@@ -54,7 +56,7 @@ import {
 import { ProductsHero } from "@/components/products-hero";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { UnifiedCTA } from "@/components/unified-cta";
-import { ScrollProgressBar } from "@/components/motion-bits";
+import { ScrollProgressBar, TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import { ScrollChapter } from "@/components/home-scroll-cinema";
 import { buildPageHead } from "@/lib/seo";
 import { cn } from "@/lib/utils";
@@ -261,24 +263,24 @@ const inViewRevealVariants: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.48, ease: [0.4, 0, 0.2, 1] },
+    transition: { duration: 0.55, ease: EASE_ENTER },
   },
 };
 
 const deliverableMotion = {
   sprint: {
-    offset: 8,
-    duration: 0.24,
+    offset: 16,
+    duration: 0.55,
     initialDelay: 0.03,
-    stagger: 0.045,
-    ease: [0.2, 0, 0, 1],
+    stagger: 0.06,
+    ease: EASE_ENTER,
   },
   marathon: {
-    offset: 14,
-    duration: 0.42,
+    offset: 16,
+    duration: 0.55,
     initialDelay: 0.06,
-    stagger: 0.09,
-    ease: [0.4, 0, 0.2, 1],
+    stagger: 0.08,
+    ease: EASE_ENTER,
   },
 } as const;
 
@@ -424,7 +426,7 @@ function DeliverablesRail({ mode, reduce }: { mode: Mode; reduce: boolean }) {
               className="rm-products-deliverable group"
               initial={reduce ? false : { opacity: 0, y: motion.offset }}
               whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.55 }}
+              viewport={{ once: true, amount: 0.55, margin: TRIGGER_VIEWPORT_MARGIN }}
               transition={{
                 duration: motion.duration,
                 delay: motion.initialDelay + index * motion.stagger,
@@ -544,8 +546,12 @@ function TempoDetails({ mode }: { mode: Mode }) {
         <ProofRow mode={mode} />
 
         <div className="rm-products-format-cta">
-          <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
-            {data.cta.replace(/\s*→$/, "")}
+          <Link
+            to="/contact"
+            className={cn(btnPrimary, "group gap-2")}
+            aria-label={data.cta.replace(/\s*→$/, "")}
+          >
+            <FlipLabel text={data.cta.replace(/\s*→$/, "")} />
             <BtnArrow />
           </Link>
         </div>
@@ -740,7 +746,7 @@ function ProductsPage() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="rm-page rm-products-page selection:bg-rm-accent selection:text-black">
+      <div className="rm-page rm-products-page selection:bg-[#90471B] selection:text-black">
         <a href="#main" className="skip-link">
           Skip to content
         </a>
@@ -760,12 +766,17 @@ function ProductsPage() {
                     ?.scrollIntoView({ behavior: reduce ? "auto" : "smooth" })
                 }
                 className={cn(btnPrimary, "group gap-2")}
+                aria-label="Compare formats"
               >
-                Compare formats
+                <FlipLabel text="Compare formats" />
                 <BtnArrow className="rotate-90" />
               </button>
-              <Link to="/cases" className={cn(btnOutlineOnDark, "group gap-2")}>
-                See case studies
+              <Link
+                to="/cases"
+                className={cn(btnOutlineOnDark, "group gap-2")}
+                aria-label="See case studies"
+              >
+                <FlipLabel text="See case studies" />
                 <BtnArrow />
               </Link>
             </>
@@ -773,11 +784,15 @@ function ProductsPage() {
         />
 
         <main id="main">
-          <section
+          <m.section
             id="format"
             aria-labelledby="format-heading"
             className={cn(sectionShell, "relative bg-black rm-products-format")}
             style={{ scrollMarginTop: "var(--rm-header-offset)" }}
+            variants={inViewRevealVariants}
+            initial={reduce ? false : "hidden"}
+            whileInView={reduce ? undefined : "visible"}
+            viewport={{ once: true, amount: 0.16, margin: TRIGGER_VIEWPORT_MARGIN }}
           >
             <div className={sectionInner}>
               <TempoWorkspace
@@ -796,7 +811,7 @@ function ProductsPage() {
                 }
               />
             </div>
-          </section>
+          </m.section>
 
           <m.section
             id="compare"
@@ -806,7 +821,7 @@ function ProductsPage() {
             variants={inViewRevealVariants}
             initial={reduce ? false : "hidden"}
             whileInView={reduce ? undefined : "visible"}
-            viewport={{ once: true, amount: 0.16 }}
+            viewport={{ once: true, amount: 0.16, margin: TRIGGER_VIEWPORT_MARGIN }}
           >
             <div className={sectionInner}>
               <div className={cn(sectionContentGrid, "items-start")}>
@@ -829,8 +844,12 @@ function ProductsPage() {
                   <ComparisonTable active={mode} onChange={setMode} />
 
                   <div className={sectionActionsInline}>
-                    <Link to="/contact" className={cn(btnPrimary, "group gap-2")}>
-                      Discuss {activeMode.tag}
+                    <Link
+                      to="/contact"
+                      className={cn(btnPrimary, "group gap-2")}
+                      aria-label={`Discuss ${activeMode.tag}`}
+                    >
+                      <FlipLabel text={`Discuss ${activeMode.tag}`} />
                       <BtnArrow />
                     </Link>
                   </div>
@@ -839,7 +858,8 @@ function ProductsPage() {
             </div>
           </m.section>
 
-          <ScrollChapter variant="reveal">
+          {/* variant="plain" — UnifiedCTA already reveals itself once via <Reveal>. */}
+          <ScrollChapter variant="plain">
             <UnifiedCTA
               title={
                 mode === "sprint" ? "Ready to tackle the deadline?" : "Ready to build the system?"

@@ -75,7 +75,7 @@ function CasesPage() {
   const ctaSecondaryUrl = hero?.ctaSecondaryUrl ?? heroDefaults?.ctaSecondaryUrl ?? "#work";
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-[#90471B] selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>

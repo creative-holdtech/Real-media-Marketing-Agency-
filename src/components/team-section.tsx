@@ -185,7 +185,9 @@ export function TeamSection() {
       <div className={cn("rm-team-stack flex w-full flex-col items-center", sectionGap)}>
         <header className="rm-insights-intro mx-auto flex w-full flex-col items-center text-center">
           <div className={cn(sectionLabelHeadlineStack, "w-full items-center")}>
-            <FramerTag>{aboutTeam.tag}</FramerTag>
+            <div className="reveal">
+              <FramerTag>{aboutTeam.tag}</FramerTag>
+            </div>
             <TextReveal
               as="h2"
               id="team-heading"

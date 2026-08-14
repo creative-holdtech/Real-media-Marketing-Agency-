@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import {
   BtnArrow,
+  FlipLabel,
   btnOutlineOnDark,
   btnPrimary,
 } from "@/components/framer-section";
@@ -44,21 +45,21 @@ function HeroCtaLink({
   );
   const content = (
     <>
-      {label}
+      <FlipLabel text={label} />
       <BtnArrow />
     </>
   );
 
   if (cta.href) {
     return (
-      <a href={cta.href} className={classes}>
+      <a href={cta.href} className={classes} aria-label={label}>
         {content}
       </a>
     );
   }
 
   return (
-    <Link to={cta.to ?? "/contact"} className={classes}>
+    <Link to={cta.to ?? "/contact"} className={classes} aria-label={label}>
       {content}
     </Link>
   );

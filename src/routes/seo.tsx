@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { ScrollProgressBar, MagneticButton, Reveal } from "@/components/motion-bits";
 import {
+  EASE_ENTER,
   sectionHeadline,
   sectionInner,
   siteChromeBand,
@@ -168,39 +169,45 @@ function SeoPage() {
 
           <div className={cn(siteChromeBand, "relative text-center")}>
             <div className={sectionInner}>
-            <h1 id="page-title" className="rm-title-hero mx-auto max-w-6xl">
-              SEO built on{" "}
-              <span className="relative inline-block align-baseline w-[6.2ch] md:w-[7.6ch] h-[1em] text-left overflow-hidden">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.span
-                    key={rIndex}
-                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: "0.2em" }}
-                    animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                    exit={reduce ? { opacity: 0 } : { opacity: 0, y: "-0.2em" }}
-                    transition={{ duration: reduce ? 0.2 : 0.24, ease: [0.23, 1, 0.32, 1] }}
-                    className="absolute inset-0 text-white font-semibold"
-                  >
-                    {ROTATE[rIndex]}
-                  </motion.span>
-                </AnimatePresence>
-              </span>
-              <br />
-              <span className="rm-type-display-muted">— not keyword sludge.</span>
-            </h1>
+            <Reveal duration={0.6}>
+              <h1 id="page-title" className="rm-title-hero mx-auto max-w-6xl">
+                SEO built on{" "}
+                <span className="relative inline-block align-baseline w-[6.2ch] md:w-[7.6ch] h-[1em] text-left overflow-hidden">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span
+                      key={rIndex}
+                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: "0.2em" }}
+                      animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                      exit={reduce ? { opacity: 0 } : { opacity: 0, y: "-0.2em" }}
+                      transition={{ duration: reduce ? 0.2 : 0.24, ease: EASE_ENTER }}
+                      className="absolute inset-0 text-white font-semibold"
+                    >
+                      {ROTATE[rIndex]}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+                <br />
+                <span className="rm-type-display-muted">— not keyword sludge.</span>
+              </h1>
+            </Reveal>
 
-            <p className="rm-copy-lead mx-auto mt-10 max-w-[640px]">
-              We don't rent you traffic. We build the intent map, leadership content and authority
-              footprint that make organic your most defensible channel.
-            </p>
+            <Reveal delay={0.08} duration={0.6}>
+              <p className="rm-copy-lead mx-auto mt-10 max-w-[640px]">
+                We don't rent you traffic. We build the intent map, leadership content and authority
+                footprint that make organic your most defensible channel.
+              </p>
+            </Reveal>
 
-            <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
-              <MagneticButton href="#contact" strength={8} className="rm-btn rm-btn-primary">
-                Get an audit
-              </MagneticButton>
-              <MagneticButton href="#services" strength={6} className="rm-btn rm-btn-secondary">
-                How we work
-              </MagneticButton>
-            </div>
+            <Reveal delay={0.16} duration={0.6}>
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-3">
+                <MagneticButton href="#contact" strength={8} className="rm-btn rm-btn-primary">
+                  Get an audit
+                </MagneticButton>
+                <MagneticButton href="#services" strength={6} className="rm-btn rm-btn-secondary">
+                  How we work
+                </MagneticButton>
+              </div>
+            </Reveal>
             </div>
           </div>
         </section>

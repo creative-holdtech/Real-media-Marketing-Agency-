@@ -135,7 +135,7 @@ function ArticlePage() {
   };
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-[#90471B] selection:text-black">
       <JsonLd
         data={articleJsonLd({
           title: post.title,
@@ -365,7 +365,7 @@ function ArticlePage() {
 
         {related.length > 0 ? (
           <MarketingSection ariaLabelledBy="related-heading" className="!py-8 md:!py-10">
-            <div className="flex items-end justify-between gap-4">
+            <div className="reveal flex items-end justify-between gap-4">
               <h2 id="related-heading" className={sectionHeadline}>
                 More articles
               </h2>

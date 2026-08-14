@@ -9,6 +9,13 @@ import {
 } from "framer-motion";
 import { useRef, type ReactNode, type MouseEvent } from "react";
 
+import { DURATION_ENTER, EASE_ENTER } from "@/components/framer-section";
+
+/** Matches use-reveal.ts's TRIGGER_LINE_FRACTION (0.45) — elements reveal as
+ * they approach a line a touch above dead-center, not merely on entering at
+ * the viewport's bottom edge. Keep these two in sync. */
+export const TRIGGER_VIEWPORT_MARGIN = "0px 0px -38% 0px";
+
 /* ---------- Smooth scroll progress bar ---------- */
 export function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
@@ -163,9 +170,9 @@ export function Reveal({
   children,
   delay = 0,
   y = 8,
-  duration = 0.55,
+  duration = DURATION_ENTER,
   className,
-  viewportMargin = "0px 0px -4% 0px",
+  viewportMargin = TRIGGER_VIEWPORT_MARGIN,
 }: {
   children: ReactNode;
   delay?: number;
@@ -178,10 +185,10 @@ export function Reveal({
   return (
     <motion.div
       className={className}
-      initial={reduce ? false : { opacity: 0, y, filter: "blur(6px)" }}
-      whileInView={reduce ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={reduce ? false : { opacity: 0, y }}
+      whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: viewportMargin, amount: 0.12 }}
-      transition={{ duration, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={{ duration, ease: EASE_ENTER, delay }}
     >
       {children}
     </motion.div>

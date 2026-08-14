@@ -25,6 +25,7 @@ export function PremiumCursor() {
 
     root.dataset.visible = "false";
     root.dataset.hover = "false";
+    root.dataset.theme = "dark";
 
     const state = {
       tx: 0,
@@ -66,6 +67,14 @@ export function PremiumCursor() {
       const overInteractive = target instanceof Element && !!target.closest(HOVER_SELECTOR);
       hoverTarget = overInteractive ? 1 : 0;
       root.dataset.hover = overInteractive ? "true" : "false";
+
+      // A dark decorative surface (e.g. the glow orb) can sit inside an
+      // otherwise light-themed section — same check the header uses, so the
+      // cursor doesn't turn invisible-on-light while sitting over the orb.
+      const overDarkSurface =
+        target instanceof Element && !!target.closest('[data-header-surface="dark"]');
+      const overLight = target instanceof Element && !!target.closest(".rm-section-light");
+      root.dataset.theme = !overDarkSurface && overLight ? "light" : "dark";
     };
 
     const onLeave = () => {

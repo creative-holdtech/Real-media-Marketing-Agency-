@@ -6,7 +6,9 @@ import type { LucideIcon } from "lucide-react";
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import {
   BtnArrow,
+  FlipLabel,
   btnPrimary,
+  hoverColorTransform,
   sectionInner,
   siteChromeBand,
   textCardBody,
@@ -64,7 +66,7 @@ function ContactPage() {
     })) ?? [];
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-[#90471B] selection:text-black">
       <ScrollProgressBar />
       <SiteHeader variant="dark" />
 
@@ -119,7 +121,10 @@ function ContactPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={item.label}
-                        className="inline-flex rm-touch items-center justify-center size-11 rounded-full border border-[var(--rm-border-strong)] text-[var(--rm-text-muted)] transition-[color,border-color,transform] duration-200 hover:border-white/50 hover:text-white hover:-translate-y-0.5"
+                        className={cn(
+                          "inline-flex rm-touch items-center justify-center size-11 rounded-full border border-[var(--rm-border-strong)] text-[var(--rm-text-muted)] hover:border-white/50 hover:text-white motion-safe:hover:-translate-y-0.5",
+                          hoverColorTransform,
+                        )}
                       >
                         <Icon className="size-[18px]" strokeWidth={1.5} aria-hidden />
                       </a>
@@ -184,10 +189,22 @@ function ContactPage() {
               </div>
 
               <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
-                <button type="submit" className={cn(btnPrimary, "group")}>
-                  {sent
-                    ? (contact?.submitSuccessLabel ?? "Message sent — we'll reply soon")
-                    : (contact?.submitLabel ?? "Send message").replace(/\s*→$/, "")}
+                <button
+                  type="submit"
+                  className={cn(btnPrimary, "group")}
+                  aria-label={
+                    sent
+                      ? contact?.submitSuccessLabel ?? "Message sent — we'll reply soon"
+                      : (contact?.submitLabel ?? "Send message").replace(/\s*→$/, "")
+                  }
+                >
+                  <FlipLabel
+                    text={
+                      sent
+                        ? contact?.submitSuccessLabel ?? "Message sent — we'll reply soon"
+                        : (contact?.submitLabel ?? "Send message").replace(/\s*→$/, "")
+                    }
+                  />
                   {!sent ? <BtnArrow /> : null}
                 </button>
               </div>

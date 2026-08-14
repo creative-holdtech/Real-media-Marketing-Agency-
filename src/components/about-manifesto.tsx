@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 
 import {
   BtnArrow,
+  FlipLabel,
   FramerTag,
   btnPrimary,
   sectionActionsOffset,
@@ -69,8 +70,8 @@ export function AboutManifestoSection({
         </div>
 
         <div className={cn("reveal", sectionActionsOffset)} data-delay="3">
-          <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
-            Book free audit
+          <Link to="/audit" className={cn(btnPrimary, "group gap-2")} aria-label="Book free audit">
+            <FlipLabel text="Book free audit" />
             <BtnArrow />
           </Link>
         </div>

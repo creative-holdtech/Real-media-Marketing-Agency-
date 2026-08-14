@@ -3,6 +3,8 @@ import { LazyMotion, domAnimation, m, useReducedMotion, type Variants } from "fr
 
 import {
   BtnArrow,
+  EASE_ENTER,
+  FlipLabel,
   borderSoft,
   btnPrimary,
   heroStandfirst,
@@ -14,6 +16,7 @@ import {
 } from "@/components/framer-section";
 import { HeroAmbientGlow } from "@/components/services-hero";
 import { aboutHero, aboutSectors } from "@/content/about";
+import { usePreloaderDone } from "@/hooks/use-preloader-done";
 import { cn } from "@/lib/utils";
 
 const SPACES = aboutSectors.items.map((item) => ({
@@ -23,16 +26,19 @@ const SPACES = aboutSectors.items.map((item) => ({
 
 const MARQUEE = SPACES.map((s) => s.title).join("  ·  ");
 
-const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
+/* Sitewide reveal system — same EASE_ENTER + ~0.55s tween as everywhere
+ * else, replacing the spring this used to run on its own (was the only
+ * hero on the site using spring physics instead of duration+ease). */
+const enter = { duration: 0.55, ease: EASE_ENTER } as const;
 
 const fade: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { ...spring, delay: 0.04 } },
+  visible: { opacity: 1, transition: { ...enter, delay: 0.04 } },
 };
 
 const rise: Variants = {
   hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: spring },
+  visible: { opacity: 1, y: 0, transition: enter },
 };
 
 const brandIn: Variants = {
@@ -40,7 +46,7 @@ const brandIn: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { ...spring, delay: 0.06 },
+    transition: { ...enter, delay: 0.06 },
   },
 };
 
@@ -51,7 +57,7 @@ const indexStagger: Variants = {
 
 const indexItem: Variants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: spring },
+  visible: { opacity: 1, y: 0, transition: enter },
 };
 
 /**
@@ -62,6 +68,7 @@ const indexItem: Variants = {
 export function AboutHero() {
   const reduce = Boolean(useReducedMotion());
   const motionOn = !reduce;
+  const heroReady = usePreloaderDone();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -71,7 +78,7 @@ export function AboutHero() {
         style={{ scrollMarginTop: "var(--rm-header-offset)" }}
         aria-labelledby="page-title"
         initial={motionOn ? "hidden" : false}
-        animate="visible"
+        animate={heroReady ? "visible" : "hidden"}
       >
         <HeroAmbientGlow />
 
@@ -106,8 +113,12 @@ export function AboutHero() {
                 >
                   {aboutHero.lead}
                 </p>
-                <Link to="/audit" className={cn(btnPrimary, "group gap-2 shrink-0")}>
-                  Get audit
+                <Link
+                  to="/audit"
+                  className={cn(btnPrimary, "group gap-2 shrink-0")}
+                  aria-label="Get audit"
+                >
+                  <FlipLabel text="Get audit" />
                   <BtnArrow />
                 </Link>
               </m.div>

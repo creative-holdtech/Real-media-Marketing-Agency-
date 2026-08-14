@@ -94,7 +94,7 @@ function AboutPage() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="rm-page selection:bg-rm-accent selection:text-black">
+      <div className="rm-page selection:bg-[#90471B] selection:text-black">
         <a href="#main" className="skip-link">
           Skip to content
         </a>
@@ -213,7 +213,10 @@ function VerticalsSection({
         <MarketingTagColumn tag={content.tag ?? "Spaces"} />
         <div className={cn("flex flex-col md:col-span-2 md:col-start-2", sectionGap)}>
           <div className={sectionLeadStack}>
-            <h2 id="verticals-heading" className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}>
+            <h2
+              id="verticals-heading"
+              className={cn(sectionHeadline, "reveal m-0 max-w-[22ch] text-white")}
+            >
               <span className="block">Four spaces we lock into.</span>
             </h2>
             {content.body ? (

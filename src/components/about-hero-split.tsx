@@ -3,6 +3,8 @@ import { LazyMotion, domAnimation, m, useReducedMotion, type Variants } from "fr
 
 import {
   BtnArrow,
+  EASE_ENTER,
+  FlipLabel,
   borderSoft,
   btnPrimary,
   heroStandfirst,
@@ -20,11 +22,9 @@ const SPACES = aboutSectors.items.map((item) => ({
   title: item.title,
 }));
 
-const easeOut = [0.22, 1, 0.36, 1] as const;
-
 const heroFade: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.45, ease: easeOut } },
+  visible: { opacity: 1, transition: { duration: 0.45, ease: EASE_ENTER } },
 };
 
 const heroRise: Variants = {
@@ -32,7 +32,7 @@ const heroRise: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: easeOut },
+    transition: { duration: 0.55, ease: EASE_ENTER },
   },
 };
 
@@ -46,7 +46,7 @@ const heroTitleLine: Variants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.55, ease: easeOut },
+    transition: { duration: 0.55, ease: EASE_ENTER },
   },
 };
 
@@ -60,7 +60,7 @@ const railItem: Variants = {
   visible: {
     opacity: 1,
     x: 0,
-    transition: { duration: 0.4, ease: easeOut },
+    transition: { duration: 0.4, ease: EASE_ENTER },
   },
 };
 
@@ -115,8 +115,8 @@ export function AboutHeroSplit() {
             </m.p>
 
             <m.div className="rm-about-hero__cta-wrap mt-6" variants={heroRise}>
-              <Link to="/audit" className={cn(btnPrimary, "group gap-2")}>
-                Get audit
+              <Link to="/audit" className={cn(btnPrimary, "group gap-2")} aria-label="Get audit">
+                <FlipLabel text="Get audit" />
                 <BtnArrow />
               </Link>
             </m.div>

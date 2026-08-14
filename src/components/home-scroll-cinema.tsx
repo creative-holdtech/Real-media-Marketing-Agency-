@@ -151,13 +151,29 @@ type ScrollChapterProps = {
    * reveal — subtle opacity + 12px settle on copy blocks, no 3D (readable).
    */
   variant?: "plain" | "reveal";
+  /** Top hairline + shadow "arrives over previous section" seam. Drop it for
+   * white/light chapters — a black vignette reads as a bug, not depth, there. */
+  seam?: boolean;
 };
 
 /**
  * Section boundary + optional editorial settle. Never applies perspective/scale —
  * that warps cards, hurts readability, and breaks calm UX on interactive blocks.
+ *
+ * The seam shadow gives the "next section arrives over the previous one" read
+ * without any transform on content: a soft dark gradient anchored to this
+ * chapter's own top edge is strongest right as it enters and fades by ~1/3
+ * of the way in — like the leading edge of a sheet sliding over what's above
+ * it, cast onto its own top area (not a real spatial overlap, since adjacent
+ * sections never share screen space — the illusion is timing, not position).
  */
-export function ScrollChapter({ children, className, id, variant = "plain" }: ScrollChapterProps) {
+export function ScrollChapter({
+  children,
+  className,
+  id,
+  variant = "plain",
+  seam = true,
+}: ScrollChapterProps) {
   const enabled = useCinemaMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -168,17 +184,25 @@ export function ScrollChapter({ children, className, id, variant = "plain" }: Sc
 
   const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 28, mass: 0.5 });
   const lineScale = useTransform(progress, [0, 0.28], [0, 1]);
+  const seamShadow = useTransform(progress, [0, 0.34], [0.55, 0]);
   const y = useTransform(progress, [0, 0.42, 1], variant === "reveal" ? [12, 0, -8] : [0, 0, 0]);
   const opacity = useTransform(progress, [0, 0.18, 0.82, 1], variant === "reveal" ? [0.72, 1, 1, 0.88] : [1, 1, 1, 1]);
 
   return (
     <div ref={ref} id={id} className={cn("relative", className)}>
-      {enabled ? (
-        <motion.div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-6 top-0 z-[2] h-px origin-center bg-gradient-to-r from-transparent via-white/18 to-transparent md:inset-x-10"
-          style={{ scaleX: lineScale, opacity: lineScale }}
-        />
+      {enabled && seam ? (
+        <>
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-6 top-0 z-[2] h-px origin-center bg-gradient-to-r from-transparent via-white/18 to-transparent md:inset-x-10"
+            style={{ scaleX: lineScale, opacity: lineScale }}
+          />
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-24 bg-gradient-to-b from-black/70 to-transparent md:h-32"
+            style={{ opacity: seamShadow }}
+          />
+        </>
       ) : null}
       {enabled && variant === "reveal" ? (
         <motion.div style={{ y, opacity }}>{children}</motion.div>

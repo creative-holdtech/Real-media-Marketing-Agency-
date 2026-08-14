@@ -4,14 +4,22 @@ import {
   motion,
   useInView,
   useMotionValue,
+  useMotionValueEvent,
   useReducedMotion,
+  useScroll,
+  useSpring,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
+import { useCinemaMotion } from "@/components/home-scroll-cinema";
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import { triggerPageTransition } from "@/components/page-transition";
 import {
   BtnArrow,
+  DURATION_ENTER,
+  EASE_ENTER,
+  FlipLabel,
   FramerTag,
   btnOutlineOnDark,
   btnPrimary,
@@ -26,6 +34,7 @@ import {
   textCardBody,
   textGhost,
   textMeta,
+  underlineHoverLink,
 } from "@/components/framer-section";
 import { homepageEngagements, type Engagement } from "@/lib/engagements";
 import { cn } from "@/lib/utils";
@@ -61,13 +70,13 @@ function StepBody({
     <p className={cn("m-0", textCardBody)}>
       <Link
         to="/audit"
-        className="font-medium text-white underline decoration-white/30 underline-offset-[3px] transition-colors duration-200 hover:decoration-white/70"
+        className={cn("font-medium text-white", underlineHoverLink)}
         onClick={(e) => {
           e.preventDefault();
           triggerPageTransition("/audit");
         }}
       >
-        Free audit
+        <span className="text-[#B85821]">Free</span> audit
       </Link>
       {step.body.replace(/^free audit/i, "")}
     </p>
@@ -117,9 +126,12 @@ function EngagementDiagram({
   return (
     <div ref={ref} className="flex h-full flex-col justify-start py-2">
       {rows.map((row, i) => {
-        const barDelay  = reduced ? 0 : i * 0.14;
-        const codeDelay = reduced ? 0 : barDelay + 0.12;
-        const lblDelay  = reduced ? 0 : barDelay + 0.40;
+        // Tightened alongside itemV/NAME_RISE_MS — the whole open-card
+        // reveal now settles in well under half a second instead of trailing
+        // on for nearly a full second after the header's already there.
+        const barDelay  = reduced ? 0 : i * 0.08;
+        const codeDelay = reduced ? 0 : barDelay + 0.08;
+        const lblDelay  = reduced ? 0 : barDelay + 0.22;
         const isHighlighted = hoveredStep === row.code;
 
         return (
@@ -189,8 +201,8 @@ function EngagementDiagram({
                     animate={shouldAnimate ? { scaleX: 1 } : {}}
                     style={{ transformOrigin: "left" }}
                     transition={{
-                      duration: reduced ? 0 : 0.65,
-                      ease: [0.22, 1, 0.36, 1],
+                      duration: reduced ? 0 : 0.45,
+                      ease: EASE_ENTER,
                       delay: barDelay,
                     }}
                   />
@@ -241,17 +253,17 @@ function EngagementDiagram({
   );
 }
 
-/* ── Closed → open morph timing ─────────────────────────────────── */
-/* How long the closed name takes to rise into the open card's title slot.
-   The panel swaps in the open card only once the name has landed. */
-const NAME_RISE_MS = 480;
-/* Where the open card's title sits, measured from the panel's padding edge:
-   card padding (20) + header box border (1) + header box padding (20).
-   Padding is symmetric (p-5 on both the card and the header box), so this
-   same figure applies to the left inset too — the risen name has to shift
-   right by this delta or it lands 21px off from the open title on the x-axis. */
-const OPEN_TITLE_TOP = 41;
-const OPEN_TITLE_LEFT = OPEN_TITLE_TOP;
+/* ── Closed → open swap timing ─────────────────────────────────── */
+/* How long the closed name rises (bottom-left to top-left, within its own
+   box) before the panel swaps in the open card. Kept short — this is a
+   quick confirmation beat, not a scene to linger on. */
+const NAME_RISE_MS = 160;
+/* The open card's title sits inside its own bordered header box: outer card
+   padding (20) + header box border (1) + header box padding (20) = 41px
+   from the panel's corner. The closed name's box only has the outer 20px
+   padding, so the risen name needs this extra nudge or it lands 21px short
+   of the open title on both axes. */
+const RISEN_NAME_INSET_DELTA = 21;
 
 /* ── Animation variants ─────────────────────────────────────────── */
 const containerV = {
@@ -259,11 +271,16 @@ const containerV = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
-/* Header fades straight in with no offset so it cross-fades cleanly with the
-   closed card's risen name, which is already sitting in exactly this spot */
+/* Header appears instantly, not a fade — the risen name is already sitting
+   in exactly this spot at full opacity, so fading the two independent
+   elements in/out over the same span let both render at once, part-
+   transparent, which read as a flicker (two slightly-misaligned copies of
+   the same text ghosting over each other). A hard cut, timed to land the
+   instant the closed card's own (equally instant) exit removes it, reads
+   as one continuous piece of text instead. */
 const headerV = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.28, ease: [0.4, 0, 0.2, 1] as const } },
+  hidden: { opacity: 1 },
+  visible: { opacity: 1 },
 };
 
 function itemV(reduced: boolean) {
@@ -272,7 +289,11 @@ function itemV(reduced: boolean) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring" as const, duration: 0.6, bounce: 0 },
+      // Tightened from 0.6s to match the swap's own pace (NAME_RISE_MS is
+      // now 160ms) — the header appears instantly, so a content-row that
+      // took another 600ms+ to settle read as trailing behind rather than
+      // part of the same moment.
+      transition: { type: "spring" as const, duration: 0.42, bounce: 0 },
     },
   };
 }
@@ -300,8 +321,9 @@ function EngagementCardOpen({
         })
       }
       className={cn(btnPrimary, "group gap-3")}
+      aria-label={engagement.ctaLabel.replace(/ →$/, "")}
     >
-      {engagement.ctaLabel.replace(/ →$/, "")}
+      <FlipLabel text={engagement.ctaLabel.replace(/ →$/, "")} />
       <BtnArrow />
     </button>
   );
@@ -340,8 +362,8 @@ function EngagementCardOpen({
         variants={item}
         className="relative z-[1] mt-4 flex min-h-0 flex-1 flex-col gap-4 md:flex-row md:gap-6"
       >
-        {/* Left: steps + desktop CTA */}
-        <div className="flex min-w-0 flex-col md:flex-[11]">
+        {/* Left: steps + desktop CTA — CTA pinned to the card's bottom edge */}
+        <div className="flex min-w-0 flex-col md:flex-[11] md:h-full md:justify-between">
           <div className="flex flex-col gap-3">
             {engagement.steps.map((step) => {
               const isStepLit = hoveredStep === step.code;
@@ -384,7 +406,7 @@ function EngagementCardOpen({
           </div>
 
           {/* Desktop CTA — 24px below the last step, not pinned to card bottom */}
-          <div className="mt-6 hidden md:block">{ctaButton}</div>
+          <div className="hidden pt-6 md:block">{ctaButton}</div>
         </div>
 
         {/* Vertical divider — desktop only */}
@@ -417,32 +439,32 @@ function EngagementCardClosed({
   const reduced = !!useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLSpanElement>(null);
   const liftingRef = useRef(false);
+  const [riseY, setRiseY] = useState(0);
 
-  /* The name renders at the open card's exact type size and is scaled down at
-     rest, so hovering only has to animate it back to scale 1 — the landing
-     size then matches the open title pixel for pixel. */
-  const [morph, setMorph] = useState({ rise: 0, shiftX: 0, rest: 0.7 });
+  const lifting = isHovered && !reduced;
+  liftingRef.current = lifting;
 
-  liftingRef.current = isHovered && !reduced;
-
+  /* How far up the row needs to translate to land RISEN_NAME_INSET_DELTA+20
+     (41px, matching the open title's inset) from the wrap's top — measured
+     directly (not reconstructed from padding/gap math) so it stays correct
+     regardless of content length. Framer's `layout` prop was tried here
+     first, but it doesn't honor a configured transition duration for this
+     kind of change — the position snapped in ~100ms no matter what duration
+     was set. A plain animate={{ x, y }} tween (like the rest of this
+     codebase already uses) respects duration properly, so measuring once
+     and animating manually is the reliable path — safe now that the panel
+     itself no longer resizes during the rise (that resize is deferred to
+     the swap, see handleMouseEnter). */
   useEffect(() => {
     const wrap = wrapRef.current;
     const row = rowRef.current;
-    const name = nameRef.current;
-    if (!wrap || !row || !name) return;
+    if (!wrap || !row) return;
 
     const measure = () => {
       if (liftingRef.current) return;
-      const avail = wrap.clientWidth - 40; /* container p-5 */
-      const natural = name.scrollWidth || 1;
-      const ARROW = 28; /* icon + gap */
-      setMorph({
-        rise: OPEN_TITLE_TOP - row.offsetTop,
-        shiftX: OPEN_TITLE_LEFT - row.offsetLeft,
-        rest: Math.max(0.5, Math.min(0.8, (avail - ARROW) / natural)),
-      });
+      const restTop = row.getBoundingClientRect().top - wrap.getBoundingClientRect().top;
+      setRiseY(RISEN_NAME_INSET_DELTA + 20 - restTop);
     };
 
     measure();
@@ -451,35 +473,32 @@ function EngagementCardClosed({
     return () => ro.disconnect();
   }, []);
 
-  const lifting = isHovered && !reduced;
-
   return (
     <motion.div
       ref={wrapRef}
       className="absolute inset-0 flex flex-col items-start justify-end p-5"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }}
-      exit={{ opacity: 0, transition: { duration: 0.2, ease: [0.4, 0, 1, 1] } }}
+      // Instant, not a fade — by the time this unmounts, the risen name is
+      // the only thing still visible (arrow/time already faded during the
+      // rise), sitting exactly where the open card's own title is about to
+      // appear. Fading it out while the open title fades in doubled the
+      // same text on top of itself for a beat, which read as a flicker.
+      exit={{ opacity: 0, transition: { duration: 0.01 } }}
     >
-      {/* Name — rises into the open card's title slot and grows to its size */}
       <motion.div
         ref={rowRef}
         className="flex items-end gap-2"
-        style={{ transformOrigin: "left bottom" }}
         animate={{
-          x: lifting ? morph.shiftX : 0,
-          y: lifting ? morph.rise : 0,
-          scale: lifting ? 1 : morph.rest,
+          x: lifting ? RISEN_NAME_INSET_DELTA : 0,
+          y: lifting ? riseY : 0,
         }}
-        transition={{ duration: NAME_RISE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: NAME_RISE_MS / 1000, ease: EASE_ENTER }}
       >
-        {/* Same type ramp as the open card's title — no overrides, so the
-            two line boxes coincide exactly at the end of the rise */}
         <motion.span
-          ref={nameRef}
           className={cn(sectionHeadline, "whitespace-nowrap")}
           animate={{ color: lifting ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.2)" }}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
         >
           {engagement.name}
         </motion.span>
@@ -488,7 +507,7 @@ function EngagementCardClosed({
         <motion.span
           className="mb-1 text-white/30"
           animate={{ opacity: lifting ? 0 : 1 }}
-          transition={{ duration: 0.18, ease: "easeOut" }}
+          transition={{ duration: 0.12, ease: "easeOut" }}
         >
           <ExpandArrow />
         </motion.span>
@@ -498,7 +517,7 @@ function EngagementCardClosed({
       <motion.span
         className={cn(textMeta, textGhost, "mt-2")}
         animate={{ opacity: lifting ? 0 : 1 }}
-        transition={{ duration: 0.18, ease: "easeOut" }}
+        transition={{ duration: 0.12, ease: "easeOut" }}
       >
         {engagement.time}
       </motion.span>
@@ -506,20 +525,30 @@ function EngagementCardClosed({
   );
 }
 
+/* ── Glass tint per format — distinct glow colour per engagement so the two
+   read apart even collapsed, when there's no other differentiator on screen. */
+const PANEL_TINT: Record<Engagement["id"], string> = {
+  sprint: "radial-gradient(130% 130% at 100% 0%, rgba(229,196,151,0.32), transparent 60%)",
+  marathon: "radial-gradient(130% 130% at 100% 0%, rgba(184,88,33,0.32), transparent 60%)",
+};
+
+/* Cards weren't animating in at all on scroll — only their open/closed swap
+   animated. Sprint arrives first, Marathon a touch after. */
+const PANEL_ENTRANCE_DELAY: Record<Engagement["id"], number> = {
+  sprint: 0,
+  marathon: 0.32,
+};
+
 /* ── Per-panel wrapper — owns hover state + expansion timeout ───── */
 function EngagementPanel({
   engagement,
   isActive,
-  isGrown,
-  onPending,
-  onCancel,
+  entered,
   onExpand,
 }: {
   engagement: Engagement;
   isActive: boolean;
-  isGrown: boolean;
-  onPending: () => void;
-  onCancel: () => void;
+  entered: boolean;
   onExpand: () => void;
 }) {
   const reduce = useReducedMotion();
@@ -553,12 +582,15 @@ function EngagementPanel({
     glowOpacity.set(1);
     if (isActive) return;
     setIsHovered(true);
-    /* Start widening straight away: the name grows to the open title's size as
-       it rises, which needs more room than the collapsed panel has. The content
-       itself only swaps once the name has landed. */
-    onPending();
-    /* Don't reset isHovered before onExpand — avoids the brief name "snap back"
-       because the card unmounts immediately when onExpand changes active state */
+    /* Panels are stacked now, not side by side — growth changes HEIGHT, not
+       width. Triggering that growth immediately (as the old side-by-side
+       version did, to make horizontal room for the widening name) fights the
+       rise: the name's target offset is computed once from its resting flow
+       position, but that position keeps drifting as the box resizes under it
+       mid-animation, so it barely appears to move until everything snaps at
+       the swap. Deferring growth to the same moment as the content swap keeps
+       the box height stable for the full rise, so the translate lands exactly
+       on the open card's title slot. */
     timeoutRef.current = setTimeout(() => {
       timeoutRef.current = null;
       onExpand();
@@ -571,7 +603,6 @@ function EngagementPanel({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
-      onCancel();
     }
   };
 
@@ -582,27 +613,43 @@ function EngagementPanel({
   }, []);
 
   return (
-    <div
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 20 }}
+      animate={reduce || entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{
+        duration: DURATION_ENTER,
+        ease: EASE_ENTER,
+        delay: PANEL_ENTRANCE_DELAY[engagement.id],
+      }}
       className={cn(
         surfaceCardShell,
-        "relative flex flex-col hover:border-[var(--rm-border-strong)]",
+        "relative flex flex-col border-white/[0.08] bg-white/[0.05] backdrop-blur-xl backdrop-saturate-150 hover:border-[var(--rm-border-strong)] hover:bg-white/[0.07]",
         !isActive && interactiveSurfaceCard,
       )}
       style={{
-        flexGrow: isGrown ? 4 : 1,
+        backgroundImage: PANEL_TINT[engagement.id],
+        flexGrow: isActive ? 4 : 1,
         flexShrink: 0,
         flexBasis: 0,
-        /* Slow off the mark so the panel barely moves while the name rises,
-           then carries the rest of the expansion after the content swaps */
+        /* Growth starts right at the swap (see handleMouseEnter) and is the
+           slowest piece here on purpose — the content inside settles in
+           under half a second, so the box finishing its resize a little
+           after gives the whole thing a "content arrives, box catches up"
+           feel instead of everything stopping at once. */
         transition:
-          "flex-grow 0.9s cubic-bezier(0.65, 0, 0.25, 1), border-color 200ms ease-out, background-color 200ms ease-out",
+          "flex-grow 0.6s cubic-bezier(0.65, 0, 0.25, 1), border-color 200ms ease-out, background-color 200ms ease-out",
       }}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Cursor glow — bleeds to card edges so the border area brightens */}
-      {!reduce && isActive && (
+      {/* Cursor glow — bleeds to card edges so the border area brightens.
+          Shows on hover before the card is even active, not just once open —
+          the glow motion values were already being seeded on mouseenter
+          regardless, so gating the visible element to isActive-only meant
+          hovering a closed card gave no glow feedback at all until the swap
+          finished; now the very first touch of the card lights it up. */}
+      {!reduce && (isActive || isHovered) && (
         <motion.div
           aria-hidden
           className="pointer-events-none absolute left-0 top-0"
@@ -634,19 +681,169 @@ function EngagementPanel({
           />
         )}
       </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ── Shared body — heading, both breakpoint card layouts, compare CTA.
+   Reused by the pinned (desktop, motion-enabled) and static (mobile /
+   reduced-motion) shells below, which differ only in how `active` is driven. */
+function EngagementBody({
+  active,
+  cardsReady,
+  onExpand,
+}: {
+  active: "sprint" | "marathon";
+  cardsReady: boolean;
+  onExpand: (id: "sprint" | "marathon") => void;
+}) {
+  const reduce = Boolean(useReducedMotion());
+  return (
+    // Below lg: heading above, cards stacked below (unchanged). At lg+: a
+    // 35/65 split — copy sits top-left with its own CTA, while the cards
+    // stack one above the other on the right, at full height, same scroll pin.
+    <div className={cn(sectionInner, "flex h-full flex-col gap-6 lg:flex-row lg:items-stretch lg:gap-8")}>
+      <div className="flex shrink-0 flex-col items-center gap-2 text-center lg:w-[35%] lg:items-start lg:justify-start lg:text-left">
+        <div className="reveal">
+          <FramerTag>Engagement formats</FramerTag>
+        </div>
+        <h2
+          id="engage-heading"
+          className={cn(sectionHeadline, "reveal m-0 text-white lg:max-w-none")}
+          data-delay="1"
+        >
+          <span className="block">Two ways to work with us.</span>
+          <span className={sectionHeadlineAccent}>Both end in shipped revenue.</span>
+        </h2>
+        <div className="reveal" data-delay="2">
+          <button
+            onClick={() => triggerPageTransition("/products")}
+            className={cn(btnOutlineOnDark, "group mt-2 gap-3")}
+            aria-label="Compare formats"
+          >
+            <FlipLabel text="Compare formats" />
+            <BtnArrow />
+          </button>
+        </div>
+      </div>
+
+      {/* Cards claim the rest of the pinned viewport instead of sitting at a
+          short fixed height with dead space around them — stacked one above
+          the other, not side by side, to match the narrower right column. */}
+      <div className="flex min-h-0 flex-1 flex-col gap-3">
+        <div className="hidden min-h-0 flex-1 lg:flex lg:flex-col lg:gap-4">
+          {homepageEngagements.map((engagement) => (
+            <EngagementPanel
+              key={engagement.id}
+              engagement={engagement}
+              isActive={engagement.id === active}
+              entered={reduce || cardsReady}
+              onExpand={() => onExpand(engagement.id as "sprint" | "marathon")}
+            />
+          ))}
+        </div>
+
+        {/* Below lg: stacked full-width cards, both always open */}
+        <div className="flex flex-col gap-4 lg:hidden">
+          {homepageEngagements.map((engagement) => (
+            <motion.div
+              key={engagement.id}
+              initial={reduce ? false : { opacity: 0, y: 20 }}
+              animate={reduce || cardsReady ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{
+                duration: DURATION_ENTER,
+                ease: EASE_ENTER,
+                delay: PANEL_ENTRANCE_DELAY[engagement.id],
+              }}
+              className={cn(surfaceCardShell, "flex flex-col")}
+            >
+              <EngagementCardOpen engagement={engagement} />
+            </motion.div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
 
-/* ── Main section ───────────────────────────────────────────────── */
-export function ServicesSection() {
+/* ── Pinned (desktop, motion-enabled) — the section locks to screen-center;
+   scrolling further inside the pin opens Marathon before the page is allowed
+   to scroll past into the next section. Scrolling back up reverses it.
+   `active` only flips when scroll actually CROSSES the 0.5 midpoint (tracked
+   via lastProgressRef), not on every progress tick re-derived from scratch —
+   otherwise a manual hover-open (via onExpand) gets clobbered by the very
+   next scroll event, since that old per-tick version always overwrote
+   `active` from the raw threshold regardless of how it got set. Crossing
+   detection lets a manual open stick through scroll jitter, and still
+   reverses correctly when re-entering from the section below and scrolling
+   back up through the same midpoint. */
+function PinnedEngagementStage() {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Cards live inside a pinned h-screen section — once pinned, a card's own
+  // position relative to the viewport is fixed for the whole scroll range
+  // (Marathon's collapsed panel sits low in that fixed frame), so a
+  // per-card whileInView keyed to its own box crossing a trigger line can
+  // permanently never fire for whichever card lands below that line. Gate
+  // both cards on the WRAPPER approaching into view instead — that 200vh
+  // box moves normally through scroll right up until the instant it pins.
+  // Same margin as the copy column's .reveal (TRIGGER_VIEWPORT_MARGIN) —
+  // without it this fired the instant any sliver of the 200vh wrapper
+  // touched the viewport, well before the copy's own trigger line, so the
+  // cards visibly started revealing before the "Two ways to work with us"
+  // heading did.
+  const cardsReady = useInView(wrapRef, { once: true, amount: 0.1, margin: TRIGGER_VIEWPORT_MARGIN });
+  const { scrollYProgress } = useScroll({
+    target: wrapRef,
+    offset: ["start start", "end end"],
+    layoutEffect: false,
+  });
+  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 });
+  const [active, setActive] = useState<"sprint" | "marathon">("sprint");
+  const lastProgressRef = useRef(0);
+
+  useMotionValueEvent(progress, "change", (v) => {
+    const prev = lastProgressRef.current;
+    lastProgressRef.current = v;
+    if (prev < 0.5 && v >= 0.5) {
+      setActive("marathon");
+    } else if (prev >= 0.5 && v < 0.5) {
+      setActive("sprint");
+    }
+  });
+
+  return (
+    <div ref={wrapRef} className="relative h-[200vh] bg-black">
+      <section
+        id="engage"
+        aria-labelledby="engage-heading"
+        className={cn(
+          sectionShell,
+          // Top padding stays sectionShell's own py-20 — that's what clears the
+          // fixed site header. Bottom has nothing to clear, so it's cut down
+          // to reclaim height for the cards, which is the whole point here.
+          // Needs the md: variant too — sectionShell sets padding-bottom via
+          // "md:py-20", and Tailwind's cascade always places responsive rules
+          // after base ones in the compiled sheet, so an unprefixed override
+          // alone loses to md:py-20 at desktop widths.
+          "pb-2 md:pb-2",
+          // border-b-0 — Cases Grid (next chapter) is bg-black edge-to-edge too;
+          // sectionShell's border would show as a stray line across continuous black.
+          "border-b-0 engage-in-view sticky top-0 flex h-screen overflow-hidden bg-black",
+        )}
+      >
+        <EngagementBody active={active} cardsReady={cardsReady} onExpand={setActive} />
+      </section>
+    </div>
+  );
+}
+
+/* ── Static fallback (mobile / reduced motion) — same position-based toggle
+   as before, no pin. */
+function StaticEngagementSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const [inView, setInView] = useState(() => !!reduce);
   const [active, setActive] = useState<"sprint" | "marathon">("sprint");
-  /* Panel that has started widening but whose content hasn't swapped in yet */
-  const [pending, setPending] = useState<"sprint" | "marathon" | null>(null);
-  const grownId = pending ?? active;
 
   useEffect(() => {
     if (reduce) {
@@ -683,7 +880,6 @@ export function ServicesSection() {
       const rect = el.getBoundingClientRect();
       const sectionCenter = rect.top + rect.height / 2;
       const viewportCenter = window.innerHeight / 2;
-      setPending(null);
       setActive(sectionCenter < viewportCenter ? "marathon" : "sprint");
     };
 
@@ -707,69 +903,19 @@ export function ServicesSection() {
       aria-labelledby="engage-heading"
       className={cn(
         sectionShell,
-        "relative overflow-hidden bg-black",
+        // border-b-0 — Cases Grid (next chapter) is bg-black edge-to-edge too;
+        // sectionShell's border would show as a stray line across continuous black.
+        "border-b-0 relative overflow-hidden bg-black",
         inView && "engage-in-view",
       )}
     >
-      <div className={cn(sectionInner, "flex flex-col gap-10 md:gap-14")}>
-
-        {/* Centered heading — gap-2 matches case studies section tag→headline spacing */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <FramerTag>Engagement formats</FramerTag>
-          <h2
-            id="engage-heading"
-            className={cn(sectionHeadline, "m-0 max-w-[22ch] text-white")}
-          >
-            <span className="block">Two ways to work with us.</span>
-            <span className={sectionHeadlineAccent}>Both end in shipped revenue.</span>
-          </h2>
-        </div>
-
-        {/* Cards + Compare button */}
-        <div className="flex flex-col gap-6">
-
-          {/* Desktop panels — fixed height prevents section jumps when switching cards.
-              Content-hugging height (steps + 24px CTA gap) is flat across lg–2xl. */}
-          <div className="hidden h-[536px] lg:flex lg:gap-3">
-            {homepageEngagements.map((engagement) => (
-              <EngagementPanel
-                key={engagement.id}
-                engagement={engagement}
-                isActive={engagement.id === active}
-                isGrown={engagement.id === grownId}
-                onPending={() => setPending(engagement.id as "sprint" | "marathon")}
-                onCancel={() => setPending(null)}
-                onExpand={() => {
-                  setActive(engagement.id as "sprint" | "marathon");
-                  setPending(null);
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Below lg: stacked full-width cards, both always open */}
-          <div className="flex flex-col gap-4 lg:hidden">
-            {homepageEngagements.map((engagement) => (
-              <div key={engagement.id} className={cn(surfaceCardShell, "flex flex-col")}>
-                <EngagementCardOpen engagement={engagement} />
-              </div>
-            ))}
-          </div>
-
-          {/* Compare formats — centered below cards, 24px gap */}
-          <div className="flex justify-center">
-            <button
-              onClick={() => triggerPageTransition("/products")}
-              className={cn(btnOutlineOnDark, "group gap-3")}
-            >
-              Compare formats
-              <BtnArrow />
-            </button>
-          </div>
-
-        </div>
-
-      </div>
+      <EngagementBody active={active} cardsReady={inView} onExpand={setActive} />
     </section>
   );
+}
+
+/* ── Main section ───────────────────────────────────────────────── */
+export function ServicesSection() {
+  const cinemaEnabled = useCinemaMotion();
+  return cinemaEnabled ? <PinnedEngagementStage /> : <StaticEngagementSection />;
 }

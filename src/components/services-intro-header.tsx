@@ -1,6 +1,6 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 
-import { sectionHeadline, sectionHeadlineAccent } from "@/components/framer-section";
+import { EASE_ENTER, sectionHeadline, sectionHeadlineAccent } from "@/components/framer-section";
 import { cn } from "@/lib/utils";
 
 const INTRO_LINE_1 = "Be seen. Be trusted. Be profitable.";
@@ -12,10 +12,6 @@ const DESCRIPTOR_ROWS = [
   ["seen.", "trusted.", "profitable."],
   ["found.", "chosen.", "expressive."],
 ] as const;
-
-const CINE_EASE = [0.16, 1, 0.3, 1] as const;
-const INTRO_EASE = [0.22, 1, 0.36, 1] as const;
-const SOFT_SETTLE = [0.2, 0.85, 0.24, 1] as const;
 
 const WORD_STAGGER = 0.09;
 const ROW_GAP = 0.04;
@@ -33,7 +29,7 @@ export const servicesScreenTwoItem: Variants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: INTRO_EASE },
+    transition: { duration: 0.55, ease: EASE_ENTER },
   },
 };
 
@@ -48,15 +44,13 @@ const phraseRow: Variants = {
   hidden: {
     opacity: 0,
     y: 12,
-    filter: "blur(12px)",
   },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.72,
-      ease: CINE_EASE,
+      duration: 0.55,
+      ease: EASE_ENTER,
       staggerChildren: WORD_STAGGER,
       delayChildren: 0.04,
     },
@@ -67,15 +61,13 @@ const phraseRow2: Variants = {
   hidden: {
     opacity: 0,
     y: 14,
-    filter: "blur(12px)",
   },
   show: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.76,
-      ease: CINE_EASE,
+      duration: 0.55,
+      ease: EASE_ENTER,
       staggerChildren: WORD_STAGGER,
       delayChildren: ROW_2_DELAY,
     },
@@ -87,16 +79,14 @@ const phraseShell: Variants = {
     opacity: 0,
     y: 10,
     scale: 0.992,
-    filter: "blur(6px)",
   },
   show: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: "blur(0px)",
     transition: {
-      duration: 0.58,
-      ease: SOFT_SETTLE,
+      duration: 0.55,
+      ease: EASE_ENTER,
       staggerChildren: 0.03,
       delayChildren: 0.02,
     },
@@ -111,7 +101,7 @@ const beReveal: Variants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.3, ease: INTRO_EASE },
+    transition: { duration: 0.3, ease: EASE_ENTER },
   },
 };
 
@@ -121,15 +111,13 @@ const descriptorReveal: Variants = {
     x: 16,
     y: 2,
     clipPath: "inset(0 100% 0 0)",
-    filter: "blur(8px)",
   },
   show: {
     opacity: 1,
     x: 0,
     y: 0,
     clipPath: "inset(0 0% 0 0)",
-    filter: "blur(0px)",
-    transition: { duration: 0.9, ease: CINE_EASE },
+    transition: { duration: 0.6, ease: EASE_ENTER },
   },
 };
 

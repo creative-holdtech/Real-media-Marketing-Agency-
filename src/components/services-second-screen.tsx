@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 
 import { ServicesCardDeckUnfold } from "@/components/services-card-deck-unfold";
 import { MarketingTagColumn } from "@/components/marketing-section";
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import {
   sectionContentGrid,
   sectionGap,
@@ -29,7 +30,7 @@ export function ServicesSecondScreen({ services }: ServicesSecondScreenProps) {
         variants: servicesScreenTwoStage,
         initial: "hidden" as const,
         whileInView: "show" as const,
-        viewport: { once: true, amount: 0.12, margin: "0px 0px -8% 0px" },
+        viewport: { once: true, amount: 0.12, margin: TRIGGER_VIEWPORT_MARGIN },
       };
 
   const StageTag = reduce ? "div" : motion.div;

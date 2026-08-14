@@ -10,8 +10,9 @@ import {
 } from "framer-motion";
 
 import teamGroup from "@/assets/team-group.jpg";
-import { FramerTag } from "@/components/framer-section";
+import { EASE_ENTER, FramerTag } from "@/components/framer-section";
 import { MarketingSection } from "@/components/marketing-section";
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import { TextReveal } from "@/components/text-reveal";
 import { aboutTeam } from "@/content/about";
 import { cn } from "@/lib/utils";
@@ -23,8 +24,6 @@ import { cn } from "@/lib/utils";
 /* ------------------------------------------------------------------ */
 
 const roster = aboutTeam.members.map((m) => m.name);
-
-const cinematicEase = [0.16, 1, 0.3, 1] as const;
 
 type EnsembleCopy = {
   tag: string;
@@ -99,8 +98,8 @@ export function TeamEnsemble({ variant = "feature" }: { variant?: "feature" | "b
       )}
       initial={reduce ? false : { clipPath: "inset(14% 10% 14% 10% round 28px)", opacity: 0 }}
       whileInView={{ clipPath: "inset(0% 0% 0% 0% round 28px)", opacity: 1 }}
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: reduce ? 0 : 1.15, ease: cinematicEase }}
+      viewport={{ once: true, amount: 0.35, margin: TRIGGER_VIEWPORT_MARGIN }}
+      transition={{ duration: reduce ? 0 : 0.6, ease: EASE_ENTER }}
     >
       <motion.img
         src={teamGroup}
@@ -124,11 +123,11 @@ export function TeamEnsemble({ variant = "feature" }: { variant?: "feature" | "b
               key={name}
               initial={reduce ? false : { opacity: 0, y: 14 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
+              viewport={{ once: true, amount: 0.6, margin: TRIGGER_VIEWPORT_MARGIN }}
               transition={{
                 duration: reduce ? 0 : 0.5,
                 delay: reduce ? 0 : 0.55 + i * 0.06,
-                ease: cinematicEase,
+                ease: EASE_ENTER,
               }}
             >
               {name}
@@ -175,7 +174,7 @@ export function TeamEnsemble({ variant = "feature" }: { variant?: "feature" | "b
         className="rm-ensemble rm-ensemble--feature"
       >
         <div className="mx-auto mb-10 flex w-full max-w-[44rem] flex-col items-center text-center md:mb-14">
-          <p className="reveal mb-6 w-fit md:mb-8">
+          <p className="reveal mb-2 w-fit">
             <FramerTag>{copy.tag}</FramerTag>
           </p>
           <TextReveal as="h2" id="ensemble-heading" text={copy.title} className="rm-ensemble__title" />

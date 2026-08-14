@@ -169,39 +169,53 @@
     --rm-motion-editorial: 480ms;
     --rm-motion-enter: 550ms;
     --rm-ease-out: cubic-bezier(0.2, 0, 0, 1);
-    --rm-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+    --rm-ease-enter: cubic-bezier(0.25, 0.1, 0.25, 1);
     --rm-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    /* Hover ease/duration — sourced verbatim from mdx.so's shipped CSS (their
+       cubic-bezier(.625,.05,0,1); mirrored in JS as EASE_HOVER in framer-section.tsx). */
+    --rm-ease-hover: cubic-bezier(0.625, 0.05, 0, 1);
+    --rm-motion-hover: 600ms;
+    --rm-motion-hover-fast: 300ms;
     --rm-scene-vh: 250;
     --rm-bg-scale-from: 1.08;
 
-    /* Editorial grid — one rhythm for sections, cards, and chrome */
-    --rm-grid-max: 80rem;
+    /* Editorial grid — one rhythm for sections, cards, and chrome.
+       mdx.so runs every section edge-to-edge (100vw, gutter-only, no real cap) —
+       160rem/2560px is effectively that for any real monitor, while still guarding
+       against absurd stretch on 4K+/ultrawide. */
+    --rm-grid-max: 160rem;
     --rm-grid-gutter: 1.5rem;
     --rm-grid-gutter-md: 2.5rem;
     --rm-prose-max: 42rem;
     --rm-form-max: 51.25rem;
 
-    /* Type scale — 8px grid (12 / 16 / 24 / 32 / 40 / 48 / 56 / 64) */
+    /* Type scale — calibrated against mdx.so's real computed sizes (inspected live:
+       body ~25px, section headings ~60-67px, top display 100-150px). xs/xl untouched
+       (small labels + mobile-tier base). base/lead/lg get a modest lift — they're
+       reused in dense contexts (forms, cards) where mdx's raw numbers would overcrowd.
+       2xl-6xl (headline/display tier) take the full jump. */
     --rm-font-xs: 0.75rem;
-    --rm-font-base: 1rem;
-    --rm-font-lead: 1.25rem; /* 20 — standfirst / hero lead between base and lg */
-    --rm-font-lg: 1.5rem;
+    --rm-font-base: 1.125rem; /* 18, was 16 */
+    --rm-font-lead: 1.375rem; /* 22 — standfirst / hero lead between base and lg, was 20 */
+    --rm-font-lg: 1.625rem; /* 26, was 24 */
     --rm-font-xl: 2rem;
-    --rm-font-2xl: 2.5rem;
-    --rm-font-3xl: 3rem;
-    --rm-font-4xl: 3.5rem;
-    --rm-font-5xl: 4rem;
-    --rm-font-6xl: 4.5rem; /* 72 — display hero lead */
+    --rm-font-2xl: 4rem; /* 64, was 48 */
+    --rm-font-3xl: 4.5rem; /* 72, was 56 */
+    --rm-font-4xl: 5.5rem; /* 88, was 64 */
+    --rm-font-5xl: 6.5rem; /* 104, was 72 */
+    --rm-font-6xl: 8rem; /* 128 — display hero lead, was 80 */
 
     --rm-line-xs: 1rem;
-    --rm-line-base: 1.5rem;
-    --rm-line-lead: 1.9rem; /* 30.4 — relaxed standfirst leading */
-    --rm-line-lg: 2rem;
-    --rm-line-xl: 2.5rem;
-    --rm-line-2xl: 3rem;
-    --rm-line-3xl: 3.5rem;
-    --rm-line-4xl: 4rem;
-    --rm-line-5xl: 4.5rem;
+    --rm-line-base: 1.75rem; /* 28, was 24 */
+    /* Headline tier (xl-5xl) — unified % leading: 120% of whatever font-size
+       is active at each breakpoint, instead of a per-size fixed rem value. */
+    --rm-line-lead: 140%; /* subheading / standfirst tier */
+    --rm-line-lg: 2.125rem; /* 34, was 32 */
+    --rm-line-xl: 120%;
+    --rm-line-2xl: 120%;
+    --rm-line-3xl: 120%;
+    --rm-line-4xl: 120%;
+    --rm-line-5xl: 120%;
 
     --rm-track-caps: 0.08em;
     --rm-track-body: -0.01em;
@@ -215,6 +229,32 @@
     --rm-light-border: #eaeaea;
     --rm-light-surface: #fbfbfa;
     --rm-light-accent: #9f2f2d;
+  }
+
+  /*
+   * Light section scope — redefines the core surface/text tokens to their
+   * light-theme values, so any existing component that already reads
+   * var(--rm-ink), var(--rm-text-body), var(--rm-surface-raised) etc.
+   * (which is nearly everything in framer-section.tsx) is automatically
+   * theme-correct inside this wrapper — no per-component overrides needed.
+   * Mirrors the dark theme's exact text-opacity ladder (82/66/55/45/35%),
+   * just against light-ink instead of white. Buttons are the one exception:
+   * btnPrimary/btnOutline hardcode white/black, so use the *OnLight variants.
+   */
+  .rm-section-light {
+    --rm-surface-raised: var(--rm-light-surface);
+    --rm-surface: var(--rm-light-surface);
+    --rm-surface-float: #ffffff;
+    --rm-ink: var(--rm-light-ink);
+    --rm-border-soft: var(--rm-light-border);
+    --rm-border-strong: color-mix(in oklab, var(--rm-light-ink) 22%, transparent);
+    --rm-text-body: color-mix(in oklab, var(--rm-light-ink) 82%, transparent);
+    --rm-text-muted: color-mix(in oklab, var(--rm-light-ink) 66%, transparent);
+    --rm-text-subtle: color-mix(in oklab, var(--rm-light-ink) 55%, transparent);
+    --rm-text-faint: color-mix(in oklab, var(--rm-light-ink) 45%, transparent);
+    --rm-text-ghost: color-mix(in oklab, var(--rm-light-ink) 35%, transparent);
+    background-color: var(--rm-light-surface);
+    color: var(--rm-light-ink);
   }
 
   html {
@@ -455,7 +495,7 @@
      so the headline↔lead relationship reads as intentional, not fine-print. */
   .rm-copy-standfirst {
     font-size: var(--rm-font-lead); /* 20 — Perform "Heading 3 — Smaller" */
-    line-height: 1.4; /* Perform: 1.4em */
+    line-height: 140%; /* subheading tier — unified with --rm-line-lead */
     letter-spacing: var(--rm-track-subsection); /* -0.02em */
     font-weight: 500; /* Manrope Medium */
     color: var(--rm-text-body);
@@ -470,8 +510,10 @@
   /* Editorial hero lead — large display (up to 72px) but with airy leading so
      it reads confident, not heavy. Pairs with .rm-copy-standfirst beneath. */
   .rm-title-hero-lead {
-    font-size: var(--rm-font-3xl);
-    line-height: 1.2; /* Perform H1: 1.2em */
+    /* Mobile default capped below --rm-font-3xl (72px) — our 6-line-wrapped
+       headline has no room to spare on a short viewport at that size. */
+    font-size: var(--rm-font-2xl);
+    line-height: 120%; /* headline tier — unified with --rm-line-2xl..5xl */
     letter-spacing: -0.05em; /* Perform H1: -0.05em */
     font-weight: 500; /* Manrope Medium */
     color: var(--rm-ink);
@@ -481,7 +523,7 @@
   /* Case detail heroes — same token family, capped scale for long-form pages */
   .rm-title-hero-lead--case {
     font-size: var(--rm-font-2xl);
-    line-height: 1.12;
+    line-height: 120%;
     letter-spacing: var(--rm-track-display);
     max-width: 18ch;
   }
@@ -498,7 +540,10 @@
 
   @media (min-width: 1024px) {
     .rm-title-hero-lead {
-      font-size: var(--rm-font-6xl);
+      /* Capped below --rm-font-6xl (128px): our headline runs 2 lines + a muted
+         2nd phrase, unlike mdx's short taglines — 6xl wraps every word to its own
+         line and blows well past one screen. */
+      font-size: var(--rm-font-4xl);
     }
 
     .rm-title-hero-lead--case {
@@ -660,9 +705,9 @@ button {
   opacity: 0;
   transform: translate3d(0, 8px, 0);
   transition:
-    opacity var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.22, 1, 0.36, 1)),
-    transform var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.22, 1, 0.36, 1)),
-    filter var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.22, 1, 0.36, 1));
+    opacity var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.25, 0.1, 0.25, 1)),
+    transform var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.25, 0.1, 0.25, 1)),
+    filter var(--rm-motion-enter, 550ms) var(--rm-ease-enter, cubic-bezier(0.25, 0.1, 0.25, 1));
   /* will-change added/removed dynamically by useReveal hook to avoid
      holding GPU layers on every element from page load. */
 }
@@ -707,27 +752,6 @@ button {
   }
 }
 
-/* Home — shared "settle" signature: every reveal racks into focus the same
-   way the hero headline does (blur(6px) → 0), so the whole page reads as one
-   continuous story. Pure motion: the resting state is unchanged. The `filter`
-   transition is already declared on .reveal above, so this just gives it a
-   value to animate. */
-/* Scoped off media-bearing reveals (:not(:has(img…))) — blurring large images
-   is an expensive Safari paint, and the rack-focus reads best on type anyway. */
-.rm-home :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)) {
-  filter: blur(6px);
-}
-.rm-home
-  :is(.reveal, .reveal-fade, .reveal-scale):not(:has(img, picture, canvas, video, svg)).is-visible {
-  filter: blur(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rm-home :is(.reveal, .reveal-fade, .reveal-scale) {
-    filter: none;
-  }
-}
-
 /* Home — scroll cinema (Framer Motion overlays + section perspective) */
 .rm-scroll-cinema__ambient {
   mix-blend-mode: screen;
@@ -762,21 +786,24 @@ button {
   }
 }
 
-/* Stagger helpers */
+/* Stagger helpers — spaced wider than the old 80ms step: reveals now ease
+   evenly across their full duration instead of front-loading, so a tight
+   80ms offset let neighboring items' fades overlap for most of their length
+   and blur together instead of reading as a clear sequence. */
 .reveal[data-delay="1"].is-visible {
-  transition-delay: 80ms;
+  transition-delay: 120ms;
 }
 .reveal[data-delay="2"].is-visible {
-  transition-delay: 160ms;
-}
-.reveal[data-delay="3"].is-visible {
   transition-delay: 240ms;
 }
+.reveal[data-delay="3"].is-visible {
+  transition-delay: 360ms;
+}
 .reveal[data-delay="4"].is-visible {
-  transition-delay: 320ms;
+  transition-delay: 480ms;
 }
 .reveal[data-delay="5"].is-visible {
-  transition-delay: 400ms;
+  transition-delay: 600ms;
 }
 
 /* Comparison table — row stagger on products */
@@ -3532,6 +3559,13 @@ button {
   border-radius: 2px;
 }
 
+/* CTA contact form — placeholders live inside the field, no caption above;
+   opt these fields out of the global ring so focus doesn't shift the border. */
+#rm-cta-contact-form input:focus-visible,
+#rm-cta-contact-form textarea:focus-visible {
+  outline: none;
+}
+
 /* Skip link */
 .skip-link {
   position: fixed;
@@ -4306,6 +4340,17 @@ button {
   }
 }
 
+/* ============ Discipline orb — ambient breathing loop ============ */
+@keyframes rm-orb-breathe {
+  0%,
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.045) translate(6px, -8px);
+  }
+}
+
 /* ============ Premium cursor — editorial cross + ring ============ */
 html.rm-premium-cursor,
 html.rm-premium-cursor * {
@@ -4393,6 +4438,28 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 .rm-premium-cursor[data-hover="true"] .rm-premium-cursor__cross::before,
 .rm-premium-cursor[data-hover="true"] .rm-premium-cursor__cross::after {
   background: rgba(255, 255, 255, 0.72);
+}
+
+/* Over a .rm-section-light area (white sections) the white cursor is
+   invisible — invert core/ring/cross to dark, same states mirrored. */
+.rm-premium-cursor[data-theme="light"] .rm-premium-cursor__ring {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.rm-premium-cursor[data-theme="light"] .rm-premium-cursor__cross::before,
+.rm-premium-cursor[data-theme="light"] .rm-premium-cursor__cross::after {
+  background: rgba(0, 0, 0, 0.88);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.12);
+}
+
+.rm-premium-cursor[data-theme="light"][data-hover="true"] .rm-premium-cursor__ring {
+  border-color: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.rm-premium-cursor[data-theme="light"][data-hover="true"] .rm-premium-cursor__cross::before,
+.rm-premium-cursor[data-theme="light"][data-hover="true"] .rm-premium-cursor__cross::after {
+  background: rgba(0, 0, 0, 0.65);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4770,16 +4837,18 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 }
 
 /* ============ Editorial quote — testimonial & manifesto ============ */
-.rm-testimonial {
-  min-height: min(560px, 72svh);
-}
-
 .rm-testimonial__inner {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
+/* Label + quote share one centered 900px measure, stacked — not spread across
+   the full 3-col grid the shared QuoteEditorial component defaults to. */
 .rm-testimonial .rm-quote-editorial {
+  display: flex;
+  flex-direction: column;
   align-items: start;
+  max-width: 56.25rem; /* 900px */
+  margin-inline: auto;
 }
 
 .rm-testimonial .rm-quote-editorial__lead,
@@ -4793,7 +4862,9 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
 }
 
 .rm-testimonial .rm-quote-editorial__accent {
-  background: rgba(192, 53, 53, 0.55);
+  top: 25%;
+  bottom: 25%;
+  background: rgba(144, 71, 27, 0.85);
 }
 
 .rm-quote-bg__vignette {
@@ -4969,6 +5040,35 @@ html.rm-cursor-quiet .rm-premium-cursor__core {
   .rm-quote-editorial__accent {
     transform: scaleY(1);
   }
+}
+
+/* Quote adapted for a white section (.rm-section-light) — home testimonial */
+.rm-section-light .rm-quote-mark {
+  color: color-mix(in oklab, var(--rm-light-ink) 10%, transparent);
+}
+
+.rm-section-light .rm-quote-editorial__accent {
+  background: color-mix(in oklab, var(--rm-light-ink) 20%, transparent);
+}
+
+.rm-section-light.rm-testimonial .rm-quote-editorial__accent {
+  background: rgba(144, 71, 27, 0.85);
+}
+
+.rm-section-light .rm-quote-editorial__text {
+  color: var(--rm-text-body);
+}
+
+.rm-section-light .rm-quote-editorial__name {
+  color: var(--rm-text-body);
+}
+
+.rm-section-light .rm-quote-editorial__role {
+  color: var(--rm-text-muted);
+}
+
+.rm-section-light .rm-quote-editorial__role::before {
+  color: var(--rm-text-ghost);
 }
 
 /* ============ About manifesto — dark band, warm grain bloom ============ */
@@ -8181,17 +8281,31 @@ html.rm-is-loading {
   overflow: hidden;
 }
 
-/* Skip below-fold layout until sections approach the viewport. */
+/* Below-fold sections used to defer paint via content-visibility:auto, but
+   that ties painting to viewport intersection — combined with the :has()
+   theme-matching rule below, the section's background could momentarily still
+   read as its pre-intersection default right as it scrolls into view,
+   flashing a seam of the wrong color at section boundaries during active
+   scroll. Plain `visible` costs a bit of off-screen render time but removes
+   that whole class of bug. */
 .rm-defer-paint {
-  content-visibility: auto;
-  contain-intrinsic-size: auto 720px;
+  content-visibility: visible;
   background: #000;
+  /* Lenis drives scroll via a transform, not native scrolling — its
+     floating-point offset gets rounded to a physical pixel on paint, and that
+     rounding can differ by a hair between two adjacent sections. Any such gap
+     exposes <html>'s own black canvas (--rm-page) as a stray line right at
+     the section boundary. A 2px overlap (this section pulled 2px into the
+     next one, which paints later/on top and so wins the overlap) absorbs
+     that rounding error everywhere instead of chasing it section by section. */
+  margin-bottom: -2px;
 }
 
-/* Sticky scroll scenes (e.g. home #work) break inside content-visibility:auto. */
-.rm-defer-paint:has(.rm-work-scene) {
-  content-visibility: visible;
-  contain-intrinsic-size: auto;
+/* The ScrollChapter reveal dip (translateY + opacity settle) briefly exposes this
+   placeholder behind the incoming section — match its theme so a white section
+   doesn't flash a black seam instead of a dark one. */
+.rm-defer-paint:has(.rm-section-light) {
+  background: var(--rm-light-surface);
 }
 
 .rm-preloader {
@@ -8204,14 +8318,22 @@ html.rm-is-loading {
   background: #000000;
 }
 
+/* Curtain wipe, not a fade — same clip-path grammar as the route-change curtain
+   in page-transition.tsx, so the first paint and later navigations feel like
+   one system. Duration comes from PagePreloader's EXIT_MS (JS is the source
+   of truth); the literal here is only a fallback if the var is ever missing. */
 .rm-preloader--out {
   pointer-events: none;
-  animation: rm-preloader-exit 0.7s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+  animation: rm-preloader-exit var(--rm-preloader-exit-ms, 820ms) cubic-bezier(0.76, 0, 0.24, 1)
+    forwards;
 }
 
 @keyframes rm-preloader-exit {
+  from {
+    clip-path: inset(0% 0% 0% 0%);
+  }
   to {
-    opacity: 0;
+    clip-path: inset(0% 0% 100% 0%);
     visibility: hidden;
   }
 }
@@ -8232,13 +8354,14 @@ html.rm-is-loading {
   text-align: center;
 }
 
+/* Opacity/blur are driven by JS (page-preloader.tsx) — tied to the same
+   progress value as the counter/bar, so the logo resolves into focus exactly
+   as loading completes instead of a fixed one-off fade. */
 .rm-preloader__logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  filter: blur(16px);
-  animation: rm-preloader-logo-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+  transition: filter 60ms linear, opacity 60ms linear;
 }
 
 .rm-preloader__logo-img {
@@ -8247,94 +8370,65 @@ html.rm-is-loading {
   height: clamp(3.25rem, 11vw, 4.75rem);
 }
 
-@keyframes rm-preloader-logo-in {
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
+/* Size/weight/tracking come from .rm-type-section-headline (our real H2 scale,
+   32px/40px → 40px/48px at md+) — only color + box behavior are ours here. */
 .rm-preloader__tagline {
   margin: 0;
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #fff;
 }
 
-.rm-preloader__char {
-  display: inline-block;
+/* Text sits above the bar; the bar itself is flush with the true bottom edge
+   of the screen, full-bleed (no inline padding — it owns the whole viewport
+   width, unlike the inset text row above it). */
+.rm-preloader__footer {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   opacity: 0;
-  transform: translateY(0.4em);
-  animation: rm-preloader-char-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: rm-preloader-progress-in 0.4s var(--rm-ease-enter, cubic-bezier(0.25, 0.1, 0.25, 1)) 0.15s
+    forwards;
 }
 
-.rm-preloader__char--space {
-  width: 0.35em;
+.rm-preloader__progress-track {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  overflow: hidden;
 }
 
-.rm-preloader__char:nth-child(1) {
-  animation-delay: 0.55s;
-}
-.rm-preloader__char:nth-child(2) {
-  animation-delay: 0.6s;
-}
-.rm-preloader__char:nth-child(3) {
-  animation-delay: 0.65s;
-}
-.rm-preloader__char:nth-child(4) {
-  animation-delay: 0.7s;
-}
-.rm-preloader__char:nth-child(5) {
-  animation-delay: 0.75s;
-}
-.rm-preloader__char:nth-child(6) {
-  animation-delay: 0.8s;
-}
-.rm-preloader__char:nth-child(7) {
-  animation-delay: 0.85s;
-}
-.rm-preloader__char:nth-child(8) {
-  animation-delay: 0.9s;
-}
-.rm-preloader__char:nth-child(10) {
-  animation-delay: 1.05s;
-}
-.rm-preloader__char:nth-child(12) {
-  animation-delay: 1.2s;
-}
-.rm-preloader__char:nth-child(13) {
-  animation-delay: 1.25s;
-}
-.rm-preloader__char:nth-child(14) {
-  animation-delay: 1.3s;
-}
-.rm-preloader__char:nth-child(15) {
-  animation-delay: 1.35s;
-}
-.rm-preloader__char:nth-child(16) {
-  animation-delay: 1.4s;
-}
-.rm-preloader__char:nth-child(17) {
-  animation-delay: 1.45s;
-}
-.rm-preloader__char:nth-child(18) {
-  animation-delay: 1.5s;
-}
-.rm-preloader__char:nth-child(19) {
-  animation-delay: 1.55s;
-}
-.rm-preloader__char:nth-child(20) {
-  animation-delay: 1.6s;
-}
-.rm-preloader__char:nth-child(21) {
-  animation-delay: 1.65s;
+.rm-preloader__progress-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: #fff;
+  will-change: transform;
 }
 
-@keyframes rm-preloader-char-in {
+.rm-preloader__footer-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.rm-preloader__counter {
+  margin: 0;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+}
+
+@keyframes rm-preloader-progress-in {
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -10013,16 +10107,16 @@ a.block:focus-visible .rm-points-card__read {
 }
 
 .reveal-fade[data-delay="1"].is-visible {
-  transition-delay: 80ms;
+  transition-delay: 120ms;
 }
 .reveal-fade[data-delay="2"].is-visible {
-  transition-delay: 160ms;
+  transition-delay: 240ms;
 }
 .reveal-fade[data-delay="3"].is-visible {
-  transition-delay: 280ms;
+  transition-delay: 360ms;
 }
 .reveal-fade[data-delay="4"].is-visible {
-  transition-delay: 400ms;
+  transition-delay: 480ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -10221,7 +10315,7 @@ a.block:focus-visible .rm-points-card__read {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1.25rem;
+  gap: 0.5rem;
   max-width: 30ch;
 }
 

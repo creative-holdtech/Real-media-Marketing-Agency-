@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
+
 const DIGITS = "0123456789";
 const ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -70,7 +72,7 @@ export function SlotCounter({
   triggered?: boolean;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -8% 0px" });
+  const inView = useInView(ref, { once: true, margin: TRIGGER_VIEWPORT_MARGIN });
   const [internalTriggered, setInternalTriggered] = useState(false);
   const parentControlled = triggeredProp !== undefined;
   const triggered = parentControlled ? triggeredProp : internalTriggered;

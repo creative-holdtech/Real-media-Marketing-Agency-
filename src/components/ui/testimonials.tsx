@@ -1,22 +1,24 @@
 import type { ReactNode } from "react";
 import { motion, useInView, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useRef, useSyncExternalStore } from "react";
 
 import quoteBg from "@/assets/engage-bg.jpg";
+import quoteTopGlow from "@/assets/quote-top-glow.svg";
 import {
+  EASE_ENTER,
+  DURATION_ENTER,
   FramerTag,
   sectionInner,
   sectionContentGrid,
   siteGutter,
 } from "@/components/framer-section";
-import { TextReveal } from "@/components/text-reveal";
+import { TRIGGER_VIEWPORT_MARGIN } from "@/components/motion-bits";
 import { cn } from "@/lib/utils";
 
 /** Shared editorial quote body — manifesto + case studies */
 export const quoteStatementClass = "rm-quote-editorial__text";
 
-const QUOTE_MOTION_EASE = [0.22, 1, 0.36, 1] as const;
-const QUOTE_IN_VIEW_MARGIN = "0px 0px -6% 0px" as const;
+const QUOTE_IN_VIEW_MARGIN = TRIGGER_VIEWPORT_MARGIN;
 
 function subscribeCoarse(onChange: () => void) {
   const mq = window.matchMedia("(max-width: 991px), (pointer: coarse)");
@@ -77,23 +79,44 @@ export function QuoteGradientSection({
   children: ReactNode;
   className?: string;
   innerClassName?: string;
-  /** `solid` — no photo/gradient backdrop (e.g. About manifesto). */
-  background?: "image" | "solid";
+  /** `solid` — no photo/gradient backdrop (e.g. About manifesto). `light` — white section theme. */
+  background?: "image" | "solid" | "light";
 }) {
   return (
     <section
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
       className={cn(
-        `relative flex min-h-[min(560px,72svh)] flex-col overflow-hidden border-b border-[var(--rm-border-soft)] ${siteGutter}`,
+        `relative flex flex-col overflow-hidden ${siteGutter}`,
+        background === "light" ? "min-h-[480px] md:min-h-[520px]" : "min-h-[min(560px,72svh)]",
+        background !== "light" && "border-b border-[var(--rm-border-soft)]",
         background === "solid" && "bg-[var(--rm-surface-raised)]",
+        background === "light" && "rm-section-light",
         className,
       )}
     >
       {background === "image" ? <QuoteBackground /> : null}
+      {background === "light" ? (
+        <img
+          src={quoteTopGlow}
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-70"
+          style={{
+            // object-cover's crop point shifts with viewport aspect ratio — on very
+            // wide screens it crops into the artwork's un-faded middle instead of its
+            // soft edges. This mask guarantees a clean fade-to-nothing regardless.
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 0%, black 14%, black 55%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 0%, black 14%, black 55%, transparent 100%)",
+          }}
+        />
+      ) : null}
       <div
         className={cn(
-          "relative z-[1] flex w-full flex-1 flex-col justify-center py-20 md:py-28",
+          "relative z-[1] flex w-full flex-1 flex-col justify-center",
+          background === "light" ? "py-16 md:py-20" : "py-20 md:py-28",
           sectionInner,
           innerClassName,
         )}
@@ -124,7 +147,7 @@ function QuoteEditorialLead({
   const inView = useInView(ref, { once: true, margin: QUOTE_IN_VIEW_MARGIN });
   const showChrome = reduce || inView;
   const motionOff = { duration: 0 } as const;
-  const enterFast = { duration: 0.22, ease: QUOTE_MOTION_EASE } as const;
+  const enter = { duration: DURATION_ENTER, ease: EASE_ENTER } as const;
 
   return (
     <motion.p
@@ -134,9 +157,9 @@ function QuoteEditorialLead({
       animate={
         showChrome
           ? { opacity: 1, transform: "translateY(0)" }
-          : { opacity: 0, transform: "translateY(8px)" }
+          : { opacity: 0, transform: "translateY(16px)" }
       }
-      transition={reduce ? motionOff : enterFast}
+      transition={reduce ? motionOff : enter}
     >
       {children}
     </motion.p>
@@ -166,13 +189,11 @@ export function QuoteEditorial({
   const reduce = useReducedMotion();
   const blockRef = useRef<HTMLQuoteElement>(null);
   const inView = useInView(blockRef, { once: true, margin: QUOTE_IN_VIEW_MARGIN });
-  const [quoteComplete, setQuoteComplete] = useState(false);
 
   const showChrome = reduce || inView;
-  const showAttribution = reduce || quoteComplete;
   const motionOff = { duration: 0 } as const;
-  const enterFast = { duration: 0.22, ease: QUOTE_MOTION_EASE } as const;
-  const enterQuote = { duration: 0.28, ease: QUOTE_MOTION_EASE } as const;
+  const enterQuote = { duration: DURATION_ENTER, ease: EASE_ENTER, delay: 0.08 } as const;
+  const enterAttribution = { duration: DURATION_ENTER, ease: EASE_ENTER, delay: 0.18 } as const;
 
   const isTestimonial = editorialClassName?.includes("testimonial");
   const blockquoteCols =
@@ -199,15 +220,20 @@ export function QuoteEditorial({
             transition={reduce ? motionOff : enterQuote}
             style={{ transformOrigin: "top center" }}
           />
-          <TextReveal
+          <motion.p
             id={quoteId}
-            text={quote}
-            ariaLabel={quoteAriaLabel}
+            aria-label={quoteAriaLabel}
             className={quoteStatementClass}
-            variant="opacity"
-            expressive
-            onComplete={() => setQuoteComplete(true)}
-          />
+            initial={false}
+            animate={
+              showChrome
+                ? { opacity: 1, transform: "translateY(0)" }
+                : { opacity: 0, transform: "translateY(16px)" }
+            }
+            transition={reduce ? motionOff : enterQuote}
+          >
+            {quote}
+          </motion.p>
         </div>
 
         {attribution ? (
@@ -215,11 +241,11 @@ export function QuoteEditorial({
             className="rm-quote-editorial__footer"
             initial={false}
             animate={
-              showAttribution
+              showChrome
                 ? { opacity: 1, transform: "translateY(0)" }
-                : { opacity: 0, transform: "translateY(10px)" }
+                : { opacity: 0, transform: "translateY(16px)" }
             }
-            transition={reduce ? motionOff : enterQuote}
+            transition={reduce ? motionOff : enterAttribution}
           >
             <cite className="rm-quote-editorial__name">{attribution.name}</cite>
             <span className="rm-quote-editorial__role">{attribution.role}</span>
@@ -248,9 +274,10 @@ export default function TestimonialSection({
 }: TestimonialSectionProps) {
   return (
     <QuoteGradientSection
-      aria-label="Client testimonial"
+      ariaLabel="Client testimonial"
       className="rm-testimonial"
       innerClassName="rm-testimonial__inner"
+      background="light"
     >
       <QuoteEditorial
         editorialClassName="rm-quote-editorial--testimonial"

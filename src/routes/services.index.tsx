@@ -45,7 +45,7 @@ function ServicesIndex() {
   const titleLines = hero?.titleLines ?? ["Six disciplines.", "One operating system."];
 
   return (
-    <div className="rm-page min-h-screen bg-black selection:bg-rm-accent selection:text-black">
+    <div className="rm-page min-h-screen bg-black selection:bg-[#90471B] selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -65,7 +65,8 @@ function ServicesIndex() {
       <main id="main">
         <ServicesSecondScreen services={servicesList} />
 
-        <ScrollChapter variant="reveal">
+        {/* variant="plain" — UnifiedCTA already reveals itself once via <Reveal>. */}
+        <ScrollChapter variant="plain">
           <UnifiedCTA
             title={cta?.title}
             titleAccent={cta?.titleAccent}

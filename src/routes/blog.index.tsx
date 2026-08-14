@@ -8,11 +8,11 @@ import {
   bodyCopy,
   sectionHeadline,
   sectionLabelHeadlineStack,
-  surfaceCardTitle,
   textCardBody,
   textMeta,
 } from "@/components/framer-section";
 import { BlogPostImage } from "@/components/blog-post-image";
+import { BlogPostCard, PostMetaLine } from "@/components/blog-post-card";
 import { MarketingSection } from "@/components/marketing-section";
 import { ScrollProgressBar } from "@/components/motion-bits";
 import { TextReveal } from "@/components/text-reveal";
@@ -110,56 +110,10 @@ function TopicFilter({
   );
 }
 
-function PostMetaLine({ post }: { post: Post }) {
-  return (
-    <div className={cn("flex flex-wrap items-center gap-2", textMeta)}>
-      <span>{post.label}</span>
-      <span aria-hidden className="text-[var(--rm-border-strong)]">
-        ·
-      </span>
-      <time dateTime={post.dateISO}>{post.date}</time>
-      <span aria-hidden className="text-[var(--rm-border-strong)]">
-        ·
-      </span>
-      <span>{post.read}</span>
-    </div>
-  );
-}
-
 function ArchiveCard({ post, delay }: { post: Post; delay: string }) {
-  const containImage = post.imageFit === "contain";
-
   return (
     <li className="reveal" data-delay={delay}>
-      <Link
-        to="/blog/$slug"
-        params={{ slug: post.slug }}
-        className="group flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-      >
-        <article className="flex h-full flex-col">
-          <figure
-            className={cn(
-              "hover-zoom card-cover relative mb-4 aspect-[3/2] overflow-hidden rounded-3xl border border-[var(--rm-border-soft)] bg-[var(--rm-surface-float)]",
-              containImage && "flex items-center justify-center",
-            )}
-          >
-            <BlogPostImage
-              post={post}
-              frame="landscape"
-              width={1024}
-              height={768}
-              className={containImage ? "p-4" : undefined}
-            />
-          </figure>
-          <PostMetaLine post={post} />
-          <h3 className={cn("mt-3", surfaceCardTitle)}>{post.title}</h3>
-          <p className={cn("mt-3 line-clamp-3 flex-1", textCardBody)}>{post.excerpt}</p>
-          <span className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[var(--rm-text-muted)] transition-colors group-hover:text-[var(--rm-ink)]">
-            Read article
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </span>
-        </article>
-      </Link>
+      <BlogPostCard post={post} />
     </li>
   );
 }
@@ -174,7 +128,7 @@ function BlogPage() {
   const filtered = active === "All" ? archive : archive.filter((p) => p.category === active);
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-[#90471B] selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -197,12 +151,10 @@ function BlogPage() {
                     id="page-title"
                     text={copy.titleLine1 ?? "Field notes on"}
                     className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                    revealColor="rgb(255, 255, 255)"
                   />
                   <TextReveal
                     text={copy.titleLine2 ?? "building brands that last."}
                     className="m-0 block text-balance font-[inherit] text-[length:inherit] leading-[inherit] tracking-[inherit]"
-                    revealColor="rgb(255, 255, 255)"
                   />
                 </h1>
               </div>
@@ -252,7 +204,7 @@ function BlogPage() {
         ) : null}
 
         <MarketingSection ariaLabelledBy="archive-heading">
-          <div className={sectionLabelHeadlineStack}>
+          <div className={cn(sectionLabelHeadlineStack, "reveal")}>
             <p className={textMeta}>{copy.archiveLabel}</p>
             <h2 id="archive-heading" className={sectionHeadline}>
               {active === "All" ? copy.allEntriesLabel : active}

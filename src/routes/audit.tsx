@@ -4,6 +4,7 @@ import { useState } from "react";
 import { afterHubSpotFormCapture } from "@/components/hubspot-tracking";
 import {
   BtnArrow,
+  FlipLabel,
   btnPrimary,
   sectionHeadline,
   sectionInner,
@@ -115,7 +116,7 @@ function AuditPage() {
     setPicks((p) => (p.includes(k) ? p.filter((x) => x !== k) : [...p, k]));
 
   return (
-    <div className="rm-page selection:bg-rm-accent selection:text-black">
+    <div className="rm-page selection:bg-[#90471B] selection:text-black">
       <ScrollProgressBar />
       <SiteHeader variant="dark" />
 
@@ -276,8 +277,12 @@ function AuditPage() {
           </div>
 
           <div className="mt-16 flex flex-wrap items-center justify-end gap-4">
-            <button type="submit" className={cn(btnPrimary, "group")}>
-              {sent ? "Request sent — we'll be in touch" : "Book the audit"}
+            <button
+              type="submit"
+              className={cn(btnPrimary, "group")}
+              aria-label={sent ? "Request sent — we'll be in touch" : "Book the audit"}
+            >
+              <FlipLabel text={sent ? "Request sent — we'll be in touch" : "Book the audit"} />
               {!sent ? <BtnArrow /> : null}
             </button>
           </div>

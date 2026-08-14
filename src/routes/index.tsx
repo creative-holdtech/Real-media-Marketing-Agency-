@@ -4,8 +4,10 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 
 import {
   BtnArrow,
+  FlipLabel,
   btnOutlineOnDark,
   btnPrimary,
+  EASE_ENTER,
   heroCopyLayout,
   heroHeadlineLead,
   heroIntroStack,
@@ -18,17 +20,19 @@ import { cn } from "@/lib/utils";
 import { AboutSection } from "@/components/about-section";
 import { CasesGridSection } from "@/components/cases-grid-section";
 import { ServicesSection } from "@/components/services-section";
+import { ServicesDisciplinesSection } from "@/components/services-disciplines-section";
 import { HeroAtmosphere } from "@/components/hero-atmosphere";
 import {
   HeroScrollStage,
   HomeScrollCinema,
   ScrollChapter,
 } from "@/components/home-scroll-cinema";
+import { CtaContactForm } from "@/components/cta-contact-form";
 import { PagePreloader } from "@/components/page-preloader";
 import { SectionShellSkeleton } from "@/components/section-shell-skeleton";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import TestimonialSection from "@/components/ui/testimonials";
-import { UnifiedCTA } from "@/components/unified-cta";
+import { usePreloaderDone } from "@/hooks/use-preloader-done";
 import { useReveal } from "@/hooks/use-reveal";
 import { posts } from "@/lib/posts";
 import { getPageContent } from "@/lib/payload/pages";
@@ -42,6 +46,7 @@ const InsightsHeroSection = lazy(() =>
 export const Route = createFileRoute("/")({
   loader: async () => ({
     page: await getPageContent("home"),
+    contact: await getPageContent("contact"),
   }),
   head: ({ loaderData }) => {
     const page = loaderData?.page;
@@ -62,34 +67,69 @@ export const Route = createFileRoute("/")({
 
 const insightPosts = posts;
 
-/* ——— Hero entrance choreography (Motion) ——— */
-const HERO_EASE = [0.22, 1, 0.36, 1] as const;
+/* ——— Hero entrance choreography (Motion) —————————————————————————————————
+ * HERO_EASE = EASE_ENTER — the sitewide "reveal" curve (same one driving
+ * .reveal/.reveal-fade everywhere else), not the sharp hover-snap curve this
+ * used to borrow from mdx.so. That curve hangs near 0 for most of its
+ * duration then snaps to rest in a short late burst — reads as sharp, not
+ * fluid. EASE_ENTER accelerates out immediately and decelerates smoothly the
+ * whole way to rest, so every element (fade, line-draw, title de-blur, rise)
+ * glides continuously instead of "hanging then popping". Durations are a
+ * touch longer than before for the same reason — a smooth curve needs a
+ * little more time to read as smooth rather than merely quick. */
+const HERO_EASE = EASE_ENTER;
+
+const HERO_STAGE_DELAY_CHILDREN = 0.15;
+const HERO_STAGE_STAGGER = 0.09;
+const HERO_TITLE_STAGGER = 0.1;
+const HERO_TITLE_LINE_DURATION = 0.75;
 
 const heroStage: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.15 } },
+  show: { transition: { staggerChildren: HERO_STAGE_STAGGER, delayChildren: HERO_STAGE_DELAY_CHILDREN } },
 };
 const heroFade: Variants = {
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.6, ease: HERO_EASE } },
-};
-const heroRise: Variants = {
-  hidden: { opacity: 0, y: 22 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: HERO_EASE } },
+  show: { opacity: 1, transition: { duration: 0.55, ease: HERO_EASE } },
 };
 const heroLineDraw: Variants = {
   hidden: { scaleX: 0, opacity: 0 },
-  show: { scaleX: 1, opacity: 1, transition: { duration: 0.7, ease: HERO_EASE } },
+  show: { scaleX: 1, opacity: 1, transition: { duration: 0.6, ease: HERO_EASE } },
 };
 // Headline rises line-by-line with a brief de-blur — the premium "settle".
 const heroTitle: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12 } },
+  show: { transition: { staggerChildren: HERO_TITLE_STAGGER } },
 };
 const heroTitleLine: Variants = {
   hidden: { opacity: 0, y: "0.45em", filter: "blur(7px)" },
-  show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.9, ease: HERO_EASE } },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: HERO_TITLE_LINE_DURATION, ease: HERO_EASE },
+  },
 };
+
+/** Standfirst + actions start shortly after the LAST title line begins (not
+ * after it fully settles) — a deliberate cascade/overlap, not a serial
+ * wait-then-wait-then-wait queue. heroStage's staggerChildren only staggers
+ * direct children's START times; it has no idea the title (a child with its
+ * OWN nested per-line stagger) starts its last line later when it has 2
+ * lines instead of 1. Left on `variants={heroRise}` (propagation), the
+ * standfirst used to fire on a fixed stagger step that could land BEFORE the
+ * last title line even started — reads as "wrong order". Waiting for the
+ * line to fully finish first fixed that but made the whole reveal feel
+ * serial/slow; starting just after it begins keeps the cascade fast while
+ * still guaranteeing correct order regardless of headline length. */
+function heroBodyDelay(titleLineCount: number) {
+  const lastLineIndex = Math.max(0, Math.min(titleLineCount, 2) - 1);
+  const titleStart = HERO_STAGE_DELAY_CHILDREN + HERO_STAGE_STAGGER;
+  const lastLineStart = titleStart + lastLineIndex * HERO_TITLE_STAGGER;
+  return lastLineStart + 0.18;
+}
+const heroRiseHidden = { opacity: 0, y: 22 };
+const heroRiseShow = { opacity: 1, y: 0 };
 
 function AmbientBlobs() {
   return (
@@ -104,14 +144,15 @@ function AmbientBlobs() {
 function Index() {
   useReveal();
   const reduce = useReducedMotion();
+  const heroReady = usePreloaderDone();
   const heroRef = useRef<HTMLElement>(null);
-  const { page } = Route.useLoaderData();
+  const { page, contact } = Route.useLoaderData();
   const hero = page.hero;
   const cta = page.cta;
   const titleLines = hero?.titleLines ?? [];
 
   return (
-    <div className="rm-page rm-home selection:bg-rm-accent selection:text-black">
+    <div className="rm-page rm-home selection:bg-[#90471B] selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -134,7 +175,7 @@ function Index() {
             <motion.div
               variants={heroStage}
               initial={reduce ? false : "hidden"}
-              animate="show"
+              animate={heroReady ? "show" : "hidden"}
             >
               <div className={heroIntroStack}>
               {hero?.tag ? (
@@ -153,7 +194,11 @@ function Index() {
                 </motion.p>
               ) : null}
               <div className={heroHeadlineLead}>
-              <motion.h1 id="home-hero-title" className="rm-title-hero-lead w-full text-balance" variants={heroTitle}>
+              <motion.h1
+                id="home-hero-title"
+                className="rm-title-hero-lead w-full text-balance -mt-4 md:-mt-[22px]"
+                variants={heroTitle}
+              >
                 <span className="block">
                   <motion.span className="block" variants={heroTitleLine}>
                     {titleLines[0]}
@@ -168,20 +213,31 @@ function Index() {
                 ) : null}
               </motion.h1>
               {hero?.subheading ? (
-                <motion.p className={heroStandfirst} variants={heroRise}>
+                <motion.p
+                  className={cn(heroStandfirst, "-mt-0.5")}
+                  initial={reduce ? false : heroRiseHidden}
+                  animate={heroReady ? heroRiseShow : heroRiseHidden}
+                  transition={{ duration: 0.65, ease: HERO_EASE, delay: heroBodyDelay(titleLines.length) }}
+                >
                   {hero.subheading}
                 </motion.p>
               ) : null}
               </div>
               </div>
 
-              <motion.div className={cn(sectionHeroActionsRow, "justify-center")} variants={heroRise}>
+              <motion.div
+                className={cn(sectionHeroActionsRow, "justify-center")}
+                initial={reduce ? false : heroRiseHidden}
+                animate={heroReady ? heroRiseShow : heroRiseHidden}
+                transition={{ duration: 0.6, ease: HERO_EASE, delay: heroBodyDelay(titleLines.length) }}
+              >
                 {hero?.ctaPrimaryLabel ? (
                   <Link
                     to={hero.ctaPrimaryUrl ?? "/contact"}
                     className={cn(btnPrimary, "group gap-2")}
+                    aria-label={hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
                   >
-                    {hero.ctaPrimaryLabel.replace(/\s*→$/, "")}
+                    <FlipLabel text={hero.ctaPrimaryLabel.replace(/\s*→$/, "")} />
                     <BtnArrow />
                   </Link>
                 ) : null}
@@ -189,8 +245,9 @@ function Index() {
                   <Link
                     to={hero.ctaSecondaryUrl ?? "/cases"}
                     className={cn(btnOutlineOnDark, "group gap-2")}
+                    aria-label={hero.ctaSecondaryLabel}
                   >
-                    {hero.ctaSecondaryLabel}
+                    <FlipLabel text={hero.ctaSecondaryLabel} />
                     <BtnArrow />
                   </Link>
                 ) : null}
@@ -203,24 +260,48 @@ function Index() {
       </HeroAtmosphere>
 
       <main id="main">
-        <ScrollChapter variant="plain">
+        <ScrollChapter variant="reveal">
           <AboutSection page={page} />
         </ScrollChapter>
 
         <div className="rm-defer-paint">
-          <ScrollChapter id="voice" variant="plain">
+          {/* variant="plain" — TestimonialSection now drives its own once-triggered
+              entrance (tag/accent/quote/attribution), so ScrollChapter's continuous
+              scroll-scrubbed "reveal" wrapper would double-animate the same content
+              with a different, non-once mechanic. */}
+          <ScrollChapter id="voice" variant="plain" seam={false}>
             <TestimonialSection />
           </ScrollChapter>
         </div>
 
         <div className="rm-defer-paint">
-          <ScrollChapter variant="plain">
+          {/* variant="plain" — the pinned stage already drives its own entry/exit
+              (copy fade, orb scale, wrapperBg). The generic "reveal" wrapper adds a
+              translateY that doesn't shrink this chapter's own box (transforms don't
+              affect layout), so a few px of the box's edge would go unfilled right at
+              the exit — and since this section is also marked rm-section-light (for
+              cursor/header theming), that gap falls back to .rm-defer-paint's light
+              background instead of black, showing as a stray light line. */}
+          <ScrollChapter id="disciplines" variant="plain" seam={false}>
+            <ServicesDisciplinesSection />
+          </ScrollChapter>
+        </div>
+
+        <div className="rm-defer-paint">
+          {/* seam=false — the previous chapter (Disciplines) already bleeds edge-to-edge
+              into black; the seam hairline would cut across that fade as a stray line.
+              variant="plain" — the section's own tag/heading/CTA already reveal once via
+              .reveal, so the continuous scroll-scrubbed wrapper would double-animate. */}
+          <ScrollChapter variant="plain" seam={false}>
             <ServicesSection />
           </ScrollChapter>
         </div>
 
         <div className="rm-defer-paint">
-          <ScrollChapter variant="plain">
+          {/* seam=false — Engagement Formats (previous chapter) is bg-black edge-to-edge;
+              the seam hairline would cut across that black bleed as a stray line.
+              variant="plain" — cards/header already reveal once on their own. */}
+          <ScrollChapter variant="plain" seam={false}>
             <CasesGridSection />
           </ScrollChapter>
         </div>
@@ -233,21 +314,19 @@ function Index() {
           }
         >
           <div className="rm-defer-paint">
-            <ScrollChapter id="insights" variant="plain">
+            {/* seam=false — Cases Grid (previous chapter) is bg-black edge-to-edge;
+                the seam hairline would cut across that black bleed as a stray line.
+                variant="plain" — tag/heading/CTA/cards already reveal once on their own. */}
+            <ScrollChapter id="insights" variant="plain" seam={false}>
               <InsightsHeroSection posts={insightPosts} />
             </ScrollChapter>
           </div>
         </Suspense>
 
-        <ScrollChapter variant="reveal">
-          <UnifiedCTA
-          title={cta?.title}
-          titleAccent={cta?.titleAccent}
-          primaryLabel={cta?.primaryLabel}
-          primaryTo={cta?.primaryUrl}
-          secondaryLabel={cta?.secondaryLabel}
-          secondaryTo={cta?.secondaryUrl}
-        />
+        {/* variant="plain" — the form's own tag/heading/socials/form column already
+            reveal once via .reveal, matching everywhere else on the site. */}
+        <ScrollChapter variant="plain" seam={false}>
+          <CtaContactForm cta={cta} contact={contact.contact} />
         </ScrollChapter>
       </main>
 

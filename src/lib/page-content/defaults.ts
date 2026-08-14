@@ -46,7 +46,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
       { label: "Reporting", value: "Pipeline and revenue, weekly" },
     ],
     cta: {
-      title: "Tell us what needs fixing",
+      title: "Tell us what's slowing you down. We'll clear the track.",
       titleAccent: "New launch, a raise, or marketing that doesn\u2019t perform.",
       primaryLabel: "Get free audit →",
       primaryUrl: "/audit",
@@ -124,7 +124,7 @@ export const PAGE_DEFAULTS: Record<string, PageContent> = {
       email: "info@realmedia.ink",
       location: "Warsaw · EU · MENA",
       locationNote: "Operating across CET / GST",
-      formPlaceholder: "Tell us what you are building and where you are stuck.",
+      formPlaceholder: "Tell us what you are building and where you are stuck",
       submitLabel: "Send message →",
       submitSuccessLabel: "Message sent — we'll reply soon",
       socialLinks: [

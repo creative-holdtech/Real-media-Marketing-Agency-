@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 import {
   BtnArrow,
+  FlipLabel,
   bodyCopy,
   btnOutlineOnDark,
   interactiveSurfaceCard,
@@ -43,7 +44,7 @@ export function ServiceCardContent({
             </p>
             <div className="mt-6 flex justify-end">
               <span className={cn(btnOutlineOnDark, "gap-2")}>
-                View
+                <FlipLabel text="View" />
                 <BtnArrow />
               </span>
             </div>
@@ -125,7 +126,7 @@ export function ServiceCardContent({
               compact && !deck && "text-xs",
             )}
           >
-            View
+            <FlipLabel text="View" />
             <BtnArrow />
           </span>
         </div>

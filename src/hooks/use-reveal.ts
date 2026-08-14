@@ -2,13 +2,22 @@ import { useEffect } from "react";
 
 const REVEAL_SELECTOR = ".reveal, .reveal-fade, .reveal-scale";
 
+/** Elements reveal as they approach this line (fraction of viewport height
+ * down from the top), not merely on entering at the bottom edge — a touch
+ * above dead-center so content settles before it's the thing the user is
+ * looking straight at. Drives both the IntersectionObserver's rootMargin
+ * and the manual visibleRatio() check below; keep them in sync. */
+const TRIGGER_LINE_FRACTION = 0.62;
+const TRIGGER_ROOT_MARGIN = `0px 0px -${Math.round((1 - TRIGGER_LINE_FRACTION) * 100)}% 0px`;
+
 function isMobileReveal() {
   return window.matchMedia("(max-width: 991px)").matches;
 }
 
 function visibleRatio(el: HTMLElement) {
   const rect = el.getBoundingClientRect();
-  const visiblePx = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+  const triggerY = window.innerHeight * TRIGGER_LINE_FRACTION;
+  const visiblePx = Math.min(rect.bottom, triggerY) - Math.max(rect.top, 0);
   if (visiblePx <= 0) return 0;
   return visiblePx / Math.max(rect.height, 1);
 }
@@ -89,7 +98,7 @@ export function useReveal() {
       },
       {
         threshold: mobile ? [0, 0.04, 0.08, 0.12] : 0.18,
-        rootMargin: mobile ? "0px 0px 0px 0px" : "0px 0px -8% 0px",
+        rootMargin: TRIGGER_ROOT_MARGIN,
       },
     );
 

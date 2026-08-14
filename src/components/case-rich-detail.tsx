@@ -5,6 +5,7 @@ import { CaseCampaignGallery } from "@/components/case-campaign-gallery";
 import { CasesGallerySection } from "@/components/cases-gallery-section";
 import {
   BtnArrow,
+  FlipLabel,
   btnOutline,
   btnOutlineOnDark,
   btnPrimary,
@@ -371,7 +372,7 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
   const identityCompact = !showIdentityLogo && !identityVisual;
 
   return (
-    <div className="rm-page rm-case-study selection:bg-rm-accent selection:text-black">
+    <div className="rm-page rm-case-study selection:bg-[#90471B] selection:text-black">
       <a href="#main" className="skip-link">
         Skip to content
       </a>
@@ -441,12 +442,20 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   </div>
 
                   <div className="reveal mt-10 flex flex-wrap items-center gap-3" data-delay="3">
-                    <Link to="/contact" className={cn(btnOutlineOnDark, "group gap-2")}>
-                      Consultation
+                    <Link
+                      to="/contact"
+                      className={cn(btnOutlineOnDark, "group gap-2")}
+                      aria-label="Consultation"
+                    >
+                      <FlipLabel text="Consultation" />
                       <BtnArrow />
                     </Link>
-                    <Link to={rich.closing.primaryTo} className={cn(btnPrimary, "group gap-2")}>
-                      {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                    <Link
+                      to={rich.closing.primaryTo}
+                      className={cn(btnPrimary, "group gap-2")}
+                      aria-label={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                    >
+                      <FlipLabel text={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")} />
                       <BtnArrow />
                     </Link>
                   </div>
@@ -545,12 +554,20 @@ export function CaseRichDetail({ study: c, others }: CaseRichDetailProps) {
                   >
                     <span className="rm-case-study__eyebrow">{c.client} case study</span>
                     <div className="flex flex-wrap items-center gap-3">
-                      <Link to="/contact" className={cn(btnOutlineOnDark, "group gap-2")}>
-                        Consultation
+                      <Link
+                        to="/contact"
+                        className={cn(btnOutlineOnDark, "group gap-2")}
+                        aria-label="Consultation"
+                      >
+                        <FlipLabel text="Consultation" />
                         <BtnArrow />
                       </Link>
-                      <Link to={rich.closing.primaryTo} className={cn(btnPrimary, "group gap-2")}>
-                        {rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                      <Link
+                        to={rich.closing.primaryTo}
+                        className={cn(btnPrimary, "group gap-2")}
+                        aria-label={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")}
+                      >
+                        <FlipLabel text={rich.closing.primaryLabel.replace(/\s*→\s*$/, "")} />
                         <BtnArrow />
                       </Link>
                     </div>

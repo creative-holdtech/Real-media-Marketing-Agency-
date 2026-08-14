@@ -3,9 +3,10 @@ import { Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/motion-bits";
 import {
   BtnArrow,
+  FlipLabel,
   bandSubtitle,
-  btnOutline,
-  btnPrimary,
+  btnOutlineOnLight,
+  btnPrimaryOnLight,
   ctaBandCopyStack,
   sectionHeadline,
   sectionHeroActionsRow,
@@ -40,11 +41,13 @@ export function UnifiedCTA({
   secondaryHref,
   sectionClassName,
 }: Partial<CTAProps> & { title?: string }) {
+  const primaryText = (primaryLabel ?? "").replace(/\s*→$/, "");
+  const secondaryText = (secondaryLabel ?? "").replace(/\s*→$/, "");
   return (
     <section
       id="cta"
       aria-labelledby="unified-cta-heading"
-      className={cn(sectionShell, "bg-black", sectionClassName)}
+      className={cn(sectionShell, "rm-section-light", sectionClassName)}
     >
       <div className={cn(sectionInner, "flex flex-col items-center text-center")}>
         {eyebrow ? (
@@ -63,24 +66,40 @@ export function UnifiedCTA({
         <Reveal delay={0.1} duration={0.5}>
           <div className={cn(sectionHeroActionsRow, "justify-center")}>
             {primaryHref ? (
-              <a href={primaryHref} className={cn(btnPrimary, "group gap-2")}>
-                {primaryLabel?.replace(/\s*→$/, "")}
+              <a
+                href={primaryHref}
+                className={cn(btnPrimaryOnLight, "group gap-2")}
+                aria-label={primaryText}
+              >
+                <FlipLabel text={primaryText} />
                 <BtnArrow />
               </a>
             ) : (
-              <Link to={primaryTo ?? "/audit"} className={cn(btnPrimary, "group gap-2")}>
-                {primaryLabel?.replace(/\s*→$/, "")}
+              <Link
+                to={primaryTo ?? "/audit"}
+                className={cn(btnPrimaryOnLight, "group gap-2")}
+                aria-label={primaryText}
+              >
+                <FlipLabel text={primaryText} />
                 <BtnArrow />
               </Link>
             )}
             {secondaryHref ? (
-              <a href={secondaryHref} className={cn(btnOutline, "group gap-2")}>
-                {secondaryLabel?.replace(/\s*→$/, "")}
+              <a
+                href={secondaryHref}
+                className={cn(btnOutlineOnLight, "group gap-2")}
+                aria-label={secondaryText}
+              >
+                <FlipLabel text={secondaryText} />
                 <BtnArrow />
               </a>
             ) : (
-              <Link to={secondaryTo ?? "/cases"} className={cn(btnOutline, "group gap-2")}>
-                {secondaryLabel?.replace(/\s*→$/, "")}
+              <Link
+                to={secondaryTo ?? "/cases"}
+                className={cn(btnOutlineOnLight, "group gap-2")}
+                aria-label={secondaryText}
+              >
+                <FlipLabel text={secondaryText} />
                 <BtnArrow />
               </Link>
             )}

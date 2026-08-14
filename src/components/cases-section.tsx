@@ -20,6 +20,7 @@ import { useLenis } from "lenis/react";
 
 import {
   BtnArrow,
+  FlipLabel,
   btnOutlineOnDark,
   FramerTag,
   sectionContentGrid,
@@ -805,8 +806,12 @@ function WorkSceneDesktop({
 
               <div className={sectionGridSpacer} aria-hidden />
               <div className="reveal-fade mt-2 flex justify-end md:col-span-2 md:col-start-2 md:mt-0 md:self-end">
-                <Link to="/cases" className={cn(btnOutlineOnDark, "group w-fit gap-2")}>
-                  View all case studies
+                <Link
+                  to="/cases"
+                  className={cn(btnOutlineOnDark, "group w-fit gap-2")}
+                  aria-label="View all case studies"
+                >
+                  <FlipLabel text="View all case studies" />
                   <BtnArrow />
                 </Link>
               </div>
@@ -934,8 +939,12 @@ function WorkSceneGrid({
 
       <div className={sectionGridSpacer} aria-hidden />
       <div className="reveal-fade mt-2 flex justify-end md:col-span-2 md:col-start-2 md:mt-0 md:self-end">
-        <Link to="/cases" className={cn(btnOutlineOnDark, "group w-fit gap-2")}>
-          View all case studies
+        <Link
+          to="/cases"
+          className={cn(btnOutlineOnDark, "group w-fit gap-2")}
+          aria-label="View all case studies"
+        >
+          <FlipLabel text="View all case studies" />
           <BtnArrow />
         </Link>
       </div>
