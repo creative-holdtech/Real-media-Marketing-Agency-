@@ -17,7 +17,6 @@ import { AboutStatsScroll } from "@/components/about-stats-scroll";
 import { AboutManifestoSection } from "@/components/about-manifesto";
 import { MarketingSection, MarketingTagColumn } from "@/components/marketing-section";
 import { ScrollProgressBar } from "@/components/motion-bits";
-import { TeamSection } from "@/components/team-section";
 import { PagePreloader } from "@/components/page-preloader";
 import {
   bodyCopy,
@@ -118,14 +117,6 @@ function AboutPage() {
 
           <div className="rm-defer-paint" style={{ containIntrinsicSize: "auto 700px" }}>
             <VerticalsSection verticals={verticals} content={verticalsContent} />
-          </div>
-
-          <div
-            id="about-team"
-            className="rm-defer-paint"
-            style={{ containIntrinsicSize: "auto 850px", scrollMarginTop: "var(--rm-header-offset)" }}
-          >
-            <TeamSection />
           </div>
 
           <UnifiedCTA
